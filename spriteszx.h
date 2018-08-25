@@ -6,12 +6,15 @@ extern unsigned char sprite_moneda [];
 extern unsigned char sprite_prota1 [];
 extern unsigned char sprite_prota2 [];
 extern unsigned char sprite_protajump [];
+extern unsigned char sprite_protajumpleft [];
+extern unsigned char sprite_protajumpright [];
 extern unsigned char sprite_prota4 [];
 extern unsigned char sprite_prota5 [];
 extern unsigned char sprite_malo1 [];
 extern unsigned char sprite_malo2 [];
+extern unsigned char sprite_fight1 [];
+extern unsigned char sprite_fight2 [];
 extern unsigned char sprite_arbol [];
-extern unsigned char sprite_casa [];
 
 extern unsigned char fondov_x16 [];
 extern unsigned char fondoh_x16 [];
@@ -74,6 +77,29 @@ extern unsigned char fondoh_x16 [];
 	DEFB	  0, 62, 15,  0,  0,240,  3,128
 	DEFB	  0, 71, 71,  7, 71, 71, 71,  7
 
+	._sprite_protajumpleft
+    DEFB	 16,112,  0,  0, 31,248,  0,  0
+	DEFB	 31,248,  0,  0,111,190,  0,  0
+	DEFB	 31,248,  0,  0, 31,248,  0,  0
+	DEFB	  3,255,128,  0, 31,255,240,  0
+	DEFB	243,255,252, 15,243,255,252, 15
+	DEFB	 15,129,255,255, 28,  1,255,192
+	DEFB	 28,  1,255,192,  0,  0,126,112
+	DEFB	  0,  0, 14,  0,  0,  0, 14,  0
+	DEFB	 71, 71, 71,  0, 71, 71, 71, 71
+
+    ._sprite_protajumpright
+    DEFB	  0,  0, 14,  8,  0,  0, 31,248
+	DEFB	  0,  0, 31,248,  0,  0,125,246
+	DEFB	  0,  0, 31,248,  0,  0, 31,248
+	DEFB	  0,  1,255,192,  0, 15,255,248
+	DEFB	240, 63,255,207,240, 63,255,207
+	DEFB	255,255,129,240,  3,255,128, 56
+	DEFB	  3,255,128, 56, 14,126,  0,  0
+	DEFB	  0,112,  0,  0,  0,112,  0,  0
+	DEFB	  0, 71, 71, 71, 71, 71, 71, 71
+
+
 	._sprite_prota4
     DEFB	  0,  0,  0,  0,  0,  0,  0,  0
 	DEFB	  6,  0,  0,  1, 14,  0,  0,  1
@@ -98,18 +124,26 @@ extern unsigned char fondoh_x16 [];
 
 
 	._sprite_malo1
-	defb 0,0,28,28,62,62,103,115
-	defb 103,115,115,103,62,62,28,28
-	defb 3,224,30,188,63,254,48,62
-	defb 28,120,15,238,12,0,56,0
-	defb 71,71,66,2
+	DEFB	  0,234,138,  0,  7, 16,  1,  0
+	DEFB	 15, 16,  2,112,121,  0,  1,240
+	DEFB	255,  8,128,240,255, 48,  0,248
+	DEFB	111,  0,  0,254, 37,  0,  0,246
+	DEFB	 32,255,253,251,  8,127,253,249
+	DEFB	 13,157,254,243, 15, 14,124,242
+	DEFB	  6,  7,129,224,  0,  1,195,192
+	DEFB	  0,  0,195,  0,  0,  0,  0,  0
+	DEFB	 65, 73, 73, 65, 65, 65, 65, 65
 
 	._sprite_malo2
-	defb 0,0,28,28,62,62,103,115
-	defb 103,115,115,103,62,62,28,28
-	defb 3,224,30,188,63,254,62,6
-	defb 15,28,59,248,0,24,0,14
-	defb 71,71,66,2
+	DEFB	  0,  1,138,  0,  0,  7,  1,  0
+	DEFB	  7,239,  2,102, 31,223,  1,243
+	DEFB	 31,255,  0,241,115,239,  0,251
+	DEFB	255,255,192,254,255,255,128,248
+	DEFB	 63,239,255,248,175,255,127,188
+	DEFB	255,254,254, 60,109,175,224, 30
+	DEFB	 12, 60,  0,  7,  0,240,  0,  3
+	DEFB	  0, 96,  0,  0,  0,  0,  0,  0
+	DEFB	 65, 65, 73, 65, 65, 65, 65, 65
 
 	._sprite_arbol
 	defb 7,255,192,31,255,176,63,255
@@ -124,25 +158,27 @@ extern unsigned char fondoh_x16 [];
 	defb 68,68,4,68,68,4,66,66
 	defb 66
 
-	._sprite_casa
-	defb 0,0,0,0,64,14,0,0
-	defb 104,31,128,0,235,31,204,0
-	defb 62,7,158,0,62,0,7,0
-	defb 28,0,0,252,8,0,0,120
-	defb 255,255,255,255,251,239,190,251
-	defb 251,239,190,251,113,199,28,113
-	defb 4,16,65,4,223,125,247,223
-	defb 223,125,247,223,142,56,227,142
-	defb 0,0,0,0,63,254,0,0
-	defb 36,146,3,128,36,146,15,224
-	defb 63,254,29,112,36,146,49,24
-	defb 36,146,63,248,63,254,97,12
-	defb 0,0,97,12,63,254,127,252
-	defb 63,254,127,252,31,252,103,252
-	defb 0,0,103,252,0,0,127,252
-	defb 0,0,127,252,0,0,127,252
-	defb 70,7,7,71,122,122,122,122
-	defb 121,121,123,123,124,124,123,123
+	._sprite_fight1
+    DEFB	136,  0,128,136,  0, 15,  0,  0
+	DEFB	  0,251,240,192, 51, 65, 87, 60
+	DEFB	 63, 63, 63,204,252,221,205,204
+	DEFB	255,243,255,255,119, 81, 85,119
+	DEFB	255,255,255,204,205, 93, 77,112
+	DEFB	 51,207,207,240, 63,117,117, 64
+	DEFB	191,255, 63,136,  2, 17,214,  0
+	DEFB	  0, 12,176, 32,  0,  0,  0,  0
+	DEFB	  7,  7,  7,  7,  7,  7,  7,  7
+
+	._sprite_fight2
+    DEFB	  0,  0,  0,128,  0,  0,  0, 48
+	DEFB	  0,  0,  0,128,192,  0,  0,  0
+	DEFB	 32,  0,195,  0, 12, 48, 48,192
+	DEFB	  0,128,  0,128,  0, 12, 64,  0
+	DEFB	  3,  2, 48,224,  1, 12,  0, 12
+	DEFB	  0,  0,  0,192,  0,192,  0, 64
+	DEFB	  3,  0,194,  0, 12,  6, 12,  0
+	DEFB	  0,  0,  0,  0,  0,  0,  0,  0
+	DEFB	  7,  7,  7,  7,  7,  7,  7,  7
 
 	._fondov_x16
 	defb 0,0,0,0,0,0,0,0

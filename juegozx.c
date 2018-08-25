@@ -6,6 +6,7 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define FIGHTING 5
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
@@ -20,11 +21,16 @@ unsigned char pantalla [768];
 
 void main (void)
 {
-    unsigned char x, y, draw, frame, initial_jump_y, jump_direction;
-    cls(7); // Borramos la pantalla
+    unsigned char x, y, draw, frame, frame_malo, initial_jump_y, jump_direction;
+    unsigned char x_malo;
+    unsigned char malo_appears = 0;
 
+    cls(7); // Borramos la pantalla
+    malo_appears = rand();
 	x=0;
     y=22;
+    x_malo = 22;
+    frame_malo = 0;
     initial_jump_y = 0;
     draw=0;
     frame=0;
@@ -35,7 +41,7 @@ void main (void)
     {
         // check keyboard inputs (todo move to function)
 
-        if ((port_in(64510)&1)==0 && y>0 && draw != JUMPING && draw != FALLING) // Q
+        if ((port_in(64510)&1)==0 && y>0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // Q
         {
             draw = JUMPING;
             initial_jump_y = y;
@@ -56,7 +62,7 @@ void main (void)
             //++y;
         }
 
-        if ((port_in(57342)&1)==0 && x<28 && draw != JUMPING && draw != FALLING) // P
+        if ((port_in(57342)&1)==0 && x<28 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // P
         {
             put_sprite_32x16 (sprite_negro,x,y);
             draw = WALKING_RIGHT;
@@ -98,12 +104,15 @@ void main (void)
 
             if(jump_direction == JUMP_RIGHT) {
                 ++x;
+                put_sprite_32x16(sprite_protajumpright, x, y);
             } else if(jump_direction == JUMP_LEFT) {
                 --x;
+                put_sprite_32x16(sprite_protajumpleft, x, y);
+            } else {
+                put_sprite_32x16(sprite_protajump, x, y);
             }
 
-            put_sprite_32x16(sprite_protajump, x, y);
-            if (initial_jump_y - y >= 4) {
+            if (initial_jump_y - y >= 8) {
                 draw = FALLING;
             }
         }
@@ -115,6 +124,48 @@ void main (void)
             if(y == 22) {
                 // todo tomar suelo del mapeado
                 draw = NO_DRAW;
+            }
+        }
+
+        if (draw == FIGHTING) {
+            // pierde una vida y dura X frames
+            put_sprite_32x16 (sprite_negro,x,y);
+            if (frame==0) {
+                put_sprite_32x16(sprite_fight1, x, y);
+                frame = 1;
+            } else {
+                put_sprite_32x16(sprite_fight2, x, y);
+                frame = 0;
+            }
+
+            --frame_malo;
+            if (frame_malo == 0) {
+                draw = NO_DRAW;
+            }
+        }
+
+        if (draw != FIGHTING) {
+            // pintar malo todo en random
+            put_sprite_32x16 (sprite_negro, x_malo, 22);
+            --x_malo;
+            if (frame_malo == 0){
+                put_sprite_32x16 (sprite_malo1, x_malo, 22);
+                frame_malo = 1;
+            } else {
+                put_sprite_32x16 (sprite_malo2, x_malo, 22);
+                frame_malo = 0;
+            }
+
+            if( abs(x - x_malo) < 3 && y > 18) {
+                draw = FIGHTING;
+                put_sprite_32x16 (sprite_negro, x_malo, 22);
+                frame_malo = 10;
+                put_sprite_32x16 (sprite_negro, x, y);
+                y = 22;
+                x_malo = 22;
+            } else if (x_malo <= 0) {
+                put_sprite_32x16 (sprite_negro, x_malo, 22);
+                x_malo = 22;
             }
         }
 
