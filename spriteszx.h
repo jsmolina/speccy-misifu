@@ -5,6 +5,9 @@ extern unsigned char sprite_cubo [];
 extern unsigned char sprite_moneda [];
 extern unsigned char sprite_prota1 [];
 extern unsigned char sprite_prota2 [];
+extern unsigned char sprite_protajump [];
+extern unsigned char sprite_prota4 [];
+extern unsigned char sprite_prota5 [];
 extern unsigned char sprite_malo1 [];
 extern unsigned char sprite_malo2 [];
 extern unsigned char sprite_arbol [];
@@ -15,15 +18,15 @@ extern unsigned char fondoh_x16 [];
 
 #asm
 	._sprite_negro
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	defb 0,0,0,0
+	DEFB	  0,  0,  0,  0,  0,  0,  0,  0
+	DEFB	0,  0,  0, 0,0,  0,  0,0
+	DEFB	0,  0,  0,0, 0,  0,0,0
+	DEFB	 0,0,0,0, 0,0,0,0
+	DEFB	  0,0,0,0,  0,0,0,0
+	DEFB	  0,0,0,0,  0,0,0,0
+	DEFB	  0,0, 0,  0,  0,0, 0,  0
+	DEFB	  0, 0,  0,  0,  0, 0,  0,  0
+	DEFB	 0, 0, 0, 0, 0, 0, 0, 0
 
 	._sprite_cubo
 	defb 255,255,128,1,128,1,128,1,128,1,128,1,128,1,128,1
@@ -59,6 +62,40 @@ extern unsigned char fondoh_x16 [];
 	DEFB	  7,112, 28, 96,  7,112, 28, 96
 	DEFB	  3,152,  0, 48,  0,  0,  0,  0
 	DEFB	 71, 71, 71, 71, 71, 71, 71, 71
+
+	._sprite_protajump
+    DEFB	  0,  0,230,  0,  0,  3,255,  0
+	DEFB	  0,  3,255,  0,  0,  7,255,128
+	DEFB	  0, 23,255, 96,  0, 49,248,224
+	DEFB	  0, 31,255,192,  0, 23,255,192
+	DEFB	  1,175,254,  0,  7,239,248,  0
+	DEFB	  7,127,248,  0,  0, 31,254,  0
+	DEFB	  0, 31,252,  0,  0, 63,254,  0
+	DEFB	  0, 62, 15,  0,  0,240,  3,128
+	DEFB	  0, 71, 71,  7, 71, 71, 71,  7
+
+	._sprite_prota4
+    DEFB	  0,  0,  0,  0,  0,  0,  0,  0
+	DEFB	  6,  0,  0,  1, 14,  0,  0,  1
+	DEFB	 63,  0,  0, 15,111,143,128, 24
+	DEFB	255,255,254,112,255,255,254,112
+	DEFB	127,255,255,224, 63,255,255,224
+	DEFB	  1,255,255,  0,  1,255,255,  0
+	DEFB	  0,240,126,  0,  0,112, 14,  0
+	DEFB	  0,224, 24,  0,  0,224, 24,  0
+	DEFB	 71, 71, 71, 71, 71, 71, 71, 71
+
+    ._sprite_prota5
+    DEFB	  0,  0,  0,  0,  0,  0,  0,  8
+	DEFB	  2,  0,  0,  7,  2,  0,  0,  7
+	DEFB	 15,128,  0,  1, 55,199,224,  7
+	DEFB	127,255,254, 30, 63,255,255,248
+	DEFB	 63,255,255,248, 15,254,127,224
+	DEFB	  3,224, 31,192,  6, 96, 14,224
+	DEFB	  6, 56, 14,224,  6, 56, 14,224
+	DEFB	 12,  0, 25,192,  0,  0,  0,  0
+	DEFB	 71, 71, 71, 71, 71, 71, 71, 71
+
 
 	._sprite_malo1
 	defb 0,0,28,28,62,62,103,115
