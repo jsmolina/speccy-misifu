@@ -10,6 +10,7 @@
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
+#define FLOOR_Y 21
 #include <config.h>
 #include <spriteszx.h>
 #include <lib/motorzx.h>
@@ -26,9 +27,8 @@ void main (void)
     unsigned char malo_appears = 0;
 
     cls(7); // Borramos la pantalla
-    malo_appears = rand();
 	x=0;
-    y=22;
+    y=FLOOR_Y;
     x_malo = 22;
     frame_malo = 0;
     initial_jump_y = 0;
@@ -36,6 +36,9 @@ void main (void)
     frame=0;
     jump_direction = 0;
     put_sprite_32x16(sprite_prota1, x, y);
+    // papelera grande
+    put_sprite_x32(bin1, 2, 17);
+    put_sprite_x32(bin2, 2, 20);
 
 	while (1)
     {
@@ -102,10 +105,10 @@ void main (void)
             put_sprite_32x16 (sprite_negro,x,y);
             --y;
 
-            if(jump_direction == JUMP_RIGHT) {
+            if(jump_direction == JUMP_RIGHT && x < 28) {
                 ++x;
                 put_sprite_32x16(sprite_protajumpright, x, y);
-            } else if(jump_direction == JUMP_LEFT) {
+            } else if(jump_direction == JUMP_LEFT && x > 0) {
                 --x;
                 put_sprite_32x16(sprite_protajumpleft, x, y);
             } else {
@@ -121,7 +124,7 @@ void main (void)
             put_sprite_32x16 (sprite_negro,x,y);
             ++y;
             put_sprite_32x16(sprite_protajump, x, y);
-            if(y == 22) {
+            if(y == FLOOR_Y) {
                 // todo tomar suelo del mapeado
                 draw = NO_DRAW;
             }
@@ -144,29 +147,35 @@ void main (void)
             }
         }
 
-        if (draw != FIGHTING) {
+        if (draw != FIGHTING && malo_appears == 1) {
             // pintar malo todo en random
-            put_sprite_32x16 (sprite_negro, x_malo, 22);
+            put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
             --x_malo;
             if (frame_malo == 0){
-                put_sprite_32x16 (sprite_malo1, x_malo, 22);
+                put_sprite_32x16 (sprite_malo1, x_malo, FLOOR_Y);
                 frame_malo = 1;
             } else {
-                put_sprite_32x16 (sprite_malo2, x_malo, 22);
+                put_sprite_32x16 (sprite_malo2, x_malo, FLOOR_Y);
                 frame_malo = 0;
             }
 
             if( abs(x - x_malo) < 3 && y > 18) {
                 draw = FIGHTING;
-                put_sprite_32x16 (sprite_negro, x_malo, 22);
+                put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
                 frame_malo = 10;
                 put_sprite_32x16 (sprite_negro, x, y);
-                y = 22;
+                y = FLOOR_Y;
                 x_malo = 22;
+                malo_appears = 0;
             } else if (x_malo <= 0) {
-                put_sprite_32x16 (sprite_negro, x_malo, 22);
-                x_malo = 22;
+                put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
+                malo_appears = 0;
             }
+        }
+
+        if (x >= 0 && x < 10) {
+            put_sprite_x32(bin1, 2, 17);
+            put_sprite_x32(bin2, 2, 20);
         }
 
 
