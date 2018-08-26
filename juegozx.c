@@ -1,6 +1,8 @@
 // juego.c
 // Esqueleto de juegos de Radastan para ZX Spectrum
 // version 0.1 beta
+#define BIN_Y1 15
+#define BIN_Y2 16
 #define NO_DRAW 0
 #define WALKING_LEFT 1
 #define WALKING_RIGHT 2
@@ -20,6 +22,42 @@
 
 unsigned char pantalla [768];
 
+unsigned char in_bin1 (unsigned char x) {
+    return (x >= 0 && x < 6);
+}
+
+unsigned char in_bin2 (unsigned char x) {
+    return (x >= 3 && x < 14);
+}
+
+unsigned char in_bin3 (unsigned char x) {
+    return (x >= 15 && x < 26);
+}
+
+unsigned char in_bin4 (unsigned char x) {
+    return (x >= 20 && x < 27);
+}
+
+void paint_bin1() {
+    put_sprite_x32(bin1, 2, 17);
+    put_sprite_x32(bin2, 2, 20);
+}
+
+void paint_bin2() {
+    put_sprite_x32(bin1, 7, 18);
+    put_sprite_x32(bin2, 7, 20);
+}
+
+void paint_bin3() {
+    put_sprite_x32(bin1, 19, 17);
+    put_sprite_x32(bin2, 19, 20);
+}
+
+void paint_bin4() {
+    put_sprite_x32(bin1, 24, 18);
+    put_sprite_x32(bin2, 24, 20);
+}
+
 void main (void)
 {
     unsigned char x, y, draw, frame, frame_malo, initial_jump_y, jump_direction;
@@ -36,12 +74,13 @@ void main (void)
     frame=0;
     jump_direction = 0;
     put_sprite_32x16(sprite_prota1, x, y);
-    // bin first
-    put_sprite_x32(bin1, 2, 17);
-    put_sprite_x32(bin2, 2, 20);
-    // bin second
-    put_sprite_x32(bin1, 8, 18);
-    put_sprite_x32(bin2, 8, 20);
+    // paint bins
+    paint_bin1();
+    paint_bin2();
+    paint_bin3();
+    paint_bin4();
+
+    put_sprite_x32(bin2, 24, 20);
 
 	while (1)
     {
@@ -127,9 +166,12 @@ void main (void)
         if (draw == FALLING) {
             put_sprite_32x16 (sprite_negro,x,y);
             ++y;
+
             put_sprite_32x16(sprite_protajump, x, y);
             if(y == FLOOR_Y) {
                 // todo tomar suelo del mapeado
+                draw = NO_DRAW;
+            } else if (in_bin1(x) && y == BIN_Y1) {
                 draw = NO_DRAW;
             }
         }
@@ -177,14 +219,19 @@ void main (void)
             }
         }
 
-        if ((x >= 0 && x < 8) || (x_malo >= 0 && x_malo < 8)) {
-            put_sprite_x32(bin1, 2, 17);
-            put_sprite_x32(bin2, 2, 20);
+        // bins redraw routine
+        if (in_bin1(x) || in_bin1(x_malo)) {
+            paint_bin1();
         }
 
-        if ((x >= 4 && x < 14) || (x_malo >= 4 && x_malo < 14)) {
-            put_sprite_x32(bin1, 8, 18);
-            put_sprite_x32(bin2, 8, 20);
+        if (in_bin2(x) || in_bin2(x_malo)) {
+            paint_bin2();
+        }
+        if (in_bin3(x) || in_bin3(x_malo)) {
+            paint_bin3();
+        }
+        if (in_bin4(x) || in_bin4(x_malo)) {
+           paint_bin4();
         }
 
 
