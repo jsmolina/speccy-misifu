@@ -22,20 +22,28 @@
 
 unsigned char pantalla [768];
 
+unsigned char in_left_bins(unsigned char x) {
+    return(x >= 0 && x < 13);
+}
+
+unsigned char in_right_bins(unsigned char x) {
+    return(x >= 15 && x < 28);
+}
+
 unsigned char in_bin1 (unsigned char x) {
-    return (x >= 0 && x < 6);
+    return (x >= 1 && x < 3);
 }
 
 unsigned char in_bin2 (unsigned char x) {
-    return (x >= 3 && x < 14);
+    return (x >= 7 && x < 9);
 }
 
 unsigned char in_bin3 (unsigned char x) {
-    return (x >= 15 && x < 26);
+    return (x >= 19 && x < 21);
 }
 
 unsigned char in_bin4 (unsigned char x) {
-    return (x >= 20 && x < 27);
+    return (x >= 24 && x < 27);
 }
 
 void paint_bin1() {
@@ -122,6 +130,16 @@ void main (void)
             malo_appears = 1;
         }
 
+
+        // check if cat should fall out of bin
+        if (y <= BIN_Y2 && (draw == WALKING_RIGHT || draw == WALKING_LEFT )) {
+            if(in_bin1(x) || in_bin2(x) || in_bin3(x)  || in_bin4(x)) {
+
+            } else {
+                draw = FALLING;
+            }
+        }
+
         if (draw == WALKING_RIGHT) {
             if (frame==0) {
                 put_sprite_32x16(sprite_prota1, x, y);
@@ -173,6 +191,12 @@ void main (void)
                 draw = NO_DRAW;
             } else if (in_bin1(x) && y == BIN_Y1) {
                 draw = NO_DRAW;
+            } else if (in_bin2(x) && y == BIN_Y2) {
+                draw = NO_DRAW;
+            } else if (in_bin3(x) && y == BIN_Y1) {
+                draw = NO_DRAW;
+            } else if (in_bin4(x) && y == BIN_Y2) {
+                draw = NO_DRAW;
             }
         }
 
@@ -197,14 +221,23 @@ void main (void)
             // pintar malo todo en random
             put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
             --x_malo;
-            if (frame_malo == 0){
-                put_sprite_32x16 (sprite_malo1, x_malo, FLOOR_Y);
-                frame_malo = 1;
+            if (x_malo <= 0) {
+                // arrived to the left
+                put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
+                malo_appears = 0;
+                x_malo = 22;
+                paint_bin1();
             } else {
-                put_sprite_32x16 (sprite_malo2, x_malo, FLOOR_Y);
-                frame_malo = 0;
+                if (frame_malo == 0){
+                    put_sprite_32x16 (sprite_malo1, x_malo, FLOOR_Y);
+                    frame_malo = 1;
+                } else {
+                    put_sprite_32x16 (sprite_malo2, x_malo, FLOOR_Y);
+                    frame_malo = 0;
+                }
             }
 
+            // detects collission malo->misifu
             if( abs(x - x_malo) < 3 && y > 18) {
                 malo_appears = 0;
                 draw = FIGHTING;
@@ -213,24 +246,16 @@ void main (void)
                 put_sprite_32x16 (sprite_negro, x, y);
                 y = FLOOR_Y;
                 x_malo = 22;
-            } else if (x_malo <= 0) {
-                put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
-                malo_appears = 0;
             }
         }
 
         // bins redraw routine
-        if (in_bin1(x) || in_bin1(x_malo)) {
+        if (in_left_bins(x) || in_left_bins(x_malo)) {
             paint_bin1();
-        }
-
-        if (in_bin2(x) || in_bin2(x_malo)) {
             paint_bin2();
         }
-        if (in_bin3(x) || in_bin3(x_malo)) {
-            paint_bin3();
-        }
-        if (in_bin4(x) || in_bin4(x_malo)) {
+        if (in_right_bins(x) || in_right_bins(x_malo)) {
+           paint_bin3();
            paint_bin4();
         }
 
