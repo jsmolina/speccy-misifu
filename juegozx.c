@@ -36,9 +36,12 @@ void main (void)
     frame=0;
     jump_direction = 0;
     put_sprite_32x16(sprite_prota1, x, y);
-    // papelera grande
+    // bin first
     put_sprite_x32(bin1, 2, 17);
     put_sprite_x32(bin2, 2, 20);
+    // bin second
+    put_sprite_x32(bin1, 8, 18);
+    put_sprite_x32(bin2, 8, 20);
 
 	while (1)
     {
@@ -58,13 +61,6 @@ void main (void)
             }
         }
 
-        if ((port_in(65022)&1)==0 && y<22) // A
-        {
-            //put_sprite_32x16 (sprite_negro,x,y);
-            //draw = WALKING;
-            //++y;
-        }
-
         if ((port_in(57342)&1)==0 && x<28 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // P
         {
             put_sprite_32x16 (sprite_negro,x,y);
@@ -72,11 +68,19 @@ void main (void)
             ++x;
         }
 
-        if ((port_in(57342)&2)==0 && x>0 && draw != JUMPING && draw != FALLING) // O
+        if ((port_in(57342)&2)==0 && x>0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT)) // O
         {
             put_sprite_32x16 (sprite_negro,x,y);
             draw = WALKING_LEFT;
             --x;
+        }
+
+        if ((port_in(65022)&1)==0 && y<22) // A
+        {
+            //put_sprite_32x16 (sprite_negro,x,y);
+            //draw = WALKING;
+            //++y;
+            malo_appears = 1;
         }
 
         if (draw == WALKING_RIGHT) {
@@ -160,22 +164,27 @@ void main (void)
             }
 
             if( abs(x - x_malo) < 3 && y > 18) {
+                malo_appears = 0;
                 draw = FIGHTING;
                 put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
                 frame_malo = 10;
                 put_sprite_32x16 (sprite_negro, x, y);
                 y = FLOOR_Y;
                 x_malo = 22;
-                malo_appears = 0;
             } else if (x_malo <= 0) {
                 put_sprite_32x16 (sprite_negro, x_malo, FLOOR_Y);
                 malo_appears = 0;
             }
         }
 
-        if (x >= 0 && x < 10) {
+        if ((x >= 0 && x < 8) || (x_malo >= 0 && x_malo < 8)) {
             put_sprite_x32(bin1, 2, 17);
             put_sprite_x32(bin2, 2, 20);
+        }
+
+        if ((x >= 4 && x < 14) || (x_malo >= 4 && x_malo < 14)) {
+            put_sprite_x32(bin1, 8, 18);
+            put_sprite_x32(bin2, 8, 20);
         }
 
 
