@@ -66,6 +66,20 @@ void paint_bin4() {
     put_sprite_x32(bin2, 24, 20);
 }
 
+void paint_valla(unsigned char num_valla) {
+    unsigned char valla_xpos = num_valla * 4;
+    put_sprite_x32(valla1, valla_xpos, 15); // todo turn back to 13
+    put_sprite_x32(valla2, valla_xpos, 19); // todo turn back to 17
+}
+
+void paint_all_vallas() {
+    unsigned char i;
+    for (i = 0; i < 8; i++) {
+        paint_valla(i);
+    }
+}
+
+
 void main (void)
 {
     unsigned char x, y, draw, frame, frame_malo, initial_jump_y, jump_direction;
@@ -81,6 +95,9 @@ void main (void)
     draw=0;
     frame=0;
     jump_direction = 0;
+    // hasta el 7
+    paint_all_vallas();
+
     put_sprite_32x16(sprite_prota1, x, y);
     // paint bins
     paint_bin1();
@@ -88,11 +105,18 @@ void main (void)
     paint_bin3();
     paint_bin4();
 
-    put_sprite_x32(bin2, 24, 20);
-
 	while (1)
     {
         // check keyboard inputs (todo move to function)
+        // todo detectar cuando gato abandona area para pintar la valla
+        if (x >= 4 && x < 6) {
+            paint_valla(0);
+        }
+
+        if (x >= 6 && x < 10) {
+            paint_valla(1);
+        }
+
 
         if ((port_in(64510)&1)==0 && y>0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // Q
         {
@@ -247,7 +271,9 @@ void main (void)
                 y = FLOOR_Y;
                 x_malo = 22;
             }
+
         }
+
 
         // bins redraw routine
         if (in_left_bins(x) || in_left_bins(x_malo)) {
@@ -258,6 +284,7 @@ void main (void)
            paint_bin3();
            paint_bin4();
         }
+
 
 
         wait_int(); wait_int(); wait_int(); wait_int();
