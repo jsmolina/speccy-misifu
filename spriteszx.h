@@ -10,6 +10,7 @@ extern unsigned char sprite_protajumpleft [];
 extern unsigned char sprite_protajumpright [];
 extern unsigned char sprite_prota4 [];
 extern unsigned char sprite_prota5 [];
+extern unsigned char sprite_protaquieto [];
 extern unsigned char sprite_malo1 [];
 extern unsigned char sprite_malo2 [];
 extern unsigned char sprite_fight1 [];
@@ -101,6 +102,17 @@ extern unsigned char fondoh_x16 [];
 	DEFB	255,255,129,240,  3,255,128, 56
 	DEFB	  3,255,128, 56, 14,126,  0,  0
 	DEFB	  0,112,  0,  0,  0,112,  0,  0
+	DEFB	  0, 71, 71, 71, 71, 71, 71, 71
+
+	._sprite_protaquieto
+    DEFB	  0,  3,132,  0,  0,  3,252,  0
+	DEFB	  0,  3,252,  0,  0,  6,123,  0
+	DEFB	  0, 31,255,128,  0,  7,255,  0
+	DEFB	  0,  7,255,  0,  0,  1,248,  0
+	DEFB	  0,  3,248,  0,  3,135,252,  0
+	DEFB	  3,135,252,  0,  1,223,255,  0
+	DEFB	  0,127,255,  0,  0, 31,255,  0
+	DEFB	  0, 31,255,  0,  0, 61,251,128
 	DEFB	  0, 71, 71, 71, 71, 71, 71, 71
 
 
