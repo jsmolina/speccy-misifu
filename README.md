@@ -18,6 +18,6 @@ Just execute (or makezx.bat from original radastan zip):
 # To improve
 *  redraw routines and transparencies.
 *  use more colours (that could be fixed later, it's just replacing sprites)
-
+* more pixel-perfect reproduction (I'm learning speccy!)
 
 Contributions/suggestions are more than welcome!
