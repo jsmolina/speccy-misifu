@@ -15,8 +15,8 @@ Just execute (or makezx.bat from original radastan zip):
 `$ ./makezx.sh` 
 
 
-# Caveats
-*  improve redraw and transparencies.
+# To improve
+*  redraw routines and transparencies.
 *  use more colours (that could be fixed later, it's just replacing sprites)
 
 
