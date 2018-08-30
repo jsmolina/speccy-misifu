@@ -19,5 +19,6 @@ Just execute (or makezx.bat from original radastan zip):
 *  redraw routines and transparencies.
 *  use more colours (that could be fixed later, it's just replacing sprites)
 * more pixel-perfect reproduction (I'm learning speccy!)
+* use more z88dk functions (https://raw.githubusercontent.com/wiki/z88dk/z88dk/monosprites.md)
 
 Contributions/suggestions are more than welcome!
