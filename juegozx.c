@@ -13,6 +13,13 @@
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
 #define FLOOR_Y 21
+
+#define IN_KEY_SCANCODE_o 0x2df
+#define IN_KEY_SCANCODE_p 0x1df
+#define IN_KEY_SCANCODE_q 0x1fb
+#define IN_KEY_SCANCODE_a 0x1fd
+#define IN_KEY_SCANCODE_SPACE 0x017f
+
 #include <config.h>
 #include <spriteszx.h>
 #include <lib/motorzx.h>
@@ -126,7 +133,7 @@ void main (void)
 
 
 
-        if ((port_in(64510)&1)==0 && y>0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // Q
+        if (in_key_pressed(IN_KEY_SCANCODE_q) && y>0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // Q
         {
             draw = JUMPING;
             initial_jump_y = y;
@@ -140,21 +147,21 @@ void main (void)
             }
         }
 
-        if ((port_in(57342)&1)==0 && x<28 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // P
+        if (in_key_pressed(IN_KEY_SCANCODE_p) && x<28 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) // P
         {
             put_sprite_32x16 (sprite_negro,x,y);
             draw = WALKING_RIGHT;
             ++x;
         }
 
-        if ((port_in(57342)&2)==0 && x>0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT)) // O
+        if (in_key_pressed(IN_KEY_SCANCODE_o) && x>0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT)) // O
         {
             put_sprite_32x16 (sprite_negro,x,y);
             draw = WALKING_LEFT;
             --x;
         }
 
-        if ((port_in(65022)&1)==0 && y<22) // A
+        if (in_key_pressed(IN_KEY_SCANCODE_a) && y<22) // A
         {
             //put_sprite_32x16 (sprite_negro,x,y);
             //draw = WALKING;

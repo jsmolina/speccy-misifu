@@ -1820,3 +1820,51 @@ void put_msprite_x32(unsigned char *posicion, unsigned int x, unsigned int y)
 	}
 }
 
+
+int in_key_pressed(int key) {
+#asm
+EXTERN error_znc, error_mc
+
+   ld a,h
+   and $c0
+   jr z, check_key
+
+
+
+caps_shift:
+
+   add a,a
+   jr nc, check_symshift
+
+   ld a,$fe
+   in a,($fe)
+   and $01
+   jp nz, error_znc            ; if caps shift not pressed
+
+   ; check symbol shift
+
+check_symshift:
+
+   bit 6,h
+   jr z, check_key
+
+   ld a,$7f
+   in a,($fe)
+   and $02
+   jp nz, error_znc            ; if sym shift not pressed
+
+   ; check unshifted key
+
+check_key:
+
+   ld a,l                      ; a = key row
+   in a,($fe)
+
+   and $1f
+   and h                       ; key mask
+
+   jp nz, error_znc            ; if key is not pressed
+   jp error_mc                 ; if key is pressed
+
+#endasm
+}
