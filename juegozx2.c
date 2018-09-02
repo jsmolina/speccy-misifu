@@ -43,15 +43,17 @@ int main()
   {
 
     if (draw == WALKING_RIGHT) {
-        if (frame==0) {
-            animation_offset = 24;
-            frame = 1;
-        } else {
+
+        frame = (frame + 1) % 10;
+        if (frame < 5) {
+            animation_offset = 48;
+        } else if (frame < 10) {
             animation_offset = 0;
-            frame = 0;
         }
+        catr1sp->frame = (void *) animation_offset;
+
         // (struct sp1_ss *s,struct sp1_Rect *clip,void *frame,uint16_t x,uint16_t y)
-        sp1_MoveSprPix(catr1sp, &full_screen, 0, x++, 0);
+        sp1_MoveSprPix(catr1sp, &full_screen, (void*)(animation_offset + DELTA), x++, 0);
         // todo *frame animation_offset should be 16 + 8 (but mask counts for this offset and then is 48?)
         // sp1_MoveSprPix(catr1sp, &full_screen, (void*)(animation_offset + DELTA), x++, 0);
 
