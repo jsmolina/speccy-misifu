@@ -38,6 +38,7 @@ int main()
   initial_jump_y = 0;
   jump_direction = 0;
   animation_offset=0;
+  sp1_MoveSprPix(catr1sp, &full_screen, (void*)DELTA, x++, y);
 
   while(1)
   {
@@ -46,14 +47,14 @@ int main()
 
         frame = (frame + 1) % 10;
         if (frame < 5) {
-            animation_offset = 48;
+            animation_offset = 48 + DELTA;
         } else if (frame < 10) {
-            animation_offset = 0;
+            animation_offset = DELTA;
         }
         catr1sp->frame = (void *) animation_offset;
 
         // (struct sp1_ss *s,struct sp1_Rect *clip,void *frame,uint16_t x,uint16_t y)
-        sp1_MoveSprPix(catr1sp, &full_screen, (void*)(animation_offset + DELTA), x++, 0);
+        sp1_MoveSprPix(catr1sp, &full_screen, (void*)(animation_offset), x++, y);
         // todo *frame animation_offset should be 16 + 8 (but mask counts for this offset and then is 48?)
         // sp1_MoveSprPix(catr1sp, &full_screen, (void*)(animation_offset + DELTA), x++, 0);
 

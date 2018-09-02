@@ -14,7 +14,7 @@
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
-#define FLOOR_Y 21
+#define FLOOR_Y 160
 #define DELTA 1
 
 #define IN_KEY_SCANCODE_o 0x2df
