@@ -8,7 +8,6 @@ zcc +zx -vn -m -startup=31 -clib=sdcc_iy juegozx2.c protar.asm -o juegozx2 -crea
 rm -f juegozx2.bin
 rm -f juegozx2_CODE.bin
 rm -f juegozx2.map
-rm -f juegozx2.tap
 rm -f juegozx2
 
 rm -f zcc_opt.def
