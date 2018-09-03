@@ -15,7 +15,14 @@
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
 #define FLOOR_Y 160
-#define DELTA 1
+#define RIGHTC1 1
+#define RIGHTC2 49
+#define LEFTC1 97
+#define LEFTC2 145
+#define JLEFTC1 193
+#define JRIGHTC1 241
+#define JUMPINGC1 289
+#define BORED 337
 
 #define IN_KEY_SCANCODE_o 0x2df
 #define IN_KEY_SCANCODE_p 0x1df
