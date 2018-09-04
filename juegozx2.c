@@ -49,17 +49,17 @@ int main()
         draw = JUMPING;
         initial_jump_y = y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p)) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && x<28) {
             jump_direction = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o)) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && x>0) {
             jump_direction = JUMP_LEFT;
         } else {
             jump_direction = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && x<28 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT)) {
         draw = WALKING_RIGHT;
         ++x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o) && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT)) {
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && x > 0 && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT)) {
         draw = WALKING_LEFT;
         --x;
     }
@@ -99,7 +99,7 @@ int main()
             animation_offset = JUMPINGC1;
         }
 
-        if (initial_jump_y - y >= 8) {
+        if (initial_jump_y - y >= 8 || x > 28) {
             draw = FALLING;
         }
     } else if (draw == FALLING) {
