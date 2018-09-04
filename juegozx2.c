@@ -23,8 +23,8 @@ int main()
   zx_border(INK_BLACK);
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_WHITE,
-                  'X' );
+                  INK_WHITE | PAPER_BLACK,
+                  ' ' );
   sp1_Invalidate(&full_screen);
 
   catr1sp = add_sprite_protar1();
@@ -64,13 +64,15 @@ int main()
         --x;
     }
 
-    if (draw != NO_DRAW) {
-        frame = (frame + 1) % 4;
-    }
-    sp1_MoveSprPix(catr1sp, &full_screen, (void*)(animation_offset), x, y);
+    frame = (frame + 1) % 4;
 
 
-    if (draw == WALKING_RIGHT) {
+    //sp1_MoveSprPix(catr1sp, &full_screen, (void*)(animation_offset), x, y);
+    sp1_MoveSprAbs(catr1sp, &full_screen, (void*) animation_offset,y, x, 0, 0);
+
+    if (draw == NO_DRAW && frame == 3) {
+        animation_offset = BORED;
+    } else if (draw == WALKING_RIGHT) {
         if (frame < 2) {
             animation_offset = RIGHTC1;
         } else if (frame < 4) {
@@ -85,7 +87,7 @@ int main()
         }
         draw = NO_DRAW;
     } else if (draw == JUMPING) {
-        y = y - 2;
+        y--;
 
         if(jump_direction == JUMP_RIGHT) {
             ++x;
@@ -97,11 +99,11 @@ int main()
             animation_offset = JUMPINGC1;
         }
 
-        if (initial_jump_y - y >= 32) {
+        if (initial_jump_y - y >= 8) {
             draw = FALLING;
         }
     } else if (draw == FALLING) {
-        y = y +2;;
+        ++y;
         animation_offset = JUMPINGC1;
         if(y == FLOOR_Y) {
             draw = NO_DRAW;
