@@ -21,8 +21,8 @@ int main()
 
   unsigned char x, y, draw, frame, frame_malo, initial_jump_y, draw_additional;
   unsigned char x_malo;
-  unsigned char malo_appears = NONE;
-  unsigned char r_bincat = 0;
+  unsigned char bincat_appears = NONE;
+  unsigned char enemy_apears = NONE;
   unsigned char bincat_in_bin = NONE;
   unsigned int  cat_offset;
   unsigned char dog_offset;
@@ -53,15 +53,24 @@ int main()
   frame = 0;
   frame_malo = 0;
   initial_jump_y = 0;
-  draw_additional = 0;
+  draw_additional = NONE;
   cat_offset = RIGHTC1;
   dog_offset = DOG1;
 
   while(1)
   {
-
-    if (malo_appears != YES && first_keypress != NONE) {
-        malo_appears = rand() % 500;
+    // check if dog should appear
+    if (enemy_apears != YES && first_keypress != NONE) {
+        enemy_apears = rand() % 500;
+    }
+    // checks if bincat should appear and where
+    if (bincat_in_bin != YES && first_keypress != NONE) {
+        bincat_in_bin = rand() % 32;
+        if(bin_places[bincat_in_bin] == 1) {
+            bincat_appears = YES;
+        } else {
+            bincat_in_bin = NONE;
+        }
     }
     
     // allow jump in directions
@@ -88,8 +97,7 @@ int main()
         draw = WALKING_LEFT;
         --x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a)) {
-        // todo automate in random with mod
-        malo_appears = YES;
+        enemy_apears = YES;
         x_malo = MAX_X;
     }
 
@@ -161,13 +169,13 @@ int main()
     }
 
     // time for doggy checks
-    if (draw != FIGHTING && malo_appears == YES) {
+    if (draw != FIGHTING && enemy_apears == YES) {
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
         --x_malo;
 
         if (x_malo <= 0) {
-            malo_appears = NONE;
+            enemy_apears = NONE;
             x_malo = 33;
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
         }
@@ -181,7 +189,7 @@ int main()
 
         // detects collission malo->misifu
         if( abs(x - x_malo) < 3 && y > 18) {
-            malo_appears = NONE;
+            enemy_apears = NONE;
             draw = FIGHTING;
             y = FLOOR_Y;
             anim_frames = 20;
@@ -200,7 +208,7 @@ int main()
         --anim_frames;
         if (anim_frames <= 0) {
             draw = NONE;
-            malo_appears = NONE;
+            enemy_apears = NONE;
             x_malo = 33;
             x = 0;
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
