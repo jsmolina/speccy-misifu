@@ -14,11 +14,11 @@ Some utilities (MacOS version) have been included for easier compiling in utilsz
 Just execute (or makezx.bat from original radastan zip):
 `$ ./makezx.sh` 
 
+# Current status
+See youtube  https://www.youtube.com/watch?v=q3EuXRF4f6M
+
 
 # To improve
-*  redraw routines and transparencies.
-*  use more colours (that could be fixed later, it's just replacing sprites)
 * more pixel-perfect reproduction (I'm learning speccy!)
-* use more z88dk functions (https://raw.githubusercontent.com/wiki/z88dk/z88dk/monosprites.md)
 
 Contributions/suggestions are more than welcome!
