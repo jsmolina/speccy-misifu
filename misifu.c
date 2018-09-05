@@ -24,8 +24,8 @@ int main()
   unsigned char malo_appears = NONE;
   unsigned char r_bincat = 0;
   unsigned char bincat_in_bin = NONE;
-  unsigned int  animation_offset;
-  unsigned char malo_animation_offset;
+  unsigned int  cat_offset;
+  unsigned char dog_offset;
   // keeps animation frames when something takes longer
   unsigned char anim_frames = 0;
   unsigned char cat_in_bin = NONE;
@@ -54,8 +54,8 @@ int main()
   frame_malo = 0;
   initial_jump_y = 0;
   draw_additional = 0;
-  animation_offset = RIGHTC1;
-  malo_animation_offset = DOG1;
+  cat_offset = RIGHTC1;
+  dog_offset = DOG1;
 
   while(1)
   {
@@ -96,23 +96,23 @@ int main()
     frame = (frame + 1) % 4;
 
     // paint 'prota here'
-    sp1_MoveSprAbs(catr1sp, &full_screen, (void*) animation_offset, y, x, 0, 0);
+    sp1_MoveSprAbs(catr1sp, &full_screen, (void*) cat_offset, y, x, 0, 0);
 
     // decide new FSM draw status
     if (draw == NONE && frame == 3) {
-        animation_offset = BORED;
+        cat_offset = BORED;
     } else if (draw == WALKING_RIGHT) {
         if (frame < 2) {
-            animation_offset = RIGHTC1;
+            cat_offset = RIGHTC1;
         } else if (frame < 4) {
-            animation_offset = RIGHTC2;
+            cat_offset = RIGHTC2;
         }
         draw = NONE;
     } else if (draw == WALKING_LEFT) {
         if (frame < 2) {
-            animation_offset = LEFTC1;
+            cat_offset = LEFTC1;
         } else if (frame < 4) {
-            animation_offset = LEFTC2;
+            cat_offset = LEFTC2;
         }
         draw = NONE;
     } else if (draw == JUMPING) {
@@ -120,12 +120,12 @@ int main()
 
         if(draw_additional == JUMP_RIGHT) {
             ++x;
-            animation_offset = JRIGHTC1;
+            cat_offset = JRIGHTC1;
         }  else if(draw_additional == JUMP_LEFT && x > 0) {
             --x;
-            animation_offset = JLEFTC1;
+            cat_offset = JLEFTC1;
         } else {
-            animation_offset = JUMPINGC1;
+            cat_offset = JUMPINGC1;
         }
 
         if (initial_jump_y - y >= 8 || x > 28) {
@@ -134,7 +134,7 @@ int main()
         }
     } else if (draw == FALLING) {
         ++y;
-        animation_offset = JUMPINGC1;
+        cat_offset = JUMPINGC1;
 
         // detect falling over bin
         if(bin_places[x] > 0 && y == 17) {
@@ -147,7 +147,7 @@ int main()
 
         if(y == FLOOR_Y) {
             draw = NONE;
-            animation_offset = BORED;
+            cat_offset = BORED;
         }
     }
 
@@ -162,21 +162,21 @@ int main()
 
     // time for doggy checks
     if (draw != FIGHTING && malo_appears == YES) {
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) malo_animation_offset, FLOOR_Y, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
         --x_malo;
 
         if (x_malo <= 0) {
             malo_appears = NONE;
             x_malo = 33;
-            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) malo_animation_offset, FLOOR_Y, x_malo, 0, 0);
+            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
         }
 
         if (frame < 2) {
-            malo_animation_offset = DOG1;
+            dog_offset = DOG1;
         } else if (frame < 4) {
             // todo fighting will be 49 + 48
-            malo_animation_offset = DOG2;
+            dog_offset = DOG2;
         }
 
         // detects collission malo->misifu
@@ -192,9 +192,9 @@ int main()
 
     if (draw == FIGHTING) {
         if (frame < 2) {
-            malo_animation_offset = DOGFIGHTING1;
+            dog_offset = DOGFIGHTING1;
         } else if (frame < 4) {
-            malo_animation_offset = DOGFIGHTING2;
+            dog_offset = DOGFIGHTING2;
         }
 
         --anim_frames;
@@ -203,10 +203,10 @@ int main()
             malo_appears = NONE;
             x_malo = 33;
             x = 0;
-            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) malo_animation_offset, FLOOR_Y, x_malo, 0, 0);
+            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
             // todo remove one live
         } else {
-            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) malo_animation_offset, FLOOR_Y, x_malo, 0, 0);
+            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
         }
     }
 
