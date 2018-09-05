@@ -29,3 +29,6 @@ udg:
 	png2udg ./background/cubotop1.png
 	png2udg ./background/cubotop2.png
 	png2udg ./background/cubotop3.png
+	png2udg ./background/udg_c.png
+	png2udg ./background/udg_a.png
+	png2udg ./background/udg_t.png

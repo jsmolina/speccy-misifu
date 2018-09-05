@@ -28,12 +28,16 @@ const unsigned char cubotop1[] = {0x0, 0x0, 0x33, 0x4f, 0x9f, 0xbf, 0x9f, 0xcf};
 const unsigned char cubotop2[] = {0x31, 0xff, 0x0, 0xe0, 0xfc, 0xff, 0xff, 0xff};
 const unsigned char cubotop3[] = {0xb0, 0x58, 0x8b, 0x10, 0x0, 0xf8, 0xff, 0xfb};
 
+unsigned char udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
+unsigned char udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
+unsigned char udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
+
 void  print_cubo(unsigned char x) {
   unsigned char x1 = x + 1;
   unsigned char x2 = x + 2;
   unsigned char y;
 
-  sp1_PrintAt(22, x, INK_BLACK | PAPER_MAGENTA, 'C');
+  sp1_PrintAt(22, x, INK_BLACK | PAPER_MAGENTA, 'L');
   sp1_PrintAt(22, x1, INK_BLACK | PAPER_MAGENTA, 'D');
   sp1_PrintAt(22, x2, INK_BLACK | PAPER_MAGENTA, 'E');
   sp1_PrintAt(21, x, INK_BLACK | PAPER_MAGENTA, 'F');
@@ -71,7 +75,7 @@ void  print_background() {
   sp1_TileEntry('W', udg_valla1);  // top of fence
   sp1_TileEntry('X', udg_valla3); // another top of fence
   sp1_TileEntry('Y', udg_valla4); // another top of fence
-  sp1_TileEntry('C', cubo_down1);
+  sp1_TileEntry('L', cubo_down1);
   sp1_TileEntry('D', cubo_down2);
   sp1_TileEntry('E', cubo_down3);
   sp1_TileEntry('F', cubo_middle1);
@@ -80,6 +84,9 @@ void  print_background() {
   sp1_TileEntry('I', cubotop1);
   sp1_TileEntry('J', cubotop2);
   sp1_TileEntry('K', cubotop3);
+  sp1_TileEntry('C', udg_c);
+  sp1_TileEntry('A', udg_a);
+  sp1_TileEntry('T', udg_t);
   // paint valla
   for (x = 0; x!=MAX_X; x++) {
 
@@ -100,5 +107,8 @@ void  print_background() {
           print_cubo(x);
       }
   }
+  sp1_PrintAt( 17, 29, INK_CYAN | PAPER_MAGENTA, 'C');
+  sp1_PrintAt( 18, 30, INK_CYAN | PAPER_MAGENTA, 'A');
+  sp1_PrintAt( 19, 31, INK_CYAN | PAPER_MAGENTA, 'T');
 
 }
