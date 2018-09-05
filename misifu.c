@@ -57,7 +57,7 @@ int main()
   {
 
     if (malo_appears != 1 && first_keypress != 0) {
-        malo_appears = rand() % 20;
+        malo_appears = rand() % 500;
     }
     // allow jump in directions
     if (in_key_pressed(IN_KEY_SCANCODE_q) && (draw == NO_DRAW || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) {
