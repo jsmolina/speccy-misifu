@@ -24,6 +24,13 @@
 #define JUMPINGC1 385
 #define BORED 449
 
+#define DOG1 1
+#define DOG2 49
+#define DOGFIGHTING1 97
+#define DOGFIGHTING2 145
+
+#define MAX_X 32
+
 #define IN_KEY_SCANCODE_o 0x2df
 #define IN_KEY_SCANCODE_p 0x1df
 #define IN_KEY_SCANCODE_q 0x1fb
@@ -36,25 +43,53 @@ extern unsigned char sprite_protar2[];
 extern unsigned char sprite_protar3[];
 extern unsigned char sprite_protar4[];
 
+extern unsigned char sprite_dog1[];
+extern unsigned char sprite_dog2[];
+extern unsigned char sprite_dog3[];
+extern unsigned char sprite_dog4[];
+
 void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
   c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_WHITE;
+  c->attr      = INK_BLACK;
+}
+
+
+void initialiseDogColour(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+  c->attr_mask = SP1_AMASK_INK;
+  c->attr      = INK_BLUE;
 }
 
 
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
-   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar4, 0);
+   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar4, 1);
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
+
+  return sp;
+}
+
+struct sp1_ss * add_sprite_dogr1() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_dog1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog4, 0);
+
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseDogColour);
 
   return sp;
 }
