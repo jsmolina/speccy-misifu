@@ -24,6 +24,7 @@ int main()
   unsigned int   animation_offset;
   unsigned char malo_animation_offset;
   unsigned char fighting_frames = 0;
+  unsigned char cat_in_bin = 0;
 
   unsigned char first_keypress = 0;
 
@@ -128,12 +129,28 @@ int main()
     } else if (draw == FALLING) {
         ++y;
         animation_offset = JUMPINGC1;
+
+        if(bin_places[x] > 0 && y == 17) {
+            // stop falling
+            draw = NO_DRAW;
+            cat_in_bin = x;
+        }
+
         if(y == FLOOR_Y) {
             draw = NO_DRAW;
             animation_offset = BORED;
         }
     }
 
+    // cat falls appart from bin
+    if (y < FLOOR_Y && cat_in_bin != 0) {
+        if (bin_places[x] == 0) {
+            draw = FALLING;
+            cat_in_bin = 0;
+        }
+    }
+
+    // time for doggy checks
     if (draw != FIGHTING && malo_appears == 1) {
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) malo_animation_offset, FLOOR_Y, x_malo, 0, 0);
 
@@ -141,6 +158,7 @@ int main()
 
         if (x_malo <= 0) {
             malo_appears = 0;
+            x_malo = 33;
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) malo_animation_offset, FLOOR_Y, x_malo, 0, 0);
         }
 
