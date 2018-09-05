@@ -1,5 +1,5 @@
 compile:
-	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c protar.asm dogr.asm funcs.asm -o misifu -create-app
+	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c protar.asm dogr.asm bincat.asm funcs.asm -o misifu -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map
@@ -13,6 +13,9 @@ sprites:
 
 dogsprites:
 	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > dogr.asm
+
+bincat:
+	png2sp1sprite ./sprites/bincat_sprites.png -i sprite_bincat -f 24 > bincat.asm
 
 udg:
 	echo "Copy the vars to misifu.c code"

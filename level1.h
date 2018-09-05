@@ -3,13 +3,13 @@
 #include <arch/zx/sp1.h>
 
 const unsigned char bin_places[] = {
-0, 1, 2, 2,
-0, 1, 2, 2,
-0, 1, 2, 2,
+0, 1, 2, 3,
+0, 1, 2, 3,
+0, 1, 2, 3,
 0, 0, 0, 0,
 0, 0, 0, 0,
-1, 2, 2, 0,
-1, 2, 2, 0,
+1, 2, 3, 0,
+1, 2, 3, 0,
 0, 0, 0, 0};
 
 const unsigned char udg_valla1[] = {0x0, 0x60, 0x70, 0x78, 0x7e, 0x7e, 0x7e, 0x7e};

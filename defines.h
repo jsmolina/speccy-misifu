@@ -2,10 +2,10 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
-
+#define NONE 0
+#define YES 1
 #define BIN_Y1 15
 #define BIN_Y2 16
-#define NO_DRAW 0
 #define WALKING_LEFT 1
 #define WALKING_RIGHT 2
 #define JUMPING 3
@@ -14,6 +14,7 @@
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
+#define CAT_IN_BIN 3
 #define FLOOR_Y 21
 #define RIGHTC1 1
 #define RIGHTC2 65
@@ -48,6 +49,10 @@ extern unsigned char sprite_dog2[];
 extern unsigned char sprite_dog3[];
 extern unsigned char sprite_dog4[];
 
+extern unsigned char sprite_bincat1[];
+extern unsigned char sprite_bincat2[];
+extern unsigned char sprite_bincat3[];
+
 void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
@@ -63,6 +68,14 @@ void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 
   c->attr_mask = SP1_AMASK_INK;
   c->attr      = INK_BLUE;
+}
+
+void initialiseBinCatColour(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+  c->attr_mask = SP1_AMASK_PAPER;
+  c->attr      = INK_BLACK;
 }
 
 
@@ -90,6 +103,18 @@ struct sp1_ss * add_sprite_dogr1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseDogColour);
+
+  return sp;
+}
+
+struct sp1_ss * add_sprite_bincat() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_bincat1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseBinCatColour);
 
   return sp;
 }
