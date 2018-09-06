@@ -108,8 +108,7 @@ int main()
         draw = WALKING_LEFT;
         --x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a)) {
-        enemy_apears = YES;
-        x_malo = MAX_X;
+        draw = FALLING;
     }
 
     frame = (frame + 1) % 4;
