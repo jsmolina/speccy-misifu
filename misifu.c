@@ -17,7 +17,7 @@ int main()
 {
   struct sp1_ss  *catr1sp;
   struct sp1_ss  *dogr1sp;
-  struct sp1_ss  *bincatsp;
+  struct sp1_ss  *bincatsp = NULL;
 
   unsigned char x, y, draw, frame, frame_malo, initial_jump_y, draw_additional;
   unsigned char x_malo;
@@ -28,6 +28,7 @@ int main()
   unsigned char dog_offset;
   // keeps animation frames when something takes longer
   unsigned char anim_frames = 0;
+  unsigned char anim_frames_bincat = 0;
   unsigned char cat_in_bin = NONE;
 
   unsigned char first_keypress = NONE;
@@ -64,10 +65,20 @@ int main()
         enemy_apears = rand() % 500;
     }
     // checks if bincat should appear and where
-    if (bincat_in_bin != YES && first_keypress != NONE) {
+    if (bincat_appears != YES && first_keypress != NONE) {
         bincat_in_bin = rand() % 32;
-        if(bin_places[bincat_in_bin] == 1) {
+        // less probable
+        if(enemy_apears == 1 && bin_places[bincat_in_bin] == 1) {
             bincat_appears = YES;
+            bincatsp = add_sprite_bincat();
+            anim_frames_bincat = 20;
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, bincat_in_bin, 0, 0);
+
+            // cat falls if cat_in_bin is the same of bincat_in_bin
+            // todo not working
+            if (bincat_in_bin == cat_in_bin) {
+                draw = FALLING;
+            }
         } else {
             bincat_in_bin = NONE;
         }
@@ -215,6 +226,16 @@ int main()
             // todo remove one live
         } else {
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+        }
+    }
+    // delete bincat after some frames
+    if (bincat_appears == YES) {
+        --anim_frames_bincat;
+        if (anim_frames_bincat < 1 && bincatsp != NULL) {
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
+            sp1_DeleteSpr_fastcall(bincatsp);
+            bincat_appears = NONE;
+            bincat_in_bin = 0;
         }
     }
 
