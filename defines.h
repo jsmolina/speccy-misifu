@@ -15,6 +15,7 @@
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
 #define CAT_IN_BIN 3
+#define CAT_IN_FENCE 4
 #define FLOOR_Y 21
 #define RIGHTC1 1
 #define RIGHTC2 65

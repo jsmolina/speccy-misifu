@@ -162,6 +162,9 @@ int main()
             draw_additional = CAT_IN_BIN;
             // store that it is on first bin pos so collide will trollcat is easier
             cat_in_bin = x - (bin_places[x] - 1);
+        } else if(y == 12) {
+            draw = NONE;
+            draw_additional = CAT_IN_FENCE;
         }
 
         if(y == FLOOR_Y) {
