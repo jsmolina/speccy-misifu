@@ -35,3 +35,7 @@ udg:
 	png2udg ./background/udg_c.png
 	png2udg ./background/udg_a.png
 	png2udg ./background/udg_t.png
+	png2udg ./background/udg_rope.png
+	png2udg ./background/udg_win1.png
+	png2udg ./background/udg_win2.png
+	png2udg ./background/udg_win3.png

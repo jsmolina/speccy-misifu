@@ -2,6 +2,7 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
+// todo mover todo esto a una función?
 const unsigned char bin_places[] = {
 0, 1, 2, 3,
 0, 1, 2, 3,
@@ -28,9 +29,16 @@ const unsigned char cubotop1[] = {0x0, 0x0, 0x33, 0x4f, 0x9f, 0xbf, 0x9f, 0xcf};
 const unsigned char cubotop2[] = {0x31, 0xff, 0x0, 0xe0, 0xfc, 0xff, 0xff, 0xff};
 const unsigned char cubotop3[] = {0xb0, 0x58, 0x8b, 0x10, 0x0, 0xf8, 0xff, 0xfb};
 
+unsigned char udg_rope[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xd2};
+unsigned char udg_win1[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0, 0xd2}; // bottom with rope
+unsigned char udg_win2[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // full square
+unsigned char udg_win3[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0, 0x0}; // bottom without rope
+
 unsigned char udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 unsigned char udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
 unsigned char udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
+
+// todo add udg for umbers
 
 void  print_cubo(unsigned char x) {
   unsigned char x1 = x + 1;
@@ -87,8 +95,13 @@ void  print_background() {
   sp1_TileEntry('C', udg_c);
   sp1_TileEntry('A', udg_a);
   sp1_TileEntry('T', udg_t);
+
+  sp1_TileEntry('R', udg_rope); // da rope
+  sp1_TileEntry('M', udg_win1); // bottom with rope
+  sp1_TileEntry('N', udg_win2); // full square
+  sp1_TileEntry('O', udg_win3); // bottom without rope
   // paint valla
-  for (x = 0; x!=MAX_X; x++) {
+  for (x = 0; x!=MAX_X; ++x) {
 
       if (bin_places[x] == 0) {
           if (x % 2 == 0) {
@@ -110,5 +123,30 @@ void  print_background() {
   sp1_PrintAt( 17, 29, INK_CYAN | PAPER_MAGENTA, 'C');
   sp1_PrintAt( 18, 30, INK_CYAN | PAPER_MAGENTA, 'A');
   sp1_PrintAt( 19, 31, INK_CYAN | PAPER_MAGENTA, 'T');
+
+  // paint the ropes
+  for (x=0; x != MAX_X; ++x) {
+    sp1_PrintAt(9, x, INK_BLACK | PAPER_MAGENTA, 'R');
+    sp1_PrintAt(4, x, INK_BLACK | PAPER_MAGENTA, 'R');
+    sp1_PrintAt(0, x, INK_BLACK | PAPER_MAGENTA, 'R');
+  }
+
+  // paint the bottom windows
+  for(y = 2; y <= 32; y+= 8) {
+     for (x = y; x != y + 5; x++) {
+       sp1_PrintAt(12, x, INK_CYAN | PAPER_MAGENTA, 'N');
+       sp1_PrintAt(13, x, INK_CYAN | PAPER_MAGENTA, 'O');
+     }
+   }
+
+   // paint the bottom windows with rope
+  for(y = 2; y <= 32; y+= 8) {
+     for (x = y; x != y + 5; x++) {
+       sp1_PrintAt(8, x, INK_CYAN | PAPER_MAGENTA, 'N');
+       sp1_PrintAt(9, x, INK_CYAN | PAPER_MAGENTA, 'M');
+     }
+   }
+
+
 
 }
