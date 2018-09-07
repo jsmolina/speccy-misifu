@@ -74,6 +74,18 @@ void  print_cubo(unsigned char x) {
   sp1_PrintAt(14, x2, INK_CYAN | PAPER_MAGENTA, 'X');
 }
 
+void paint_rope_windows(unsigned char row) {
+  unsigned char x, y;
+  // paint the windows with rope
+  for(y = 2; y <= 32; y+= 8) {
+     for (x = y; x != y + 5; x++) {
+       sp1_PrintAt(row, x, INK_CYAN | PAPER_MAGENTA, 'N');
+       sp1_PrintAt(row + 1, x, INK_CYAN | PAPER_MAGENTA, 'M');
+     }
+   }
+
+}
+
 void  print_background() {
     unsigned char x, y;
 
@@ -139,13 +151,9 @@ void  print_background() {
      }
    }
 
-   // paint the bottom windows with rope
-  for(y = 2; y <= 32; y+= 8) {
-     for (x = y; x != y + 5; x++) {
-       sp1_PrintAt(8, x, INK_CYAN | PAPER_MAGENTA, 'N');
-       sp1_PrintAt(9, x, INK_CYAN | PAPER_MAGENTA, 'M');
-     }
-   }
+   // paint the windows with rope
+  paint_rope_windows(8);
+  paint_rope_windows(3);
 
 
 
