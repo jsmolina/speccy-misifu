@@ -96,16 +96,31 @@ int main()
         } else {
             draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && x<28 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && x<28 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
         if (first_keypress == NONE) {
             first_keypress = frame;
             srand(first_keypress);
         }
-
-        draw = WALKING_RIGHT;
+        if (draw != CAT_IN_ROPE) {
+            draw = WALKING_RIGHT;
+        } else {
+            if (frame < 2) {
+              cat_offset = JUMPINGC1;
+            } else if (frame < 4) {
+              cat_offset = JUMPINGC2;
+            }
+        }
         ++x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && x > 0 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT)) {
-        draw = WALKING_LEFT;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && x > 0 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
+        if (draw != CAT_IN_ROPE) {
+            draw = WALKING_LEFT;
+        } else {
+            if (frame < 2) {
+              cat_offset = JUMPINGC1;
+            } else if (frame < 4) {
+              cat_offset = JUMPINGC2;
+            }
+        }
         --x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a)) {
         draw = FALLING;
@@ -172,7 +187,7 @@ int main()
             draw = CAT_IN_ROPE;
         } else if(y == 4) {
             draw = CAT_IN_ROPE;
-        } 
+        }
 
         if(y == FLOOR_Y) {
             draw = NONE;

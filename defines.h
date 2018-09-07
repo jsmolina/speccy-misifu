@@ -26,6 +26,7 @@
 #define JRIGHTC1 321
 #define JUMPINGC1 385
 #define BORED 449
+#define JUMPINGC2 513
 
 #define DOG1 1
 #define DOG2 49
