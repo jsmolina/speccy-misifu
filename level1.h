@@ -146,6 +146,7 @@ const void  print_background() {
   // paint the bottom windows
   for(y = 2; y <= 32; y+= 8) {
      for (x = y; x != y + 5; x++) {
+       // todo make ink-black and repaint tiles that are 'opening'
        sp1_PrintAt(12, x, INK_CYAN | PAPER_MAGENTA, 'N');
        sp1_PrintAt(13, x, INK_CYAN | PAPER_MAGENTA, 'O');
      }
