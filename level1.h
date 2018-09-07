@@ -40,7 +40,7 @@ unsigned char udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 
 // todo add udg for umbers
 
-void  print_cubo(unsigned char x) {
+const void  print_cubo(unsigned char x) {
   unsigned char x1 = x + 1;
   unsigned char x2 = x + 2;
   unsigned char y;
@@ -74,7 +74,7 @@ void  print_cubo(unsigned char x) {
   sp1_PrintAt(14, x2, INK_CYAN | PAPER_MAGENTA, 'X');
 }
 
-void paint_rope_windows(unsigned char row) {
+const void paint_rope_windows(unsigned char row) {
   unsigned char x, y;
   // paint the windows with rope
   for(y = 2; y <= 32; y+= 8) {
@@ -86,7 +86,7 @@ void paint_rope_windows(unsigned char row) {
 
 }
 
-void  print_background() {
+const void  print_background() {
     unsigned char x, y;
 
 

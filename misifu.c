@@ -75,7 +75,6 @@ int main()
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, bincat_in_bin, 0, 0);
 
             // cat falls if cat_in_bin is the same of bincat_in_bin
-            // todo not working
             if (bincat_in_bin == cat_in_bin) {
                 draw = FALLING;
             }
@@ -85,8 +84,9 @@ int main()
     }
     
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE) ) {
         draw = JUMPING;
+        cat_in_bin = NONE;
         initial_jump_y = y;
 
         if(in_key_pressed(IN_KEY_SCANCODE_p) && x<28) {
@@ -109,6 +109,7 @@ int main()
         --x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a)) {
         draw = FALLING;
+        cat_in_bin = NONE;
     }
 
     frame = (frame + 1) % 4;
@@ -146,7 +147,9 @@ int main()
             cat_offset = JUMPINGC1;
         }
 
-        if (initial_jump_y - y >= 8 || x > 28) {
+        if (y == 0) {
+            draw = CAT_IN_ROPE;
+        } else if (initial_jump_y - y >= 6 || x > 28) {
             draw = FALLING;
             draw_additional = NONE;
         }
@@ -164,7 +167,12 @@ int main()
         } else if(y == 12) {
             draw = NONE;
             draw_additional = CAT_IN_FENCE;
-        }
+        // now check ropes TODO check ropes clothes are not colliding
+        } else if(y == 9) {
+            draw = CAT_IN_ROPE;
+        } else if(y == 4) {
+            draw = CAT_IN_ROPE;
+        } 
 
         if(y == FLOOR_Y) {
             draw = NONE;
@@ -233,6 +241,12 @@ int main()
     // delete bincat after some frames
     if (bincat_appears == YES) {
         --anim_frames_bincat;
+
+        // cat falls if cat_in_bin is the same of bincat_in_bin
+        if (bincat_in_bin == cat_in_bin) {
+            draw = FALLING;
+        }
+
         if (anim_frames_bincat < 1 && bincatsp != NULL) {
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
             sp1_DeleteSpr_fastcall(bincatsp);
