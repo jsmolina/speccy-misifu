@@ -84,7 +84,7 @@ int main()
     }
     
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (y > 0) && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE) ) {
         draw = JUMPING;
         cat_in_bin = NONE;
         initial_jump_y = y;
@@ -122,7 +122,7 @@ int main()
             }
         }
         --x;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_a)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && y < FLOOR_Y) {
         draw = FALLING;
         cat_in_bin = NONE;
     }
@@ -162,7 +162,8 @@ int main()
             cat_offset = JUMPINGC1;
         }
 
-        if (y == 0) {
+        if (y <= 0) {
+            y = 0;
             draw = CAT_IN_ROPE;
         } else if (initial_jump_y - y >= 6 || x > 28) {
             draw = FALLING;
