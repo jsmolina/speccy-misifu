@@ -190,7 +190,8 @@ int main()
             draw = CAT_IN_ROPE;
         }
 
-        if(y == FLOOR_Y) {
+        if(y >= FLOOR_Y) {
+            y = FLOOR_Y;
             draw = NONE;
             cat_offset = BORED;
         }
