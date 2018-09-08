@@ -122,4 +122,11 @@ struct sp1_ss * add_sprite_bincat() {
   return sp;
 }
 
+struct sp1_ss * add_sprite_clothes() {
+    struct sp1_ss * sp;
+    sp = sp1
+
+    return sp;
+}
+
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
