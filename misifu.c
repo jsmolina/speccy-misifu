@@ -9,7 +9,7 @@
 #include <input.h>
 #include <level1.h>
 
-extern unsigned char abs2(unsigned char v);
+extern uint8_t abs2(uint8_t v);
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
@@ -19,19 +19,25 @@ int main()
   struct sp1_ss  *dogr1sp;
   struct sp1_ss  *bincatsp = NULL;
 
-  unsigned char x, y, draw, frame, frame_malo, initial_jump_y, draw_additional;
-  unsigned char x_malo;
-  unsigned char bincat_appears = NONE;
-  unsigned char enemy_apears = NONE;
-  unsigned char bincat_in_bin = NONE;
-  unsigned int  cat_offset;
-  unsigned char dog_offset;
-  // keeps animation frames when something takes longer
-  unsigned char anim_frames = 0;
-  unsigned char anim_frames_bincat = 0;
-  unsigned char cat_in_bin = NONE;
+  // row1 clothes
+  struct sp1_ss* clothesrow1[] = {NULL, NULL, NULL, NULL};
+  uint8_t clothescols[] = {1, 10, 18, 26};
 
-  unsigned char first_keypress = NONE;
+  uint8_t x_prota, y_prota, draw, frame, frame_malo, initial_jump_y, draw_additional;
+  uint8_t x_malo;
+  uint8_t bincat_appears = NONE;
+  uint8_t enemy_apears = NONE;
+  uint8_t bincat_in_bin = NONE;
+  unsigned int  cat_offset;
+  uint8_t dog_offset;
+  // keeps animation frames when something takes longer
+  uint8_t anim_frames = 0;
+  uint8_t anim_frames_bincat = 0;
+  uint8_t cat_in_bin = NONE;
+
+  uint8_t first_keypress = NONE;
+
+  uint8_t index = 0;
 
   zx_border(INK_BLACK);
 
@@ -46,10 +52,16 @@ int main()
   catr1sp = add_sprite_protar1();
   dogr1sp = add_sprite_dogr1();
 
+  // row 1 clothes
+  clothesrow1[0] = add_sprite_clothes1();
+  clothesrow1[1] = add_sprite_clothes2();
+  clothesrow1[2] = add_sprite_clothes1();
+  clothesrow1[3] = add_sprite_clothes2();
+
   draw = NONE;
 
-  x=0;
-  y=FLOOR_Y;
+  x_prota=0;
+  y_prota=FLOOR_Y;
   x_malo = 22;
   frame = 0;
   frame_malo = 0;
@@ -58,8 +70,29 @@ int main()
   cat_offset = RIGHTC1;
   dog_offset = DOG1;
 
+  // 1 - 8 (can't jump)  clothesrow1[0]->col
+  clothescols[0] = 1;
+  sp1_MoveSprAbs(clothesrow1[0], &full_screen, 0, 10, clothescols[0], 0, 0);
+  clothescols[1] = 10;
+  sp1_MoveSprAbs(clothesrow1[1], &full_screen, 0, 10, clothescols[1], 0, 0);
+  clothescols[2] = 18;
+  sp1_MoveSprAbs(clothesrow1[2], &full_screen, 0, 10, clothescols[2], 0, 0);
+  clothescols[3] = 26;
+  sp1_MoveSprAbs(clothesrow1[3], &full_screen, 0, 10, clothescols[3], 0, 0);
+
+
   while(1)
   {
+    // move clothes to the right
+    if (rand() % 10 == 1) {
+        // stop some time randomly
+        for (index = 0; index != 4; ++index) {
+            clothescols[index] = (clothescols[index] + 1) % 30;
+            sp1_MoveSprAbs(clothesrow1[index], &full_screen, 0, 10, clothescols[index], 0, 0);
+        }
+    }
+
+
     // check if dog should appear
     if (enemy_apears != YES && first_keypress != NONE) {
         enemy_apears = rand() % 500;
@@ -84,19 +117,19 @@ int main()
     }
     
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (y > 0) && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (y_prota > 0) && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE) ) {
         draw = JUMPING;
         cat_in_bin = NONE;
-        initial_jump_y = y;
+        initial_jump_y = y_prota;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && x<28) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && x_prota<28) {
             draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && x>0) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && x_prota>0) {
             draw_additional = JUMP_LEFT;
         } else {
             draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && x<28 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && x_prota<28 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
         if (first_keypress == NONE) {
             first_keypress = frame;
             srand(first_keypress);
@@ -110,8 +143,8 @@ int main()
               cat_offset = JUMPINGC2;
             }
         }
-        ++x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && x > 0 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
+        ++x_prota;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && x_prota > 0 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
         if (draw != CAT_IN_ROPE) {
             draw = WALKING_LEFT;
         } else {
@@ -121,8 +154,8 @@ int main()
               cat_offset = JUMPINGC2;
             }
         }
-        --x;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && y < FLOOR_Y) {
+        --x_prota;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && y_prota < FLOOR_Y) {
         draw = FALLING;
         cat_in_bin = NONE;
     }
@@ -130,7 +163,7 @@ int main()
     frame = (frame + 1) % 4;
 
     // paint 'prota here'
-    sp1_MoveSprAbs(catr1sp, &full_screen, (void*) cat_offset, y, x, 0, 0);
+    sp1_MoveSprAbs(catr1sp, &full_screen, (void*) cat_offset, y_prota, x_prota, 0, 0);
 
     // decide new FSM draw status
     if (draw == NONE && frame == 3) {
@@ -150,56 +183,56 @@ int main()
         }
         draw = NONE;
     } else if (draw == JUMPING) {
-        y--;
+        y_prota--;
 
         if(draw_additional == JUMP_RIGHT) {
-            ++x;
+            ++x_prota;
             cat_offset = JRIGHTC1;
-        }  else if(draw_additional == JUMP_LEFT && x > 0) {
-            --x;
+        }  else if(draw_additional == JUMP_LEFT && x_prota > 0) {
+            --x_prota;
             cat_offset = JLEFTC1;
         } else {
             cat_offset = JUMPINGC1;
         }
 
-        if (y <= 0) {
-            y = 0;
+        if (y_prota <= 0) {
+            y_prota = 0;
             draw = CAT_IN_ROPE;
-        } else if (initial_jump_y - y >= 6 || x > 28) {
+        } else if (initial_jump_y - y_prota >= 6 || x_prota > 28) {
             draw = FALLING;
             draw_additional = NONE;
         }
     } else if (draw == FALLING) {
-        ++y;
+        ++y_prota;
         cat_offset = JUMPINGC1;
 
         // detect falling over bin
-        if(bin_places[x] > 0 && y == 17) {
+        if(bin_places[x_prota] > 0 && y_prota == 17) {
             // stop falling
             draw = NONE;
             draw_additional = CAT_IN_BIN;
             // store that it is on first bin pos so collide will trollcat is easier
-            cat_in_bin = x - (bin_places[x] - 1);
-        } else if(y == 12) {
+            cat_in_bin = x_prota - (bin_places[x_prota] - 1);
+        } else if(y_prota == 12) {
             draw = NONE;
             draw_additional = CAT_IN_FENCE;
         // now check ropes TODO check ropes clothes are not colliding
-        } else if(y == 9) {
+        } else if(y_prota == 9) {
             draw = CAT_IN_ROPE;
-        } else if(y == 4) {
+        } else if(y_prota == 4) {
             draw = CAT_IN_ROPE;
         }
 
-        if(y >= FLOOR_Y) {
-            y = FLOOR_Y;
+        if(y_prota >= FLOOR_Y) {
+            y_prota = FLOOR_Y;
             draw = NONE;
             cat_offset = BORED;
         }
     }
 
     // cat falls appart from bin
-    if (draw_additional == CAT_IN_BIN && y < FLOOR_Y && cat_in_bin != NONE) {
-        if (bin_places[x] == NONE) {
+    if (draw_additional == CAT_IN_BIN && y_prota < FLOOR_Y && cat_in_bin != NONE) {
+        if (bin_places[x_prota] == NONE) {
             draw = FALLING;
             draw_additional = NONE;
             cat_in_bin = NONE;
@@ -226,13 +259,13 @@ int main()
         }
 
         // detects collission malo->misifu
-        if( abs(x - x_malo) < 3 && y > 18) {
+        if( abs(x_prota - x_malo) < 3 && y_prota > 18) {
             enemy_apears = NONE;
             draw = FIGHTING;
-            y = FLOOR_Y;
+            y_prota = FLOOR_Y;
             anim_frames = 20;
             // hide cat
-            x = 33;
+            x_prota = 33;
         }
     }
 
@@ -248,7 +281,7 @@ int main()
             draw = NONE;
             enemy_apears = NONE;
             x_malo = 33;
-            x = 0;
+            x_prota = 0;
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
             // todo remove one live
         } else {
