@@ -108,7 +108,7 @@ void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
 }
 
 
-struct sp1_ss * add_sprite_protar1() {
+inline struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
@@ -122,7 +122,7 @@ struct sp1_ss * add_sprite_protar1() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_dogr1() {
+inline struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_dog1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
@@ -136,7 +136,7 @@ struct sp1_ss * add_sprite_dogr1() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_bincat() {
+inline struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_bincat1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat2, 0);
@@ -166,7 +166,7 @@ struct sp1_ss * add_sprite_clothes1() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_clothes2() {
+inline struct sp1_ss * add_sprite_clothes2() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_clothes21, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_clothes22, 0);

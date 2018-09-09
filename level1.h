@@ -38,9 +38,10 @@ unsigned char udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 unsigned char udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
 unsigned char udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 
-// todo add udg for umbers
+// todo add udg for numbers (score, lives)
 
 const void  print_cubo(unsigned char x) {
+  // todo ideally only one of the bins should be high enough to get the fence
   unsigned char x1 = x + 1;
   unsigned char x2 = x + 2;
   unsigned char y;

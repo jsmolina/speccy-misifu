@@ -22,6 +22,10 @@ int main()
   // row1 clothes
   struct sp1_ss* clothesrow1[] = {NULL, NULL, NULL, NULL};
   uint8_t clothescols[] = {1, 10, 18, 26};
+  unsigned char row1_clothes[] = {0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0};
 
   uint8_t x_prota, y_prota, draw, frame, frame_malo, initial_jump_y, draw_additional;
   uint8_t x_malo;
@@ -72,12 +76,16 @@ int main()
 
   // 1 - 8 (can't jump)  clothesrow1[0]->col
   clothescols[0] = 1;
+  row1_clothes[1] = 1;
   sp1_MoveSprAbs(clothesrow1[0], &full_screen, 0, 10, clothescols[0], 0, 0);
   clothescols[1] = 10;
+  row1_clothes[10] = 1;
   sp1_MoveSprAbs(clothesrow1[1], &full_screen, 0, 10, clothescols[1], 0, 0);
   clothescols[2] = 18;
+  row1_clothes[18] = 1;
   sp1_MoveSprAbs(clothesrow1[2], &full_screen, 0, 10, clothescols[2], 0, 0);
   clothescols[3] = 26;
+  row1_clothes[26] = 1;
   sp1_MoveSprAbs(clothesrow1[3], &full_screen, 0, 10, clothescols[3], 0, 0);
 
 
@@ -87,7 +95,10 @@ int main()
     if (rand() % 10 == 1) {
         // stop some time randomly
         for (index = 0; index != 4; ++index) {
+            // todo think on a good structure for clothes collide
+            row1_clothes[clothescols[index]] = 0;
             clothescols[index] = (clothescols[index] + 1) % 30;
+            row1_clothes[clothescols[index]] = 1;
             sp1_MoveSprAbs(clothesrow1[index], &full_screen, 0, 10, clothescols[index], 0, 0);
         }
     }
@@ -195,7 +206,7 @@ int main()
             cat_offset = JUMPINGC1;
         }
 
-        if (y_prota <= 0) {
+        if (y_prota == 0) {
             y_prota = 0;
             draw = CAT_IN_ROPE;
         } else if (initial_jump_y - y_prota >= 6 || x_prota > 28) {
@@ -288,6 +299,7 @@ int main()
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
         }
     }
+
     // delete bincat after some frames
     if (bincat_appears == YES) {
         --anim_frames_bincat;
