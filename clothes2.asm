@@ -10,8 +10,8 @@ SECTION rodata_user
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes1
-._sprite_clothes1
+PUBLIC _sprite_clothes21
+._sprite_clothes21
 
  defb @11111111, @00000000
  defb @11111001, @00000110
@@ -47,8 +47,8 @@ PUBLIC _sprite_clothes1
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes2
-._sprite_clothes2
+PUBLIC _sprite_clothes22
+._sprite_clothes22
 
  defb @11111111, @00000000
  defb @11111111, @00000000
@@ -84,8 +84,8 @@ PUBLIC _sprite_clothes2
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes3
-._sprite_clothes3
+PUBLIC _sprite_clothes23
+._sprite_clothes23
 
  defb @11111111, @00000000
  defb @11111111, @00000000
@@ -121,8 +121,8 @@ PUBLIC _sprite_clothes3
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes4
-._sprite_clothes4
+PUBLIC _sprite_clothes24
+._sprite_clothes24
 
  defb @11111111, @00000000
  defb @11111111, @00000000
@@ -158,8 +158,8 @@ PUBLIC _sprite_clothes4
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes5
-._sprite_clothes5
+PUBLIC _sprite_clothes25
+._sprite_clothes25
 
  defb @11111111, @00000000
  defb @11111111, @00000000
@@ -195,8 +195,8 @@ PUBLIC _sprite_clothes5
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes6
-._sprite_clothes6
+PUBLIC _sprite_clothes26
+._sprite_clothes26
 
  defb @11111111, @00000000
  defb @11111111, @00000000
@@ -232,8 +232,8 @@ PUBLIC _sprite_clothes6
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes7
-._sprite_clothes7
+PUBLIC _sprite_clothes27
+._sprite_clothes27
 
  defb @11111111, @00000000
  defb @11111111, @00000000
@@ -269,8 +269,8 @@ PUBLIC _sprite_clothes7
  defb @11111111, @00000000
  defb @11111111, @00000000
 
-PUBLIC _sprite_clothes8
-._sprite_clothes8
+PUBLIC _sprite_clothes28
+._sprite_clothes28
 
  defb @11111111, @00000000
  defb @11111111, @00000000

@@ -19,7 +19,7 @@ bincat:
 
 clothes:
 	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes > clothes.asm
-	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes > clothes2.asm
+	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 > clothes2.asm
 
 
 udg:
