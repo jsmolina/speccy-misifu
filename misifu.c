@@ -106,7 +106,15 @@ int main()
             bincat_appears = YES;
             bincatsp = add_sprite_bincat();
             anim_frames_bincat = 20;
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, bincat_in_bin, 0, 0);
+
+            if (bincat_in_bin == HIGHER_BIN_X) {
+                // reused as row and also number of frames appearing
+                anim_frames_bincat = 15;
+            } else {
+                anim_frames_bincat = 17;
+            }
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, anim_frames_bincat, bincat_in_bin, 0, 0);
+            anim_frames_bincat = 40;
 
             // cat falls if cat_in_bin is the same of bincat_in_bin
             if (bincat_in_bin == cat_in_bin) {
@@ -199,7 +207,7 @@ int main()
         if (y_prota == 0) {
             y_prota = 0;
             draw = CAT_IN_ROPE;
-        } else if (initial_jump_y - y_prota >= 6 || x_prota > 28) {
+        } else if (initial_jump_y - y_prota == 5 || x_prota > 28) {
             draw = FALLING;
             draw_additional = NONE;
         }
@@ -208,19 +216,26 @@ int main()
         cat_offset = JUMPINGC1;
 
         // detect falling over bin
-        if(bin_places[x_prota] > 0 && y_prota == 17) {
-            // stop falling
-            draw = NONE;
-            draw_additional = CAT_IN_BIN;
-            // store that it is on first bin pos so collide will trollcat is easier
+        if(bin_places[x_prota] > 0 && (y_prota == 16 || y_prota == 18) ) {
             cat_in_bin = x_prota - (bin_places[x_prota] - 1);
-        } else if(y_prota == 12) {
+
+            if (cat_in_bin == HIGHER_BIN_X && y_prota == 16) {
+                // stop falling
+                draw = NONE;
+                draw_additional = CAT_IN_BIN;
+            } else if (cat_in_bin != HIGHER_BIN_X && y_prota == 18) {
+                draw = NONE;
+                draw_additional = CAT_IN_BIN;
+
+            }
+            // store that it is on first bin pos so collide will trollcat is easier
+        } else if(y_prota == 13) {
             draw = NONE;
             draw_additional = CAT_IN_FENCE;
         // now check ropes TODO check ropes clothes are not colliding
         } else if(y_prota == 9) {
             draw = CAT_IN_ROPE;
-        } else if(y_prota == 4) {
+        } else if(y_prota == 5) {
             draw = CAT_IN_ROPE;
         }
 
