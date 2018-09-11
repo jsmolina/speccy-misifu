@@ -157,7 +157,7 @@ const void  print_background() {
   for (x=0; x != MAX_X; ++x) {
     sp1_PrintAt(9, x, INK_BLACK | PAPER_MAGENTA, 'R');
     sp1_PrintAt(5, x, INK_BLACK | PAPER_MAGENTA, 'R');
-    sp1_PrintAt(0, x, INK_BLACK | PAPER_MAGENTA, 'R');
+    sp1_PrintAt(1, x, INK_BLACK | PAPER_MAGENTA, 'R');
   }
 
   // paint the bottom windows

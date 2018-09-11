@@ -52,6 +52,8 @@ int main()
 
   catr1sp = add_sprite_protar1();
   dogr1sp = add_sprite_dogr1();
+  bincatsp = add_sprite_bincat();
+
 
   // row 1 clothes
   clothesrow1[0] = add_sprite_clothes1();
@@ -104,7 +106,6 @@ int main()
         // less probable
         if(enemy_apears == 1 && bin_places[bincat_in_bin] == 1) {
             bincat_appears = YES;
-            bincatsp = add_sprite_bincat();
             anim_frames_bincat = 20;
 
             if (bincat_in_bin == HIGHER_BIN_X) {
@@ -204,8 +205,8 @@ int main()
             cat_offset = JUMPINGC1;
         }
 
-        if (y_prota == 0) {
-            y_prota = 0;
+        if (y_prota == 1) {
+            y_prota = 1;
             draw = CAT_IN_ROPE;
         } else if (initial_jump_y - y_prota == 5 || x_prota > 28) {
             draw = FALLING;
@@ -316,7 +317,6 @@ int main()
 
         if (anim_frames_bincat < 1 && bincatsp != NULL) {
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
-            sp1_DeleteSpr_fastcall(bincatsp);
             bincat_appears = NONE;
             bincat_in_bin = 0;
         }
