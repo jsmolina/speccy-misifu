@@ -91,14 +91,6 @@ void initialiseDogColour(unsigned int count, struct sp1_cs *c)
   c->attr      = INK_BLUE;
 }
 
-void initialiseBinCatColour(unsigned int count, struct sp1_cs *c)
-{
-  (void)count;    /* Suppress compiler warning about unused parameter */
-
-  c->attr_mask = SP1_AMASK_PAPER;
-  c->attr      = INK_BLACK;
-}
-
 void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
@@ -143,7 +135,7 @@ inline struct sp1_ss * add_sprite_bincat() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
-  sp1_IterateSprChar(sp, initialiseBinCatColour);
+  sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }

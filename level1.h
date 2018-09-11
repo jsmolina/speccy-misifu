@@ -13,10 +13,10 @@ const unsigned char bin_places[] = {
 1, 2, 3, 0,
 0, 0, 0, 0};
 
-const unsigned char udg_valla1[] = {0x0, 0x60, 0x70, 0x78, 0x7e, 0x7e, 0x7e, 0x7e};
-const unsigned char udg_valla2[] = {0x7e, 0x7e, 0x7e, 0x7e, 0x7e, 0x7e, 0x7e, 0x7e};
-const unsigned char udg_valla3[] = {0x0, 0x1e, 0x1e, 0x7e, 0x7e, 0x7e, 0x7e, 0x7e};
-const unsigned char udg_valla4[] = {0x10, 0x70, 0x7c, 0x7c, 0x7c, 0x7e, 0x7e, 0x7e};
+unsigned char udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
+unsigned char udg_valla2[] = {0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81};
+unsigned char udg_valla3[] = {0xff, 0xe1, 0xe1, 0x81, 0x81, 0x81, 0x81, 0x81};
+unsigned char udg_valla4[] = {0xef, 0x8f, 0x83, 0x83, 0x83, 0x81, 0x81, 0x81};
 
 const unsigned char cubo_down1[] = {0xab, 0xd5, 0xaa, 0xd5, 0xfe, 0x31, 0xe, 0x1};
 const unsigned char cubo_down2[] = {0xff, 0x55, 0xaa, 0x55, 0xaa, 0xff, 0x0, 0xff};
@@ -34,9 +34,9 @@ unsigned char udg_win1[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0, 0xd2}; // b
 unsigned char udg_win2[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // full square
 unsigned char udg_win3[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0, 0x0}; // bottom without rope
 
-unsigned char udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
-unsigned char udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
-unsigned char udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
+unsigned char udg_c[] = {0x8d, 0xbd, 0xb1, 0xb1, 0xb1, 0x9d, 0xaf, 0x95};
+unsigned char udg_a[] = {0x9d, 0xbe, 0xf2, 0xfe, 0x7e, 0x7f, 0x7d, 0x91};
+unsigned char udg_t[] = {0x9d, 0xbd, 0xb9, 0xa9, 0x8d, 0x8d, 0x8d, 0x8d};
 
 // todo add udg for numbers (score, lives)
 
@@ -66,13 +66,13 @@ const void  print_cubo(unsigned char x) {
   sp1_PrintAt(18, x2, INK_BLACK | PAPER_MAGENTA, 'K');
 
   for (y = 17; y != 14; y--) {
-    sp1_PrintAt( y, x, INK_CYAN | PAPER_MAGENTA, 'V');
-    sp1_PrintAt( y, x1, INK_CYAN | PAPER_MAGENTA, 'V');
-    sp1_PrintAt( y, x2, INK_CYAN | PAPER_MAGENTA, 'V');
+    sp1_PrintAt( y, x, PAPER_CYAN, 'V');
+    sp1_PrintAt( y, x1, PAPER_CYAN, 'V');
+    sp1_PrintAt( y, x2, PAPER_CYAN, 'V');
   }
-  sp1_PrintAt(14, x, INK_CYAN | PAPER_MAGENTA, 'W');
-  sp1_PrintAt(14, x1, INK_CYAN | PAPER_MAGENTA, 'W');
-  sp1_PrintAt(14, x2, INK_CYAN | PAPER_MAGENTA, 'X');
+  sp1_PrintAt(14, x, PAPER_CYAN, 'W');
+  sp1_PrintAt(14, x1, PAPER_CYAN, 'W');
+  sp1_PrintAt(14, x2, PAPER_CYAN, 'X');
 }
 
 const void paint_rope_windows(unsigned char row) {
@@ -118,24 +118,24 @@ const void  print_background() {
 
       if (bin_places[x] == 0) {
           if (x % 2 == 0) {
-             sp1_PrintAt(14, x, INK_CYAN | PAPER_MAGENTA, 'W');
+             sp1_PrintAt(14, x,  PAPER_CYAN, 'W');
           } else if (x % 3 == 0) {
-            sp1_PrintAt(14, x, INK_CYAN | PAPER_MAGENTA, 'Y');
+            sp1_PrintAt(14, x,  PAPER_CYAN, 'Y');
           } else {
-             sp1_PrintAt(14, x, INK_CYAN | PAPER_MAGENTA, 'X');
+             sp1_PrintAt(14, x,  PAPER_CYAN, 'X');
           }
 
           for (y=15; y!=21; ++y)
           {
-              sp1_PrintAt( y, x, INK_CYAN | PAPER_MAGENTA, 'V');
+              sp1_PrintAt( y, x,  PAPER_CYAN, 'V');
           }
       } else if (bin_places[x] == 1) {
           print_cubo(x);
       }
   }
-  sp1_PrintAt( 17, 29, INK_CYAN | PAPER_MAGENTA, 'C');
-  sp1_PrintAt( 18, 30, INK_CYAN | PAPER_MAGENTA, 'A');
-  sp1_PrintAt( 19, 31, INK_CYAN | PAPER_MAGENTA, 'T');
+  sp1_PrintAt( 17, 29, PAPER_CYAN, 'C');
+  sp1_PrintAt( 18, 30,  PAPER_CYAN, 'A');
+  sp1_PrintAt( 19, 31,  PAPER_CYAN, 'T');
 
   // paint the ropes
   for (x=0; x != MAX_X; ++x) {

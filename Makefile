@@ -21,26 +21,29 @@ clothes:
 	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes > clothes.asm
 	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 > clothes2.asm
 
+fence:
+	@png2udg ./background/udg_valla1.png
+	@png2udg ./background/udg_valla2.png
+	@png2udg ./background/udg_valla3.png
+	@png2udg ./background/udg_valla4.png
+	@png2udg ./background/udg_c.png
+	@png2udg ./background/udg_a.png
+	@png2udg ./background/udg_t.png
 
-udg:
+cubo:
+	@png2udg ./background/cubo_down1.png
+	@png2udg ./background/cubo_down2.png
+	@png2udg ./background/cubo_down3.png
+	@png2udg ./background/cubo_middle1.png
+	@png2udg ./background/cubo_middle2.png
+	@png2udg ./background/cubo_middle3.png
+	@png2udg ./background/cubotop1.png
+	@png2udg ./background/cubotop2.png
+	@png2udg ./background/cubotop3.png
+
+windows:
 	echo "Copy the vars to misifu.c code"
-	png2udg ./background/udg_valla1.png
-	png2udg ./background/udg_valla2.png
-	png2udg ./background/udg_valla3.png
-	png2udg ./background/udg_valla4.png
-	png2udg ./background/cubo_down1.png
-	png2udg ./background/cubo_down2.png
-	png2udg ./background/cubo_down3.png
-	png2udg ./background/cubo_middle1.png
-	png2udg ./background/cubo_middle2.png
-	png2udg ./background/cubo_middle3.png
-	png2udg ./background/cubotop1.png
-	png2udg ./background/cubotop2.png
-	png2udg ./background/cubotop3.png
-	png2udg ./background/udg_c.png
-	png2udg ./background/udg_a.png
-	png2udg ./background/udg_t.png
-	png2udg ./background/udg_rope.png
-	png2udg ./background/udg_win1.png
-	png2udg ./background/udg_win2.png
-	png2udg ./background/udg_win3.png
+	@png2udg ./background/udg_rope.png
+	@png2udg ./background/udg_win1.png
+	@png2udg ./background/udg_win2.png
+	@png2udg ./background/udg_win3.png
