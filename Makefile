@@ -1,5 +1,5 @@
 compile:
-	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c ./build/*.asm -o misifu -create-app
+	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c ./build/protar.asm ./build/dogr.asm ./build/bincat.asm ./build/clothes.asm ./build/clothes2.asm ./build/auxiliar.asm -o misifu -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map
