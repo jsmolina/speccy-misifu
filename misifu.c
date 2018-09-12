@@ -19,9 +19,20 @@ struct row_clothes {
     uint8_t col;
 };
 
+struct prota {
+    struct sp1_ss* sp;
+    uint8_t x;
+    uint8_t y;
+    uint8_t initial_jump_y;
+    uint8_t draw_additional;
+    unsigned int  offset;
+    uint8_t in_bin;
+    uint8_t state;
+};
+
 int main()
 {
-  struct sp1_ss  *catr1sp;
+  struct prota misifu;
   struct sp1_ss  *dogr1sp;
   struct sp1_ss  *bincatsp = NULL;
 
@@ -32,18 +43,16 @@ int main()
   struct row_clothes row1clothes[4];
 
 
-  uint8_t x_prota, y_prota, draw, frame, frame_malo, initial_jump_y, draw_additional;
+  uint8_t frame;
   uint8_t x_malo;
   uint8_t bincat_appears = NONE;
   uint8_t enemy_apears = NONE;
   uint8_t row1_moving = NONE;
   uint8_t bincat_in_bin = NONE;
-  unsigned int  cat_offset;
   uint8_t dog_offset;
   // keeps animation frames when something takes longer
   uint8_t anim_frames = 0;
   uint8_t anim_frames_bincat = 0;
-  uint8_t cat_in_bin = NONE;
 
   uint8_t first_keypress = NONE;
 
@@ -59,7 +68,15 @@ int main()
 
   sp1_Invalidate(&full_screen);
 
-  catr1sp = add_sprite_protar1();
+  misifu.in_bin = NONE;
+  misifu.sp = add_sprite_protar1();
+  misifu.x = 0;
+  misifu.y = FLOOR_Y;
+  misifu.initial_jump_y = 0;
+  misifu.draw_additional = NONE;
+  misifu.offset = RIGHTC1;
+  misifu.state = NONE;
+
   dogr1sp = add_sprite_dogr1();
   bincatsp = add_sprite_bincat();
 
@@ -74,16 +91,9 @@ int main()
   row1clothes[3].col = 26;
   row1clothes[3].sp = add_sprite_clothes2();
 
-  draw = NONE;
 
-  x_prota=0;
-  y_prota=FLOOR_Y;
   x_malo = 22;
   frame = 0;
-  frame_malo = 0;
-  initial_jump_y = 0;
-  draw_additional = NONE;
-  cat_offset = RIGHTC1;
   dog_offset = DOG1;
 
   row1_moving = 10;
@@ -124,147 +134,147 @@ int main()
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, anim_frames_bincat, bincat_in_bin, 0, 0);
             anim_frames_bincat = 40;
 
-            // cat falls if cat_in_bin is the same of bincat_in_bin
-            if (bincat_in_bin == cat_in_bin) {
-                draw = FALLING;
+            // cat falls if misifu.in_bin is the same of bincat_in_bin
+            if (bincat_in_bin == misifu.in_bin) {
+                misifu.state = FALLING;
             }
         } else {
             bincat_in_bin = NONE;
         }
     }
-    
+    // check keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (y_prota > 0) && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE) ) {
-        draw = JUMPING;
-        cat_in_bin = NONE;
-        initial_jump_y = y_prota;
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
+        misifu.state = JUMPING;
+        misifu.in_bin = NONE;
+        misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && x_prota<28) {
-            draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && x_prota>0) {
-            draw_additional = JUMP_LEFT;
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < 28) {
+            misifu.draw_additional = JUMP_RIGHT;
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x>0) {
+            misifu.draw_additional = JUMP_LEFT;
         } else {
-            draw_additional = JUMP_UP;
+            misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && x_prota<28 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE)) {
         if (first_keypress == NONE) {
             first_keypress = frame;
             srand(first_keypress);
         }
-        if (draw != CAT_IN_ROPE) {
-            draw = WALKING_RIGHT;
+        if (misifu.state != CAT_IN_ROPE) {
+            misifu.state = WALKING_RIGHT;
         } else {
             if (frame < 2) {
-              cat_offset = JUMPINGC1;
+              misifu.offset = JUMPINGC1;
             } else if (frame < 4) {
-              cat_offset = JUMPINGC2;
+              misifu.offset = JUMPINGC2;
             }
         }
-        ++x_prota;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && x_prota > 0 && (draw == NONE || draw == WALKING_LEFT || draw == WALKING_RIGHT || draw == CAT_IN_ROPE)) {
-        if (draw != CAT_IN_ROPE) {
-            draw = WALKING_LEFT;
+        ++misifu.x;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE)) {
+        if (misifu.state != CAT_IN_ROPE) {
+            misifu.state = WALKING_LEFT;
         } else {
             if (frame < 2) {
-              cat_offset = JUMPINGC1;
+              misifu.offset = JUMPINGC1;
             } else if (frame < 4) {
-              cat_offset = JUMPINGC2;
+              misifu.offset = JUMPINGC2;
             }
         }
-        --x_prota;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && y_prota < FLOOR_Y) {
-        draw = FALLING;
-        cat_in_bin = NONE;
+        --misifu.x;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
+        misifu.state = FALLING;
+        misifu.in_bin = NONE;
     }
 
     frame = (frame + 1) % 4;
 
     // paint 'prota here'
-    sp1_MoveSprAbs(catr1sp, &full_screen, (void*) cat_offset, y_prota, x_prota, 0, 0);
+    sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
 
     // decide new FSM draw status
-    if (draw == NONE && frame == 3) {
-        cat_offset = BORED;
-    } else if (draw == WALKING_RIGHT) {
+    if (misifu.state == NONE && frame == 3) {
+        misifu.offset = BORED;
+    } else if (misifu.state == WALKING_RIGHT) {
         if (frame < 2) {
-            cat_offset = RIGHTC1;
+            misifu.offset = RIGHTC1;
         } else if (frame < 4) {
-            cat_offset = RIGHTC2;
+            misifu.offset = RIGHTC2;
         }
-        draw = NONE;
-    } else if (draw == WALKING_LEFT) {
+        misifu.state = NONE;
+    } else if (misifu.state == WALKING_LEFT) {
         if (frame < 2) {
-            cat_offset = LEFTC1;
+            misifu.offset = LEFTC1;
         } else if (frame < 4) {
-            cat_offset = LEFTC2;
+            misifu.offset = LEFTC2;
         }
-        draw = NONE;
-    } else if (draw == JUMPING) {
-        y_prota--;
+        misifu.state = NONE;
+    } else if (misifu.state == JUMPING) {
+        --misifu.y;
 
-        if(draw_additional == JUMP_RIGHT) {
-            ++x_prota;
-            cat_offset = JRIGHTC1;
-        }  else if(draw_additional == JUMP_LEFT && x_prota > 0) {
-            --x_prota;
-            cat_offset = JLEFTC1;
+        if(misifu.draw_additional == JUMP_RIGHT) {
+            ++misifu.x;
+            misifu.offset = JRIGHTC1;
+        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > 0) {
+            --misifu.x;
+            misifu.offset = JLEFTC1;
         } else {
-            cat_offset = JUMPINGC1;
+            misifu.offset = JUMPINGC1;
         }
 
-        if (y_prota == 1) {
-            y_prota = 1;
-            draw = CAT_IN_ROPE;
-        } else if (initial_jump_y - y_prota == 5 || x_prota > 28) {
-            draw = FALLING;
-            draw_additional = NONE;
+        if (misifu.y == 1) {
+            misifu.y = 1;
+            misifu.state = CAT_IN_ROPE;
+        } else if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
+            misifu.state = FALLING;
+            misifu.draw_additional = NONE;
         }
-    } else if (draw == FALLING) {
-        ++y_prota;
-        cat_offset = JUMPINGC1;
+    } else if (misifu.state == FALLING) {
+        ++misifu.y;
+        misifu.offset = JUMPINGC1;
 
         // detect falling over bin
-        if(bin_places[x_prota] > 0 && (y_prota == 16 || y_prota == 18) ) {
-            cat_in_bin = x_prota - (bin_places[x_prota] - 1);
+        if(bin_places[misifu.x] > 0 && (misifu.y == 16 || misifu.y == 18) ) {
+            // store that it is on first bin pos so collide will bincat is easier
+            misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
 
-            if (cat_in_bin == HIGHER_BIN_X && y_prota == 16) {
+            if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
                 // stop falling
-                draw = NONE;
-                draw_additional = CAT_IN_BIN;
-            } else if (cat_in_bin != HIGHER_BIN_X && y_prota == 18) {
-                draw = NONE;
-                draw_additional = CAT_IN_BIN;
+                misifu.state = NONE;
+                misifu.draw_additional = CAT_IN_BIN;
+            } else if (misifu.in_bin != HIGHER_BIN_X && misifu.y == 18) {
+                misifu.state = NONE;
+                misifu.draw_additional = CAT_IN_BIN;
 
             }
-            // store that it is on first bin pos so collide will trollcat is easier
-        } else if(y_prota == 13) {
-            draw = NONE;
-            draw_additional = CAT_IN_FENCE;
+        } else if(misifu.y == 13) {
+            misifu.state = NONE;
+            misifu.draw_additional = CAT_IN_FENCE;
         // now check ropes TODO check ropes clothes are not colliding
-        } else if(y_prota == 9) {
-            draw = CAT_IN_ROPE;
-        } else if(y_prota == 5) {
-            draw = CAT_IN_ROPE;
+        } else if(misifu.y == 9) {
+            misifu.state = CAT_IN_ROPE;
+        } else if(misifu.y == 5) {
+            misifu.state = CAT_IN_ROPE;
         }
 
-        if(y_prota >= FLOOR_Y) {
-            y_prota = FLOOR_Y;
-            draw = NONE;
-            cat_offset = BORED;
+        if(misifu.y >= FLOOR_Y) {
+            misifu.y = FLOOR_Y;
+            misifu.state = NONE;
+            misifu.offset = BORED;
         }
     }
 
     // cat falls appart from bin
-    if (draw_additional == CAT_IN_BIN && y_prota < FLOOR_Y && cat_in_bin != NONE) {
-        if (bin_places[x_prota] == NONE) {
-            draw = FALLING;
-            draw_additional = NONE;
-            cat_in_bin = NONE;
+    if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
+        if (bin_places[misifu.x] == NONE) {
+            misifu.state = FALLING;
+            misifu.draw_additional = NONE;
+            misifu.in_bin = NONE;
         }
     }
 
     // time for doggy checks
-    if (draw != FIGHTING && enemy_apears == YES) {
+    if (misifu.state != FIGHTING && enemy_apears == YES) {
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
         --x_malo;
@@ -283,17 +293,17 @@ int main()
         }
 
         // detects collission malo->misifu
-        if( abs(x_prota - x_malo) < 3 && y_prota > 18) {
+        if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
             enemy_apears = NONE;
-            draw = FIGHTING;
-            y_prota = FLOOR_Y;
+            misifu.state = FIGHTING;
+            misifu.y = FLOOR_Y;
             anim_frames = 20;
             // hide cat
-            x_prota = 33;
+            misifu.x = 33;
         }
     }
 
-    if (draw == FIGHTING) {
+    if (misifu.state == FIGHTING) {
         if (frame < 2) {
             dog_offset = DOGFIGHTING1;
         } else if (frame < 4) {
@@ -302,10 +312,10 @@ int main()
 
         --anim_frames;
         if (anim_frames <= 0) {
-            draw = NONE;
+            misifu.state = NONE;
+            misifu.x = 0;
             enemy_apears = NONE;
             x_malo = 33;
-            x_prota = 0;
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
             // todo remove one live
         } else {
@@ -318,8 +328,8 @@ int main()
         --anim_frames_bincat;
 
         // cat falls if cat_in_bin is the same of bincat_in_bin
-        if (bincat_in_bin == cat_in_bin) {
-            draw = FALLING;
+        if (bincat_in_bin == misifu.in_bin) {
+            misifu.state = FALLING;
         }
 
         if (anim_frames_bincat < 1 && bincatsp != NULL) {
