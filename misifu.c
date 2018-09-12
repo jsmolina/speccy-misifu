@@ -13,6 +13,12 @@ extern uint8_t abs2(uint8_t v);
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
+
+struct row_clothes {
+    struct sp1_ss* sp;
+    uint8_t col;
+};
+
 int main()
 {
   struct sp1_ss  *catr1sp;
@@ -20,14 +26,17 @@ int main()
   struct sp1_ss  *bincatsp = NULL;
 
   // row1 clothes
-  struct sp1_ss* clothesrow1[] = {NULL, NULL, NULL, NULL};
-  uint8_t clothescols[] = {1, 10, 18, 26};
+  //struct sp1_ss* clothesrow1[] = {NULL, NULL, NULL, NULL};
+  //uint8_t clothescols[] = {1, 10, 18, 26};
+
+  struct row_clothes row1clothes[4];
 
 
   uint8_t x_prota, y_prota, draw, frame, frame_malo, initial_jump_y, draw_additional;
   uint8_t x_malo;
   uint8_t bincat_appears = NONE;
   uint8_t enemy_apears = NONE;
+  uint8_t row1_moving = NONE;
   uint8_t bincat_in_bin = NONE;
   unsigned int  cat_offset;
   uint8_t dog_offset;
@@ -56,10 +65,14 @@ int main()
 
 
   // row 1 clothes
-  clothesrow1[0] = add_sprite_clothes1();
-  clothesrow1[1] = add_sprite_clothes2();
-  clothesrow1[2] = add_sprite_clothes1();
-  clothesrow1[3] = add_sprite_clothes2();
+  row1clothes[0].col = 1;
+  row1clothes[0].sp = add_sprite_clothes1();
+  row1clothes[1].col = 10;
+  row1clothes[1].sp = add_sprite_clothes2();
+  row1clothes[2].col = 18;
+  row1clothes[2].sp = add_sprite_clothes1();
+  row1clothes[3].col = 26;
+  row1clothes[3].sp = add_sprite_clothes2();
 
   draw = NONE;
 
@@ -73,28 +86,22 @@ int main()
   cat_offset = RIGHTC1;
   dog_offset = DOG1;
 
-  // 1 - 8 (can't jump)  clothesrow1[0]->col
-  clothescols[0] = 1;
-  sp1_MoveSprAbs(clothesrow1[0], &full_screen, 0, 10, clothescols[0], 0, 0);
-  clothescols[1] = 10;
-  sp1_MoveSprAbs(clothesrow1[1], &full_screen, 0, 10, clothescols[1], 0, 0);
-  clothescols[2] = 18;
-  sp1_MoveSprAbs(clothesrow1[2], &full_screen, 0, 10, clothescols[2], 0, 0);
-  clothescols[3] = 26;
-  sp1_MoveSprAbs(clothesrow1[3], &full_screen, 0, 10, clothescols[3], 0, 0);
+  row1_moving = 10;
 
 
   while(1)
   {
     // move clothes to the right
-    if (rand() % 10 == 1) {
-        // stop some time randomly
+    if (rand() % 50 == 1 && row1_moving == NONE) {
+        row1_moving = 5;
+    } else if (row1_moving != NONE) {
+        --row1_moving;
+        // check if clothes should move
         for (index = 0; index != 4; ++index) {
-            clothescols[index] = (clothescols[index] + 1) % 30;
-            sp1_MoveSprAbs(clothesrow1[index], &full_screen, 0, 10, clothescols[index], 0, 0);
+            row1clothes[index].col = (row1clothes[index].col + 1) % 30;
+            sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
         }
     }
-
 
     // check if dog should appear
     if (enemy_apears != YES && first_keypress != NONE) {
