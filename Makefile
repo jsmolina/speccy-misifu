@@ -1,5 +1,5 @@
 compile:
-	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c protar.asm dogr.asm bincat.asm funcs.asm clothes.asm clothes2.asm auxiliar.asm -o misifu -create-app
+	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c ./build/*.asm -o misifu -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map
@@ -8,21 +8,24 @@ compile:
 	rm -f zcc_proj.lst
 
 
-sprites:
-	png2sp1sprite ./sprites/cat_sprites.png -i sprite_protar -f 32 > protar.asm
+sprites: prota dogsprites bincat clothes auxiliar
+
+prota:
+	png2sp1sprite ./sprites/cat_sprites.png -i sprite_protar -f 32 > ./build/protar.asm
 
 dogsprites:
-	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > dogr.asm
+	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > ./build/dogr.asm
 
 bincat:
-	png2sp1sprite ./sprites/bincat_sprites.png -i sprite_bincat -f 24 > bincat.asm
+	png2sp1sprite ./sprites/bincat_sprites.png -i sprite_bincat -f 24 > ./build/bincat.asm
 
 clothes:
-	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes > clothes.asm
-	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 > clothes2.asm
+	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes > ./build/clothes.asm
+	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 > ./build/clothes2.asm
 
 auxiliar:
-	png2sp1sprite ./sprites/auxiliar.png -i auxiliar -f 32 > auxiliar.asm
+	png2sp1sprite ./sprites/auxiliar.png -i auxiliar -f 32 > ./build/auxiliar.asm
+
 
 fence:
 	@png2udg ./background/udg_valla1.png
