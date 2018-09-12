@@ -53,7 +53,6 @@ int main()
   // keeps animation frames when something takes longer
   uint8_t anim_frames = 0;
   uint8_t anim_frames_bincat = 0;
-  uint8_t cat_in_bin = NONE;
 
   uint8_t first_keypress = NONE;
 
@@ -135,8 +134,8 @@ int main()
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, anim_frames_bincat, bincat_in_bin, 0, 0);
             anim_frames_bincat = 40;
 
-            // cat falls if cat_in_bin is the same of bincat_in_bin
-            if (bincat_in_bin == cat_in_bin) {
+            // cat falls if misifu.in_bin is the same of bincat_in_bin
+            if (bincat_in_bin == misifu.in_bin) {
                 misifu.state = FALLING;
             }
         } else {
@@ -329,7 +328,7 @@ int main()
         --anim_frames_bincat;
 
         // cat falls if cat_in_bin is the same of bincat_in_bin
-        if (bincat_in_bin == cat_in_bin) {
+        if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING;
         }
 
