@@ -1,5 +1,5 @@
 compile:
-	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c protar.asm dogr.asm bincat.asm funcs.asm clothes.asm clothes2.asm -o misifu -create-app
+	zcc +zx -vn -m -startup=31 -clib=sdcc_iy misifu.c protar.asm dogr.asm bincat.asm funcs.asm clothes.asm clothes2.asm auxiliar.asm -o misifu -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map
@@ -20,6 +20,9 @@ bincat:
 clothes:
 	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes > clothes.asm
 	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 > clothes2.asm
+
+auxiliar:
+	png2sp1sprite ./sprites/auxiliar.png -i auxiliar -f 32 > auxiliar.asm
 
 fence:
 	@png2udg ./background/udg_valla1.png
