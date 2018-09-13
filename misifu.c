@@ -14,31 +14,13 @@ extern uint8_t abs2(uint8_t v);
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 
-struct row_clothes {
-    struct sp1_ss* sp;
-    uint8_t col;
-};
-
-struct prota {
-    struct sp1_ss* sp;
-    uint8_t x;
-    uint8_t y;
-    uint8_t initial_jump_y;
-    uint8_t draw_additional;
-    unsigned int  offset;
-    uint8_t in_bin;
-    uint8_t state;
-};
 
 int main()
 {
   struct prota misifu;
+  struct freesprite aux_object;
   struct sp1_ss  *dogr1sp;
   struct sp1_ss  *bincatsp = NULL;
-
-  // row1 clothes
-  //struct sp1_ss* clothesrow1[] = {NULL, NULL, NULL, NULL};
-  //uint8_t clothescols[] = {1, 10, 18, 26};
 
   struct row_clothes row1clothes[4];
 
@@ -79,6 +61,10 @@ int main()
 
   dogr1sp = add_sprite_dogr1();
   bincatsp = add_sprite_bincat();
+
+  aux_object.sp = add_sprite_auxiliar();
+  aux_object.x = 0;
+  aux_object.y = 0;
 
 
   // row 1 clothes
@@ -222,7 +208,7 @@ int main()
             misifu.offset = JUMPINGC1;
         }
 
-        if (misifu.y == 1) {
+        if (misifu.y <= 1) {
             misifu.y = 1;
             misifu.state = CAT_IN_ROPE;
         } else if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
