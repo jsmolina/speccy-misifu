@@ -87,6 +87,11 @@ struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
 struct row_clothes row1clothes[4];
+struct row_clothes row2clothes[4];
+
+// shared vars
+uint8_t x, y;
+
 
 // game required vars
 uint8_t frame;

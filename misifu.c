@@ -9,16 +9,12 @@
 #include <input.h>
 #include <level1.h>
 
-extern uint8_t abs2(uint8_t v);
-
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 
 
 int main()
 {
-
-
   zx_border(INK_BLACK);
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
@@ -56,6 +52,11 @@ int main()
   row1clothes[3].col = 26;
   row1clothes[3].sp = add_sprite_clothes2();
 
+  // row 2 clothes
+  row2clothes[0].col = 5;
+  row2clothes[0].sp = add_sprite_clothes1();
+  row2clothes[1].col = 18;
+  row2clothes[1].sp = add_sprite_clothes2();
 
   x_malo = 22;
   frame = 0;
@@ -124,6 +125,15 @@ int main()
             row1clothes[index].col = (row1clothes[index].col + 1) % 30;
             sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
         }
+
+        for (index = 0; index != 2; ++index) {
+            --row2clothes[index].col;
+            if (row2clothes[index].col < 2) {
+                row2clothes[index].col = 28;
+            }
+            sp1_MoveSprAbs(row2clothes[index].sp, &full_screen, 0, 6, row2clothes[index].col, 0, 0);
+        }
+
     }
 
     // decide if window should open

@@ -18,6 +18,7 @@ const uint8_t bin_places[] = {
 1, 2, 3, 0,
 0, 0, 0, 0};
 
+
 uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
 uint8_t udg_valla2[] = {0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81};
 uint8_t udg_valla3[] = {0xff, 0xe1, 0xe1, 0x81, 0x81, 0x81, 0x81, 0x81};
@@ -45,57 +46,53 @@ uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 
 // todo add udg for numbers (score, lives)
 
-inline void  print_cubo(uint8_t x) {
-  // todo ideally only one of the bins should be high enough to get the fence
-  uint8_t x1 = x + 1;
-  uint8_t x2 = x + 2;
+void  print_cubo(uint8_t x) {
   uint8_t y;
 
   y = 22;
   sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'L');
-  sp1_PrintAt(y, x1, INK_BLACK | PAPER_MAGENTA, 'D');
-  sp1_PrintAt(y, x2, INK_BLACK | PAPER_MAGENTA, 'E');
+  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
+  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
   --y;
   sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(y, x1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(y, x2, INK_BLACK | PAPER_MAGENTA, 'H');
+  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
 
   --y;
   sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(y, x1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(y, x2, INK_BLACK | PAPER_MAGENTA, 'H');
+  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
   // only second bin is higher
   if(x == HIGHER_BIN_X) {
       --y;
       sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(y, x1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(y, x2, INK_BLACK | PAPER_MAGENTA, 'H');
+      sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+      sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
 
       --y;
       sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(y, x1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(y, x2, INK_BLACK | PAPER_MAGENTA, 'H');
+      sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+      sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
   }
 
   --y;
   sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'I');
-  sp1_PrintAt(y, x1, INK_BLACK | PAPER_MAGENTA, 'J');
-  sp1_PrintAt(y, x2, INK_BLACK | PAPER_MAGENTA, 'K');
+  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'J');
+  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'K');
 
   --y;
   for (y = y; y != 15; y--) {
     sp1_PrintAt( y, x, PAPER_CYAN, 'V');
-    sp1_PrintAt( y, x1, PAPER_CYAN, 'V');
-    sp1_PrintAt( y, x2, PAPER_CYAN, 'V');
+    sp1_PrintAt( y, x + 1, PAPER_CYAN, 'V');
+    sp1_PrintAt( y, x + 2, PAPER_CYAN, 'V');
   }
   sp1_PrintAt(y, x, PAPER_CYAN, 'W');
-  sp1_PrintAt(y, x1, PAPER_CYAN, 'W');
-  sp1_PrintAt(y, x2, PAPER_CYAN, 'X');
+  sp1_PrintAt(y, x + 1, PAPER_CYAN, 'W');
+  sp1_PrintAt(y, x + 2, PAPER_CYAN, 'X');
 }
 
 
-inline void paint_window(uint8_t num, uint16_t colour) {
-  uint8_t x;
+void paint_window(uint8_t num, uint16_t colour) {
 
   for (x = windows[num].x; x != windows[num].x + 5; ++x) {
     // top is equal
@@ -109,7 +106,7 @@ inline void paint_window(uint8_t num, uint16_t colour) {
   }
 }
 
-const void  print_background() {
+void  print_background() {
   uint8_t x, y, count;
 
   count = 0;
@@ -155,7 +152,7 @@ const void  print_background() {
           }
       } else if (bin_places[x] == 1) {
           ++count;
-          print_cubo(x, count);
+          print_cubo(x);
       }
   }
   sp1_PrintAt( 17, 29, INK_CYAN | PAPER_BLACK, 'C');
