@@ -84,7 +84,7 @@ int main()
         }
     } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE)) {
         if (first_keypress == NONE) {
-            first_keypress = frame;
+            first_keypress = random_value;
             srand(first_keypress);
         }
         if (misifu.state != CAT_IN_ROPE) {
@@ -125,15 +125,24 @@ int main()
             sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
         }
     }
+
     // decide if window should open
-    if (opened_window_frames == NONE && random_value % 36 < 12) {
-        // OPEN
-        opened_window = random_value % 36;
-        // makes the window to be opened for about 20 frames
-        opened_window_frames = 20;
-        paint_window(opened_window, PAPER_BLACK);
-    } else if(opened_window_frames != NONE) {
+    // OPEN
+    if (opened_window_frames == NONE) {
+        opened_window = random_value % 120;
+        if(opened_window < 12) {
+            // makes the window to be opened for about 20 frames
+            opened_window_frames = 50;
+            paint_window(opened_window, PAPER_BLACK);
+        }
+    } else {
         --opened_window_frames;
+    }
+    // end of windows
+    if (opened_window_frames == 1) {
+        paint_window(opened_window, PAPER_CYAN);
+        opened_window = NONE;
+        opened_window_frames = NONE;
     }
 
     // check if dog should appear

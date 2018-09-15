@@ -99,12 +99,12 @@ inline void paint_window(uint8_t num, uint16_t colour) {
 
   for (x = windows[num].x; x != windows[num].x + 5; ++x) {
     // top is equal
-    sp1_PrintAt(windows[num].y, x, colour, 'N');
+    sp1_PrintAtInv(windows[num].y, x, colour, 'N');
     if (num > 7) {
         // bottom varies
-        sp1_PrintAt(windows[num].y + 1, x, PAPER_CYAN, 'O');
+        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'O');
     } else {
-        sp1_PrintAt(windows[num].y + 1, x, colour, 'M');
+        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'M');
     }
   }
 }
