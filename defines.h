@@ -81,6 +81,34 @@ extern uint8_t auxiliar2[];
 extern uint8_t auxiliar3[];
 extern uint8_t auxiliar4[];
 
+struct prota misifu;
+struct freesprite aux_object;
+struct sp1_ss  *dogr1sp;
+struct sp1_ss  *bincatsp = NULL;
+
+struct row_clothes row1clothes[4];
+
+// game required vars
+uint8_t frame;
+uint8_t x_malo;
+uint8_t bincat_appears = NONE;
+uint8_t enemy_apears = NONE;
+uint8_t row1_moving = NONE;
+uint8_t bincat_in_bin = NONE;
+uint8_t dog_offset;
+// keeps animation frames when something takes longer
+uint8_t anim_frames = 0;
+uint8_t anim_frames_bincat = 0;
+
+uint8_t first_keypress = NONE;
+
+uint8_t index = 0;
+
+uint8_t random_value = 0;
+
+uint8_t opened_window = NONE;
+uint8_t opened_window_frames = NONE;
+
 
 void initialiseColour(unsigned int count, struct sp1_cs *c)
 {

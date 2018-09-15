@@ -17,28 +17,7 @@ struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 int main()
 {
-  struct prota misifu;
-  struct freesprite aux_object;
-  struct sp1_ss  *dogr1sp;
-  struct sp1_ss  *bincatsp = NULL;
 
-  struct row_clothes row1clothes[4];
-
-
-  uint8_t frame;
-  uint8_t x_malo;
-  uint8_t bincat_appears = NONE;
-  uint8_t enemy_apears = NONE;
-  uint8_t row1_moving = NONE;
-  uint8_t bincat_in_bin = NONE;
-  uint8_t dog_offset;
-  // keeps animation frames when something takes longer
-  uint8_t anim_frames = 0;
-  uint8_t anim_frames_bincat = 0;
-
-  uint8_t first_keypress = NONE;
-
-  uint8_t index = 0;
 
   zx_border(INK_BLACK);
 
@@ -87,47 +66,8 @@ int main()
 
   while(1)
   {
-    // move clothes to the right
-    if (rand() % 50 == 1 && row1_moving == NONE) {
-        row1_moving = 5;
-    } else if (row1_moving != NONE) {
-        --row1_moving;
-        // check if clothes should move
-        for (index = 0; index != 4; ++index) {
-            row1clothes[index].col = (row1clothes[index].col + 1) % 30;
-            sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
-        }
-    }
+    random_value = rand() % 500;
 
-    // check if dog should appear
-    if (enemy_apears != YES && first_keypress != NONE) {
-        enemy_apears = rand() % 500;
-    }
-    // checks if bincat should appear and where
-    if (bincat_appears != YES && first_keypress != NONE) {
-        bincat_in_bin = rand() % 32;
-        // less probable
-        if(enemy_apears == 1 && bin_places[bincat_in_bin] == 1) {
-            bincat_appears = YES;
-            anim_frames_bincat = 20;
-
-            if (bincat_in_bin == HIGHER_BIN_X) {
-                // reused as row and also number of frames appearing
-                anim_frames_bincat = 15;
-            } else {
-                anim_frames_bincat = 17;
-            }
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, anim_frames_bincat, bincat_in_bin, 0, 0);
-            anim_frames_bincat = 40;
-
-            // cat falls if misifu.in_bin is the same of bincat_in_bin
-            if (bincat_in_bin == misifu.in_bin) {
-                misifu.state = FALLING;
-            }
-        } else {
-            bincat_in_bin = NONE;
-        }
-    }
     // check keys
     // allow jump in directions
     if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
@@ -173,10 +113,58 @@ int main()
         misifu.in_bin = NONE;
     }
 
-    frame = (frame + 1) % 4;
+    // now take decisions
+    // move clothes to the right
+    if (random_value % 50 == 1 && row1_moving == NONE) {
+        row1_moving = 5;
+    } else if (row1_moving != NONE) {
+        --row1_moving;
+        // check if clothes should move
+        for (index = 0; index != 4; ++index) {
+            row1clothes[index].col = (row1clothes[index].col + 1) % 30;
+            sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
+        }
+    }
+    // decide if window should open
+    if (opened_window_frames == NONE && random_value % 36 < 12) {
+        // OPEN
+        opened_window = random_value % 36;
+        // makes the window to be opened for about 20 frames
+        opened_window_frames = 20;
+        paint_window(opened_window, PAPER_BLACK);
+    } else if(opened_window_frames != NONE) {
+        --opened_window_frames;
+    }
 
-    // paint 'prota here'
-    sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
+    // check if dog should appear
+    if (enemy_apears != YES && first_keypress != NONE) {
+        enemy_apears = random_value % 500;
+    }
+    // checks if bincat should appear and where
+    if (bincat_appears != YES && first_keypress != NONE) {
+        bincat_in_bin = rand() % 32;
+        // less probable
+        if(enemy_apears == 1 && bin_places[bincat_in_bin] == 1) {
+            bincat_appears = YES;
+            anim_frames_bincat = 20;
+
+            if (bincat_in_bin == HIGHER_BIN_X) {
+                // reused as row and also number of frames appearing
+                anim_frames_bincat = 15;
+            } else {
+                anim_frames_bincat = 17;
+            }
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, anim_frames_bincat, bincat_in_bin, 0, 0);
+            anim_frames_bincat = 40;
+
+            // cat falls if misifu.in_bin is the same of bincat_in_bin
+            if (bincat_in_bin == misifu.in_bin) {
+                misifu.state = FALLING;
+            }
+        } else {
+            bincat_in_bin = NONE;
+        }
+    }
 
     // decide new FSM draw status
     if (misifu.state == NONE && frame == 3) {
@@ -297,7 +285,7 @@ int main()
         }
 
         --anim_frames;
-        if (anim_frames <= 0) {
+        if (anim_frames < 1) {
             misifu.state = NONE;
             misifu.x = 0;
             enemy_apears = NONE;
@@ -316,6 +304,7 @@ int main()
         // cat falls if cat_in_bin is the same of bincat_in_bin
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING;
+            misifu.in_bin = NONE;
         }
 
         if (anim_frames_bincat < 1 && bincatsp != NULL) {
@@ -324,6 +313,13 @@ int main()
             bincat_in_bin = 0;
         }
     }
+
+
+    frame = (frame + 1) % 4;
+
+    // paint 'prota here'
+    sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
+
 
     z80_delay_ms(50);
     sp1_UpdateNow();
