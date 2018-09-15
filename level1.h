@@ -1,8 +1,13 @@
+#ifndef _LEVEL1
+#define _LEVEL1
+
+#include <defines.h>
 #include <z80.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
-// todo mover todo esto a una función?
+struct freesprite windows[12];
+
 const uint8_t bin_places[] = {
 0, 1, 2, 3,
 0, 1, 2, 3,
@@ -88,22 +93,26 @@ inline void  print_cubo(uint8_t x) {
   sp1_PrintAt(y, x2, PAPER_CYAN, 'X');
 }
 
-const void paint_rope_windows(uint8_t row) {
-  uint8_t x, y;
-  // paint the windows with rope
-  for(y = 2; y <= 32; y+= 8) {
-     for (x = y; x != y + 5; x++) {
-       sp1_PrintAt(row, x, PAPER_CYAN, 'N');
-       sp1_PrintAt(row + 1, x, PAPER_CYAN, 'M');
-     }
-   }
 
+inline void paint_window(uint8_t num, uint16_t colour) {
+  uint8_t x;
+
+  for (x = windows[num].x; x != windows[num].x + 5; ++x) {
+    // top is equal
+    sp1_PrintAtInv(windows[num].y, x, colour, 'N');
+    if (num > 7) {
+        // bottom varies
+        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'O');
+    } else {
+        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'M');
+    }
+  }
 }
 
 const void  print_background() {
-  uint8_t x, y, bin_count;
+  uint8_t x, y, count;
 
-  bin_count = 0;
+  count = 0;
 
   sp1_TileEntry('V', udg_valla2);  // middle of fence
   sp1_TileEntry('W', udg_valla1);  // top of fence
@@ -127,7 +136,7 @@ const void  print_background() {
   sp1_TileEntry('N', udg_win2); // full square
   sp1_TileEntry('O', udg_win3); // bottom without rope
 
-  bin_count = 0;
+  count = 0;
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
 
@@ -145,8 +154,8 @@ const void  print_background() {
               sp1_PrintAt( y, x,  PAPER_CYAN, 'V');
           }
       } else if (bin_places[x] == 1) {
-          ++bin_count;
-          print_cubo(x, bin_count);
+          ++count;
+          print_cubo(x, count);
       }
   }
   sp1_PrintAt( 17, 29, INK_CYAN | PAPER_BLACK, 'C');
@@ -160,19 +169,23 @@ const void  print_background() {
     sp1_PrintAt(1, x, INK_BLACK | PAPER_MAGENTA, 'R');
   }
 
-  // paint the bottom windows
-  for(y = 2; y <= 32; y+= 8) {
-     for (x = y; x != y + 5; x++) {
-       // todo make ink-black and repaint tiles that are 'opening'
-       sp1_PrintAt(12, x,  PAPER_CYAN, 'N');
-       sp1_PrintAt(13, x, PAPER_CYAN, 'O');
-     }
+
+   y = 4;
+   x = 2;
+   // define how to paint windows
+   for(count = 0; count != 12; ++count) {
+      windows[count].x = x;
+      windows[count].y = y;
+      x = x + 8;
+      if (x >= 32) {
+        x = 2;
+        y = y + 4;
+      }
+
+      paint_window(count, PAPER_CYAN);
    }
 
-   // paint the windows with rope
-  paint_rope_windows(8);
-  paint_rope_windows(4);
-
-
-
 }
+
+
+#endif

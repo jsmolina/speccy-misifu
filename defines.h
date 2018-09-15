@@ -1,3 +1,6 @@
+#ifndef _DEFINES_H
+#define _DEFINES_H
+
 #include <z80.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
@@ -43,36 +46,68 @@
 #define IN_KEY_SCANCODE_SPACE 0x017f
 
 
-extern unsigned char sprite_protar1[];
-extern unsigned char sprite_protar2[];
-extern unsigned char sprite_protar3[];
-extern unsigned char sprite_protar4[];
+extern uint8_t sprite_protar1[];
+extern uint8_t sprite_protar2[];
+extern uint8_t sprite_protar3[];
+extern uint8_t sprite_protar4[];
 
-extern unsigned char sprite_dog1[];
-extern unsigned char sprite_dog2[];
-extern unsigned char sprite_dog3[];
-extern unsigned char sprite_dog4[];
+extern uint8_t sprite_dog1[];
+extern uint8_t sprite_dog2[];
+extern uint8_t sprite_dog3[];
+extern uint8_t sprite_dog4[];
 
-extern unsigned char sprite_bincat1[];
-extern unsigned char sprite_bincat2[];
-extern unsigned char sprite_bincat3[];
+extern uint8_t sprite_bincat1[];
+extern uint8_t sprite_bincat2[];
+extern uint8_t sprite_bincat3[];
 
-extern unsigned char sprite_clothes1[];
-extern unsigned char sprite_clothes2[];
-extern unsigned char sprite_clothes3[];
-extern unsigned char sprite_clothes4[];
-extern unsigned char sprite_clothes5[];
-extern unsigned char sprite_clothes6[];
-extern unsigned char sprite_clothes7[];
-extern unsigned char sprite_clothes8[];
+extern uint8_t sprite_clothes1[];
+extern uint8_t sprite_clothes2[];
+extern uint8_t sprite_clothes3[];
+extern uint8_t sprite_clothes4[];
+extern uint8_t sprite_clothes5[];
+extern uint8_t sprite_clothes6[];
+extern uint8_t sprite_clothes7[];
+extern uint8_t sprite_clothes8[];
 
 
-extern unsigned char sprite_clothes21[];
-extern unsigned char sprite_clothes22[];
-extern unsigned char sprite_clothes23[];
-extern unsigned char sprite_clothes24[];
-extern unsigned char sprite_clothes25[];
+extern uint8_t sprite_clothes21[];
+extern uint8_t sprite_clothes22[];
+extern uint8_t sprite_clothes23[];
+extern uint8_t sprite_clothes24[];
+extern uint8_t sprite_clothes25[];
 
+extern uint8_t auxiliar1[];
+extern uint8_t auxiliar2[];
+extern uint8_t auxiliar3[];
+extern uint8_t auxiliar4[];
+
+struct prota misifu;
+struct freesprite aux_object;
+struct sp1_ss  *dogr1sp;
+struct sp1_ss  *bincatsp = NULL;
+
+struct row_clothes row1clothes[4];
+
+// game required vars
+uint8_t frame;
+uint8_t x_malo;
+uint8_t bincat_appears = NONE;
+uint8_t enemy_apears = NONE;
+uint8_t row1_moving = NONE;
+uint8_t bincat_in_bin = NONE;
+uint8_t dog_offset;
+// keeps animation frames when something takes longer
+uint8_t anim_frames = 0;
+uint8_t anim_frames_bincat = 0;
+
+uint8_t first_keypress = NONE;
+
+uint8_t index = 0;
+
+uint8_t random_value = 0;
+
+uint8_t opened_window = NONE;
+uint8_t opened_window_frames = NONE;
 
 
 void initialiseColour(unsigned int count, struct sp1_cs *c)
@@ -174,4 +209,44 @@ inline struct sp1_ss * add_sprite_clothes2() {
   return sp;
 }
 
+inline struct sp1_ss * add_sprite_auxiliar() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)auxiliar1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar4, 0);
+
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColour);
+
+  return sp;
+}
+
+
+struct row_clothes {
+    struct sp1_ss* sp;
+    uint8_t col;
+};
+
+struct prota {
+    struct sp1_ss* sp;
+    uint8_t x;
+    uint8_t y;
+    uint8_t initial_jump_y;
+    uint8_t draw_additional;
+    unsigned int  offset;
+    uint8_t in_bin;
+    uint8_t state;
+};
+
+struct freesprite {
+    struct sp1_ss* sp;
+    uint8_t y;
+    uint8_t x;
+};
+
+
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
+
+#endif
