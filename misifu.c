@@ -160,10 +160,10 @@ int main()
         enemy_apears = random_value % 500;
     }
     // checks if bincat should appear and where
-    if (bincat_appears != YES && first_keypress != NONE) {
-        bincat_in_bin = rand() % 32;
+    if (bincat_appears != YES && misifu.in_bin != NONE) {
+        bincat_in_bin = bin_places2[rand() % 6];
         // less probable
-        if(enemy_apears == 1 && bin_places[bincat_in_bin] == 1) {
+        if(bincat_in_bin != NONE) {
             bincat_appears = YES;
             anim_frames_bincat = 20;
 
@@ -227,18 +227,20 @@ int main()
         misifu.offset = JUMPINGC1;
 
         // detect falling over bin
-        if(bin_places[misifu.x] > 0 && (misifu.y == 16 || misifu.y == 18) ) {
+        if(misifu.y == 16 || misifu.y == 18) {
+            misifu.in_bin = is_in_bin(misifu.x);
             // store that it is on first bin pos so collide will bincat is easier
-            misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
+            //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
+            if (misifu.in_bin != NONE) {
+                if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
+                    // stop falling
+                    misifu.state = NONE;
+                    misifu.draw_additional = CAT_IN_BIN;
+                } else if (misifu.in_bin != HIGHER_BIN_X && misifu.y == 18) {
+                    misifu.state = NONE;
+                    misifu.draw_additional = CAT_IN_BIN;
 
-            if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
-                // stop falling
-                misifu.state = NONE;
-                misifu.draw_additional = CAT_IN_BIN;
-            } else if (misifu.in_bin != HIGHER_BIN_X && misifu.y == 18) {
-                misifu.state = NONE;
-                misifu.draw_additional = CAT_IN_BIN;
-
+                }
             }
         } else if(misifu.y == 13) {
             misifu.state = NONE;
@@ -259,7 +261,7 @@ int main()
 
     // cat falls appart from bin
     if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
-        if (bin_places[misifu.x] == NONE) {
+        if (is_in_bin(misifu.x) == NONE) {
             misifu.state = FALLING;
             misifu.draw_additional = NONE;
             misifu.in_bin = NONE;

@@ -8,21 +8,30 @@
 
 struct freesprite windows[12];
 
-const uint8_t bin_places[] = {
-0, 1, 2, 3,
-0, 1, 2, 3,
-0, 1, 2, 3,
-0, 0, 0, 0,
-0, 0, 0, 0,
-1, 2, 3, 0,
-1, 2, 3, 0,
-0, 0, 0, 0};
+
+const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
 
 
-uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
-uint8_t udg_valla2[] = {0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81};
-uint8_t udg_valla3[] = {0xff, 0xe1, 0xe1, 0x81, 0x81, 0x81, 0x81, 0x81};
-uint8_t udg_valla4[] = {0xef, 0x8f, 0x83, 0x83, 0x83, 0x81, 0x81, 0x81};
+uint8_t is_in_bin(uint8_t x_pos) {
+    if (x_pos > 0 && x_pos < 4) {
+        return 1;
+    } else if(x_pos > 4 && x_pos  < 8) {
+        return 5;
+    } else if(x_pos > 8 && x_pos < 12) {
+        return 9;
+    } else if(x_pos > 19 && x_pos < 23) {
+        return 20;
+    } else if(x_pos > 23 && x_pos < 27) {
+        return 24;
+    }
+
+    return NONE;
+}
+
+const uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
+const uint8_t udg_valla2[] = {0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81};
+const uint8_t udg_valla3[] = {0xff, 0xe1, 0xe1, 0x81, 0x81, 0x81, 0x81, 0x81};
+const uint8_t udg_valla4[] = {0xef, 0x8f, 0x83, 0x83, 0x83, 0x81, 0x81, 0x81};
 
 const uint8_t cubo_down1[] = {0xab, 0xd5, 0xaa, 0xd5, 0xfe, 0x31, 0xe, 0x1};
 const uint8_t cubo_down2[] = {0xff, 0x55, 0xaa, 0x55, 0xaa, 0xff, 0x0, 0xff};
@@ -40,9 +49,9 @@ unsigned char udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with ro
 unsigned char udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 unsigned char udg_win3[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
-uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
-uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
+const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
+const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
+const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 
 // todo add udg for numbers (score, lives)
 
@@ -109,8 +118,6 @@ void paint_window(uint8_t num, uint16_t colour) {
 void  print_background() {
   uint8_t x, y, count;
 
-  count = 0;
-
   sp1_TileEntry('V', udg_valla2);  // middle of fence
   sp1_TileEntry('W', udg_valla1);  // top of fence
   sp1_TileEntry('X', udg_valla3); // another top of fence
@@ -133,11 +140,10 @@ void  print_background() {
   sp1_TileEntry('N', udg_win2); // full square
   sp1_TileEntry('O', udg_win3); // bottom without rope
 
-  count = 0;
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
-
-      if (bin_places[x] == 0) {
+      count = is_in_bin(x);
+      if (count == NONE) {
           if (x % 2 == 0) {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'W');
           } else if (x % 3 == 0) {
@@ -150,8 +156,7 @@ void  print_background() {
           {
               sp1_PrintAt( y, x,  PAPER_CYAN, 'V');
           }
-      } else if (bin_places[x] == 1) {
-          ++count;
+      } else if(count == x) {
           print_cubo(x);
       }
   }
