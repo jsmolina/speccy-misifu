@@ -17,6 +17,7 @@
 #define CAT_IN_ROPE 6
 #define CAT_IN_ROPE1 7
 #define CAT_IN_ROPE2 8
+#define CAT_IN_ROPE3 9
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
@@ -89,7 +90,7 @@ struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
 struct row_clothes row1clothes[4];
-struct row_clothes row2clothes[4];
+struct row_clothes row2clothes[2];
 
 // shared vars
 uint8_t x, y;

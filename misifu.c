@@ -100,27 +100,30 @@ int main()
 
     // now take decisions
     // move clothes to the right
-    if (random_value % 50 == 1 && row1_moving == NONE) {
-        row1_moving = 5;
+    if (random_value % 20 == 1 && row1_moving == NONE) {
+        row1_moving = 20;
     } else if (row1_moving != NONE) {
         --row1_moving;
-        // check if clothes should move
-        for (index = 0; index != 4; ++index) {
-            row1clothes[index].col = (row1clothes[index].col + 1) % 30;
-            sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
+        if (row1_moving % 5 == 0) {
+            // check if clothes should move
+            for (index = 0; index != 4; ++index) {
+                row1clothes[index].col = (row1clothes[index].col + 1) % 30;
+                sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
 
-            if(misifu.draw_additional == CAT_IN_ROPE1) {
-                ++misifu.x;
             }
-        }
 
-        for (index = 0; index != 2; ++index) {
-            --row2clothes[index].col;
-            if (row2clothes[index].col < 2) {
-                row2clothes[index].col = 28;
+            for (index = 0; index != 2; ++index) {
+                --row2clothes[index].col;
+
+                if (row2clothes[index].col < 2) {
+                    row2clothes[index].col = 28;
+                }
+                sp1_MoveSprAbs(row2clothes[index].sp, &full_screen, 0, 6, row2clothes[index].col, 0, 0);
             }
-            sp1_MoveSprAbs(row2clothes[index].sp, &full_screen, 0, 6, row2clothes[index].col, 0, 0);
-            if(misifu.draw_additional == CAT_IN_ROPE2) {
+            // now move cat
+            if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+                 ++misifu.x;
+            } else if(misifu.draw_additional == CAT_IN_ROPE2) {
                 --misifu.x;
             }
         }
@@ -209,6 +212,7 @@ int main()
         if (misifu.y <= 1) {
             misifu.y = 1;
             misifu.state = CAT_IN_ROPE;
+            misifu.draw_additional = CAT_IN_ROPE3;
         } else if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
             misifu.state = FALLING;
             misifu.draw_additional = NONE;
@@ -251,7 +255,7 @@ int main()
             misifu.offset = BORED;
         }
     } else if(misifu.state == CAT_IN_ROPE) {
-        if(misifu.x >= MAX_X || misifu.x < 1) {
+        if(misifu.x >= 28 || misifu.x < 2) {
             misifu.state = FALLING;
             misifu.draw_additional = NONE;
         }
