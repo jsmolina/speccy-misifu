@@ -83,31 +83,15 @@ int main()
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
         if (first_keypress == NONE) {
             first_keypress = random_value;
             srand(first_keypress);
         }
-        if (misifu.state != CAT_IN_ROPE) {
-            misifu.state = WALKING_RIGHT;
-        } else {
-            if (frame < 2) {
-              misifu.offset = JUMPINGC1;
-            } else if (frame < 4) {
-              misifu.offset = JUMPINGC2;
-            }
-        }
+        misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE)) {
-        if (misifu.state != CAT_IN_ROPE) {
-            misifu.state = WALKING_LEFT;
-        } else {
-            if (frame < 2) {
-              misifu.offset = JUMPINGC1;
-            } else if (frame < 4) {
-              misifu.offset = JUMPINGC2;
-            }
-        }
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+        misifu.state = WALKING_LEFT;
         --misifu.x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
@@ -124,6 +108,10 @@ int main()
         for (index = 0; index != 4; ++index) {
             row1clothes[index].col = (row1clothes[index].col + 1) % 30;
             sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
+
+            if(misifu.draw_additional == CAT_IN_ROPE1) {
+                ++misifu.x;
+            }
         }
 
         for (index = 0; index != 2; ++index) {
@@ -132,6 +120,9 @@ int main()
                 row2clothes[index].col = 28;
             }
             sp1_MoveSprAbs(row2clothes[index].sp, &full_screen, 0, 6, row2clothes[index].col, 0, 0);
+            if(misifu.draw_additional == CAT_IN_ROPE2) {
+                --misifu.x;
+            }
         }
 
     }
@@ -248,14 +239,21 @@ int main()
         // now check ropes TODO check ropes clothes are not colliding
         } else if(misifu.y == 9) {
             misifu.state = CAT_IN_ROPE;
+            misifu.draw_additional = CAT_IN_ROPE1;
         } else if(misifu.y == 5) {
             misifu.state = CAT_IN_ROPE;
+            misifu.draw_additional = CAT_IN_ROPE2;
         }
 
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
             misifu.state = NONE;
             misifu.offset = BORED;
+        }
+    } else if(misifu.state == CAT_IN_ROPE) {
+        if(misifu.x >= MAX_X || misifu.x < 1) {
+            misifu.state = FALLING;
+            misifu.draw_additional = NONE;
         }
     }
 

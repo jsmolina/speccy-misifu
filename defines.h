@@ -15,6 +15,8 @@
 #define FALLING 4
 #define FIGHTING 5
 #define CAT_IN_ROPE 6
+#define CAT_IN_ROPE1 7
+#define CAT_IN_ROPE2 8
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
