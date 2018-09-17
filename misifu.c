@@ -36,6 +36,7 @@ int main()
 
   dogr1sp = add_sprite_dogr1();
   bincatsp = add_sprite_bincat();
+  enemy_apears = NONE;
 
   aux_object.sp = add_sprite_auxiliar();
   aux_object.x = 0;
@@ -150,8 +151,14 @@ int main()
     }
 
     // check if dog should appear
-    if (enemy_apears != YES && first_keypress != NONE) {
-        enemy_apears = random_value % 500;
+    if (enemy_apears != WALKING_LEFT && enemy_apears != WALKING_RIGHT && first_keypress != NONE) {
+        enemy_apears = random_value % 200;
+        if (enemy_apears == WALKING_LEFT) {
+            x_malo = 30;
+        } else if (enemy_apears == WALKING_RIGHT) {
+            x_malo = 1;
+        }
+
     }
     // checks if bincat should appear and where
     if (bincat_appears != YES && misifu.in_bin != NONE) {
@@ -271,12 +278,16 @@ int main()
     }
 
     // time for doggy checks
-    if (misifu.state != FIGHTING && enemy_apears == YES) {
+    if (misifu.state != FIGHTING && (enemy_apears == WALKING_RIGHT || enemy_apears == WALKING_LEFT)) {
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
-        --x_malo;
+        if(enemy_apears == WALKING_LEFT) {
+            --x_malo;
+        } else {
+            ++x_malo;
+        }
 
-        if (x_malo <= 0) {
+        if (x_malo < 1 || x_malo > 30) {
             enemy_apears = NONE;
             x_malo = 33;
             sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
@@ -290,13 +301,21 @@ int main()
         }
 
         // detects collission malo->misifu
-        if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
-            enemy_apears = NONE;
-            misifu.state = FIGHTING;
-            misifu.y = FLOOR_Y;
-            anim_frames = 20;
-            // hide cat
-            misifu.x = 33;
+        if (misifu.y > 18) {
+            if( abs(misifu.x - x_malo) < 3) {
+                enemy_apears = NONE;
+                misifu.state = FIGHTING;
+                misifu.y = FLOOR_Y;
+                anim_frames = 20;
+                // hide cat
+                misifu.x = 33;
+            } else if( abs(misifu.x - x_malo) < 20) {
+                if (misifu.x > x_malo) {
+                    enemy_apears == WALKING_RIGHT;
+                } else {
+                    enemy_apears == WALKING_LEFT;
+                }
+            }
         }
     }
 
