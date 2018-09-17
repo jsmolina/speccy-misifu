@@ -26,4 +26,4 @@ See youtube  https://www.youtube.com/watch?v=q3EuXRF4f6M
 
 Contributions/suggestions are more than welcome!
 
-![Image of Misifu](https://user-images.githubusercontent.com/447481/45280469-d25a4d80-b4d4-11e8-94fe-a60724f86964.png)
+![Image of Misifu](https://user-images.githubusercontent.com/447481/45633520-45009580-baa0-11e8-9383-1fa9f4f9dbc4.png)
