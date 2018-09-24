@@ -224,9 +224,9 @@ inline struct sp1_ss * add_sprite_auxiliar() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar4, 0);
 
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  sp1_IterateSprChar(sp, initialiseClothesColour);
 
   return sp;
 }
@@ -250,6 +250,7 @@ struct prota {
 
 struct freesprite {
     struct sp1_ss* sp;
+    unsigned int  offset;
     uint8_t y;
     uint8_t x;
 };

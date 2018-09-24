@@ -40,6 +40,7 @@ int main()
   aux_object.sp = add_sprite_auxiliar();
   aux_object.x = 0;
   aux_object.y = 0;
+  aux_object.offset = RIGHTC1;
 
 
   // row 1 clothes
@@ -104,7 +105,7 @@ int main()
         row1_moving = 20;
     } else if (row1_moving != NONE) {
         --row1_moving;
-        if (row1_moving % 5 == 0) {
+        if (row1_moving % 2 == 0) {
             // check if clothes should move
             for (index = 0; index != 4; ++index) {
                 row1clothes[index].col = (row1clothes[index].col + 1) % 30;
@@ -138,15 +139,33 @@ int main()
             // makes the window to be opened for about 20 frames
             opened_window_frames = 50;
             paint_window(opened_window, PAPER_BLACK);
+            aux_object.y = windows[opened_window].y;
+            aux_object.x = windows[opened_window].x;
         }
     } else {
         --opened_window_frames;
+        if (opened_window > 7 && misifu.y < 14) {
+            if(misifu.x < aux_object.x) {
+                --aux_object.x;
+            } else if (misifu.x > aux_object.x) {
+                ++aux_object.x;
+            } else {
+                // todo falling to loose a live
+                aux_object.offset = RIGHTC2;
+                misifu.state = FALLING;
+            }
+            sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+        }
     }
     // end of windows
     if (opened_window_frames == 1) {
         paint_window(opened_window, PAPER_CYAN);
         opened_window = NONE;
         opened_window_frames = NONE;
+        aux_object.offset = RIGHTC1;
+        // move outside of screen
+        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, 33, 0, 0);
+
     }
 
     // check if dog should appear
@@ -255,7 +274,7 @@ int main()
             misifu.offset = BORED;
         }
     } else if(misifu.state == CAT_IN_ROPE) {
-        if(misifu.x >= 28 || misifu.x < 2) {
+        if(misifu.x >= 28 || misifu.x == 0) {
             misifu.state = FALLING;
             misifu.draw_additional = NONE;
         }
