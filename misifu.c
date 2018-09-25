@@ -141,21 +141,50 @@ int main()
             paint_window(opened_window, PAPER_BLACK);
             aux_object.y = windows[opened_window].y;
             aux_object.x = windows[opened_window].x;
+            horizontal_direction = NONE;
+            vertical_direction = NONE;
+
+            if (misifu.y < 14 && rand() % 5 == 1) {
+                // detect where to go and todo randomly throw an object
+                if(misifu.x < aux_object.x && (aux_object.x - misifu.x) > 2) {
+                    horizontal_direction = LEFT;
+                } else if(misifu.x > aux_object.x && ( misifu.x - aux_object.x) > 2) {
+                    horizontal_direction = RIGHT;
+                }
+
+                if(misifu.y < aux_object.y && (aux_object.y - misifu.y) > 2) {
+                    vertical_direction = UP;
+                } else if(misifu.y > aux_object.y && (misifu.y - aux_object.y) > 2) {
+                    vertical_direction = DOWN;
+                }
+            }
+
         }
     } else {
         --opened_window_frames;
-        if (opened_window > 7 && misifu.y < 14) {
-            if(misifu.x < aux_object.x) {
-                --aux_object.x;
-            } else if (misifu.x > aux_object.x) {
-                ++aux_object.x;
-            } else {
+
+        if (vertical_direction != NONE || horizontal_direction != NONE) {
+            if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 // todo falling to loose a live
                 aux_object.offset = RIGHTC2;
                 misifu.state = FALLING;
+            } else {
+                // now move accordingly
+                if (horizontal_direction == LEFT) {
+                    --aux_object.x;
+                } else if (horizontal_direction == RIGHT){
+                    ++aux_object.x;
+                }
+
+                if (vertical_direction == UP) {
+                    --aux_object.y;
+                } else if (vertical_direction == DOWN) {
+                    ++aux_object.y;
+                }
             }
             sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
         }
+
     }
     // end of windows
     if (opened_window_frames == 1) {

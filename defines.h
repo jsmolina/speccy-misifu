@@ -35,6 +35,11 @@
 #define BORED 449
 #define JUMPINGC2 513
 
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
+
 #define DOG1 1
 #define DOG2 49
 #define DOGFIGHTING1 97
@@ -117,6 +122,9 @@ uint8_t random_value = 0;
 uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
 
+// variable used for free objects (e.g. kitchen object thrown from window)
+uint8_t vertical_direction;
+uint8_t horizontal_direction;
 
 void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
@@ -144,7 +152,7 @@ void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
 }
 
 
-inline struct sp1_ss * add_sprite_protar1() {
+struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
@@ -158,7 +166,7 @@ inline struct sp1_ss * add_sprite_protar1() {
   return sp;
 }
 
-inline struct sp1_ss * add_sprite_dogr1() {
+struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_dog1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
@@ -172,7 +180,7 @@ inline struct sp1_ss * add_sprite_dogr1() {
   return sp;
 }
 
-inline struct sp1_ss * add_sprite_bincat() {
+struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_bincat1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat2, 0);
@@ -202,7 +210,7 @@ struct sp1_ss * add_sprite_clothes1() {
   return sp;
 }
 
-inline struct sp1_ss * add_sprite_clothes2() {
+struct sp1_ss * add_sprite_clothes2() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_clothes21, 2);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_clothes22, 2);
@@ -217,7 +225,7 @@ inline struct sp1_ss * add_sprite_clothes2() {
   return sp;
 }
 
-inline struct sp1_ss * add_sprite_auxiliar() {
+struct sp1_ss * add_sprite_auxiliar() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)auxiliar1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar2, 0);
