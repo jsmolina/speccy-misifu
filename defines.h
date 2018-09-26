@@ -53,6 +53,8 @@
 #define IN_KEY_SCANCODE_a 0x1fd
 #define IN_KEY_SCANCODE_SPACE 0x017f
 
+struct sp1_Rect full_screen = {0, 0, 32, 24};
+
 
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
@@ -234,7 +236,7 @@ struct sp1_ss * add_sprite_auxiliar() {
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
-  sp1_IterateSprChar(sp, initialiseClothesColour);
+  sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }

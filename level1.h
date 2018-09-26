@@ -190,4 +190,212 @@ void  print_background() {
 }
 
 
+
+void move_clothes() {
+// now take decisions
+    // move clothes to the right
+    if (random_value % 20 == 1 && row1_moving == NONE) {
+        row1_moving = 20;
+    } else if (row1_moving != NONE) {
+        --row1_moving;
+        if (row1_moving % 2 == 0) {
+            // check if clothes should move
+            for (index = 0; index != 4; ++index) {
+                row1clothes[index].col = (row1clothes[index].col + 1) % 30;
+                sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
+
+            }
+
+            for (index = 0; index != 2; ++index) {
+                --row2clothes[index].col;
+
+                if (row2clothes[index].col < 2) {
+                    row2clothes[index].col = 28;
+                }
+                sp1_MoveSprAbs(row2clothes[index].sp, &full_screen, 0, 6, row2clothes[index].col, 0, 0);
+            }
+            // now move cat
+            if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+                 ++misifu.x;
+            } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+                --misifu.x;
+            }
+        }
+
+    }
+
+}
+
+void anim_windows() {
+
+    // decide if window should open
+    // OPEN
+    if (opened_window_frames == NONE) {
+        opened_window = random_value % 120;
+        if(opened_window < 12) {
+            // makes the window to be opened for about 20 frames
+            opened_window_frames = 50;
+            paint_window(opened_window, PAPER_BLACK);
+            aux_object.y = windows[opened_window].y;
+            aux_object.x = windows[opened_window].x;
+            horizontal_direction = NONE;
+            vertical_direction = NONE;
+
+            if (misifu.y < 14 && rand() % 2 == 0) {
+                // detect where to go and todo randomly throw an object
+                if(misifu.x < aux_object.x && (aux_object.x - misifu.x) > 2) {
+                    horizontal_direction = LEFT;
+                } else if(misifu.x > aux_object.x && ( misifu.x - aux_object.x) > 2) {
+                    horizontal_direction = RIGHT;
+                }
+
+                if(misifu.y < aux_object.y && (aux_object.y - misifu.y) > 2) {
+                    vertical_direction = UP;
+                } else if(misifu.y > aux_object.y && (misifu.y - aux_object.y) > 2) {
+                    vertical_direction = DOWN;
+                }
+            }
+
+        }
+    } else {
+        --opened_window_frames;
+
+        if (vertical_direction != NONE || horizontal_direction != NONE) {
+            if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+                // todo falling to loose a live
+                aux_object.offset = RIGHTC2;
+                misifu.state = FALLING;
+            } else {
+                // now move accordingly
+                if (horizontal_direction == LEFT) {
+                    --aux_object.x;
+                } else if (horizontal_direction == RIGHT){
+                    ++aux_object.x;
+                }
+
+                if (vertical_direction == UP) {
+                    --aux_object.y;
+                } else if (vertical_direction == DOWN) {
+                    ++aux_object.y;
+                }
+            }
+            sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+        }
+
+    }
+    // end of windows
+    if (opened_window_frames == 1) {
+        paint_window(opened_window, PAPER_CYAN);
+        opened_window = NONE;
+        opened_window_frames = NONE;
+        aux_object.offset = RIGHTC1;
+        // move outside of screen
+        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, 33, 0, 0);
+
+    }
+}
+
+void dog_checks() {
+// time for doggy checks
+    if (misifu.state != FIGHTING && enemy_apears == YES) {
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+
+        --x_malo;
+
+        if (x_malo <= 0) {
+            enemy_apears = NONE;
+            x_malo = 33;
+            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+        }
+
+        if (frame < 2) {
+            dog_offset = DOG1;
+        } else if (frame < 4) {
+            // todo fighting will be 49 + 48
+            dog_offset = DOG2;
+        }
+
+        // detects collission malo->misifu
+        if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
+            enemy_apears = NONE;
+            misifu.state = FIGHTING;
+            misifu.y = FLOOR_Y;
+            anim_frames = 20;
+            // hide cat
+            misifu.x = 33;
+        }
+    }
+
+    if (misifu.state == FIGHTING) {
+        if (frame < 2) {
+            dog_offset = DOGFIGHTING1;
+        } else if (frame < 4) {
+            dog_offset = DOGFIGHTING2;
+        }
+
+        --anim_frames;
+        if (anim_frames < 1) {
+            misifu.state = NONE;
+            misifu.x = 0;
+            enemy_apears = NONE;
+            x_malo = 33;
+            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+            // todo remove one live
+        } else {
+            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+        }
+    }
+    // check if dog should appear
+    if (enemy_apears != YES && first_keypress != NONE) {
+        enemy_apears = random_value % 100;
+    }
+
+}
+
+void check_bincat() {
+    // checks if bincat should appear and where
+    if (bincat_appears != YES && misifu.in_bin != NONE) {
+        bincat_in_bin = bin_places2[rand() % 6];
+        // less probable
+        if(bincat_in_bin != NONE) {
+            bincat_appears = YES;
+            anim_frames_bincat = 20;
+
+            if (bincat_in_bin == HIGHER_BIN_X) {
+                // reused as row and also number of frames appearing
+                anim_frames_bincat = 15;
+            } else {
+                anim_frames_bincat = 17;
+            }
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, anim_frames_bincat, bincat_in_bin, 0, 0);
+            anim_frames_bincat = 40;
+
+            // cat falls if misifu.in_bin is the same of bincat_in_bin
+            if (bincat_in_bin == misifu.in_bin) {
+                misifu.state = FALLING;
+            }
+        } else {
+            bincat_in_bin = NONE;
+        }
+    }
+
+    // delete bincat after some frames
+    if (bincat_appears == YES) {
+        --anim_frames_bincat;
+
+        // cat falls if cat_in_bin is the same of bincat_in_bin
+        if (bincat_in_bin == misifu.in_bin) {
+            misifu.state = FALLING;
+            misifu.in_bin = NONE;
+        }
+
+        if (anim_frames_bincat < 1 && bincatsp != NULL) {
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
+            bincat_appears = NONE;
+            bincat_in_bin = 0;
+        }
+    }
+}
+
+
 #endif
