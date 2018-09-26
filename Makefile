@@ -62,3 +62,9 @@ cheese:
 	@png2udg ./background/cheese1.png
 	@png2udg ./background/cheese2.png
 	@png2udg ./background/cheese3.png
+
+wall:
+	@png2udg ./background/wall1.png
+	@png2udg ./background/wall2.png
+	@png2udg ./background/wall3.png
+	@png2udg ./background/wall4.png
