@@ -57,3 +57,8 @@ windows:
 mouse:
 	@png2udg ./background/hole_empty.png
 	@png2udg ./background/hole_mouse.png
+
+cheese:
+	@png2udg ./background/cheese1.png
+	@png2udg ./background/cheese2.png
+	@png2udg ./background/cheese3.png
