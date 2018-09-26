@@ -53,3 +53,7 @@ windows:
 	@png2udg ./background/udg_win1.png
 	@png2udg ./background/udg_win2.png
 	@png2udg ./background/udg_win3.png
+
+mouse:
+	@png2udg ./background/hole_empty.png
+	@png2udg ./background/hole_mouse.png
