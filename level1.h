@@ -115,7 +115,7 @@ void paint_window(uint8_t num, uint16_t colour) {
   }
 }
 
-void  print_background() {
+void  print_background_lvl1() {
   uint8_t x, y, count;
 
   sp1_TileEntry('V', udg_valla2);  // middle of fence

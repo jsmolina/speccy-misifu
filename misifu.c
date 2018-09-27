@@ -53,7 +53,7 @@ int main()
                   INK_WHITE | PAPER_MAGENTA,
                   ' ' );
 
-  print_background();
+  print_background_lvl1();
 
   sp1_Invalidate(&full_screen);
 

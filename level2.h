@@ -18,4 +18,16 @@ unsigned char wall2[] = {0xff, 0xff, 0xff, 0x0, 0xff, 0xff, 0xff, 0xff};
 unsigned char wall3[] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
 unsigned char wall4[] = {0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f};
 
+void  print_background_level2() {
+  sp1_TileEntry('A', hole_empty);
+  sp1_TileEntry('B', hole_mouse);
+  sp1_TileEntry('C', cheese1);
+  sp1_TileEntry('D', cheese2);
+  sp1_TileEntry('E', cheese3);
+  sp1_TileEntry('F', wall1);
+  sp1_TileEntry('G', wall2);
+  sp1_TileEntry('H', wall3);
+  sp1_TileEntry('I', wall4);
+}
+
 #endif
