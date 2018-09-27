@@ -100,7 +100,7 @@ int main()
 
   while(1)
   {
-    random_value = rand() % 500;
+    random_value = rand();
 
     check_keys();
     move_clothes();

@@ -194,7 +194,7 @@ void  print_background() {
 void move_clothes() {
 // now take decisions
     // move clothes to the right
-    if (random_value % 20 == 1 && row1_moving == NONE) {
+    if (random_value % 20 == 0 && row1_moving == NONE) {
         row1_moving = 20;
     } else if (row1_moving != NONE) {
         --row1_moving;
