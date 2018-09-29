@@ -123,6 +123,7 @@ uint8_t random_value = 0;
 
 uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
+uint8_t level = 1;
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;

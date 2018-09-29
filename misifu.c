@@ -49,13 +49,9 @@ int main()
 {
   zx_border(INK_BLACK);
 
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_MAGENTA,
-                  ' ' );
 
   print_background_lvl1();
 
-  sp1_Invalidate(&full_screen);
 
   misifu.in_bin = NONE;
   misifu.sp = add_sprite_protar1();
@@ -150,33 +146,7 @@ int main()
         ++misifu.y;
         misifu.offset = JUMPINGC1;
 
-        // detect falling over bin
-        if(misifu.y == 16 || misifu.y == 18) {
-            misifu.in_bin = is_in_bin(misifu.x);
-            // store that it is on first bin pos so collide will bincat is easier
-            //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
-            if (misifu.in_bin != NONE) {
-                if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
-                    // stop falling
-                    misifu.state = NONE;
-                    misifu.draw_additional = CAT_IN_BIN;
-                } else if (misifu.in_bin != HIGHER_BIN_X && misifu.y == 18) {
-                    misifu.state = NONE;
-                    misifu.draw_additional = CAT_IN_BIN;
-
-                }
-            }
-        } else if(misifu.y == 13) {
-            misifu.state = NONE;
-            misifu.draw_additional = CAT_IN_FENCE;
-        // now check ropes TODO check ropes clothes are not colliding
-        } else if(misifu.y == 9) {
-            misifu.state = CAT_IN_ROPE;
-            misifu.draw_additional = CAT_IN_ROPE1;
-        } else if(misifu.y == 5) {
-            misifu.state = CAT_IN_ROPE;
-            misifu.draw_additional = CAT_IN_ROPE2;
-        }
+        detect_fall_in_bin();
 
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
@@ -206,7 +176,7 @@ int main()
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
 
 
-    z80_delay_ms(50);
+    z80_delay_ms(20);
     sp1_UpdateNow();
   }
 }

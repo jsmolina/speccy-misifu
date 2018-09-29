@@ -118,6 +118,13 @@ void paint_window(uint8_t num, uint16_t colour) {
 void  print_background_lvl1() {
   uint8_t x, y, count;
 
+
+  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  INK_WHITE | PAPER_MAGENTA,
+                  ' ' );
+
+  sp1_Invalidate(&full_screen);
+
   sp1_TileEntry('V', udg_valla2);  // middle of fence
   sp1_TileEntry('W', udg_valla1);  // top of fence
   sp1_TileEntry('X', udg_valla3); // another top of fence
@@ -394,6 +401,36 @@ void check_bincat() {
             bincat_appears = NONE;
             bincat_in_bin = 0;
         }
+    }
+}
+
+void detect_fall_in_bin() {
+    // detect falling over bin
+    if(misifu.y == 16 || misifu.y == 18) {
+        misifu.in_bin = is_in_bin(misifu.x);
+        // store that it is on first bin pos so collide will bincat is easier
+        //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
+        if (misifu.in_bin != NONE) {
+            if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
+                // stop falling
+                misifu.state = NONE;
+                misifu.draw_additional = CAT_IN_BIN;
+            } else if (misifu.in_bin != HIGHER_BIN_X && misifu.y == 18) {
+                misifu.state = NONE;
+                misifu.draw_additional = CAT_IN_BIN;
+
+            }
+        }
+    } else if(misifu.y == 13) {
+        misifu.state = NONE;
+        misifu.draw_additional = CAT_IN_FENCE;
+    // now check ropes TODO check ropes clothes are not colliding
+    } else if(misifu.y == 9) {
+        misifu.state = CAT_IN_ROPE;
+        misifu.draw_additional = CAT_IN_ROPE1;
+    } else if(misifu.y == 5) {
+        misifu.state = CAT_IN_ROPE;
+        misifu.draw_additional = CAT_IN_ROPE2;
     }
 }
 

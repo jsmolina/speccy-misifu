@@ -19,6 +19,15 @@ unsigned char wall3[] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
 unsigned char wall4[] = {0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f};
 
 void  print_background_level2() {
+  uint8_t i;
+
+
+  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  INK_BLACK | PAPER_RED,
+                  ' ' );
+
+  sp1_Invalidate(&full_screen);
+
   sp1_TileEntry('A', hole_empty);
   sp1_TileEntry('B', hole_mouse);
   sp1_TileEntry('C', cheese1);
@@ -28,6 +37,11 @@ void  print_background_level2() {
   sp1_TileEntry('G', wall2);
   sp1_TileEntry('H', wall3);
   sp1_TileEntry('I', wall4);
+
+  // draw vertical call
+  for (i = 9; i != 16; ++i) {
+    sp1_PrintAt( 9, 4, INK_CYAN | PAPER_BLACK, 'F');
+  }
 }
 
 #endif
