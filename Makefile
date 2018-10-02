@@ -59,9 +59,8 @@ mouse:
 	@png2udg ./background/hole_mouse.png
 
 cheese:
-	@png2udg ./background/cheese1.png
+	@png2udg ./background/curtain.png
 	@png2udg ./background/cheese2.png
-	@png2udg ./background/cheese3.png
 
 wall:
 	@png2udg ./background/wall1.png

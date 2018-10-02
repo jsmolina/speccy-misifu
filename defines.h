@@ -98,6 +98,8 @@ struct sp1_ss  *bincatsp = NULL;
 
 struct row_clothes row1clothes[4];
 struct row_clothes row2clothes[2];
+unsigned char udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+
 
 // shared vars
 uint8_t x, y;
