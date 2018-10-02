@@ -70,14 +70,15 @@ void print_room_walls() {
     sp1_PrintAt( index, 22, INK_RED | PAPER_BLACK, 'N');
     sp1_PrintAt( index, 23, INK_RED | PAPER_BLACK, 'N');
     sp1_PrintAt( index, 24, INK_RED | PAPER_BLACK, 'N');
+    sp1_PrintAt( index, 25, INK_RED | PAPER_BLACK, 'N');
 
-    sp1_PrintAt( index, 25, INK_RED | PAPER_GREEN, 'J');
     sp1_PrintAt( index, 26, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( index, 27, INK_RED | PAPER_GREEN, 'J');
   }
   sp1_PrintAt( 10, 20, INK_RED | PAPER_GREEN, 'J');
   sp1_PrintAt( 10, 21, INK_RED | PAPER_GREEN, 'J');
-  sp1_PrintAt( 10, 25, INK_RED | PAPER_GREEN, 'J');
   sp1_PrintAt( 10, 26, INK_RED | PAPER_GREEN, 'J');
+  sp1_PrintAt( 10, 27, INK_RED | PAPER_GREEN, 'J');
 
 
 }
