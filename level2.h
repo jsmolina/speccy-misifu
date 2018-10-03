@@ -1,5 +1,6 @@
 #ifndef _LEVEL2
 #define _LEVEL2
+// AKA RATS ROOM
 
 #include <defines.h>
 #include <z80.h>
@@ -9,7 +10,7 @@
 
 unsigned char hole_empty[] = {0xc3, 0x81, 0x0, 0x0, 0x0, 0x0, 0x81, 0xc3};
 unsigned char hole_mouse[] = {0xc3, 0xa5, 0x18, 0x3c, 0x5a, 0x18, 0xa5, 0xc3};
-unsigned char cheese2[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+unsigned char cheese2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 unsigned char curtain[] = {0x7e, 0x9c, 0xe3, 0xff, 0xff, 0x7e, 0x9c, 0xe3};
 
 unsigned char wall1[] = {0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f};
@@ -17,40 +18,16 @@ unsigned char wall2[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0};
 unsigned char wall3[] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
 unsigned char wall4[] = {0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f};
 
-uint8_t _hole_pos(uint8_t row, uint8_t col) {
-    if (row == 18 && col == 9) {
-        return 1;
-    } else if (row == 20 && col == 4) {
-        return 1;
-    } else if (row == 19 && col == 8) {
-        return 1;
-    } else if (row == 20 && col == 18) {
-        return 1;
-    } else if (row == 19 && col == 5) {
-        return 1;
-    } else if (row == 20 && col == 14) {
-        return 1;
-    } else if (row == 18 && col == 13) {
-        return 1;
-    } else if (row == 16 && col == 4) {
-        return 1;
-    } else if (row == 14 && col == 4) {
-        return 1;
-    } else if (row == 14 && col == 8) {
-        return 1;
-    } else if (row == 14 && col == 12) {
-        return 1;
-    } else if (row == 12 && col == 6) {
-        return 1;
-    } else if (row == 10 && col == 4) {
-        return 1;
-    } else if (row == 8 && col == 4) {
-        return 1;
-    }
-
-    return 0;
+/**
+Returns 1 if x,y are in window position
+**/
+uint8_t thrown_from_window(uint8_t x, uint8_t y) {
+   return (x>7 && x < 10 && y > 21 && y < 26);
 }
 
+/**
+Candidate to be shared
+**/
 void print_room_walls() {
   sp1_TileEntry('F', wall1);
   sp1_TileEntry('G', wall2);
@@ -87,6 +64,7 @@ void print_room_walls() {
     sp1_PrintAt( index, 20, INK_RED | PAPER_GREEN, 'J');
     sp1_PrintAt( index, 21, INK_RED | PAPER_GREEN, 'J');
 
+    // x=8, 9 and y=22-25
     sp1_PrintAt( index, 22, INK_RED | PAPER_BLACK, 'N');
     sp1_PrintAt( index, 23, INK_RED | PAPER_BLACK, 'N');
     sp1_PrintAt( index, 24, INK_RED | PAPER_BLACK, 'N');
@@ -101,6 +79,23 @@ void print_room_walls() {
   sp1_PrintAt( 10, 27, INK_RED | PAPER_GREEN, 'J');
 
 
+}
+
+void define_cheese_holes_pos() {
+    windows[0].x = 18; windows[0].y = 9;
+    windows[1].x = 20; windows[1].y = 4;
+    windows[2].x = 19; windows[2].y = 8;
+    windows[3].x = 20; windows[3].y = 18;
+    windows[4].x = 19; windows[4].y = 5;
+    windows[5].x = 20; windows[5].y = 14;
+    windows[6].x = 18; windows[6].y = 13;
+    windows[7].x = 16; windows[7].y = 4;
+    windows[8].x = 14; windows[8].y = 4;
+    windows[9].x = 14; windows[9].y = 8;
+    windows[10].x = 14; windows[10].y = 12;
+    windows[11].x = 12; windows[11].y = 6;
+    windows[12].x = 10; windows[12].y = 4;
+    windows[13].x = 8; windows[13].y = 4;
 }
 
 void  print_background_level2() {
@@ -118,16 +113,17 @@ void  print_background_level2() {
   sp1_TileEntry('C', cheese2);
 
   print_room_walls();
+  define_cheese_holes_pos();
 
   for (index = 3; index != 20; ++index) {
 
     for (j = index + 1; j != 21; ++j) {
-        if (_hole_pos(j, index) == 1) {
-            sp1_PrintAt( j, index, INK_GREEN | PAPER_BLACK, 'A');
-        } else {
-            sp1_PrintAt( j, index, INK_GREEN | PAPER_BLACK, 'C');
-        }
+        sp1_PrintAt( j, index, PAPER_GREEN, 'C');
     }
+  }
+  // paint holes
+  for (index = 0; index != 14; ++index) {
+    sp1_PrintAt( windows[index].x, windows[index].y, INK_GREEN | PAPER_BLACK, 'A');
   }
   // todo paint cheese here
 

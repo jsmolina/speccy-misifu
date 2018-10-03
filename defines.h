@@ -263,11 +263,15 @@ struct prota {
 
 struct freesprite {
     struct sp1_ss* sp;
-    unsigned int  offset;
+    uint8_t  offset;
     uint8_t y;
     uint8_t x;
 };
 
+struct udgstruct {
+    uint8_t y;
+    uint8_t x;
+};
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
 

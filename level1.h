@@ -6,7 +6,7 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
-struct freesprite windows[12];
+struct udgstruct windows[14];
 
 
 const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
