@@ -18,13 +18,33 @@ unsigned char wall3[] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
 unsigned char wall4[] = {0xfe, 0xfd, 0xfb, 0xf7, 0xef, 0xdf, 0xbf, 0x7f};
 
 uint8_t _hole_pos(uint8_t row, uint8_t col) {
-    if (row == 6 && col == 4) {
+    if (row == 18 && col == 9) {
         return 1;
-    } else if (row == 8 && col == 6) {
+    } else if (row == 20 && col == 4) {
         return 1;
-    } else if (row == 11 && col == 7) {
+    } else if (row == 19 && col == 8) {
+        return 1;
+    } else if (row == 20 && col == 18) {
+        return 1;
+    } else if (row == 19 && col == 5) {
+        return 1;
+    } else if (row == 20 && col == 14) {
+        return 1;
+    } else if (row == 18 && col == 13) {
+        return 1;
+    } else if (row == 16 && col == 4) {
+        return 1;
+    } else if (row == 14 && col == 4) {
+        return 1;
+    } else if (row == 14 && col == 8) {
+        return 1;
+    } else if (row == 14 && col == 12) {
         return 1;
     } else if (row == 12 && col == 6) {
+        return 1;
+    } else if (row == 10 && col == 4) {
+        return 1;
+    } else if (row == 8 && col == 4) {
         return 1;
     }
 
