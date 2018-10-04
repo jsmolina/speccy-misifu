@@ -8,7 +8,6 @@
 #include <defines.h>
 #include <input.h>
 #include "level1.h"
-#include "level2.h"
 
 void check_keys() {
     // checks keys
@@ -58,10 +57,6 @@ void dog_checks() {
 
         --x_malo;
 
-        if (x_malo <= 0) {
-            enemy_apears = NONE;
-            x_malo = 33;
-        }
 
         if (frame < 2) {
             dog_offset = DOG1;
@@ -71,7 +66,10 @@ void dog_checks() {
         }
 
         // detects collission malo->misifu
-        if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
+        if (x_malo <= 0) {
+            enemy_apears = NONE;
+            x_malo = 33;
+        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
@@ -91,7 +89,7 @@ void dog_checks() {
         }
 
         --anim_frames;
-        if (anim_frames < 1) {
+        if (anim_frames == 0) {
             reset_misifu_position();
             enemy_apears = NONE;
             x_malo = 33;
