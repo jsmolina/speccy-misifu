@@ -7,9 +7,8 @@
 #include <arch/zx/sp1.h>
 #include <defines.h>
 #include <input.h>
-#include <level1.h>
-
-
+#include "level1.h"
+#include "level2.h"
 
 void check_keys() {
     // checks keys
@@ -43,25 +42,79 @@ void check_keys() {
 }
 
 
-
-
-int main()
-{
-  zx_border(INK_BLACK);
-
-
-  print_background_lvl1();
-
-
+void reset_misifu_position() {
   misifu.in_bin = NONE;
-  misifu.sp = add_sprite_protar1();
   misifu.x = 0;
   misifu.y = FLOOR_Y;
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
   misifu.state = NONE;
+}
 
+void dog_checks() {
+// time for doggy checks
+    if (misifu.state != FIGHTING && enemy_apears == YES) {
+
+        --x_malo;
+
+        if (x_malo <= 0) {
+            enemy_apears = NONE;
+            x_malo = 33;
+        }
+
+        if (frame < 2) {
+            dog_offset = DOG1;
+        } else if (frame < 4) {
+            // todo fighting will be 49 + 48
+            dog_offset = DOG2;
+        }
+
+        // detects collission malo->misifu
+        if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
+            enemy_apears = NONE;
+            misifu.state = FIGHTING;
+            misifu.y = FLOOR_Y;
+            anim_frames = 20;
+            // hide cat
+            misifu.x = 33;
+        }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+
+    }
+
+    if (misifu.state == FIGHTING) {
+        if (frame < 2) {
+            dog_offset = DOGFIGHTING1;
+        } else if (frame < 4) {
+            dog_offset = DOGFIGHTING2;
+        }
+
+        --anim_frames;
+        if (anim_frames < 1) {
+            reset_misifu_position();
+            enemy_apears = NONE;
+            x_malo = 33;
+            // todo remove one live
+        }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+    }
+    // check if dog should appear
+    if (enemy_apears != YES && first_keypress != NONE) {
+        enemy_apears = random_value % 100;
+    }
+
+}
+
+int main()
+{
+  zx_border(INK_BLACK);
+
+  if (level == 1) {
+    print_background_lvl1();
+  }
+
+  misifu.sp = add_sprite_protar1();
   dogr1sp = add_sprite_dogr1();
   bincatsp = add_sprite_bincat();
 
@@ -70,22 +123,9 @@ int main()
   aux_object.y = 0;
   aux_object.offset = RIGHTC1;
 
+  reset_misifu_position();
 
-  // row 1 clothes
-  row1clothes[0].col = 1;
-  row1clothes[0].sp = add_sprite_clothes1();
-  row1clothes[1].col = 10;
-  row1clothes[1].sp = add_sprite_clothes2();
-  row1clothes[2].col = 18;
-  row1clothes[2].sp = add_sprite_clothes1();
-  row1clothes[3].col = 26;
-  row1clothes[3].sp = add_sprite_clothes2();
-
-  // row 2 clothes
-  row2clothes[0].col = 5;
-  row2clothes[0].sp = add_sprite_clothes1();
-  row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes2();
+  add_row_clothes();
 
   x_malo = 22;
   frame = 0;

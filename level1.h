@@ -28,30 +28,6 @@ uint8_t is_in_bin(uint8_t x_pos) {
     return NONE;
 }
 
-const uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
-const uint8_t udg_valla2[] = {0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81};
-const uint8_t udg_valla3[] = {0xff, 0xe1, 0xe1, 0x81, 0x81, 0x81, 0x81, 0x81};
-const uint8_t udg_valla4[] = {0xef, 0x8f, 0x83, 0x83, 0x83, 0x81, 0x81, 0x81};
-
-const uint8_t cubo_down1[] = {0xab, 0xd5, 0xaa, 0xd5, 0xfe, 0x31, 0xe, 0x1};
-const uint8_t cubo_down2[] = {0xff, 0x55, 0xaa, 0x55, 0xaa, 0xff, 0x0, 0xff};
-const uint8_t cubo_down3[] = {0xa9, 0x57, 0xa5, 0x5b, 0xf3, 0x8c, 0xf8, 0x80};
-const uint8_t cubo_middle1[] = {0x9e, 0xa5, 0xa5, 0xba, 0x9d, 0xcf, 0xb1, 0xde};
-const uint8_t cubo_middle2[] = {0x0, 0xff, 0x52, 0xad, 0x52, 0xff, 0xff, 0x0};
-const uint8_t cubo_middle3[] = {0x7d, 0xa9, 0xad, 0x5d, 0xfd, 0x7b, 0x8d, 0x7f};
-
-const uint8_t cubotop1[] = {0x0, 0x0, 0x33, 0x4f, 0x9f, 0xbf, 0x9f, 0xcf};
-const uint8_t cubotop2[] = {0x31, 0xff, 0x0, 0xe0, 0xfc, 0xff, 0xff, 0xff};
-const uint8_t cubotop3[] = {0xb0, 0x58, 0x8b, 0x10, 0x0, 0xf8, 0xff, 0xfb};
-
-uint8_t udg_rope[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xd2};
-unsigned char udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with rope
-unsigned char udg_win3[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-
-const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
-const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
-const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
-
 // todo add udg for numbers (score, lives)
 
 void  print_cubo(uint8_t x) {
@@ -247,7 +223,7 @@ void anim_windows() {
             horizontal_direction = NONE;
             vertical_direction = NONE;
 
-            if (misifu.y < 14 && rand() % 2 == 0) {
+            if (misifu.y < 14 && random_value % 2 == 0) {
                 // detect where to go and todo randomly throw an object
                 if(misifu.x < aux_object.x && (aux_object.x - misifu.x) > 2) {
                     horizontal_direction = LEFT;
@@ -301,67 +277,12 @@ void anim_windows() {
     }
 }
 
-void dog_checks() {
-// time for doggy checks
-    if (misifu.state != FIGHTING && enemy_apears == YES) {
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
-        --x_malo;
-
-        if (x_malo <= 0) {
-            enemy_apears = NONE;
-            x_malo = 33;
-            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
-        }
-
-        if (frame < 2) {
-            dog_offset = DOG1;
-        } else if (frame < 4) {
-            // todo fighting will be 49 + 48
-            dog_offset = DOG2;
-        }
-
-        // detects collission malo->misifu
-        if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
-            enemy_apears = NONE;
-            misifu.state = FIGHTING;
-            misifu.y = FLOOR_Y;
-            anim_frames = 20;
-            // hide cat
-            misifu.x = 33;
-        }
-    }
-
-    if (misifu.state == FIGHTING) {
-        if (frame < 2) {
-            dog_offset = DOGFIGHTING1;
-        } else if (frame < 4) {
-            dog_offset = DOGFIGHTING2;
-        }
-
-        --anim_frames;
-        if (anim_frames < 1) {
-            misifu.state = NONE;
-            misifu.x = 0;
-            enemy_apears = NONE;
-            x_malo = 33;
-            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
-            // todo remove one live
-        } else {
-            sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
-        }
-    }
-    // check if dog should appear
-    if (enemy_apears != YES && first_keypress != NONE) {
-        enemy_apears = random_value % 100;
-    }
-
-}
 
 void check_bincat() {
     // checks if bincat should appear and where
     if (bincat_appears != YES && misifu.in_bin != NONE) {
-        bincat_in_bin = bin_places2[rand() % 6];
+        bincat_in_bin = bin_places2[random_value % 6];
         // less probable
         if(bincat_in_bin != NONE) {
             bincat_appears = YES;
@@ -431,6 +352,24 @@ void detect_fall_in_bin() {
         misifu.state = CAT_IN_ROPE;
         misifu.draw_additional = CAT_IN_ROPE2;
     }
+}
+
+void add_row_clothes() {
+// row 1 clothes
+  row1clothes[0].col = 1;
+  row1clothes[0].sp = add_sprite_clothes1();
+  row1clothes[1].col = 10;
+  row1clothes[1].sp = add_sprite_clothes2();
+  row1clothes[2].col = 18;
+  row1clothes[2].sp = add_sprite_clothes1();
+  row1clothes[3].col = 26;
+  row1clothes[3].sp = add_sprite_clothes2();
+
+  // row 2 clothes
+  row2clothes[0].col = 5;
+  row2clothes[0].sp = add_sprite_clothes1();
+  row2clothes[1].col = 18;
+  row2clothes[1].sp = add_sprite_clothes2();
 }
 
 
