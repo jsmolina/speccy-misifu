@@ -142,10 +142,12 @@ int main()
     random_value = rand();
 
     check_keys();
-    move_clothes();
-    anim_windows();
-    check_bincat();
-    dog_checks();
+    if (level == 1) {
+        move_clothes();
+        anim_windows();
+        check_bincat();
+        dog_checks();
+    }
 
     // decide new FSM draw status
     if (misifu.state == NONE && frame == 3) {
@@ -177,11 +179,15 @@ int main()
             misifu.offset = JUMPINGC1;
         }
 
-        if (misifu.y <= 1) {
-            misifu.y = 1;
-            misifu.state = CAT_IN_ROPE;
-            misifu.draw_additional = CAT_IN_ROPE3;
-        } else if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
+        if (level == 1) {
+            if (misifu.y <= 1) {
+                misifu.y = 1;
+                misifu.state = CAT_IN_ROPE;
+                misifu.draw_additional = CAT_IN_ROPE3;
+            }
+        }
+
+        if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
             misifu.state = FALLING;
             misifu.draw_additional = NONE;
         }
@@ -189,7 +195,9 @@ int main()
         ++misifu.y;
         misifu.offset = JUMPINGC1;
 
-        detect_fall_in_bin();
+        if (level == 1) {
+            detect_fall_in_bin();
+        }
 
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
