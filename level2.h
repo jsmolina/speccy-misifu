@@ -106,7 +106,7 @@ void  print_background_level2() {
   }
   // paint holes
   for (index = 0; index != 14; ++index) {
-    sp1_PrintAt( windows[index].x, windows[index].y, INK_GREEN | PAPER_BLACK, 'A');
+    sp1_PrintAt( windows[index].x, windows[index].y, INK_BLACK | PAPER_GREEN, 'A');
   }
   // todo paint cheese here
 
