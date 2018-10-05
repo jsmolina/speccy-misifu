@@ -43,25 +43,25 @@ void print_room_walls() {
 
   for(index = 0; index != 3; ++index) {
     // upper left
-    sp1_PrintAt( 3 + index, index, INK_RED | PAPER_BLACK, 'H');
+    sp1_PrintAt( 3 + index, index,  INK_BLACK | PAPER_RED, 'H');
     // down left diagonal
-    sp1_PrintAt( 20 - index, index, INK_RED | PAPER_BLACK, 'I');
+    sp1_PrintAt( 20 - index, index, INK_BLACK | PAPER_RED, 'I');
     // upper right
-    sp1_PrintAt( 5 - index, 29 + index, INK_RED | PAPER_BLACK, 'I');
+    sp1_PrintAt( 5 - index, 29 + index,  INK_BLACK | PAPER_RED, 'I');
     // down right
-    sp1_PrintAt( 18 + index, 29 + index, INK_RED | PAPER_BLACK, 'H');
+    sp1_PrintAt( 18 + index, 29 + index,  INK_BLACK | PAPER_RED, 'H');
   }
 
   // draw vertical wall
   for (index = 6; index != 18; ++index) {
-    sp1_PrintAt( index, 3, INK_RED | PAPER_BLACK, 'F');
-    sp1_PrintAt( index, 29, INK_RED | PAPER_BLACK, 'F');
+    sp1_PrintAt( index, 3, INK_BLACK | PAPER_RED, 'F');
+    sp1_PrintAt( index, 29,  INK_BLACK | PAPER_RED, 'F');
   }
 
   // draw horizontal wall
   for (index = 3; index != 29; ++index) {
-    sp1_PrintAt( 5, index, INK_RED | PAPER_BLACK, 'G');
-    sp1_PrintAt( 17, index, INK_RED | PAPER_BLACK, 'G');
+    sp1_PrintAt( 5, index, INK_BLACK | PAPER_RED, 'G');
+    sp1_PrintAt( 17, index, INK_BLACK | PAPER_RED, 'G');
   }
 
   for (index = 8; index != 11; ++index) {
@@ -70,10 +70,10 @@ void print_room_walls() {
 
     // x=8, 9 and y=22-25
     if (index != 10) {
-        sp1_PrintAt( index, 22, INK_RED | PAPER_BLACK, 'N');
-        sp1_PrintAt( index, 23, INK_RED | PAPER_BLACK, 'N');
-        sp1_PrintAt( index, 24, INK_RED | PAPER_BLACK, 'N');
-        sp1_PrintAt( index, 25, INK_RED | PAPER_BLACK, 'N');
+        sp1_PrintAt( index, 22,  PAPER_BLACK, 'N');
+        sp1_PrintAt( index, 23,  PAPER_BLACK, 'N');
+        sp1_PrintAt( index, 24,  PAPER_BLACK, 'N');
+        sp1_PrintAt( index, 25,  PAPER_BLACK, 'N');
     }
 
     sp1_PrintAt( index, 26, INK_RED | PAPER_GREEN, 'J');
