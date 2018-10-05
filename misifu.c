@@ -8,6 +8,7 @@
 #include <defines.h>
 #include <input.h>
 #include "level1.h"
+#include "level2.h"
 
 void check_keys() {
     // checks keys
@@ -110,7 +111,11 @@ int main()
 
   if (level == 1) {
     print_background_lvl1();
+  } else if(level == 2) {
+    print_background_level2();
   }
+
+
 
   misifu.sp = add_sprite_protar1();
   dogr1sp = add_sprite_dogr1();

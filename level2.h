@@ -31,37 +31,6 @@ void define_cheese_holes_pos() {
     windows[13].x = 8; windows[13].y = 4;
 }
 
-void  print_background_level2() {
-  uint8_t j;
-
-
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_RED,
-                  ' ' );
-
-  sp1_Invalidate(&full_screen);
-
-  sp1_TileEntry('A', hole_empty);
-  sp1_TileEntry('B', hole_mouse);
-  sp1_TileEntry('C', cheese2);
-
-  print_room_walls();
-  define_cheese_holes_pos();
-
-  for (index = 3; index != 20; ++index) {
-
-    for (j = index + 1; j != 21; ++j) {
-        sp1_PrintAt( j, index, PAPER_GREEN, 'C');
-    }
-  }
-  // paint holes
-  for (index = 0; index != 14; ++index) {
-    sp1_PrintAt( windows[index].x, windows[index].y, INK_GREEN | PAPER_BLACK, 'A');
-  }
-  // todo paint cheese here
-
-}
-
 
 void print_room_walls() {
   sp1_TileEntry('F', wall1);
@@ -111,6 +80,39 @@ void print_room_walls() {
     sp1_PrintAt( index, 27, INK_RED | PAPER_GREEN, 'J');
   }
 }
+
+void  print_background_level2() {
+  uint8_t j;
+
+
+  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  INK_BLACK | PAPER_RED,
+                  ' ' );
+
+  sp1_Invalidate(&full_screen);
+
+  sp1_TileEntry('A', hole_empty);
+  sp1_TileEntry('B', hole_mouse);
+  sp1_TileEntry('C', cheese2);
+
+  print_room_walls();
+  define_cheese_holes_pos();
+
+  for (index = 3; index != 20; ++index) {
+
+    for (j = index + 1; j != 21; ++j) {
+        sp1_PrintAt( j, index, PAPER_GREEN, 'C');
+    }
+  }
+  // paint holes
+  for (index = 0; index != 14; ++index) {
+    sp1_PrintAt( windows[index].x, windows[index].y, INK_GREEN | PAPER_BLACK, 'A');
+  }
+  // todo paint cheese here
+
+}
+
+
 
 
 #endif

@@ -182,18 +182,14 @@ void move_clothes() {
         --row1_moving;
         if (row1_moving % 2 == 0) {
             // check if clothes should move
-            for (index = 0; index != 4; ++index) {
-                row1clothes[index].col = (row1clothes[index].col + 1) % 30;
-                sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
-
-            }
-
             for (index = 0; index != 2; ++index) {
                 --row2clothes[index].col;
+                row1clothes[index].col = (++row1clothes[index].col) % 30;
 
                 if (row2clothes[index].col < 2) {
                     row2clothes[index].col = 28;
                 }
+                sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
                 sp1_MoveSprAbs(row2clothes[index].sp, &full_screen, 0, 6, row2clothes[index].col, 0, 0);
             }
             // now move cat
@@ -358,12 +354,12 @@ void add_row_clothes() {
 // row 1 clothes
   row1clothes[0].col = 1;
   row1clothes[0].sp = add_sprite_clothes1();
-  row1clothes[1].col = 10;
+  //row1clothes[1].col = 10;
+  //row1clothes[1].sp = add_sprite_clothes2();
+  //row1clothes[2].col = 18;
+  //row1clothes[2].sp = add_sprite_clothes1();
+  row1clothes[1].col = 26;
   row1clothes[1].sp = add_sprite_clothes2();
-  row1clothes[2].col = 18;
-  row1clothes[2].sp = add_sprite_clothes1();
-  row1clothes[3].col = 26;
-  row1clothes[3].sp = add_sprite_clothes2();
 
   // row 2 clothes
   row2clothes[0].col = 5;
