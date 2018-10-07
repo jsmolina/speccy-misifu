@@ -7,9 +7,8 @@
 #include <arch/zx/sp1.h>
 #include <defines.h>
 #include <input.h>
-#include <level1.h>
-
-
+#include "level1.h"
+#include "level2.h"
 
 void check_keys() {
     // checks keys
@@ -43,29 +42,82 @@ void check_keys() {
 }
 
 
-
-
-int main()
-{
-  zx_border(INK_BLACK);
-
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_MAGENTA,
-                  ' ' );
-
-  print_background();
-
-  sp1_Invalidate(&full_screen);
-
+void reset_misifu_position() {
   misifu.in_bin = NONE;
-  misifu.sp = add_sprite_protar1();
   misifu.x = 0;
   misifu.y = FLOOR_Y;
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
   misifu.state = NONE;
+}
 
+void dog_checks() {
+// time for doggy checks
+    if (misifu.state != FIGHTING && enemy_apears == YES) {
+
+        --x_malo;
+
+
+        if (frame < 2) {
+            dog_offset = DOG1;
+        } else if (frame < 4) {
+            // todo fighting will be 49 + 48
+            dog_offset = DOG2;
+        }
+
+        // detects collission malo->misifu
+        if (x_malo <= 0) {
+            enemy_apears = NONE;
+            x_malo = 33;
+        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
+            enemy_apears = NONE;
+            misifu.state = FIGHTING;
+            misifu.y = FLOOR_Y;
+            anim_frames = 20;
+            // hide cat
+            misifu.x = 33;
+        }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+
+    }
+
+    if (misifu.state == FIGHTING) {
+        if (frame < 2) {
+            dog_offset = DOGFIGHTING1;
+        } else if (frame < 4) {
+            dog_offset = DOGFIGHTING2;
+        }
+
+        --anim_frames;
+        if (anim_frames == 0) {
+            reset_misifu_position();
+            enemy_apears = NONE;
+            x_malo = 33;
+            // todo remove one live
+        }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+    }
+    // check if dog should appear
+    if (enemy_apears != YES && first_keypress != NONE) {
+        enemy_apears = random_value % 100;
+    }
+
+}
+
+int main()
+{
+  zx_border(INK_BLACK);
+
+  if (level == 1) {
+    print_background_lvl1();
+  } else if(level == 2) {
+    print_background_level2();
+  }
+
+
+
+  misifu.sp = add_sprite_protar1();
   dogr1sp = add_sprite_dogr1();
   bincatsp = add_sprite_bincat();
 
@@ -74,22 +126,9 @@ int main()
   aux_object.y = 0;
   aux_object.offset = RIGHTC1;
 
+  reset_misifu_position();
 
-  // row 1 clothes
-  row1clothes[0].col = 1;
-  row1clothes[0].sp = add_sprite_clothes1();
-  row1clothes[1].col = 10;
-  row1clothes[1].sp = add_sprite_clothes2();
-  row1clothes[2].col = 18;
-  row1clothes[2].sp = add_sprite_clothes1();
-  row1clothes[3].col = 26;
-  row1clothes[3].sp = add_sprite_clothes2();
-
-  // row 2 clothes
-  row2clothes[0].col = 5;
-  row2clothes[0].sp = add_sprite_clothes1();
-  row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes2();
+  add_row_clothes();
 
   x_malo = 22;
   frame = 0;
@@ -100,13 +139,15 @@ int main()
 
   while(1)
   {
-    random_value = rand() % 500;
+    random_value = rand();
 
     check_keys();
-    move_clothes();
-    anim_windows();
-    check_bincat();
-    dog_checks();
+    if (level == 1) {
+        move_clothes();
+        anim_windows();
+        check_bincat();
+        dog_checks();
+    }
 
     // decide new FSM draw status
     if (misifu.state == NONE && frame == 3) {
@@ -138,11 +179,15 @@ int main()
             misifu.offset = JUMPINGC1;
         }
 
-        if (misifu.y <= 1) {
-            misifu.y = 1;
-            misifu.state = CAT_IN_ROPE;
-            misifu.draw_additional = CAT_IN_ROPE3;
-        } else if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
+        if (level == 1) {
+            if (misifu.y <= 1) {
+                misifu.y = 1;
+                misifu.state = CAT_IN_ROPE;
+                misifu.draw_additional = CAT_IN_ROPE3;
+            }
+        }
+
+        if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
             misifu.state = FALLING;
             misifu.draw_additional = NONE;
         }
@@ -150,32 +195,8 @@ int main()
         ++misifu.y;
         misifu.offset = JUMPINGC1;
 
-        // detect falling over bin
-        if(misifu.y == 16 || misifu.y == 18) {
-            misifu.in_bin = is_in_bin(misifu.x);
-            // store that it is on first bin pos so collide will bincat is easier
-            //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
-            if (misifu.in_bin != NONE) {
-                if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
-                    // stop falling
-                    misifu.state = NONE;
-                    misifu.draw_additional = CAT_IN_BIN;
-                } else if (misifu.in_bin != HIGHER_BIN_X && misifu.y == 18) {
-                    misifu.state = NONE;
-                    misifu.draw_additional = CAT_IN_BIN;
-
-                }
-            }
-        } else if(misifu.y == 13) {
-            misifu.state = NONE;
-            misifu.draw_additional = CAT_IN_FENCE;
-        // now check ropes TODO check ropes clothes are not colliding
-        } else if(misifu.y == 9) {
-            misifu.state = CAT_IN_ROPE;
-            misifu.draw_additional = CAT_IN_ROPE1;
-        } else if(misifu.y == 5) {
-            misifu.state = CAT_IN_ROPE;
-            misifu.draw_additional = CAT_IN_ROPE2;
+        if (level == 1) {
+            detect_fall_in_bin();
         }
 
         if(misifu.y >= FLOOR_Y) {
@@ -206,7 +227,7 @@ int main()
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
 
 
-    z80_delay_ms(50);
+    z80_delay_ms(20);
     sp1_UpdateNow();
   }
 }

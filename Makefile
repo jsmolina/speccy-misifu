@@ -53,3 +53,17 @@ windows:
 	@png2udg ./background/udg_win1.png
 	@png2udg ./background/udg_win2.png
 	@png2udg ./background/udg_win3.png
+
+mouse:
+	@png2udg ./background/hole_empty.png
+	@png2udg ./background/hole_mouse.png
+
+cheese:
+	@png2udg ./background/curtain.png
+	@png2udg ./background/cheese2.png
+
+wall:
+	@png2udg ./background/wall1.png
+	@png2udg ./background/wall2.png
+	@png2udg ./background/wall3.png
+	@png2udg ./background/wall4.png
