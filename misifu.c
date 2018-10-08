@@ -1,5 +1,8 @@
 #pragma output REGISTER_SP = 0xD000
-
+#pragma output CRT_ORG_CODE = 33200      // org of compile
+#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
+#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
+#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
 
 #include <z80.h>
 #include <stdlib.h>
@@ -7,35 +10,54 @@
 #include <arch/zx/sp1.h>
 #include <defines.h>
 #include <input.h>
+#include <intrinsic.h> // for intrinsic_di()
+#include <sound.h> // for bit_beepfx()
+#include <string.h>
 #include "level1.h"
 #include "level2.h"
 
+
+
+unsigned char  joys;
+udk_t          joykeys;        // holds keys selected for keyboard joystick
+
+#ifdef __SDCC
+uint16_t (*joyfunc)(udk_t *);  // pointer to joystick function
+#endif
+
+#ifdef __SCCZ80
+void *joyfunc;                 // pointer to joystick function
+#endif
+
+
+
 void check_keys() {
+    joys = (joyfunc) (&joykeys);
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
+    if ((IN_STICK_UP & joys) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < 28) {
+        if((IN_STICK_RIGHT & joys) && misifu.x < 28) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x>0) {
+        } else if((IN_STICK_LEFT & joys) && misifu.x>0) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if ((IN_STICK_RIGHT & joys)   && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
         if (first_keypress == NONE) {
             first_keypress = random_value;
             srand(first_keypress);
         }
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if((IN_STICK_LEFT & joys)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
+    } else if ((IN_STICK_DOWN & joys)  && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
@@ -105,8 +127,32 @@ void dog_checks() {
 
 }
 
+
+// Function to Set Up Keyboard as a Joystick
+
+void setupkeyboard(void)
+{
+   joyfunc = in_stick_keyboard;
+
+   joykeys.fire  = IN_KEY_SCANCODE_SPACE;
+   joykeys.left  = IN_KEY_SCANCODE_o;
+   joykeys.right = IN_KEY_SCANCODE_p;
+   joykeys.up    = IN_KEY_SCANCODE_q;
+   joykeys.down  = IN_KEY_SCANCODE_a;
+}
+
 int main()
 {
+   // interrupts are already disabled by the CRT
+  im2_init((void *)0xd000); // place z80 in im2 mode with interrupt vector table located at 0xd000
+  memset((void *)0xd000, 0xd1, 257); // initialize 257-byte im2 vector table with all 0xd1 bytes
+  z80_bpoke(0xd1d1, 0xfb);    // POKE instructions at address 0xd1d1 (interrupt service routine entry)
+  z80_bpoke(0xd1d2, 0xed);
+  z80_bpoke(0xd1d3, 0x4d);    // instructions for EI; RETI
+
+  intrinsic_ei();             // enable interrupts without impeding optimizer
+
+
   zx_border(INK_BLACK);
 
   if (level == 1) {
@@ -135,6 +181,12 @@ int main()
   dog_offset = DOG1;
 
   row1_moving = 10;
+
+
+   // Set up Joystick/Keyboard
+
+  joys = 0;
+  setupkeyboard();
 
 
   while(1)

@@ -119,13 +119,13 @@ uint8_t anim_frames_bincat = 0;
 
 uint8_t first_keypress = NONE;
 
-uint8_t index = 0;
+uint8_t idx = 0;
 
 uint8_t random_value = 0;
 
 uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
-uint8_t level = 2;
+uint8_t level = 1;
 
 
 // level 2
