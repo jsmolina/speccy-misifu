@@ -6,6 +6,7 @@
 
 #include <z80.h>
 #include <stdlib.h>
+#include <im2.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <defines.h>
@@ -17,51 +18,38 @@
 #include "level2.h"
 
 
-
-unsigned char  joys;
-udk_t          joykeys;        // holds keys selected for keyboard joystick
-
-#ifdef __SDCC
-uint16_t (*joyfunc)(udk_t *);  // pointer to joystick function
-#endif
-
-#ifdef __SCCZ80
-void *joyfunc;                 // pointer to joystick function
-#endif
-
-
-
-void check_keys() {
-    joys = (joyfunc) (&joykeys);
+M_BEGIN_ISR_LIGHT(isr)
+{
     // checks keys
     // allow jump in directions
-    if ((IN_STICK_UP & joys) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if((IN_STICK_RIGHT & joys) && misifu.x < 28) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < 28) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if((IN_STICK_LEFT & joys) && misifu.x>0) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x>0) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if ((IN_STICK_RIGHT & joys)   && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
         if (first_keypress == NONE) {
             first_keypress = random_value;
             srand(first_keypress);
         }
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if((IN_STICK_LEFT & joys)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
-    } else if ((IN_STICK_DOWN & joys)  && misifu.y < FLOOR_Y) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
 }
+M_END_ISR_LIGHT
 
 
 void reset_misifu_position() {
@@ -128,18 +116,6 @@ void dog_checks() {
 }
 
 
-// Function to Set Up Keyboard as a Joystick
-
-void setupkeyboard(void)
-{
-   joyfunc = in_stick_keyboard;
-
-   joykeys.fire  = IN_KEY_SCANCODE_SPACE;
-   joykeys.left  = IN_KEY_SCANCODE_o;
-   joykeys.right = IN_KEY_SCANCODE_p;
-   joykeys.up    = IN_KEY_SCANCODE_q;
-   joykeys.down  = IN_KEY_SCANCODE_a;
-}
 
 int main()
 {
@@ -149,6 +125,7 @@ int main()
   z80_bpoke(0xd1d1, 0xfb);    // POKE instructions at address 0xd1d1 (interrupt service routine entry)
   z80_bpoke(0xd1d2, 0xed);
   z80_bpoke(0xd1d3, 0x4d);    // instructions for EI; RETI
+  z80_wpoke(0xd1d2, (unsigned int)isr);
 
   intrinsic_ei();             // enable interrupts without impeding optimizer
 
