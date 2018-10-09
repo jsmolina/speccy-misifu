@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
-#include <alloc/balloc.h>
 #include <input.h>
 #include <intrinsic.h> // for intrinsic_di()
 #include <sound.h> // for bit_beepfx()
