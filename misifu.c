@@ -151,6 +151,7 @@ int main()
 
   row1_moving = 10;
 
+  intrinsic_ei();
 
   while(1)
   {
@@ -244,7 +245,6 @@ int main()
 
 
     wait();
-    intrinsic_halt();   // inline halt without impeding optimizer
     sp1_UpdateNow();
   }
 }
