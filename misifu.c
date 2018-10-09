@@ -8,16 +8,15 @@
 #include <stdlib.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
+#include <alloc/balloc.h>
 #include <input.h>
 #include <intrinsic.h> // for intrinsic_di()
 #include <sound.h> // for bit_beepfx()
 #include <string.h>
+#include "int.h"
 #include "level1.h"
 #include "level2.h"
 #include "defines.h"
-
-
-uint8_t cntr;
 
 
 void check_keys()
@@ -122,6 +121,9 @@ void dog_checks() {
 int main()
 {
   zx_border(INK_BLACK);
+
+  // interrupt mode 2
+  setup_int();
 
   if (level == 1) {
     print_background_lvl1();
@@ -242,7 +244,8 @@ int main()
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
 
 
-    z80_delay_ms(20);
+    wait();
+    intrinsic_halt();   // inline halt without impeding optimizer
     sp1_UpdateNow();
   }
 }
