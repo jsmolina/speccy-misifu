@@ -1,11 +1,8 @@
-#pragma output REGISTER_SP = 0xFF58
-#pragma output CLIB_MALLOC_HEAP_SIZE = -0xFBFA
-
-//#pragma output REGISTER_SP = 0xD000
-//#pragma output CRT_ORG_CODE = 32000      // org of compile
-//#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
-//#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
-//#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
+#pragma output REGISTER_SP = 0xD000
+#pragma output CRT_ORG_CODE = 32000      // org of compile
+#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
+#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
+#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
 
 #include <z80.h>
 #include <stdlib.h>
@@ -18,38 +15,10 @@
 #include "level1.h"
 #include "level2.h"
 #include "defines.h"
-#include <im2.h>
-
-#define TABLE_HIGH_BYTE        ((unsigned int)0xfc)
-#define JUMP_POINT_HIGH_BYTE   ((unsigned int)0xfb)
-
-#define UI_256                 ((unsigned int)256)
-
-#define TABLE_ADDR             ((void*)(TABLE_HIGH_BYTE*UI_256))
-#define JUMP_POINT             ((unsigned char*)( (unsigned int)(JUMP_POINT_HIGH_BYTE*UI_256) + JUMP_POINT_HIGH_BYTE ))
 
 
 uint8_t cntr;
 
-IM2_DEFINE_ISR(isr)
-{
-    ++cntr;
-    if (cntr >= 4) {
-        cntr = 0;
-    }
-
-    switch (cntr) {
-    case 0:
-        // It's a good place to animate something
-        break;
-    case 1:
-        break;
-    case 2:
-        break;
-    case 3:
-        break;
-    }
-}
 
 void check_keys()
 {
@@ -152,16 +121,6 @@ void dog_checks() {
 
 int main()
 {
-   memset( TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257 );
-
-  z80_bpoke( JUMP_POINT,   195 );
-  z80_wpoke( JUMP_POINT+1, (unsigned int)isr );
-
-  im2_init( TABLE_ADDR );
-
-  intrinsic_ei();
-
-
   zx_border(INK_BLACK);
 
   if (level == 1) {
@@ -194,6 +153,8 @@ int main()
 
   while(1)
   {
+    check_keys();
+
     random_value = rand();
 
     if (level == 1) {
