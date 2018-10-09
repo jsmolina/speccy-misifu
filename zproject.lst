@@ -1,3 +1,5 @@
 @build/sprites.lst
+@ay/ay.lst
 int.c
 misifu.c
+game_ay
