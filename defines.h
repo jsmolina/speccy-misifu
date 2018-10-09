@@ -47,12 +47,6 @@
 
 #define MAX_X 32
 
-#define IN_KEY_SCANCODE_o 0x2df
-#define IN_KEY_SCANCODE_p 0x1df
-#define IN_KEY_SCANCODE_q 0x1fb
-#define IN_KEY_SCANCODE_a 0x1fd
-#define IN_KEY_SCANCODE_SPACE 0x017f
-
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 

@@ -1,7 +1,7 @@
 #ifndef _LEVEL1
 #define _LEVEL1
 
-#include <defines.h>
+#include "defines.h"
 #include <z80.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>

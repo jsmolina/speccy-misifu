@@ -1,24 +1,57 @@
-#pragma output REGISTER_SP = 0xD000
-#pragma output CRT_ORG_CODE = 33200      // org of compile
-#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
-#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
-#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
+#pragma output REGISTER_SP = 0xFF58
+#pragma output CLIB_MALLOC_HEAP_SIZE = -0xFBFA
+
+//#pragma output REGISTER_SP = 0xD000
+//#pragma output CRT_ORG_CODE = 32000      // org of compile
+//#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
+//#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
+//#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
 
 #include <z80.h>
 #include <stdlib.h>
-#include <im2.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
-#include <defines.h>
 #include <input.h>
 #include <intrinsic.h> // for intrinsic_di()
 #include <sound.h> // for bit_beepfx()
 #include <string.h>
 #include "level1.h"
 #include "level2.h"
+#include "defines.h"
+#include <im2.h>
+
+#define TABLE_HIGH_BYTE        ((unsigned int)0xfc)
+#define JUMP_POINT_HIGH_BYTE   ((unsigned int)0xfb)
+
+#define UI_256                 ((unsigned int)256)
+
+#define TABLE_ADDR             ((void*)(TABLE_HIGH_BYTE*UI_256))
+#define JUMP_POINT             ((unsigned char*)( (unsigned int)(JUMP_POINT_HIGH_BYTE*UI_256) + JUMP_POINT_HIGH_BYTE ))
 
 
-M_BEGIN_ISR_LIGHT(isr)
+uint8_t cntr;
+
+IM2_DEFINE_ISR(isr)
+{
+    ++cntr;
+    if (cntr >= 4) {
+        cntr = 0;
+    }
+
+    switch (cntr) {
+    case 0:
+        // It's a good place to animate something
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    }
+}
+
+void check_keys()
 {
     // checks keys
     // allow jump in directions
@@ -49,7 +82,7 @@ M_BEGIN_ISR_LIGHT(isr)
         misifu.in_bin = NONE;
     }
 }
-M_END_ISR_LIGHT
+
 
 
 void reset_misifu_position() {
@@ -119,15 +152,14 @@ void dog_checks() {
 
 int main()
 {
-   // interrupts are already disabled by the CRT
-  im2_init((void *)0xd000); // place z80 in im2 mode with interrupt vector table located at 0xd000
-  memset((void *)0xd000, 0xd1, 257); // initialize 257-byte im2 vector table with all 0xd1 bytes
-  z80_bpoke(0xd1d1, 0xfb);    // POKE instructions at address 0xd1d1 (interrupt service routine entry)
-  z80_bpoke(0xd1d2, 0xed);
-  z80_bpoke(0xd1d3, 0x4d);    // instructions for EI; RETI
-  z80_wpoke(0xd1d2, (unsigned int)isr);
+   memset( TABLE_ADDR, JUMP_POINT_HIGH_BYTE, 257 );
 
-  intrinsic_ei();             // enable interrupts without impeding optimizer
+  z80_bpoke( JUMP_POINT,   195 );
+  z80_wpoke( JUMP_POINT+1, (unsigned int)isr );
+
+  im2_init( TABLE_ADDR );
+
+  intrinsic_ei();
 
 
   zx_border(INK_BLACK);
@@ -160,17 +192,10 @@ int main()
   row1_moving = 10;
 
 
-   // Set up Joystick/Keyboard
-
-  joys = 0;
-  setupkeyboard();
-
-
   while(1)
   {
     random_value = rand();
 
-    check_keys();
     if (level == 1) {
         move_clothes();
         anim_windows();
