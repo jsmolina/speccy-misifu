@@ -1,16 +1,25 @@
 #pragma output REGISTER_SP = 0xD000
-
+#pragma output CRT_ORG_CODE = 32000      // org of compile
+#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
+#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
+#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
 
 #include <z80.h>
 #include <stdlib.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
-#include <defines.h>
 #include <input.h>
+#include <intrinsic.h> // for intrinsic_di()
+#include <sound.h> // for bit_beepfx()
+#include <string.h>
+#include "int.h"
 #include "level1.h"
 #include "level2.h"
+#include "defines.h"
 
-void check_keys() {
+
+void check_keys()
+{
     // checks keys
     // allow jump in directions
     if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
@@ -40,6 +49,7 @@ void check_keys() {
         misifu.in_bin = NONE;
     }
 }
+
 
 
 void reset_misifu_position() {
@@ -105,9 +115,14 @@ void dog_checks() {
 
 }
 
+
+
 int main()
 {
   zx_border(INK_BLACK);
+
+  // interrupt mode 2
+  setup_int();
 
   if (level == 1) {
     print_background_lvl1();
@@ -139,9 +154,10 @@ int main()
 
   while(1)
   {
+    check_keys();
+
     random_value = rand();
 
-    check_keys();
     if (level == 1) {
         move_clothes();
         anim_windows();
@@ -227,7 +243,8 @@ int main()
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
 
 
-    z80_delay_ms(20);
+    wait();
+    intrinsic_halt();   // inline halt without impeding optimizer
     sp1_UpdateNow();
   }
 }

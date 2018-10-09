@@ -2,7 +2,7 @@
 #define _LEVEL2
 // AKA RATS ROOM
 
-#include <defines.h>
+#include "defines.h"
 
 /**
 Returns 1 if x,y are in window position
@@ -41,43 +41,43 @@ void print_room_walls() {
   sp1_TileEntry('J', curtain);
   sp1_TileEntry('N', udg_win2); // full square
 
-  for(index = 0; index != 3; ++index) {
+  for(idx = 0; idx != 3; ++idx) {
     // upper left
-    sp1_PrintAt( 3 + index, index,  INK_BLACK | PAPER_RED, 'H');
+    sp1_PrintAt( 3 + idx, idx,  INK_BLACK | PAPER_RED, 'H');
     // down left diagonal
-    sp1_PrintAt( 20 - index, index, INK_BLACK | PAPER_RED, 'I');
+    sp1_PrintAt( 20 - idx, idx, INK_BLACK | PAPER_RED, 'I');
     // upper right
-    sp1_PrintAt( 5 - index, 29 + index,  INK_BLACK | PAPER_RED, 'I');
+    sp1_PrintAt( 5 - idx, 29 + idx,  INK_BLACK | PAPER_RED, 'I');
     // down right
-    sp1_PrintAt( 18 + index, 29 + index,  INK_BLACK | PAPER_RED, 'H');
+    sp1_PrintAt( 18 + idx, 29 + idx,  INK_BLACK | PAPER_RED, 'H');
   }
 
   // draw vertical wall
-  for (index = 6; index != 18; ++index) {
-    sp1_PrintAt( index, 3, INK_BLACK | PAPER_RED, 'F');
-    sp1_PrintAt( index, 29,  INK_BLACK | PAPER_RED, 'F');
+  for (idx = 6; idx != 18; ++idx) {
+    sp1_PrintAt( idx, 3, INK_BLACK | PAPER_RED, 'F');
+    sp1_PrintAt( idx, 29,  INK_BLACK | PAPER_RED, 'F');
   }
 
   // draw horizontal wall
-  for (index = 3; index != 29; ++index) {
-    sp1_PrintAt( 5, index, INK_BLACK | PAPER_RED, 'G');
-    sp1_PrintAt( 17, index, INK_BLACK | PAPER_RED, 'G');
+  for (idx = 3; idx != 29; ++idx) {
+    sp1_PrintAt( 5, idx, INK_BLACK | PAPER_RED, 'G');
+    sp1_PrintAt( 17, idx, INK_BLACK | PAPER_RED, 'G');
   }
 
-  for (index = 8; index != 11; ++index) {
-    sp1_PrintAt( index, 20, INK_RED | PAPER_GREEN, 'J');
-    sp1_PrintAt( index, 21, INK_RED | PAPER_GREEN, 'J');
+  for (idx = 8; idx != 11; ++idx) {
+    sp1_PrintAt( idx, 20, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( idx, 21, INK_RED | PAPER_GREEN, 'J');
 
     // x=8, 9 and y=22-25
-    if (index != 10) {
-        sp1_PrintAt( index, 22,  PAPER_BLACK, 'N');
-        sp1_PrintAt( index, 23,  PAPER_BLACK, 'N');
-        sp1_PrintAt( index, 24,  PAPER_BLACK, 'N');
-        sp1_PrintAt( index, 25,  PAPER_BLACK, 'N');
+    if (idx != 10) {
+        sp1_PrintAt( idx, 22,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, 23,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, 24,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, 25,  PAPER_BLACK, 'N');
     }
 
-    sp1_PrintAt( index, 26, INK_RED | PAPER_GREEN, 'J');
-    sp1_PrintAt( index, 27, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( idx, 26, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( idx, 27, INK_RED | PAPER_GREEN, 'J');
   }
 }
 
@@ -98,15 +98,15 @@ void  print_background_level2() {
   print_room_walls();
   define_cheese_holes_pos();
 
-  for (index = 3; index != 20; ++index) {
+  for (idx = 3; idx != 20; ++idx) {
 
-    for (j = index + 1; j != 21; ++j) {
-        sp1_PrintAt( j, index, PAPER_GREEN, 'C');
+    for (j = idx + 1; j != 21; ++j) {
+        sp1_PrintAt( j, idx, PAPER_GREEN, 'C');
     }
   }
   // paint holes
-  for (index = 0; index != 14; ++index) {
-    sp1_PrintAt( windows[index].x, windows[index].y, INK_BLACK | PAPER_GREEN, 'A');
+  for (idx = 0; idx != 14; ++idx) {
+    sp1_PrintAt( windows[idx].x, windows[idx].y, INK_BLACK | PAPER_GREEN, 'A');
   }
   // todo paint cheese here
 

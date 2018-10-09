@@ -47,12 +47,6 @@
 
 #define MAX_X 32
 
-#define IN_KEY_SCANCODE_o 0x2df
-#define IN_KEY_SCANCODE_p 0x1df
-#define IN_KEY_SCANCODE_q 0x1fb
-#define IN_KEY_SCANCODE_a 0x1fd
-#define IN_KEY_SCANCODE_SPACE 0x017f
-
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 
@@ -119,13 +113,13 @@ uint8_t anim_frames_bincat = 0;
 
 uint8_t first_keypress = NONE;
 
-uint8_t index = 0;
+uint8_t idx = 0;
 
 uint8_t random_value = 0;
 
 uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
-uint8_t level = 2;
+uint8_t level = 1;
 
 
 // level 2

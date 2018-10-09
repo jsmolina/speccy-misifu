@@ -1,7 +1,7 @@
 #ifndef _LEVEL1
 #define _LEVEL1
 
-#include <defines.h>
+#include "defines.h"
 #include <z80.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
@@ -182,15 +182,15 @@ void move_clothes() {
         --row1_moving;
         if (row1_moving % 2 == 0) {
             // check if clothes should move
-            for (index = 0; index != 2; ++index) {
-                --row2clothes[index].col;
-                row1clothes[index].col = (++row1clothes[index].col) % 30;
+            for (idx = 0; idx != 2; ++idx) {
+                --row2clothes[idx].col;
+                row1clothes[idx].col = (++row1clothes[idx].col) % 30;
 
-                if (row2clothes[index].col < 2) {
-                    row2clothes[index].col = 28;
+                if (row2clothes[idx].col < 2) {
+                    row2clothes[idx].col = 28;
                 }
-                sp1_MoveSprAbs(row1clothes[index].sp, &full_screen, 0, 10, row1clothes[index].col, 0, 0);
-                sp1_MoveSprAbs(row2clothes[index].sp, &full_screen, 0, 6, row2clothes[index].col, 0, 0);
+                sp1_MoveSprAbs(row1clothes[idx].sp, &full_screen, 0, 10, row1clothes[idx].col, 0, 0);
+                sp1_MoveSprAbs(row2clothes[idx].sp, &full_screen, 0, 6, row2clothes[idx].col, 0, 0);
             }
             // now move cat
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
