@@ -18,7 +18,7 @@ https://github.com/jsmolina/png2sp1sprite
 See the Makefile as it contains udg and sprites lines.
 
 # Current status
-See youtube  https://www.youtube.com/watch?v=q3EuXRF4f6M
+See youtube  https://www.youtube.com/watch?v=Hrh6m7NBaZs
 
 
 # To improve
