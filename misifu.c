@@ -247,7 +247,7 @@ int main()
     // paint 'prota here'
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
 
-    if (timer % 50 == 0) {
+    if (tick % 50 == 0) {
        audio_ingame();
     }
 
