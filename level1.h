@@ -70,9 +70,9 @@ void  print_cubo(uint8_t x) {
     sp1_PrintAt( y, x + 1, PAPER_CYAN, 'V');
     sp1_PrintAt( y, x + 2, PAPER_CYAN, 'V');
   }
-  sp1_PrintAt(y, x, PAPER_CYAN, 'W');
-  sp1_PrintAt(y, x + 1, PAPER_CYAN, 'W');
-  sp1_PrintAt(y, x + 2, PAPER_CYAN, 'X');
+  sp1_PrintAt(y, x, INK_MAGENTA | PAPER_CYAN, 'W');
+  sp1_PrintAt(y, x + 1, INK_MAGENTA | PAPER_CYAN, 'W');
+  sp1_PrintAt(y, x + 2, INK_MAGENTA | PAPER_CYAN, 'X');
 }
 
 
@@ -127,11 +127,11 @@ void  print_background_lvl1() {
       count = is_in_bin(x);
       if (count == NONE) {
           if (x % 2 == 0) {
-             sp1_PrintAt(15, x,  PAPER_CYAN, 'W');
+             sp1_PrintAt(15, x,  INK_MAGENTA | PAPER_CYAN, 'W');
           } else if (x % 3 == 0) {
-            sp1_PrintAt(15, x,  PAPER_CYAN, 'Y');
+            sp1_PrintAt(15, x,  INK_MAGENTA |PAPER_CYAN, 'Y');
           } else {
-             sp1_PrintAt(15, x,  PAPER_CYAN, 'X');
+             sp1_PrintAt(15, x,  INK_MAGENTA |PAPER_CYAN, 'X');
           }
 
           for (y=16; y!=21; ++y)
