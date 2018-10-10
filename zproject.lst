@@ -3,3 +3,4 @@
 int.c
 misifu.c
 game_ay
+game_audio.c
