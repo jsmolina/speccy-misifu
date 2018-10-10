@@ -16,6 +16,8 @@
 #include "level1.h"
 #include "level2.h"
 #include "defines.h"
+#include "game_audio.h"
+
 
 
 void check_keys()
@@ -166,6 +168,8 @@ int main()
         dog_checks();
     }
 
+    frame = tick % 4;
+
     // decide new FSM draw status
     if (misifu.state == NONE && frame == 3) {
         misifu.offset = BORED;
@@ -238,11 +242,14 @@ int main()
     }
 
 
-    frame = (frame + 1) % 4;
+    //frame = (frame + 1) % 4;
 
     // paint 'prota here'
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
 
+    if (timer % 50 == 0) {
+       audio_ingame();
+    }
 
     wait();
     sp1_UpdateNow();

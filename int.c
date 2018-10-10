@@ -4,7 +4,6 @@
 #include <string.h>
 #include <z80.h>
 #include "int.h"
-#include "game_audio.h"
 
 // timer
 
@@ -22,7 +21,6 @@ wait(void)
 {
    while (abs(tick - timer) < WFRAMES)
       intrinsic_halt();
-      audio_ingame();
 
    timer = tick;
 }
