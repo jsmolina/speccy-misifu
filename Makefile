@@ -1,7 +1,7 @@
 compile:
 	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -create-app
 	#
-	#zcc +zx -vn -SO3 -clib=sdcc_iy -pragma-include:zpragma.inc -startup=31 misifu.c ./build/protar.asm ./build/dogr.asm ./build/bincat.asm ./build/clothes.asm ./build/clothes2.asm ./build/auxiliar.asm -o misifu -create-app
+	#zcc +zx -vn -SO3 -Czscreen.scr -clib=sdcc_iy -pragma-include:zpragma.inc -startup=31 misifu.c ./build/protar.asm ./build/dogr.asm ./build/bincat.asm ./build/clothes.asm ./build/clothes2.asm ./build/auxiliar.asm -o misifu -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map
@@ -10,7 +10,7 @@ compile:
 	rm -f zcc_proj.lst
 
 develop:
-	zcc +zx -v -clib=sdcc_iy -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu -pragma-include:zpragma.inc -create-app
+	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu -pragma-include:zpragma.inc -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map
