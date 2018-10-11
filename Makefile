@@ -81,3 +81,12 @@ wall:
 hearts:
 	@png2udg ./background/heart1.png
 	@png2udg ./background/heart2.png
+	@png2udg ./background/cupid11.png
+	@png2udg ./background/cupid12.png
+	@png2udg ./background/cupid13.png
+	@png2udg ./background/cupid21.png
+	@png2udg ./background/cupid22.png
+	@png2udg ./background/cupid23.png
+	@png2udg ./background/cupid31.png
+	@png2udg ./background/cupid32.png
+	@png2udg ./background/cupid33.png
