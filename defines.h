@@ -92,6 +92,15 @@ extern uint8_t level;
 // level 3 hearts
 extern const uint8_t heart1[];
 extern const uint8_t heart2[];
+extern const uint8_t cupid11[];
+extern const uint8_t cupid12[];
+extern const uint8_t cupid13[];
+extern const uint8_t cupid21[];
+extern const uint8_t cupid22[];
+extern const uint8_t cupid23[];
+extern const uint8_t cupid31[];
+extern const uint8_t cupid32[];
+extern const uint8_t cupid33[];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];

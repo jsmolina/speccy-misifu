@@ -15,6 +15,7 @@
 #include "int.h"
 #include "level1.h"
 #include "level2.h"
+#include "level3.h"
 #include "defines.h"
 
 
@@ -128,6 +129,8 @@ int main()
     print_background_lvl1();
   } else if(level == 2) {
     print_background_level2();
+  } else if(level == 3) {
+    print_background_level3();
   }
 
 
