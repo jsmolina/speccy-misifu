@@ -27,48 +27,48 @@ uint8_t is_in_bin(uint8_t x_pos) {
 // todo add udg for numbers (score, lives)
 
 void  print_cubo(uint8_t x) {
-  uint8_t y;
+  uint8_t idx_j;
 
-  y = 22;
-  sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'L');
-  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
-  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
-  --y;
-  sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+  idx_j = 22;
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'L');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
+  --idx_j;
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
 
-  --y;
-  sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
-  // only second bin is higher
+  --idx_j;
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+  // onlidx_j second bin is higher
   if(x == HIGHER_BIN_X) {
-      --y;
-      sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+      --idx_j;
+      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
+      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
 
-      --y;
-      sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+      --idx_j;
+      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
+      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
   }
 
-  --y;
-  sp1_PrintAt(y, x, INK_BLACK | PAPER_MAGENTA, 'I');
-  sp1_PrintAt(y, x + 1, INK_BLACK | PAPER_MAGENTA, 'J');
-  sp1_PrintAt(y, x + 2, INK_BLACK | PAPER_MAGENTA, 'K');
+  --idx_j;
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'I');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'J');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'K');
 
-  --y;
-  for (y = y; y != 15; y--) {
-    sp1_PrintAt( y, x, PAPER_CYAN, 'V');
-    sp1_PrintAt( y, x + 1, PAPER_CYAN, 'V');
-    sp1_PrintAt( y, x + 2, PAPER_CYAN, 'V');
+  --idx_j;
+  for (idx_j = idx_j; idx_j != 15; --idx_j) {
+    sp1_PrintAt( idx_j, x, PAPER_CYAN, 'V');
+    sp1_PrintAt( idx_j, x + 1, PAPER_CYAN, 'V');
+    sp1_PrintAt( idx_j, x + 2, PAPER_CYAN, 'V');
   }
-  sp1_PrintAt(y, x, PAPER_CYAN, 'W');
-  sp1_PrintAt(y, x + 1, PAPER_CYAN, 'W');
-  sp1_PrintAt(y, x + 2, PAPER_CYAN, 'X');
+  sp1_PrintAt(idx_j, x, PAPER_CYAN, 'W');
+  sp1_PrintAt(idx_j, x + 1, PAPER_CYAN, 'W');
+  sp1_PrintAt(idx_j, x + 2, PAPER_CYAN, 'X');
 }
 
 
