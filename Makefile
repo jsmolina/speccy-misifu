@@ -77,3 +77,7 @@ wall:
 	@png2udg ./background/wall2.png
 	@png2udg ./background/wall3.png
 	@png2udg ./background/wall4.png
+
+hearts:
+	@png2udg ./background/heart1.png
+	@png2udg ./background/heart2.png

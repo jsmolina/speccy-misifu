@@ -1,3 +1,7 @@
 @build/sprites.lst
 int.c
+defines.c
+level3.c
+level2.c
+level1.c
 misifu.c
