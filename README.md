@@ -27,3 +27,7 @@ See youtube  https://www.youtube.com/watch?v=Hrh6m7NBaZs
 Contributions/suggestions are more than welcome!
 
 ![Image of Misifu](https://user-images.githubusercontent.com/447481/45633520-45009580-baa0-11e8-9383-1fa9f4f9dbc4.png)
+
+# Collaborators
+
+* ER on the graphic material.
