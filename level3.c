@@ -48,8 +48,11 @@ void  print_background_level3() {
   }
 
     sp1_PrintAt( 23, 6, INK_RED | PAPER_GREEN, 'B');
-
+  // frame = floor
+  frame = 0;
   for(idx=23; idx > 3; idx = idx - 4) {
+    ++frame;
+    // todo use pointer to var floor_holes,floor_holes1, floor_holes2, floor_holes3, floor_holes4
      for (idx_j=4; idx_j != 28; ++idx_j ) {
         sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
      }
