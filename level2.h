@@ -17,7 +17,7 @@ extern void print_room_walls();
 
 extern void  print_background_level2();
 
-
+extern void detect_fall_in_hole_or_curtain();
 
 
 #endif

@@ -23,7 +23,7 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min[level]) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min[level]) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
@@ -35,14 +35,14 @@ void check_keys()
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         if (first_keypress == NONE) {
-            first_keypress = random_value;
+            first_keypress = tick;
             srand(first_keypress);
         }
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
@@ -216,6 +216,10 @@ int main()
 
         if (level == 1) {
             detect_fall_in_bin();
+        } else if (level == 2) {
+            detect_fall_in_hole_or_curtain();
+        } else if (level == 3) {
+            detect_fall_in_hearts();
         }
 
         if(misifu.y >= FLOOR_Y) {

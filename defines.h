@@ -18,6 +18,7 @@
 #define CAT_IN_ROPE1 7
 #define CAT_IN_ROPE2 8
 #define CAT_IN_ROPE3 9
+#define CAT_ON_HIGH 10
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
@@ -104,6 +105,12 @@ extern const uint8_t cupid23[];
 extern const uint8_t cupid31[];
 extern const uint8_t cupid32[];
 extern const uint8_t cupid33[];
+
+extern uint8_t floor_holes4[];
+extern uint8_t floor_holes3[];
+extern uint8_t floor_holes2[];
+extern uint8_t floor_holes1[];
+extern uint8_t floor_holes[];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];

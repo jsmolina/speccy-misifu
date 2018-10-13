@@ -57,6 +57,28 @@ void  print_background_level3() {
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
+}
 
 
+void detect_fall_in_hearts() {
+    // heart levels are in 19, 15, 11, 7
+    if (misifu.state == FALLING) {
+        if(misifu.y == 17) {
+            misifu.state = CAT_ON_HIGH;
+            misifu.draw_additional = CAT_IN_ROPE;
+            misifu.offset = BORED;
+        } else if(misifu.y == 13) {
+            misifu.state = CAT_ON_HIGH;
+            misifu.draw_additional = CAT_IN_ROPE1;
+            misifu.offset = BORED;
+        } else if(misifu.y == 9) {
+            misifu.state = CAT_ON_HIGH;
+            misifu.draw_additional = CAT_IN_ROPE2;
+            misifu.offset = BORED;
+        } else if(misifu.y == 5) {
+            misifu.state = CAT_ON_HIGH;
+            misifu.draw_additional = CAT_IN_ROPE3;
+            misifu.offset = BORED;
+        }
+    }
 }

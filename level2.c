@@ -110,7 +110,9 @@ void  print_background_level2() {
 
 }
 
-
+void detect_fall_in_hole_or_curtain() {
+    // todo implement
+}
 
 
 #endif

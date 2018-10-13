@@ -5,8 +5,8 @@
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
-uint8_t level_x_max[4] = {0, 28, 28, 24};
-uint8_t level_x_min[4] = {0, 0,  0,  4};
+uint8_t level_x_max[4] = {0, 28, 28, 25};
+uint8_t level_x_min[4] = {0, 0,  0,  3};
 
 
 struct prota misifu;
@@ -81,7 +81,7 @@ uint8_t random_value = 0;
 
 uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
-uint8_t level = 3;
+uint8_t level = 1;
 
 // level 3 hearts
 const uint8_t heart1[] = {0x0, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x0, 0x0};
@@ -95,6 +95,13 @@ const uint8_t cupid23[] = {0xd8, 0x9c, 0x8e, 0xee, 0xfe, 0xe6, 0x76, 0x1e};
 const uint8_t cupid31[] = {0x3f, 0x6e, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 const uint8_t cupid32[] = {0x78, 0x60, 0x60, 0xe0, 0xe0, 0x0, 0x0, 0x0};
 const uint8_t cupid33[] = {0x7e, 0xf8, 0xc0, 0x0, 0x0, 0x0, 0x0, 0x0};
+
+// hearts holes
+uint8_t floor_hole4[24] =  {1,1,1,1,1,1,0,1,1,0,1,1,0,0,1,1,0,1,1,0,0,0,1,1};
+uint8_t floor_holes3[24] = {0,0,1,1,0,0,0,0,0,0,0,1,0,1,0,1,1,0,1,0,1,0,0,0};
+uint8_t floor_holes2[24] = {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1};
+uint8_t floor_holes1[24] = {0,0,0,1,1,1,0,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1};
+uint8_t floor_holes[24] =  {0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1};
 
 // level 2 cheese
 const uint8_t hole_empty[] = {0x3c, 0x7e, 0xff, 0xff, 0xff, 0xff, 0x7e, 0x3c};
