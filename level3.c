@@ -55,5 +55,8 @@ void  print_background_level3() {
      }
   }
 
+  misifu.x = 4;
+  misifu.y = FLOOR_Y;
+
 
 }

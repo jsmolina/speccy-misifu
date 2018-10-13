@@ -23,26 +23,26 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min[level]) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < 28) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max[level]) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x>0) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min[level]) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
         if (first_keypress == NONE) {
             first_keypress = random_value;
             srand(first_keypress);
         }
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
@@ -125,16 +125,6 @@ int main()
   // interrupt mode 2
   setup_int();
 
-  if (level == 1) {
-    print_background_lvl1();
-  } else if(level == 2) {
-    print_background_level2();
-  } else if(level == 3) {
-    print_background_level3();
-  }
-
-
-
   misifu.sp = add_sprite_protar1();
   dogr1sp = add_sprite_dogr1();
   bincatsp = add_sprite_bincat();
@@ -153,6 +143,15 @@ int main()
   dog_offset = DOG1;
 
   row1_moving = 10;
+
+
+  if (level == 1) {
+    print_background_lvl1();
+  } else if(level == 2) {
+    print_background_level2();
+  } else if(level == 3) {
+    print_background_level3();
+  }
 
   intrinsic_ei();
 
@@ -189,10 +188,10 @@ int main()
     } else if (misifu.state == JUMPING) {
         --misifu.y;
 
-        if(misifu.draw_additional == JUMP_RIGHT) {
+        if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max[level]) {
             ++misifu.x;
             misifu.offset = JRIGHTC1;
-        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > 0) {
+        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min[level]) {
             --misifu.x;
             misifu.offset = JLEFTC1;
         } else {

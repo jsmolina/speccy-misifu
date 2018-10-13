@@ -5,6 +5,9 @@
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
+uint8_t level_x_max[4] = {0, 28, 28, 24};
+uint8_t level_x_min[4] = {0, 0,  0,  4};
+
 
 struct prota misifu;
 struct freesprite aux_object;

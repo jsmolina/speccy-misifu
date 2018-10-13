@@ -61,6 +61,9 @@ extern unsigned char udg_win2[];
 
 extern struct sp1_Rect full_screen;
 
+extern uint8_t level_x_max[];
+extern uint8_t level_x_min[];
+
 // shared vars
 extern uint8_t x, y;
 
