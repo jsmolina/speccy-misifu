@@ -16,6 +16,8 @@
 #include "level1.h"
 #include "level2.h"
 #include "defines.h"
+#include "game_audio.h"
+#include "game_ay.h"
 
 
 void check_keys()
@@ -124,6 +126,10 @@ int main()
   // interrupt mode 2
   setup_int();
 
+  // reset ay
+  ay_reset();
+
+
   if (level == 1) {
     print_background_lvl1();
   } else if(level == 2) {
@@ -156,6 +162,9 @@ int main()
   while(1)
   {
     check_keys();
+
+    // testing directly, later move to asr
+    audio_ingame();
 
     random_value = rand();
 

@@ -1,7 +1,10 @@
 @build/sprites.lst
+@ay/ay.lst
 int.c
 defines.c
 level3.c
 level2.c
 level1.c
 misifu.c
+game_ay
+game_audio.c
