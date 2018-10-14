@@ -23,6 +23,6 @@
 
 
 void audio_ingame(void) {
-
-  ay_song_play(AY_SONG_LOOP, 3, ay_song_03_alleycat);
+  ay_reset();
+  ay_song_play(AY_SONG_LOOP, 6, ay_song_06_alleycat);
 }

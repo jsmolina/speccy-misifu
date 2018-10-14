@@ -44,6 +44,6 @@ extern void ay_reset(void) __preserves_regs(b,c,d,e,h,l);
 
 //BANK_3
 // AY Songs
-extern unsigned char ay_song_03_alleycat[];
+extern unsigned char ay_song_06_alleycat[];
 
 #endif

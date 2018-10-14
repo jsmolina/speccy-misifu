@@ -16,7 +16,7 @@
 #include "level1.h"
 #include "level2.h"
 #include "defines.h"
-#include "game_ay.h"
+#include "game_audio.h"
 
 
 void check_keys()
@@ -122,14 +122,9 @@ int main()
 {
   zx_border(INK_BLACK);
 
-  ay_reset();
 
   // interrupt mode 2
   setup_int();
-
-  // reset ay
-  ay_reset();
-
 
   if (level == 1) {
     print_background_lvl1();
@@ -157,6 +152,8 @@ int main()
   dog_offset = DOG1;
 
   row1_moving = 10;
+
+  audio_ingame();
 
   while(1)
   {

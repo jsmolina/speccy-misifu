@@ -15,7 +15,7 @@ _ay_fx_bank:             defb 6   ; bank currently playing fx is in
 _ay_fx_command_param:    defw 0
 
 _ay_song_command:        defb 0   ; song command communicated to isr
-_ay_song_bank:           defb 6   ; bank currently playing song is in
+_ay_song_bank:           defb 3   ; bank currently playing song is in
 _ay_song_command_param:  defw 0
 
 ;; AY EFFECT FUNCTIONS

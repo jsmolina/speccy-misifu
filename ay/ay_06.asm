@@ -43,3 +43,8 @@ defc mfx_mfxptr = mfxPtr
 INCLUDE "src/mfx.asm"
 
 ; SONGS & EFFECTS IN THIS BANK
+SECTION BANK_6_AUDIO
+
+PUBLIC _ay_song_06_alleycat
+_ay_song_06_alleycat:
+   BINARY "songs/alley_cat.pt3"
