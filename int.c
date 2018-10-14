@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <z80.h>
+#include "defines.h"
 #include "int.h"
 #include "ay/vt_sound.h"
 
@@ -17,6 +18,10 @@ IM2_DEFINE_ISR_8080(isr)
    ++tick;
 
    // todo this call only makes noise! vt_play_isr();
+
+   if (row1_moving != NONE) {
+        --row1_moving;
+   }
 }
 
 void

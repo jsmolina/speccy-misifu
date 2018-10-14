@@ -172,7 +172,7 @@ void move_clothes() {
     if (random_value > 125 && row1_moving == NONE) {
         row1_moving = 20;
     } else if (row1_moving != NONE) {
-        --row1_moving;
+        //--row1_moving in int.c
         if ((row1_moving & 1) == 0) {
             // check if clothes should move
             for (idx = 0; idx != 2; ++idx) {
