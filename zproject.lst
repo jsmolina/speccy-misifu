@@ -1,4 +1,5 @@
 @build/sprites.lst
+@ay/ay.lst
 int.c
 defines.c
 level3.c

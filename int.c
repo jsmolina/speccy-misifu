@@ -4,6 +4,7 @@
 #include <string.h>
 #include <z80.h>
 #include "int.h"
+#include "ay/vt_sound.h"
 
 // timer
 
@@ -14,6 +15,8 @@ IM2_DEFINE_ISR_8080(isr)
 {
    // update the clock
    ++tick;
+
+   // todo this call only makes noise! vt_play_isr();
 }
 
 void
@@ -28,9 +31,11 @@ wait(void)
 void
 setup_int(void)
 {
-   im2_init((void *)0xd000);
+   im2_init((void *)0xd000); // CRT_ORG = 25124
    memset((void *)0xd000, 0xd1, 257);
 
    z80_bpoke(0xd1d1, 0xc3);
    z80_wpoke(0xd1d2, (unsigned int)isr);
+
+   intrinsic_ei();
 }
