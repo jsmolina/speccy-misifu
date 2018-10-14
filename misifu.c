@@ -16,8 +16,7 @@
 #include "level1.h"
 #include "level2.h"
 #include "defines.h"
-#include "game_audio.h"
-#include "game_ay.h"
+#include "ay/ay_music.h"
 
 
 void check_keys()
@@ -123,6 +122,8 @@ int main()
 {
   zx_border(INK_BLACK);
 
+  initialize_ay();
+
   // interrupt mode 2
   setup_int();
 
@@ -156,8 +157,6 @@ int main()
   dog_offset = DOG1;
 
   row1_moving = 10;
-
-  intrinsic_ei();
 
   while(1)
   {
@@ -247,7 +246,10 @@ int main()
     }
 
 
-    frame = (frame + 1) % 4;
+    ++frame;
+    if (frame >= 4) {
+        frame = 0;
+    }
 
     // paint 'prota here'
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
