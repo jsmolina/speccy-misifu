@@ -217,7 +217,7 @@ void anim_windows() {
             horizontal_direction = NONE;
             vertical_direction = NONE;
 
-            if (misifu.y < 14 && random_value > 150) {
+            if (misifu.y < 14 && (random_value & 1) == 0) {
                 // detect where to go and todo randomly throw an object
                 if(misifu.x < aux_object.x && (aux_object.x - misifu.x) > 2) {
                     horizontal_direction = LEFT;
