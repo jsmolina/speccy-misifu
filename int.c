@@ -5,7 +5,7 @@
 #include <z80.h>
 #include "defines.h"
 #include "int.h"
-#include "ay/vt_sound.h"
+#include "game_audio.h"
 
 // timer
 
@@ -22,6 +22,7 @@ IM2_DEFINE_ISR_8080(isr)
    if (row1_moving != NONE) {
         --row1_moving;
    }
+   audio_ingame();
 }
 
 void
