@@ -6,7 +6,7 @@ Development in progress
 # Building
 You'll need z88dk, so you could download it from here:
 http://nightly.z88dk.org/
-
+(tested on v13056-e8264f0-20181009)
 
 Just execute :
 `$ make` 

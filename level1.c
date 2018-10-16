@@ -87,9 +87,6 @@ void paint_window(uint8_t num, uint16_t colour) {
 }
 
 void  print_background_lvl1() {
-  uint8_t x, y, count;
-
-
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_MAGENTA,
                   ' ' );
@@ -120,8 +117,8 @@ void  print_background_lvl1() {
 
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
-      count = is_in_bin(x);
-      if (count == NONE) {
+      frame = is_in_bin(x);
+      if (frame == NONE) {
           if (x % 2 == 0) {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'W');
           } else if (x % 3 == 0) {
@@ -134,7 +131,7 @@ void  print_background_lvl1() {
           {
               sp1_PrintAt( y, x,  PAPER_CYAN, 'V');
           }
-      } else if(count == x) {
+      } else if(frame == x) {
           print_cubo(x);
       }
   }
@@ -143,26 +140,26 @@ void  print_background_lvl1() {
   sp1_PrintAt( 19, 31,  INK_CYAN | PAPER_BLACK, 'T');
 
   // paint the ropes
-  for (x=0; x != MAX_X; ++x) {
-    sp1_PrintAt(9, x, INK_BLACK | PAPER_MAGENTA, 'R');
-    sp1_PrintAt(5, x, INK_BLACK | PAPER_MAGENTA, 'R');
-    sp1_PrintAt(1, x, INK_BLACK | PAPER_MAGENTA, 'R');
+  for (idx=0; idx != MAX_X; ++idx) {
+    sp1_PrintAt(9, idx, INK_BLACK | PAPER_MAGENTA, 'R');
+    sp1_PrintAt(5, idx, INK_BLACK | PAPER_MAGENTA, 'R');
+    sp1_PrintAt(1, idx, INK_BLACK | PAPER_MAGENTA, 'R');
   }
 
 
-   y = 4;
-   x = 2;
+   idx_j = 4;
+   idx = 2;
    // define how to paint windows
-   for(count = 0; count != 12; ++count) {
-      windows[count].x = x;
-      windows[count].y = y;
-      x = x + 8;
-      if (x >= 32) {
-        x = 2;
-        y = y + 4;
+   for(frame = 0; frame != 12; ++frame) {
+      windows[frame].x = idx;
+      windows[frame].y = idx_j;
+      idx = idx + 8;
+      if (idx >= 32) {
+        idx = 2;
+        idx_j = idx_j + 4;
       }
 
-      paint_window(count, PAPER_CYAN);
+      paint_window(frame, PAPER_CYAN);
    }
 
 }
@@ -172,11 +169,11 @@ void  print_background_lvl1() {
 void move_clothes() {
 // now take decisions
     // move clothes to the right
-    if (random_value % 20 == 0 && row1_moving == NONE) {
+    if (random_value > 125 && row1_moving == NONE) {
         row1_moving = 20;
     } else if (row1_moving != NONE) {
-        --row1_moving;
-        if (row1_moving % 2 == 0) {
+        //--row1_moving in int.c
+        if ((row1_moving & 1) == 0) {
             // check if clothes should move
             for (idx = 0; idx != 2; ++idx) {
                 --row2clothes[idx].col;
@@ -205,7 +202,12 @@ void anim_windows() {
     // decide if window should open
     // OPEN
     if (opened_window_frames == NONE) {
-        opened_window = random_value % 120;
+        if (random_value > 125) {
+            opened_window = random_value - 125;
+        } else {
+            opened_window = random_value;
+        }
+
         if(opened_window < 12) {
             // makes the window to be opened for about 20 frames
             opened_window_frames = 50;
@@ -215,7 +217,7 @@ void anim_windows() {
             horizontal_direction = NONE;
             vertical_direction = NONE;
 
-            if (misifu.y < 14 && random_value % 2 == 0) {
+            if (misifu.y < 14 && (random_value & 1) == 0) {
                 // detect where to go and todo randomly throw an object
                 if(misifu.x < aux_object.x && (aux_object.x - misifu.x) > 2) {
                     horizontal_direction = LEFT;
