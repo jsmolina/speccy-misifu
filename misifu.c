@@ -168,6 +168,8 @@ int main()
         anim_windows();
         check_bincat();
         dog_checks();
+    } else if (level == 3) {
+        throw_cupid_arrow();
     }
 
     // decide new FSM draw status

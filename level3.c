@@ -89,3 +89,36 @@ void detect_fall_in_hearts() {
         }
     }
 }
+
+void throw_cupid_arrow() {
+    // arrow should remove tiles (and redraw them)
+    // if arrow object is hidden, decide to throw it or not
+    if (aux_object.x == 33 && random_value < 33 && (random_value & 1) == 0) {
+        aux_object.x = random_value;
+        aux_object.y = 0;
+
+        if(aux_object.x > 16) {
+            horizontal_direction = LEFT;
+        } else {
+            horizontal_direction = RIGHT;
+        }
+    }
+
+    if (aux_object.y < 25) {
+        ++aux_object.y;
+        if (horizontal_direction == RIGHT) {
+            ++aux_object.x;
+            aux_object.offset = LEFTC1;
+
+        } else {
+            --aux_object.x;
+            aux_object.offset = LEFTC2;
+
+        }
+        // todo detect collision with 'red' hearts
+    } else {
+        // out of screen
+        aux_object.x = 33;
+    }
+    sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+}
