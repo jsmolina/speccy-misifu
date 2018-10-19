@@ -5,6 +5,7 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
+#define UNDEF 250
 #define NONE 0
 #define YES 1
 #define BIN_Y1 15
@@ -107,6 +108,7 @@ extern const uint8_t cupid32[];
 extern const uint8_t cupid33[];
 
 extern uint8_t floor_holes[][24];
+extern const uint8_t floor_holes_defaults[][24];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];

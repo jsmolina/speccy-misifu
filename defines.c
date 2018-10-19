@@ -97,7 +97,9 @@ const uint8_t cupid32[] = {0x78, 0x60, 0x60, 0xe0, 0xe0, 0x0, 0x0, 0x0};
 const uint8_t cupid33[] = {0x7e, 0xf8, 0xc0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 // hearts holes
-uint8_t floor_holes[][24] = {
+uint8_t floor_holes[5][24];
+
+const uint8_t floor_holes_defaults[][24] = {
     {1,1,1,1,1,1,0,1,1,1,1,1,0,0,1,1,0,1,1,0,0,0,1,1},
     {0,0,1,1,0,0,0,0,0,1,0,1,0,1,0,1,1,0,1,0,1,0,0,0},
     {0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1},
