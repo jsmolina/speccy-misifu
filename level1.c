@@ -7,17 +7,32 @@
 #include <stdlib.h>
 #include "defines.h"
 
-
 uint8_t is_in_bin(uint8_t x_pos) {
-    if (x_pos > 0 && x_pos < 4) {
+    if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
         return 1;
-    } else if(x_pos > 4 && x_pos  < 8) {
+    } else if(x_pos == 4 || x_pos == 5 || x_pos == 6) {
         return 5;
-    } else if(x_pos > 8 && x_pos < 12) {
+    } else if(x_pos == 8 || x_pos == 9 || x_pos == 10) {
         return 9;
-    } else if(x_pos > 19 && x_pos < 23) {
+    } else if(x_pos == 20 || x_pos == 21 || x_pos == 22) {
         return 20;
-    } else if(x_pos > 23 && x_pos < 27) {
+    } else if(x_pos == 24 || x_pos == 25 || x_pos == 26) {
+        return 24;
+    }
+
+    return NONE;
+}
+
+static uint8_t has_a_bin(uint8_t x_pos) {
+    if (x_pos == 1 || x_pos == 2 || x_pos == 3) {
+        return 1;
+    } else if(x_pos == 5 || x_pos == 6 || x_pos == 7) {
+        return 5;
+    } else if(x_pos == 9 || x_pos == 10 || x_pos == 11) {
+        return 9;
+    } else if(x_pos == 20 || x_pos == 21 || x_pos == 22) {
+        return 20;
+    } else if(x_pos == 24 || x_pos == 25 || x_pos == 26) {
         return 24;
     }
 
@@ -117,7 +132,7 @@ void  print_background_lvl1() {
 
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
-      frame = is_in_bin(x);
+      frame = has_a_bin(x);
       if (frame == NONE) {
           if (x % 2 == 0) {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'W');

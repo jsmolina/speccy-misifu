@@ -238,6 +238,7 @@ int main()
         }
     }
 
+
     // cat falls appart from bin
     if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
         if (is_in_bin(misifu.x) == NONE) {
