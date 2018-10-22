@@ -70,8 +70,40 @@ void  print_background_level3() {
 }
 
 
+/**
+ hearts y are 23, 19, 15, 11, 7
+**/
+static inline uint8_t lvl3_y_to_idj() {
+
+    if(misifu.y == 5) {
+        return 4;
+    } else if(misifu.y == 9) {
+        return 3;
+    } else if(misifu.y == 13) {
+        return 2;
+    } else if(misifu.y == 17) {
+        return 1;
+    } else if (misifu.y == FLOOR_Y) {
+        return 0;
+    } else {
+        return UNDEF;
+    }
+}
+
+void fall_if_in_broken_heart() {
+    if (misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_ON_HIGH || misifu.state == NONE) {
+        idx_j = lvl3_y_to_idj();
+        // 0 - 24
+        if (idx_j < 5 && misifu.x < 25 && floor_holes[idx_j][misifu.x] != 1) {
+            misifu.state = FALLING;
+            if (misifu.y >= FLOOR_Y) {
+                // todo wooops message, loose level here
+            }
+        }
+    }
+}
+
 void detect_fall_in_hearts() {
-    // heart levels are in 19, 15, 11, 7
     if (misifu.state == FALLING) {
         if(misifu.y == 17) {
             misifu.state = CAT_ON_HIGH;

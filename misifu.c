@@ -170,6 +170,7 @@ int main()
         dog_checks();
     } else if (level == 3) {
         throw_cupid_arrow();
+        fall_if_in_broken_heart();
     }
 
     // decide new FSM draw status
@@ -238,13 +239,14 @@ int main()
         }
     }
 
-
-    // cat falls appart from bin
-    if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
-        if (is_in_bin(misifu.x) == NONE) {
-            misifu.state = FALLING;
-            misifu.draw_additional = NONE;
-            misifu.in_bin = NONE;
+    if (level == 1) {
+        // cat falls appart from bin
+        if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
+            if (is_in_bin(misifu.x) == NONE) {
+                misifu.state = FALLING;
+                misifu.draw_additional = NONE;
+                misifu.in_bin = NONE;
+            }
         }
     }
 

@@ -9,4 +9,6 @@ extern void detect_fall_in_hearts();
 
 extern void throw_cupid_arrow();
 
+extern void fall_if_in_broken_heart();
+
 #endif
