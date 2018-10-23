@@ -19,6 +19,7 @@ void  print_background_level3() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_RED | PAPER_GREEN,
                   ' ' );
+  zx_border(INK_BLACK);
 
   sp1_Invalidate(&full_screen);
 
@@ -76,35 +77,35 @@ void  print_background_level3() {
 static inline uint8_t lvl3_y_to_idj() {
 
     if(misifu.y == 5) {
-        return 4;
+        zx_border(INK_RED);
+        return 0;
     } else if(misifu.y == 9) {
-        return 3;
+        return 1;
     } else if(misifu.y == 13) {
         return 2;
     } else if(misifu.y == 17) {
-        return 1;
+        return 3;
     } else if (misifu.y == FLOOR_Y) {
-        return 0;
+        return 4;
     } else {
         return UNDEF;
     }
 }
 
-void fall_if_in_broken_heart() {
+
+void detect_fall_in_hearts() {
+    idx_j = lvl3_y_to_idj();
+
     if (misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_ON_HIGH || misifu.state == NONE) {
-        idx_j = lvl3_y_to_idj();
         // 0 - 24
-        if (idx_j < 5 && misifu.x < 25 && floor_holes[idx_j][misifu.x] != 1) {
+        if (idx_j < 5 && misifu.x > 1 && floor_holes[idx_j][misifu.x - 2] == 0) {
             misifu.state = FALLING;
             if (misifu.y >= FLOOR_Y) {
                 // todo wooops message, loose level here
+                
             }
         }
-    }
-}
-
-void detect_fall_in_hearts() {
-    if (misifu.state == FALLING) {
+    } else if (misifu.state == FALLING && idx_j < 5 && floor_holes[idx_j][misifu.x - 2] == 1) {
         if(misifu.y == 17) {
             misifu.state = CAT_ON_HIGH;
             misifu.draw_additional = CAT_IN_ROPE;

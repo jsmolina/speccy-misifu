@@ -170,7 +170,6 @@ int main()
         dog_checks();
     } else if (level == 3) {
         throw_cupid_arrow();
-        fall_if_in_broken_heart();
     }
 
     // decide new FSM draw status
@@ -223,8 +222,6 @@ int main()
             detect_fall_in_bin();
         } else if (level == 2) {
             detect_fall_in_hole_or_curtain();
-        } else if (level == 3) {
-            detect_fall_in_hearts();
         }
 
         if(misifu.y >= FLOOR_Y) {
@@ -248,6 +245,8 @@ int main()
                 misifu.in_bin = NONE;
             }
         }
+    } else  if (level == 3) {
+        detect_fall_in_hearts();
     }
 
 
