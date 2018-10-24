@@ -82,7 +82,7 @@ void print_room_walls() {
 }
 
 void  print_background_level2() {
-
+  level = 2;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_RED,
                   ' ' );

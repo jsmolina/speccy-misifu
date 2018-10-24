@@ -102,6 +102,8 @@ void paint_window(uint8_t num, uint16_t colour) {
 }
 
 void  print_background_lvl1() {
+  level = 1;
+
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_MAGENTA,
                   ' ' );

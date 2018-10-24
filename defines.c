@@ -11,6 +11,7 @@ uint8_t level_x_min[4] = {0, 0,  0,  3};
 
 struct prota misifu;
 struct freesprite aux_object;
+struct freesprite heaven_sp;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
@@ -54,6 +55,12 @@ extern uint8_t auxiliar2[];
 extern uint8_t auxiliar3[];
 extern uint8_t auxiliar4[];
 
+extern uint8_t heaven_out1[];
+extern uint8_t heaven_out2[];
+extern uint8_t heaven_out3[];
+extern uint8_t heaven_out4[];
+extern uint8_t heaven_out5[];
+extern uint8_t heaven_out6[];
 
 // shared vars
 uint8_t x, y;
@@ -260,6 +267,22 @@ struct sp1_ss * add_sprite_auxiliar() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
   sp1_IterateSprChar(sp, initialiseColour);
+
+  return sp;
+}
+
+struct sp1_ss * add_sprite_heaven() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)heaven_out1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out4, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out5, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out6, 0);
+
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
+
+  sp1_IterateSprChar(sp, initialiseClothesColour);
 
   return sp;
 }

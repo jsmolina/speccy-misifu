@@ -137,6 +137,11 @@ int main()
   aux_object.y = 0;
   aux_object.offset = RIGHTC1;
 
+  heaven_sp.sp = add_sprite_heaven();
+  heaven_sp.x = 0;
+  heaven_sp.y = 0;
+  heaven_sp.offset = RIGHTC1; // or OUCHOFFSET
+
   reset_misifu_position();
 
   add_row_clothes();

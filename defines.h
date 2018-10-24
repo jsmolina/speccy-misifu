@@ -37,6 +37,8 @@
 #define BORED 449
 #define JUMPINGC2 513
 
+#define OUCHOFFSET 49
+
 #define UP 1
 #define DOWN 2
 #define LEFT 3
@@ -54,6 +56,7 @@ extern struct sp1_Rect;
 
 extern struct prota misifu;
 extern struct freesprite aux_object;
+extern struct freesprite heaven_sp;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 
@@ -172,6 +175,8 @@ extern struct sp1_ss * add_sprite_clothes1();
 extern struct sp1_ss * add_sprite_clothes2();
 
 extern struct sp1_ss * add_sprite_auxiliar();
+
+extern struct sp1_ss * add_sprite_heaven();
 
 struct row_clothes {
     struct sp1_ss* sp;
