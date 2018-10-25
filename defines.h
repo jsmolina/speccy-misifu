@@ -37,7 +37,11 @@
 #define BORED 449
 #define JUMPINGC2 513
 
+#define MISIOFFSET 1
 #define OUCHOFFSET 65
+#define LOVEOFFSET 129
+
+#define LEVELFINISHED 100
 
 #define UP 1
 #define DOWN 2

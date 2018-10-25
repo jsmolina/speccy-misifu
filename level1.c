@@ -7,6 +7,16 @@
 #include <stdlib.h>
 #include "defines.h"
 
+void reset_misifu_position() {
+  misifu.in_bin = NONE;
+  misifu.x = 0;
+  misifu.y = FLOOR_Y;
+  misifu.initial_jump_y = 0;
+  misifu.draw_additional = NONE;
+  misifu.offset = RIGHTC1;
+  misifu.state = NONE;
+}
+
 uint8_t is_in_bin(uint8_t x_pos) {
     if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
         return 1;
@@ -178,6 +188,8 @@ void  print_background_lvl1() {
 
       paint_window(frame, PAPER_CYAN);
    }
+
+   reset_misifu_position();
 
 }
 
@@ -382,6 +394,7 @@ void add_row_clothes() {
   row2clothes[1].col = 18;
   row2clothes[1].sp = add_sprite_clothes2();
 }
+
 
 
 #endif

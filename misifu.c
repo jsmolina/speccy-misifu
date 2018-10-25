@@ -53,17 +53,6 @@ void check_keys()
 }
 
 
-
-void reset_misifu_position() {
-  misifu.in_bin = NONE;
-  misifu.x = 0;
-  misifu.y = FLOOR_Y;
-  misifu.initial_jump_y = 0;
-  misifu.draw_additional = NONE;
-  misifu.offset = RIGHTC1;
-  misifu.state = NONE;
-}
-
 void dog_checks() {
 // time for doggy checks
     if (misifu.state != FIGHTING && enemy_apears == YES) {
