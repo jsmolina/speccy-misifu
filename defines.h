@@ -37,7 +37,7 @@
 #define BORED 449
 #define JUMPINGC2 513
 
-#define OUCHOFFSET 49
+#define OUCHOFFSET 65
 
 #define UP 1
 #define DOWN 2

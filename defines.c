@@ -184,6 +184,16 @@ void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
 }
 
 
+void initialisePinkColour(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+  c->attr_mask = SP1_AMASK_INK;
+  c->attr      = INK_MAGENTA;
+}
+
+
+
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
@@ -282,7 +292,7 @@ struct sp1_ss * add_sprite_heaven() {
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
-  sp1_IterateSprChar(sp, initialiseClothesColour);
+  sp1_IterateSprChar(sp, initialisePinkColour);
 
   return sp;
 }
