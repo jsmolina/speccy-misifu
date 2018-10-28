@@ -5,6 +5,7 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
+#define UNDEF 250
 #define NONE 0
 #define YES 1
 #define BIN_Y1 15
@@ -18,6 +19,7 @@
 #define CAT_IN_ROPE1 7
 #define CAT_IN_ROPE2 8
 #define CAT_IN_ROPE3 9
+#define CAT_ON_HIGH 10
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
@@ -34,6 +36,12 @@
 #define JUMPINGC1 385
 #define BORED 449
 #define JUMPINGC2 513
+
+#define MISIOFFSET 65
+#define OUCHOFFSET 129
+#define LOVEOFFSET 193
+
+#define LEVELFINISHED 100
 
 #define UP 1
 #define DOWN 2
@@ -60,6 +68,9 @@ extern struct row_clothes row2clothes[2];
 extern unsigned char udg_win2[];
 
 extern struct sp1_Rect full_screen;
+
+extern uint8_t level_x_max[];
+extern uint8_t level_x_min[];
 
 // shared vars
 extern uint8_t x, y;
@@ -92,6 +103,18 @@ extern uint8_t level;
 // level 3 hearts
 extern const uint8_t heart1[];
 extern const uint8_t heart2[];
+extern const uint8_t cupid11[];
+extern const uint8_t cupid12[];
+extern const uint8_t cupid13[];
+extern const uint8_t cupid21[];
+extern const uint8_t cupid22[];
+extern const uint8_t cupid23[];
+extern const uint8_t cupid31[];
+extern const uint8_t cupid32[];
+extern const uint8_t cupid33[];
+
+extern uint8_t floor_holes[][24];
+extern const uint8_t floor_holes_defaults[][24];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];
@@ -138,27 +161,12 @@ extern const uint8_t udg_t[];
 extern uint8_t vertical_direction;
 extern uint8_t horizontal_direction;
 
-extern void initialiseColour(unsigned int count, struct sp1_cs *c);
-
-extern void initialiseDogColour(unsigned int count, struct sp1_cs *c);
-
-extern void initialiseClothesColour(unsigned int count, struct sp1_cs *c);
-
-
-extern struct sp1_ss * add_sprite_protar1();
-
-extern struct sp1_ss * add_sprite_dogr1();
-
-extern struct sp1_ss * add_sprite_bincat();
-
-extern struct sp1_ss * add_sprite_clothes1();
-extern struct sp1_ss * add_sprite_clothes2();
-
-extern struct sp1_ss * add_sprite_auxiliar();
+extern void add_sprites_for_all_levels();
 
 struct row_clothes {
     struct sp1_ss* sp;
     uint8_t col;
+    uint8_t offset;
 };
 
 struct prota {

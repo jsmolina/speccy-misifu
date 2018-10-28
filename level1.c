@@ -7,17 +7,42 @@
 #include <stdlib.h>
 #include "defines.h"
 
+void reset_misifu_position() {
+  misifu.in_bin = NONE;
+  misifu.x = 0;
+  misifu.y = FLOOR_Y;
+  misifu.initial_jump_y = 0;
+  misifu.draw_additional = NONE;
+  misifu.offset = RIGHTC1;
+  misifu.state = NONE;
+}
 
 uint8_t is_in_bin(uint8_t x_pos) {
-    if (x_pos > 0 && x_pos < 4) {
+    if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
         return 1;
-    } else if(x_pos > 4 && x_pos  < 8) {
+    } else if(x_pos == 4 || x_pos == 5 || x_pos == 6) {
         return 5;
-    } else if(x_pos > 8 && x_pos < 12) {
+    } else if(x_pos == 8 || x_pos == 9 || x_pos == 10) {
         return 9;
-    } else if(x_pos > 19 && x_pos < 23) {
+    } else if(x_pos == 20 || x_pos == 21 || x_pos == 22) {
         return 20;
-    } else if(x_pos > 23 && x_pos < 27) {
+    } else if(x_pos == 24 || x_pos == 25 || x_pos == 26) {
+        return 24;
+    }
+
+    return NONE;
+}
+
+static uint8_t has_a_bin(uint8_t x_pos) {
+    if (x_pos == 1 || x_pos == 2 || x_pos == 3) {
+        return 1;
+    } else if(x_pos == 5 || x_pos == 6 || x_pos == 7) {
+        return 5;
+    } else if(x_pos == 9 || x_pos == 10 || x_pos == 11) {
+        return 9;
+    } else if(x_pos == 20 || x_pos == 21 || x_pos == 22) {
+        return 20;
+    } else if(x_pos == 24 || x_pos == 25 || x_pos == 26) {
         return 24;
     }
 
@@ -87,10 +112,12 @@ void paint_window(uint8_t num, uint16_t colour) {
 }
 
 void  print_background_lvl1() {
+  level = 1;
+
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_MAGENTA,
                   ' ' );
-
+  zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
 
   sp1_TileEntry('V', udg_valla2);  // middle of fence
@@ -117,7 +144,7 @@ void  print_background_lvl1() {
 
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
-      frame = is_in_bin(x);
+      frame = has_a_bin(x);
       if (frame == NONE) {
           if (x % 2 == 0) {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'W');
@@ -162,6 +189,12 @@ void  print_background_lvl1() {
       paint_window(frame, PAPER_CYAN);
    }
 
+   reset_misifu_position();
+
+}
+
+void leave_level() {
+
 }
 
 
@@ -177,13 +210,16 @@ void move_clothes() {
             // check if clothes should move
             for (idx = 0; idx != 2; ++idx) {
                 --row2clothes[idx].col;
-                row1clothes[idx].col = (++row1clothes[idx].col) % 30;
+                ++row1clothes[idx].col;
+                if(row1clothes[idx].col > 26) {
+                    row1clothes[idx].col = 0;
+                }
 
                 if (row2clothes[idx].col < 2) {
                     row2clothes[idx].col = 28;
                 }
-                sp1_MoveSprAbs(row1clothes[idx].sp, &full_screen, 0, 10, row1clothes[idx].col, 0, 0);
-                sp1_MoveSprAbs(row2clothes[idx].sp, &full_screen, 0, 6, row2clothes[idx].col, 0, 0);
+                sp1_MoveSprAbs(row1clothes[idx].sp, &full_screen, (void*)1, 10, row1clothes[idx].col, 0, 0);
+                sp1_MoveSprAbs(row2clothes[idx].sp, &full_screen, (void*)1, 6, row2clothes[idx].col, 0, 0);
             }
             // now move cat
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
@@ -348,23 +384,7 @@ void detect_fall_in_bin() {
     }
 }
 
-void add_row_clothes() {
-// row 1 clothes
-  row1clothes[0].col = 1;
-  row1clothes[0].sp = add_sprite_clothes1();
-  //row1clothes[1].col = 10;
-  //row1clothes[1].sp = add_sprite_clothes2();
-  //row1clothes[2].col = 18;
-  //row1clothes[2].sp = add_sprite_clothes1();
-  row1clothes[1].col = 26;
-  row1clothes[1].sp = add_sprite_clothes2();
 
-  // row 2 clothes
-  row2clothes[0].col = 5;
-  row2clothes[0].sp = add_sprite_clothes1();
-  row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes2();
-}
 
 
 #endif

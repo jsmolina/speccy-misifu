@@ -16,6 +16,7 @@ IM2_DEFINE_ISR_8080(isr)
 {
    // update the clock
    ++tick;
+   vt_play_isr();
 
    // todo this call only makes noise! vt_play_isr();
 

@@ -1,9 +1,3 @@
-#pragma output REGISTER_SP = 0xD000
-#pragma output CRT_ORG_CODE = 32000      // org of compile
-#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
-#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
-#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
-
 #include <z80.h>
 #include <stdlib.h>
 #include <arch/zx.h>
@@ -15,53 +9,53 @@
 #include "int.h"
 #include "level1.h"
 #include "level2.h"
+#include "level3.h"
 #include "defines.h"
 #include "ay/ay_music.h"
-
+#include "ay/vt_sound.h"
 
 void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min[level]) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < 28) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max[level]) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x>0) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min[level]) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < 28 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         if (first_keypress == NONE) {
-            first_keypress = random_value;
+            first_keypress = tick;
             srand(first_keypress);
         }
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > 0 && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT)) {
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
+
+    if (in_key_pressed(IN_KEY_SCANCODE_3)) {
+        level = 3;
+        print_background_level3();
+        sp1_UpdateNow();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
+        level = 1;
+        print_background_lvl1();
+        sp1_UpdateNow();
+    }
 }
 
-
-
-void reset_misifu_position() {
-  misifu.in_bin = NONE;
-  misifu.x = 0;
-  misifu.y = FLOOR_Y;
-  misifu.initial_jump_y = 0;
-  misifu.draw_additional = NONE;
-  misifu.offset = RIGHTC1;
-  misifu.state = NONE;
-}
 
 void dog_checks() {
 // time for doggy checks
@@ -120,39 +114,31 @@ void dog_checks() {
 
 int main()
 {
-  zx_border(INK_BLACK);
-
   initialize_ay();
+  zx_border(INK_BLACK);
 
   // interrupt mode 2
   setup_int();
 
-  if (level == 1) {
-    print_background_lvl1();
-  } else if(level == 2) {
-    print_background_level2();
-  }
-
-
-
-  misifu.sp = add_sprite_protar1();
-  dogr1sp = add_sprite_dogr1();
-  bincatsp = add_sprite_bincat();
-
-  aux_object.sp = add_sprite_auxiliar();
-  aux_object.x = 0;
-  aux_object.y = 0;
-  aux_object.offset = RIGHTC1;
+  add_sprites_for_all_levels();
 
   reset_misifu_position();
-
-  add_row_clothes();
 
   x_malo = 22;
   frame = 0;
   dog_offset = DOG1;
 
   row1_moving = 10;
+
+  if (level == 1) {
+    print_background_lvl1();
+  } else if(level == 2) {
+    print_background_level2();
+  } else if(level == 3) {
+    print_background_level3();
+  }
+
+  intrinsic_ei();
 
   while(1)
   {
@@ -165,6 +151,8 @@ int main()
         anim_windows();
         check_bincat();
         dog_checks();
+    } else if (level == 3) {
+        throw_cupid_arrow();
     }
 
     // decide new FSM draw status
@@ -187,10 +175,10 @@ int main()
     } else if (misifu.state == JUMPING) {
         --misifu.y;
 
-        if(misifu.draw_additional == JUMP_RIGHT) {
+        if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max[level]) {
             ++misifu.x;
             misifu.offset = JRIGHTC1;
-        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > 0) {
+        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min[level]) {
             --misifu.x;
             misifu.offset = JLEFTC1;
         } else {
@@ -215,6 +203,8 @@ int main()
 
         if (level == 1) {
             detect_fall_in_bin();
+        } else if (level == 2) {
+            detect_fall_in_hole_or_curtain();
         }
 
         if(misifu.y >= FLOOR_Y) {
@@ -229,13 +219,17 @@ int main()
         }
     }
 
-    // cat falls appart from bin
-    if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
-        if (is_in_bin(misifu.x) == NONE) {
-            misifu.state = FALLING;
-            misifu.draw_additional = NONE;
-            misifu.in_bin = NONE;
+    if (level == 1) {
+        // cat falls appart from bin
+        if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
+            if (is_in_bin(misifu.x) == NONE) {
+                misifu.state = FALLING;
+                misifu.draw_additional = NONE;
+                misifu.in_bin = NONE;
+            }
         }
+    } else  if (level == 3) {
+        detect_fall_in_hearts();
     }
 
 

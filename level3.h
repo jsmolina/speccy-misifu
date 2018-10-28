@@ -5,4 +5,9 @@
 
 extern void  print_background_level3();
 
+extern void detect_fall_in_hearts();
+
+extern void throw_cupid_arrow();
+
+
 #endif
