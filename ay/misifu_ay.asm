@@ -1,7 +1,6 @@
-; SONGS & EFFECTS IN THIS BANK
+SECTION rodata_user
 
-SECTION BANK_3_AUDIO
+PUBLIC _music_module
 
-PUBLIC _ay_song_03_alleycat
-_ay_song_03_alleycat:
-   BINARY "songs/alley_cat.pt3"
+_music_module:
+BINARY "alley_cat.pt3"

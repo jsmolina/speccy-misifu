@@ -1,9 +1,9 @@
 #include "ay_music.h"
 
-extern uint8_t ay_song_03_alleycat[];
+extern uint8_t music_module[];
 
 void initialize_ay() {
-    vt_init(ay_song_03_alleycat);
+    vt_init(music_module);
 }
 
 void keep_playing() {

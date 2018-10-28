@@ -18,7 +18,7 @@
 #include "level3.h"
 #include "defines.h"
 #include "ay/ay_music.h"
-
+#include "ay/vt_sound.h"
 
 void check_keys()
 {
@@ -110,9 +110,8 @@ void dog_checks() {
 
 int main()
 {
-  zx_border(INK_BLACK);
-
   initialize_ay();
+  zx_border(INK_BLACK);
 
   // interrupt mode 2
   setup_int();
@@ -126,10 +125,10 @@ int main()
   aux_object.y = 0;
   aux_object.offset = RIGHTC1;
 
-  heaven_sp.sp = add_sprite_heaven();
-  heaven_sp.x = 0;
-  heaven_sp.y = 0;
-  heaven_sp.offset = RIGHTC1; // or OUCHOFFSET
+  //heaven_sp.sp = add_sprite_heaven();
+  //heaven_sp.x = 0;
+  //heaven_sp.y = 0;
+  //heaven_sp.offset = RIGHTC1; // or OUCHOFFSET
 
   reset_misifu_position();
 
