@@ -33,3 +33,6 @@ Contributions/suggestions are more than welcome!
 * ER on the graphic material.
 * nq for music
 * beykersoft for music as well.
+
+# Dedicated to
+Clàudia :)
