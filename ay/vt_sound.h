@@ -30,8 +30,6 @@
 #ifndef _VT_SOUND_H
 #define _VT_SOUND_H
 
-#include <stdint.h>
-
 /*
  * Returns a pointer to the VT player's setup byte.
  * Set bit 0 to disable looping; bit 7 is set after each loop.
@@ -45,7 +43,7 @@ extern uint8_t *vt_get_setup(void);
  * and reinitializes the VT player with the specified module to be played from
  * its beginning.
  */
-extern void vt_init(const void *module_address) __z88dk_fastcall;
+extern void vt_init(void *module_address) __z88dk_fastcall;
 
 /*
  * Plays one snippet of the module. Call this function each 1/50 second to play

@@ -12,7 +12,7 @@ compile:
 	rm -f zcc_proj.lst
 
 develop:
-	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu -pragma-include:zpragma.inc -L$(VT_SOUND_LIB_SDCC_IY) -lvt_sound -create-app
+	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu -pragma-include:zpragma.inc -L$(VT_SOUND_LIB_SDCC_IY) -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map

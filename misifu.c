@@ -17,8 +17,10 @@
 #include "level2.h"
 #include "level3.h"
 #include "defines.h"
-#include "ay/ay_music.h"
+#include "ay/vt_sound.h"
 
+// alleycat music
+extern uint8_t music_module[];
 
 void check_keys()
 {
@@ -112,7 +114,8 @@ int main()
 {
   zx_border(INK_BLACK);
 
-  initialize_ay();
+  // todo this crashes the game
+  vt_init(music_module);
 
   // interrupt mode 2
   setup_int();
