@@ -1,9 +1,3 @@
-#pragma output REGISTER_SP = 0xD000
-#pragma output CRT_ORG_CODE = 32000      // org of compile
-#pragma output CLIB_EXIT_STACK_SIZE  = 0         // no atexit() functions
-#pragma output CLIB_STDIO_HEAP_SIZE  = 0         // no memory for files
-#pragma output CLIB_FOPEN_MAX = -1 // do not create open files list
-
 #include <z80.h>
 #include <stdlib.h>
 #include <arch/zx.h>
@@ -116,23 +110,9 @@ int main()
   // interrupt mode 2
   setup_int();
 
-  misifu.sp = add_sprite_protar1();
-  dogr1sp = add_sprite_dogr1();
-  bincatsp = add_sprite_bincat();
-
-  aux_object.sp = add_sprite_auxiliar();
-  aux_object.x = 0;
-  aux_object.y = 0;
-  aux_object.offset = RIGHTC1;
-
-  //heaven_sp.sp = add_sprite_heaven();
-  //heaven_sp.x = 0;
-  //heaven_sp.y = 0;
-  //heaven_sp.offset = RIGHTC1; // or OUCHOFFSET
+  add_sprites_for_all_levels();
 
   reset_misifu_position();
-
-  add_row_clothes();
 
   x_malo = 22;
   frame = 0;

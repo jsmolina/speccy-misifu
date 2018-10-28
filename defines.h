@@ -162,25 +162,7 @@ extern const uint8_t udg_t[];
 extern uint8_t vertical_direction;
 extern uint8_t horizontal_direction;
 
-extern void initialiseColour(unsigned int count, struct sp1_cs *c);
-
-extern void initialiseDogColour(unsigned int count, struct sp1_cs *c);
-
-extern void initialiseClothesColour(unsigned int count, struct sp1_cs *c);
-
-
-extern struct sp1_ss * add_sprite_protar1();
-
-extern struct sp1_ss * add_sprite_dogr1();
-
-extern struct sp1_ss * add_sprite_bincat();
-
-extern struct sp1_ss * add_sprite_clothes1();
-extern struct sp1_ss * add_sprite_clothes2();
-
-extern struct sp1_ss * add_sprite_auxiliar();
-
-extern struct sp1_ss * add_sprite_heaven();
+extern void add_sprites_for_all_levels();
 
 struct row_clothes {
     struct sp1_ss* sp;

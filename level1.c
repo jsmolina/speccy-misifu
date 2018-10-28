@@ -377,23 +377,6 @@ void detect_fall_in_bin() {
     }
 }
 
-void add_row_clothes() {
-// row 1 clothes
-  row1clothes[0].col = 1;
-  row1clothes[0].sp = add_sprite_clothes1();
-  //row1clothes[1].col = 10;
-  //row1clothes[1].sp = add_sprite_clothes2();
-  //row1clothes[2].col = 18;
-  //row1clothes[2].sp = add_sprite_clothes1();
-  row1clothes[1].col = 26;
-  row1clothes[1].sp = add_sprite_clothes2();
-
-  // row 2 clothes
-  row2clothes[0].col = 5;
-  row2clothes[0].sp = add_sprite_clothes1();
-  row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes2();
-}
 
 
 

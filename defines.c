@@ -88,7 +88,7 @@ uint8_t random_value = 0;
 
 uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
-uint8_t level = 1;
+uint8_t level = 3;
 
 // level 3 hearts
 const uint8_t heart1[] = {0x0, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x0, 0x0};
@@ -158,7 +158,7 @@ const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 uint8_t vertical_direction;
 uint8_t horizontal_direction;
 
-void initialiseColour(unsigned int count, struct sp1_cs *c)
+static void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
@@ -167,7 +167,7 @@ void initialiseColour(unsigned int count, struct sp1_cs *c)
 }
 
 
-void initialiseDogColour(unsigned int count, struct sp1_cs *c)
+static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
@@ -175,7 +175,7 @@ void initialiseDogColour(unsigned int count, struct sp1_cs *c)
   c->attr      = INK_BLUE;
 }
 
-void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
+static void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
@@ -184,7 +184,7 @@ void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
 }
 
 
-void initialisePinkColour(unsigned int count, struct sp1_cs *c)
+static void initialisePinkColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
@@ -194,7 +194,7 @@ void initialisePinkColour(unsigned int count, struct sp1_cs *c)
 
 
 
-struct sp1_ss * add_sprite_protar1() {
+static struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
@@ -208,7 +208,7 @@ struct sp1_ss * add_sprite_protar1() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_dogr1() {
+static struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_dog1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
@@ -222,7 +222,7 @@ struct sp1_ss * add_sprite_dogr1() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_bincat() {
+static struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_bincat1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat2, 0);
@@ -234,7 +234,7 @@ struct sp1_ss * add_sprite_bincat() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_clothes1() {
+static struct sp1_ss * add_sprite_clothes1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_clothes1, 2);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_clothes2, 2);
@@ -252,7 +252,7 @@ struct sp1_ss * add_sprite_clothes1() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_clothes2() {
+static struct sp1_ss * add_sprite_clothes2() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_clothes21, 2);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_clothes22, 2);
@@ -267,7 +267,7 @@ struct sp1_ss * add_sprite_clothes2() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_auxiliar() {
+static struct sp1_ss * add_sprite_auxiliar() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)auxiliar1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar2, 0);
@@ -281,7 +281,7 @@ struct sp1_ss * add_sprite_auxiliar() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_heaven() {
+static struct sp1_ss * add_sprite_heaven() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)heaven_out1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out2, 0);
@@ -297,5 +297,33 @@ struct sp1_ss * add_sprite_heaven() {
   return sp;
 }
 
+void add_sprites_for_all_levels() {
+  misifu.sp = add_sprite_protar1();
+  dogr1sp = add_sprite_dogr1();
+  bincatsp = add_sprite_bincat();
+
+  aux_object.sp = add_sprite_auxiliar();
+  aux_object.x = 0;
+  aux_object.y = 0;
+  aux_object.offset = RIGHTC1;
+
+
+  // row 1 clothes
+  row1clothes[0].col = 1;
+  row1clothes[0].sp = add_sprite_clothes1();
+  row1clothes[1].col = 26;
+  row1clothes[1].sp = add_sprite_clothes2();
+
+  // row 2 clothes
+  row2clothes[0].col = 5;
+  row2clothes[0].sp = add_sprite_clothes1();
+  row2clothes[1].col = 18;
+  row2clothes[1].sp = add_sprite_clothes2();
+
+  heaven_sp.sp = add_sprite_heaven();
+  heaven_sp.x = 0;
+  heaven_sp.y = 0;
+  heaven_sp.offset = RIGHTC1; // or OUCHOFFSET
+}
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
