@@ -193,6 +193,10 @@ void  print_background_lvl1() {
 
 }
 
+void leave_level() {
+
+}
+
 
 
 void move_clothes() {
@@ -206,13 +210,16 @@ void move_clothes() {
             // check if clothes should move
             for (idx = 0; idx != 2; ++idx) {
                 --row2clothes[idx].col;
-                row1clothes[idx].col = (++row1clothes[idx].col) % 30;
+                ++row1clothes[idx].col;
+                if(row1clothes[idx].col > 26) {
+                    row1clothes[idx].col = 0;
+                }
 
                 if (row2clothes[idx].col < 2) {
                     row2clothes[idx].col = 28;
                 }
-                sp1_MoveSprAbs(row1clothes[idx].sp, &full_screen, 0, 10, row1clothes[idx].col, 0, 0);
-                sp1_MoveSprAbs(row2clothes[idx].sp, &full_screen, 0, 6, row2clothes[idx].col, 0, 0);
+                sp1_MoveSprAbs(row1clothes[idx].sp, &full_screen, (void*)1, 10, row1clothes[idx].col, 0, 0);
+                sp1_MoveSprAbs(row2clothes[idx].sp, &full_screen, (void*)1, 6, row2clothes[idx].col, 0, 0);
             }
             // now move cat
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {

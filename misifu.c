@@ -44,6 +44,16 @@ void check_keys()
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
+
+    if (in_key_pressed(IN_KEY_SCANCODE_3)) {
+        level = 3;
+        print_background_level3();
+        sp1_UpdateNow();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
+        level = 1;
+        print_background_lvl1();
+        sp1_UpdateNow();
+    }
 }
 
 

@@ -37,9 +37,9 @@
 #define BORED 449
 #define JUMPINGC2 513
 
-#define MISIOFFSET 1
-#define OUCHOFFSET 65
-#define LOVEOFFSET 129
+#define MISIOFFSET 65
+#define OUCHOFFSET 129
+#define LOVEOFFSET 193
 
 #define LEVELFINISHED 100
 
@@ -60,7 +60,6 @@ extern struct sp1_Rect;
 
 extern struct prota misifu;
 extern struct freesprite aux_object;
-extern struct freesprite heaven_sp;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 
@@ -167,6 +166,7 @@ extern void add_sprites_for_all_levels();
 struct row_clothes {
     struct sp1_ss* sp;
     uint8_t col;
+    uint8_t offset;
 };
 
 struct prota {

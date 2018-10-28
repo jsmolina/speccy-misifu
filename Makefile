@@ -20,7 +20,7 @@ develop:
 	rm -f zcc_opt.def
 	rm -f zcc_proj.lst
 
-sprites: prota dogsprites bincat clothes auxiliar heaven_out
+sprites: prota dogsprites bincat clothes auxiliar
 
 prota:
 	png2sp1sprite ./sprites/cat_sprites.png -i sprite_protar -f 32 > ./build/protar.asm
@@ -32,14 +32,11 @@ bincat:
 	png2sp1sprite ./sprites/bincat_sprites.png -i sprite_bincat -f 24 > ./build/bincat.asm
 
 clothes:
-	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes > ./build/clothes.asm
-	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 > ./build/clothes2.asm
+	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes  -f 64 > ./build/clothes.asm
+	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 -f 40 > ./build/clothes2.asm
 
 auxiliar:
 	png2sp1sprite ./sprites/auxiliar.png -i auxiliar -f 32 > ./build/auxiliar.asm
-
-heaven_out:
-	png2sp1sprite ./sprites/heaven_out.png -i heaven_out -f 48 > ./build/heaven_out.asm
 
 fence:
 	@png2udg ./background/udg_valla1.png

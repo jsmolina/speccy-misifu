@@ -11,7 +11,6 @@ uint8_t level_x_min[4] = {0, 0,  0,  3};
 
 struct prota misifu;
 struct freesprite aux_object;
-struct freesprite heaven_sp;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
@@ -55,12 +54,6 @@ extern uint8_t auxiliar2[];
 extern uint8_t auxiliar3[];
 extern uint8_t auxiliar4[];
 
-extern uint8_t heaven_out1[];
-extern uint8_t heaven_out2[];
-extern uint8_t heaven_out3[];
-extern uint8_t heaven_out4[];
-extern uint8_t heaven_out5[];
-extern uint8_t heaven_out6[];
 
 // shared vars
 uint8_t x, y;
@@ -281,21 +274,6 @@ static struct sp1_ss * add_sprite_auxiliar() {
   return sp;
 }
 
-static struct sp1_ss * add_sprite_heaven() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)heaven_out1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out4, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out5, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)heaven_out6, 0);
-
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
-
-  sp1_IterateSprChar(sp, initialisePinkColour);
-
-  return sp;
-}
 
 void add_sprites_for_all_levels() {
   misifu.sp = add_sprite_protar1();
@@ -310,20 +288,16 @@ void add_sprites_for_all_levels() {
 
   // row 1 clothes
   row1clothes[0].col = 1;
-  row1clothes[0].sp = add_sprite_clothes1();
-  row1clothes[1].col = 26;
-  row1clothes[1].sp = add_sprite_clothes2();
+  row1clothes[0].sp = add_sprite_clothes2();
+  row1clothes[1].col = 18;
+  row1clothes[1].sp = add_sprite_clothes1();
 
   // row 2 clothes
-  row2clothes[0].col = 5;
+  row2clothes[0].col = 1;
   row2clothes[0].sp = add_sprite_clothes1();
   row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes2();
+  row2clothes[1].sp = add_sprite_clothes1();
 
-  heaven_sp.sp = add_sprite_heaven();
-  heaven_sp.x = 0;
-  heaven_sp.y = 0;
-  heaven_sp.offset = RIGHTC1; // or OUCHOFFSET
 }
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

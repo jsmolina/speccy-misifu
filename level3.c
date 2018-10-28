@@ -18,31 +18,32 @@ void paint_cupid(uint8_t row, uint8_t col) {
 }
 
 void get_out_of_level(uint8_t fall) {
+
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
     if(fall == FALLING) {
-        heaven_sp.offset = MISIOFFSET;
+        row1clothes[0].offset = MISIOFFSET;
         zx_border(INK_RED);
     } else {
         zx_border(INK_MAGENTA);
-        heaven_sp.offset = LOVEOFFSET;
+        row1clothes[0].offset = LOVEOFFSET;
     }
 
     sp1_Invalidate(&full_screen);
-    heaven_sp.x = 14;
-    heaven_sp.y = 0;
+    x = 14;
+    y = 0;
 
     for (idx = 0; idx != 40; ++idx) {
-        ++heaven_sp.y;
+        ++y;
 
-        if(heaven_sp.y > 20) {
+        if(y > 20) {
             if (fall == FALLING) {
-                heaven_sp.offset = OUCHOFFSET;
+                row1clothes[0].offset = OUCHOFFSET;
             }
-            heaven_sp.y = 20;
+            y = 20;
         }
-        sp1_MoveSprAbs(heaven_sp.sp, &full_screen,(void*) heaven_sp.offset, heaven_sp.y, heaven_sp.x, 0, 0);
+        sp1_MoveSprAbs(row1clothes[0].sp, &full_screen,(void*) row1clothes[0].offset, y, x, 0, 0);
         sp1_UpdateNow();
         wait();
     }
