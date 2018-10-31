@@ -182,11 +182,11 @@ void throw_cupid_arrow() {
         ++aux_object.y;
         if (horizontal_direction == RIGHT) {
             ++aux_object.x;
-            aux_object.offset = LEFTC1;
+            aux_object.offset = AUX_ARROWRIGHT;
 
         } else {
             --aux_object.x;
-            aux_object.offset = LEFTC2;
+            aux_object.offset = AUX_ARROWLEFT;
 
         }
 
