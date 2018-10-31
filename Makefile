@@ -29,14 +29,14 @@ dogsprites:
 	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > ./build/dogr.asm
 
 bincat:
-	png2sp1sprite ./sprites/bincat_sprites.png -i sprite_bincat -f 24 > ./build/bincat.asm
+	png2sp1sprite ./sprites/bincat_sprites.png --bit -i sprite_bincat -f 24 > ./build/bincat.asm
 
 clothes:
-	png2sp1sprite ./sprites/clothes_sprites.png -i sprite_clothes  -f 64 > ./build/clothes.asm
-	png2sp1sprite ./sprites/clothes_sprites2.png -i sprite_clothes2 -f 40 > ./build/clothes2.asm
+	png2sp1sprite ./sprites/clothes_sprites.png --bit -i sprite_clothes  -f 64 > ./build/clothes.asm
+	png2sp1sprite ./sprites/clothes_sprites2.png --bit -i sprite_clothes2 -f 40 > ./build/clothes2.asm
 
 auxiliar:
-	png2sp1sprite ./sprites/auxiliar.png -i auxiliar -f 32 > ./build/auxiliar.asm
+	png2sp1sprite ./sprites/auxiliar.png --bit -i auxiliar -f 32 > ./build/auxiliar.asm
 
 fence:
 	@png2udg ./background/udg_valla1.png

@@ -1,6 +1,6 @@
 // COMPILE TIME CRT CONFIGURATION
 
-#pragma output CRT_ORG_CODE           = 25124      // org of compile todo this should be higher to allocate sprites
+#pragma output CRT_ORG_CODE           = 24000      // org of compile todo this should be higher to allocate sprites
 #pragma output CRT_INCLUDE_PREAMBLE=0
 #pragma output REGISTER_SP            = 0xd000     // typical stack location when using sp1
 
@@ -18,3 +18,6 @@
 // CREATE A BLOCK MEMORY ALLOCATOR WITH ONE QUEUE
 
 #pragma output CLIB_BALLOC_TABLE_SIZE = 1
+
+// thanks, alvin, for this feedback
+#pragma output CRT_STACK_SIZE = 256

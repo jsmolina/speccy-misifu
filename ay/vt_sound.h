@@ -55,6 +55,12 @@ extern void vt_init(const void *module_address) __z88dk_fastcall;
  */
 extern void vt_play(void);
 
+
+/**
+* Plays one snippet of the  module. Call this function from existing ISR subroutine.
+**/
+extern void vt_play_raw(void);
+
 /*
  * This function is tailored for installation as an IM2 interrupt service
  * routine to play the module in the background.

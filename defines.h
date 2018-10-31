@@ -37,9 +37,14 @@
 #define BORED 449
 #define JUMPINGC2 513
 
-#define MISIOFFSET 65
-#define OUCHOFFSET 129
-#define LOVEOFFSET 193
+#define AUX_ZAP 33  // 24 + 8 + 1
+#define AUX_ARROWRIGHT 65
+#define AUX_ARROWLEFT  97
+#define AUX_BROOM 129
+
+#define MISIOFFSET 33
+#define OUCHOFFSET 65
+#define LOVEOFFSET 97
 
 #define LEVELFINISHED 100
 

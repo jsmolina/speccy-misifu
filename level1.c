@@ -275,7 +275,7 @@ void anim_windows() {
         if (vertical_direction != NONE || horizontal_direction != NONE) {
             if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 // todo falling to loose a live
-                aux_object.offset = RIGHTC2;
+                aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING;
             } else {
                 // now move accordingly
