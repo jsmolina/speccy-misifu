@@ -91,7 +91,8 @@ extern uint8_t bincat_in_bin;
 extern uint8_t dog_offset;
 // keeps animation frames when something takes longer
 extern uint8_t anim_frames;
-extern uint8_t anim_frames_bincat;
+extern uint8_t udgxs[];
+extern uint8_t udgys[];
 
 extern uint8_t first_keypress;
 
@@ -161,6 +162,8 @@ extern const uint8_t udg_c[];
 extern const uint8_t udg_a[];
 extern const uint8_t udg_t[];
 
+extern const uint8_t catheaven1[];
+extern const uint8_t catheaven2[];
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;

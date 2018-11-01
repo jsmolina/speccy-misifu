@@ -91,3 +91,7 @@ hearts:
 	@png2udg ./background/cupid31.png
 	@png2udg ./background/cupid32.png
 	@png2udg ./background/cupid33.png
+
+heavencat:
+	@png2udg ./background/catheaven1.png
+	@png2udg ./background/catheaven2.png

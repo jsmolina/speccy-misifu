@@ -69,7 +69,10 @@ uint8_t bincat_in_bin = NONE;
 uint8_t dog_offset;
 // keeps animation frames when something takes longer
 uint8_t anim_frames = 0;
-uint8_t anim_frames_bincat = 0;
+
+// used for udg animations (e.g. heaven cats, eel, ...)
+uint8_t udgxs[] = {0, 0, 0, 0, 0, 0, 0, 0};
+uint8_t udgys[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 uint8_t first_keypress = NONE;
 
@@ -146,6 +149,9 @@ const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
 const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 
+// use tiles
+const uint8_t catheaven1[] = {0x9f, 0x3c, 0x38, 0x10, 0x81, 0xe1, 0xe7, 0xe3};
+const uint8_t catheaven2[] = {0xfb, 0x33, 0x15, 0x0, 0x81, 0xe3, 0xf3, 0xf1};
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;

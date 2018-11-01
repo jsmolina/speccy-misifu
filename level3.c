@@ -75,6 +75,9 @@ void  print_background_level3() {
   sp1_TileEntry('J', cupid32);
   sp1_TileEntry('K', cupid33);
 
+  sp1_TileEntry('L', catheaven1);
+  sp1_TileEntry('M', catheaven2);
+
   // vertical cupids
   for(idx=0; idx < 23; idx=idx+3) {
      paint_cupid(idx, 0);
@@ -105,6 +108,7 @@ void  print_background_level3() {
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
+  udgxs[0] = udgxs[1] = udgxs[2] = udgxs[3] = 5;
 }
 
 
@@ -164,6 +168,41 @@ void detect_fall_in_hearts() {
     }
 }
 
+
+static void print_heavencats(uint8_t clean) {
+    idx_j = 6;
+    for (idx = 0; idx != 4; ++idx) {
+        if (clean == 1) {
+            // used for simulating the animation with udg
+            sp1_PrintAtInv( idx_j, udgxs[idx],  PAPER_GREEN, ' ');
+            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  PAPER_GREEN, ' ');
+        } else {
+            sp1_PrintAtInv( idx_j, udgxs[idx],  INK_GREEN | PAPER_RED, 'L');
+            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  INK_GREEN | PAPER_RED, 'M');
+        }
+        idx_j += 4;
+
+    }
+}
+
+
+inline void heavencat_on_move() {
+    // clean
+    print_heavencats(1);
+
+    if(frame == 3) {
+        ++udgxs[0];
+
+        if(udgxs[0] > 25) {
+            udgxs[0] = 5;
+        }
+    }
+
+    // repaint
+    print_heavencats(0);
+    // saves lot of memory to use udg in this animation
+}
+
 void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
@@ -218,4 +257,6 @@ void throw_cupid_arrow() {
         aux_object.x = 33;
     }
     sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+
+    heavencat_on_move();
 }

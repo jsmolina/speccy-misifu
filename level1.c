@@ -190,7 +190,7 @@ void  print_background_lvl1() {
    }
 
    reset_misifu_position();
-
+   bincat_appears = NONE;
 }
 
 void leave_level() {
@@ -311,21 +311,20 @@ void anim_windows() {
 
 void check_bincat() {
     // checks if bincat should appear and where
-    if (bincat_appears != YES && misifu.in_bin != NONE) {
+    if (bincat_appears == NONE && misifu.in_bin != NONE) {
         bincat_in_bin = bin_places2[random_value % 6];
         // less probable
         if(bincat_in_bin != NONE) {
-            bincat_appears = YES;
-            anim_frames_bincat = 20;
+            //anim_frames_bincat = 20;
 
             if (bincat_in_bin == HIGHER_BIN_X) {
                 // reused as row and also number of frames appearing
-                anim_frames_bincat = 15;
+                bincat_appears = 15;
             } else {
-                anim_frames_bincat = 17;
+                bincat_appears = 17;
             }
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, anim_frames_bincat, bincat_in_bin, 0, 0);
-            anim_frames_bincat = 40;
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, bincat_appears, bincat_in_bin, 0, 0);
+            bincat_appears = 40;
 
             // cat falls if misifu.in_bin is the same of bincat_in_bin
             if (bincat_in_bin == misifu.in_bin) {
@@ -337,8 +336,8 @@ void check_bincat() {
     }
 
     // delete bincat after some frames
-    if (bincat_appears == YES) {
-        --anim_frames_bincat;
+    if (bincat_appears != NONE) {
+        --bincat_appears;
 
         // cat falls if cat_in_bin is the same of bincat_in_bin
         if (bincat_in_bin == misifu.in_bin) {
@@ -346,7 +345,7 @@ void check_bincat() {
             misifu.in_bin = NONE;
         }
 
-        if (anim_frames_bincat < 1 && bincatsp != NULL) {
+        if (bincat_appears < 1 && bincatsp != NULL) {
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
             bincat_appears = NONE;
             bincat_in_bin = 0;
