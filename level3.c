@@ -2,6 +2,8 @@
 #include "defines.h"
 #include "level1.h"
 #include "int.h"
+#include <stdlib.h>
+
 
 void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row, col, INK_RED | PAPER_GREEN, 'C');
@@ -75,6 +77,9 @@ void  print_background_level3() {
   sp1_TileEntry('J', cupid32);
   sp1_TileEntry('K', cupid33);
 
+  sp1_TileEntry('L', catheaven1);
+  sp1_TileEntry('M', catheaven2);
+
   // vertical cupids
   for(idx=0; idx < 23; idx=idx+3) {
      paint_cupid(idx, 0);
@@ -105,6 +110,7 @@ void  print_background_level3() {
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
+  udgxs[0] = udgxs[1] = udgxs[2] = udgxs[3] = 5;
 }
 
 
@@ -164,6 +170,67 @@ void detect_fall_in_hearts() {
     }
 }
 
+
+static void print_heavencats(uint8_t clean) {
+    idx_j = 6;
+    for (idx = 0; idx != 4; ++idx) {
+        if (clean == 1) {
+            // used for simulating the animation with udg
+            sp1_PrintAtInv( idx_j, udgxs[idx],  PAPER_GREEN, ' ');
+            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  PAPER_GREEN, ' ');
+        } else {
+            sp1_PrintAtInv( idx_j, udgxs[idx],  INK_BLACK | PAPER_GREEN, 'L');
+            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  INK_BLACK  | PAPER_GREEN, 'M');
+        }
+        idx_j += 4;
+
+    }
+}
+
+
+inline void heavencat_on_move() {
+    // clean
+    print_heavencats(1);
+
+    if(frame == 3) {
+        if(random_value > 40 && random_value < 80) {
+            ++udgxs[0];
+        } else if(random_value > 80 && random_value < 150) {
+            ++udgxs[1];
+        } else if(random_value > 150 && random_value < 190) {
+            ++udgxs[2];
+        } else if(random_value > 190 && random_value < 230) {
+            ++udgxs[3];
+        }
+        // if going to right, return left
+        if(udgxs[0] > 25) {
+            udgxs[0] = 5;
+        } else if(udgxs[1] > 25) {
+            udgxs[1] = 5;
+        } if(udgxs[2] > 25) {
+            udgxs[2] = 5;
+        } if(udgxs[3] > 25) {
+            udgxs[3] = 5;
+        }
+
+    }
+
+    // repaint
+    print_heavencats(0);
+
+    // detect collision with misifu
+    if(misifu.y == 5 && abs(misifu.x - udgxs[0]) < 2 ) {
+        misifu.state = FALLING;
+    } else if(misifu.y == 9 && abs(misifu.x - udgxs[1]) < 2) {
+        misifu.state = FALLING;
+    } else if(misifu.y == 13 && abs(misifu.x - udgxs[2]) < 2) {
+        misifu.state = FALLING;
+    } else if(misifu.y == 17 && abs(misifu.x - udgxs[3]) < 2) {
+        misifu.state = FALLING;
+    }
+    // saves lot of memory to use udg in this animation
+}
+
 void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
@@ -218,4 +285,6 @@ void throw_cupid_arrow() {
         aux_object.x = 33;
     }
     sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+
+    heavencat_on_move();
 }
