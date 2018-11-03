@@ -2,6 +2,8 @@
 #include "defines.h"
 #include "level1.h"
 #include "int.h"
+#include <stdlib.h>
+
 
 void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row, col, INK_RED | PAPER_GREEN, 'C');
@@ -177,8 +179,8 @@ static void print_heavencats(uint8_t clean) {
             sp1_PrintAtInv( idx_j, udgxs[idx],  PAPER_GREEN, ' ');
             sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  PAPER_GREEN, ' ');
         } else {
-            sp1_PrintAtInv( idx_j, udgxs[idx],  INK_GREEN | PAPER_RED, 'L');
-            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  INK_GREEN | PAPER_RED, 'M');
+            sp1_PrintAtInv( idx_j, udgxs[idx],  INK_BLACK | PAPER_GREEN, 'L');
+            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  INK_BLACK  | PAPER_GREEN, 'M');
         }
         idx_j += 4;
 
@@ -191,15 +193,41 @@ inline void heavencat_on_move() {
     print_heavencats(1);
 
     if(frame == 3) {
-        ++udgxs[0];
-
+        if(random_value > 40 && random_value < 80) {
+            ++udgxs[0];
+        } else if(random_value > 80 && random_value < 150) {
+            ++udgxs[1];
+        } else if(random_value > 150 && random_value < 190) {
+            ++udgxs[2];
+        } else if(random_value > 190 && random_value < 230) {
+            ++udgxs[3];
+        }
+        // if going to right, return left
         if(udgxs[0] > 25) {
             udgxs[0] = 5;
+        } else if(udgxs[1] > 25) {
+            udgxs[1] = 5;
+        } if(udgxs[2] > 25) {
+            udgxs[2] = 5;
+        } if(udgxs[3] > 25) {
+            udgxs[3] = 5;
         }
+
     }
 
     // repaint
     print_heavencats(0);
+
+    // detect collision with misifu
+    if(misifu.y == 5 && abs(misifu.x - udgxs[0]) < 2 ) {
+        misifu.state = FALLING;
+    } else if(misifu.y == 9 && abs(misifu.x - udgxs[1]) < 2) {
+        misifu.state = FALLING;
+    } else if(misifu.y == 13 && abs(misifu.x - udgxs[2]) < 2) {
+        misifu.state = FALLING;
+    } else if(misifu.y == 17 && abs(misifu.x - udgxs[3]) < 2) {
+        misifu.state = FALLING;
+    }
     // saves lot of memory to use udg in this animation
 }
 
