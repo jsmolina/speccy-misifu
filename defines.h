@@ -105,6 +105,8 @@ extern uint8_t random_value;
 extern uint8_t opened_window;
 extern uint8_t opened_window_frames;
 extern uint8_t level;
+extern uint8_t lives;
+extern uint16_t points;
 
 // level 3 hearts
 extern const uint8_t heart1[];
@@ -164,6 +166,17 @@ extern const uint8_t udg_t[];
 
 extern const uint8_t catheaven1[];
 extern const uint8_t catheaven2[];
+
+const uint8_t udg_0[];
+const uint8_t udg_1[];
+const uint8_t udg_2[];
+const uint8_t udg_3[];
+const uint8_t udg_4[];
+const uint8_t udg_5[];
+const uint8_t udg_6[];
+const uint8_t udg_7[];
+const uint8_t udg_8[];
+const uint8_t udg_9[];
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;

@@ -95,3 +95,15 @@ hearts:
 heavencat:
 	@png2udg ./background/catheaven1.png
 	@png2udg ./background/catheaven2.png
+
+numbers:
+	@png2udg ./background/udg_0.png
+	@png2udg ./background/udg_1.png
+	@png2udg ./background/udg_2.png
+	@png2udg ./background/udg_3.png
+	@png2udg ./background/udg_4.png
+	@png2udg ./background/udg_5.png
+	@png2udg ./background/udg_6.png
+	@png2udg ./background/udg_7.png
+	@png2udg ./background/udg_8.png
+	@png2udg ./background/udg_9.png
