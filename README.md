@@ -28,6 +28,10 @@ Contributions/suggestions are more than welcome!
 
 ![Image of Misifu](https://user-images.githubusercontent.com/447481/45633520-45009580-baa0-11e8-9383-1fa9f4f9dbc4.png)
 
+# Considerations
+https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_06_SomeDetails.md
+
+
 # Collaborators
 
 * ER on the graphic material.
