@@ -106,6 +106,7 @@ extern uint8_t opened_window;
 extern uint8_t opened_window_frames;
 extern uint8_t level;
 extern uint8_t lives;
+extern uint8_t repaint_lives;
 extern uint16_t points;
 
 // level 3 hearts
@@ -212,6 +213,8 @@ struct udgstruct {
     uint8_t y;
     uint8_t x;
 };
+
+void loose_a_live();
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
 

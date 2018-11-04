@@ -3,6 +3,7 @@
 #include "level1.h"
 #include "int.h"
 #include <stdlib.h>
+#include <sound.h> // for bit_beepfx()
 
 
 void paint_cupid(uint8_t row, uint8_t col) {
@@ -49,7 +50,11 @@ void get_out_of_level(uint8_t fall) {
         sp1_UpdateNow();
         wait();
     }
-
+    if(fall == FALLING) {
+        bit_beepfx_di(BEEPFX_AWW);
+    } else {
+        bit_beepfx_di(BEEPFX_SELECT_5);
+    }
     print_background_lvl1();
 }
 

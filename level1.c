@@ -113,6 +113,7 @@ void paint_window(uint8_t num, uint16_t colour) {
 
 void print_lives() {
     sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK, 48 + lives);
+    repaint_lives = 0;
 }
 
 void  print_background_lvl1() {
@@ -252,6 +253,9 @@ void move_clothes() {
 }
 
 void anim_windows() {
+    if(repaint_lives == 1) {
+        print_lives();
+    }
 
     // decide if window should open
     // OPEN

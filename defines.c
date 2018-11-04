@@ -1,6 +1,7 @@
 #include <z80.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
+#include <sound.h> // for bit_beepfx()
 #include "defines.h"
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
@@ -86,6 +87,7 @@ uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
 uint8_t level = 1;
 uint8_t lives = 5;
+uint8_t repaint_lives = 0;
 uint16_t points = 0;
 
 // level 3 hearts
@@ -145,7 +147,6 @@ const uint8_t cubotop3[] = {0xb0, 0x58, 0x8b, 0x10, 0x0, 0xf8, 0xff, 0xfb};
 const uint8_t udg_rope[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xd2};
 const uint8_t  udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with rope
 const uint8_t  udg_win3[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-// todo add udg for numbers (score, lives)
 
 const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
@@ -318,6 +319,21 @@ void add_sprites_for_all_levels() {
   row2clothes[1].col = 18;
   row2clothes[1].sp = add_sprite_clothes1();
 
+}
+
+void loose_a_live() {
+    // todo make sound
+
+    if(lives > 0) {
+        --lives;
+        bit_beepfx_di(BEEPFX_DROP_1);
+    } else {
+        // reached zero on lives
+        lives = 5;
+        points = 0;
+        bit_beepfx_di(BEEPFX_BOOM_1);
+    }
+    repaint_lives = 1;
 }
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
