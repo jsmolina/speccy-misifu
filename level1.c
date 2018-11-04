@@ -5,6 +5,7 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <stdlib.h>
+#include <sound.h> // for bit_beepfx()
 #include "defines.h"
 
 void reset_misifu_position() {
@@ -365,6 +366,7 @@ void check_bincat() {
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING;
             misifu.in_bin = NONE;
+            bit_beepfx_di(BEEPFX_HIT_1);
         }
 
         if (bincat_appears < 1 && bincatsp != NULL) {
