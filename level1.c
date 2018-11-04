@@ -111,6 +111,10 @@ void paint_window(uint8_t num, uint16_t colour) {
   }
 }
 
+void print_lives() {
+    sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK, 48 + lives);
+}
+
 void  print_background_lvl1() {
   level = 1;
 
@@ -142,6 +146,17 @@ void  print_background_lvl1() {
   sp1_TileEntry('N', udg_win2); // full square
   sp1_TileEntry('O', udg_win3); // bottom without rope
 
+  sp1_TileEntry('0', udg_0);
+  sp1_TileEntry('1', udg_1);
+  sp1_TileEntry('2', udg_2);
+  sp1_TileEntry('3', udg_3);
+  sp1_TileEntry('4', udg_4);
+  sp1_TileEntry('5', udg_5);
+  sp1_TileEntry('6', udg_6);
+  sp1_TileEntry('7', udg_7);
+  sp1_TileEntry('8', udg_8);
+  sp1_TileEntry('9', udg_9);
+
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
       frame = has_a_bin(x);
@@ -162,6 +177,9 @@ void  print_background_lvl1() {
           print_cubo(x);
       }
   }
+
+  print_lives();
+
   sp1_PrintAt( 17, 29, INK_CYAN | PAPER_BLACK, 'C');
   sp1_PrintAt( 18, 30,  INK_CYAN | PAPER_BLACK, 'A');
   sp1_PrintAt( 19, 31,  INK_CYAN | PAPER_BLACK, 'T');

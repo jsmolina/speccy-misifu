@@ -237,10 +237,10 @@ static struct sp1_ss * add_sprite_dogr1() {
 
 static struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_bincat1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_bincat2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_bincat3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_OR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_bincat1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_OR1RB,  SP1_TYPE_1BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
 

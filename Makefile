@@ -2,8 +2,6 @@ VT_SOUND_LIB_SDCC_IY := ./ay
 
 compile:
 	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=screen.scr -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -L$(VT_SOUND_LIB_SDCC_IY) -lvt_sound -create-app
-	#
-	#zcc +zx -vn -SO3 -Cz--screen=screen.scr -clib=sdcc_iy -pragma-include:zpragma.inc -startup=31 misifu.c ./build/protar.asm ./build/dogr.asm ./build/bincat.asm ./build/clothes.asm ./build/clothes2.asm ./build/auxiliar.asm -o misifu -create-app
 	rm -f misifu.bin
 	rm -f misifu_CODE.bin
 	rm -f misifu.map
@@ -29,7 +27,7 @@ dogsprites:
 	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > ./build/dogr.asm
 
 bincat:
-	png2sp1sprite ./sprites/bincat_sprites.png --bit -i sprite_bincat -f 24 > ./build/bincat.asm
+	png2sp1sprite ./sprites/bincat_sprites.png --bit -i sprite_bincat > ./build/bincat.asm
 
 clothes:
 	png2sp1sprite ./sprites/clothes_sprites.png --bit -i sprite_clothes  -f 64 > ./build/clothes.asm
