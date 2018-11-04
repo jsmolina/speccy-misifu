@@ -1,6 +1,7 @@
 #include <z80.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
+#include <sound.h> // for bit_beepfx()
 #include "defines.h"
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
@@ -85,6 +86,9 @@ uint8_t random_value = 0;
 uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
 uint8_t level = 1;
+uint8_t lives = 5;
+uint8_t repaint_lives = 0;
+uint16_t points = 0;
 
 // level 3 hearts
 const uint8_t heart1[] = {0x0, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x0, 0x0};
@@ -143,7 +147,6 @@ const uint8_t cubotop3[] = {0xb0, 0x58, 0x8b, 0x10, 0x0, 0xf8, 0xff, 0xfb};
 const uint8_t udg_rope[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xd2};
 const uint8_t  udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with rope
 const uint8_t  udg_win3[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-// todo add udg for numbers (score, lives)
 
 const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
@@ -152,6 +155,18 @@ const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 // use tiles
 const uint8_t catheaven1[] = {0x60, 0xc3, 0xc7, 0xef, 0x7e, 0x1e, 0x18, 0x1c};
 const uint8_t catheaven2[] = {0x4, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0xc, 0xe};
+
+// numbers
+const uint8_t udg_0[] = {0x46, 0x12, 0x1a, 0x1a, 0x48, 0x48, 0x60, 0x7e};
+const uint8_t udg_1[] = {0x4e, 0x4e, 0x4e, 0x4e, 0x46, 0x66, 0x66, 0x66};
+const uint8_t udg_2[] = {0x62, 0x40, 0x78, 0x62, 0x46, 0x4e, 0x42, 0x40};
+const uint8_t udg_3[] = {0x46, 0x2, 0x12, 0x72, 0x60, 0x78, 0x48, 0x62};
+const uint8_t udg_4[] = {0x12, 0x12, 0x12, 0x10, 0x42, 0x72, 0x72, 0x7e};
+const uint8_t udg_5[] = {0x40, 0x48, 0x4e, 0x46, 0x62, 0x72, 0x12, 0x46};
+const uint8_t udg_6[] = {0x62, 0x46, 0x4e, 0x2, 0x0, 0x18, 0x0, 0x46};
+const uint8_t udg_7[] = {0x42, 0x0, 0x18, 0x78, 0x70, 0x72, 0x72, 0x72};
+const uint8_t udg_8[] = {0x62, 0x48, 0x48, 0x62, 0x46, 0x12, 0x12, 0x46};
+const uint8_t udg_9[] = {0x46, 0x2, 0x18, 0x0, 0x48, 0x78, 0x42, 0x46};
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;
@@ -223,10 +238,10 @@ static struct sp1_ss * add_sprite_dogr1() {
 
 static struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_bincat1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_bincat2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_bincat3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_OR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_bincat1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_OR1RB,  SP1_TYPE_1BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
 
@@ -304,6 +319,21 @@ void add_sprites_for_all_levels() {
   row2clothes[1].col = 18;
   row2clothes[1].sp = add_sprite_clothes1();
 
+}
+
+void loose_a_live() {
+    // todo make sound
+
+    if(lives > 0) {
+        --lives;
+        bit_beepfx_di(BEEPFX_DROP_1);
+    } else {
+        // reached zero on lives
+        lives = 5;
+        points = 0;
+        bit_beepfx_di(BEEPFX_BOOM_1);
+    }
+    repaint_lives = 1;
 }
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

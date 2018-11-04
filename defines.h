@@ -105,6 +105,9 @@ extern uint8_t random_value;
 extern uint8_t opened_window;
 extern uint8_t opened_window_frames;
 extern uint8_t level;
+extern uint8_t lives;
+extern uint8_t repaint_lives;
+extern uint16_t points;
 
 // level 3 hearts
 extern const uint8_t heart1[];
@@ -165,6 +168,17 @@ extern const uint8_t udg_t[];
 extern const uint8_t catheaven1[];
 extern const uint8_t catheaven2[];
 
+extern const uint8_t udg_0[];
+extern const uint8_t udg_1[];
+extern const uint8_t udg_2[];
+extern const uint8_t udg_3[];
+extern const uint8_t udg_4[];
+extern const uint8_t udg_5[];
+extern const uint8_t udg_6[];
+extern const uint8_t udg_7[];
+extern const uint8_t udg_8[];
+extern const uint8_t udg_9[];
+
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;
 extern uint8_t horizontal_direction;
@@ -199,6 +213,8 @@ struct udgstruct {
     uint8_t y;
     uint8_t x;
 };
+
+void loose_a_live();
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
 

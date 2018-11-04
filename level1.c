@@ -5,6 +5,7 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <stdlib.h>
+#include <sound.h> // for bit_beepfx()
 #include "defines.h"
 
 void reset_misifu_position() {
@@ -111,6 +112,11 @@ void paint_window(uint8_t num, uint16_t colour) {
   }
 }
 
+void print_lives() {
+    sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK, 48 + lives);
+    repaint_lives = 0;
+}
+
 void  print_background_lvl1() {
   level = 1;
 
@@ -142,6 +148,17 @@ void  print_background_lvl1() {
   sp1_TileEntry('N', udg_win2); // full square
   sp1_TileEntry('O', udg_win3); // bottom without rope
 
+  sp1_TileEntry('0', udg_0);
+  sp1_TileEntry('1', udg_1);
+  sp1_TileEntry('2', udg_2);
+  sp1_TileEntry('3', udg_3);
+  sp1_TileEntry('4', udg_4);
+  sp1_TileEntry('5', udg_5);
+  sp1_TileEntry('6', udg_6);
+  sp1_TileEntry('7', udg_7);
+  sp1_TileEntry('8', udg_8);
+  sp1_TileEntry('9', udg_9);
+
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
       frame = has_a_bin(x);
@@ -162,6 +179,9 @@ void  print_background_lvl1() {
           print_cubo(x);
       }
   }
+
+  print_lives();
+
   sp1_PrintAt( 17, 29, INK_CYAN | PAPER_BLACK, 'C');
   sp1_PrintAt( 18, 30,  INK_CYAN | PAPER_BLACK, 'A');
   sp1_PrintAt( 19, 31,  INK_CYAN | PAPER_BLACK, 'T');
@@ -234,6 +254,9 @@ void move_clothes() {
 }
 
 void anim_windows() {
+    if(repaint_lives == 1) {
+        print_lives();
+    }
 
     // decide if window should open
     // OPEN
@@ -343,6 +366,7 @@ void check_bincat() {
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING;
             misifu.in_bin = NONE;
+            bit_beepfx_di(BEEPFX_HIT_1);
         }
 
         if (bincat_appears < 1 && bincatsp != NULL) {
