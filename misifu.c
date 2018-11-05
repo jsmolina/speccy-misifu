@@ -54,6 +54,10 @@ void check_keys()
         level = 1;
         print_background_lvl1();
         sp1_UpdateNow();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
+        level = 2;
+        print_background_level2();
+        sp1_UpdateNow();
     }
 }
 
