@@ -2,21 +2,11 @@ VT_SOUND_LIB_SDCC_IY := ./ay
 
 compile:
 	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=screen.scr -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -L$(VT_SOUND_LIB_SDCC_IY) -lvt_sound -create-app
-	rm -f misifu.bin
-	rm -f misifu_CODE.bin
-	rm -f misifu.map
-	rm -f misifu
-	rm -f zcc_opt.def
-	rm -f zcc_proj.lst
+	echo "Done"
 
 develop:
 	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu -pragma-include:zpragma.inc -L$(VT_SOUND_LIB_SDCC_IY) -lvt_sound -create-app
-	rm -f misifu.bin
-	rm -f misifu_CODE.bin
-	rm -f misifu.map
-	rm -f misifu
-	rm -f zcc_opt.def
-	rm -f zcc_proj.lst
+	echo "Done"
 
 sprites: prota dogsprites bincat clothes auxiliar
 

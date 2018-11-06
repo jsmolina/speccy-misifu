@@ -16,49 +16,64 @@ uint8_t thrown_from_window(uint8_t x, uint8_t y) {
 
 void define_cheese_holes_pos() {
     // init to zero
-    for(idx_j = 0; idx_j != 5; ++idx_j) {
-        for(idx = 0; idx != 24; ++idx) {
-            floor_holes[idx_j][idx] = 0;
-        }
-    }
-    /*
+    windows[0].x = 18; windows[0].y = 9;
+    windows[1].x = 20; windows[1].y = 4;
+    windows[2].x = 19; windows[2].y = 8;
     windows[3].x = 20; windows[3].y = 18;
+    windows[4].x = 19; windows[4].y = 5;
     windows[5].x = 20; windows[5].y = 14;
     windows[6].x = 18; windows[6].y = 13;
-    windows[10].x = 14; windows[10].y = 12;
-    windows[0].x = 18; windows[0].y = 9;
-    windows[9].x = 14; windows[9].y = 8;
-    windows[2].x = 19; windows[2].y = 8;
-    windows[11].x = 12; windows[11].y = 6;
-    windows[4].x = 19; windows[4].y = 5;
-    windows[1].x = 20; windows[1].y = 4;
     windows[7].x = 16; windows[7].y = 4;
     windows[8].x = 14; windows[8].y = 4;
+    windows[9].x = 14; windows[9].y = 8;
+    windows[10].x = 14; windows[10].y = 12;
+    windows[11].x = 12; windows[11].y = 6;
     windows[12].x = 10; windows[12].y = 4;
     windows[13].x = 8; windows[13].y = 4;
-    */
-    // y=4, x = 8
-    floor_holes[0][8] = 1;
-    floor_holes[0][10] = 1;
-    floor_holes[0][14] = 1;
-    floor_holes[0][16] = 1;
-    floor_holes[0][20] = 1;
-    // y = 5
-    floor_holes[1][19] = 1;
-    // y = 6
-    floor_holes[2][12] = 1;
-    // y = 8
-    floor_holes[3][19] = 1;
-    floor_holes[3][14] = 1;
-    // y = 9
-    floor_holes[4][18] = 1;
-
 }
 
 
 void detect_fall_in_hole_or_curtain() {
-    // todo implement
-    // misifu.state = CAT_IN_ROPE;
+    if(misifu.state != FALLING) {
+        return;
+    }
+
+    if(misifu.y == 4) {
+        if(misifu.x == 8) {
+            misifu.in_bin = 13;
+        } else if(misifu.x == 10) {
+            misifu.in_bin = 12;
+        } else if(misifu.x == 14) {
+            misifu.in_bin = 8;
+        } else if(misifu.x == 16) {
+            misifu.in_bin = 7;
+        } else if(misifu.x == 20) {
+            misifu.in_bin = 1;
+        }
+    } else if(misifu.y == 5 && misifu.x == 19) {
+        misifu.in_bin = 4;
+    } else if(misifu.y == 6 && misifu.x == 12) {
+        misifu.in_bin = 11;
+    } else if(misifu.y == 8) {
+        if(misifu.x == 19) {
+            misifu.in_bin = 2;
+        } else if(misifu.x == 14) {
+            misifu.in_bin = 9;
+        }
+    } else if (misifu.y == 9 && misifu.x == 18) {
+        misifu.in_bin = 0;
+    } else if (misifu.y == 12 && misifu.x == 14) {
+        misifu.in_bin = 10;
+    } else if (misifu.y == 13 && misifu.x == 18) {
+        misifu.in_bin = 6;
+    } else if (misifu.y == 14 && misifu.x == 20) {
+        misifu.in_bin = 5;
+    } else if (misifu.y == 18 && misifu.x == 20) {
+        misifu.in_bin = 3;
+    } else {
+        return;
+    }
+    misifu.state = CAT_IN_ROPE;
 }
 
 
@@ -133,10 +148,9 @@ void  print_background_level2() {
     }
   }
   // paint holes
-  /*for (idx = 0; idx != 14; ++idx) {
+  for (idx = 0; idx != 14; ++idx) {
     sp1_PrintAt( windows[idx].x, windows[idx].y, INK_BLACK | PAPER_GREEN, 'A');
-  }*/
-  // todo paint cheese here
+  }
 
 }
 
