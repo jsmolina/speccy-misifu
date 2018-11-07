@@ -16,64 +16,80 @@ uint8_t thrown_from_window(uint8_t x, uint8_t y) {
 
 void define_cheese_holes_pos() {
     // init to zero
-    windows[0].x = 18; windows[0].y = 9;
-    windows[1].x = 20; windows[1].y = 4;
-    windows[2].x = 19; windows[2].y = 8;
-    windows[3].x = 20; windows[3].y = 18;
-    windows[4].x = 19; windows[4].y = 5;
-    windows[5].x = 20; windows[5].y = 14;
-    windows[6].x = 18; windows[6].y = 13;
-    windows[7].x = 16; windows[7].y = 4;
-    windows[8].x = 14; windows[8].y = 4;
-    windows[9].x = 14; windows[9].y = 8;
-    windows[10].x = 14; windows[10].y = 12;
-    windows[11].x = 12; windows[11].y = 6;
-    windows[12].x = 10; windows[12].y = 4;
-    windows[13].x = 8; windows[13].y = 4;
+    windows[0].y = 20; windows[0].x = 4;
+    windows[1].y = 20; windows[1].x = 18;
+    windows[2].y = 20; windows[2].x = 14;
+    windows[3].y = 19; windows[3].x = 8;
+    windows[4].y = 19; windows[4].x = 5;
+    windows[5].y = 18; windows[5].x = 9;
+    windows[6].y = 18; windows[6].x = 13;
+    windows[7].y = 16; windows[7].x = 4;
+    windows[8].y = 14; windows[8].x = 4;
+    windows[9].y = 14; windows[9].x = 9;
+    windows[10].y = 14; windows[10].x = 12;
+    windows[11].y = 12; windows[11].x = 6;
+    windows[12].y = 10; windows[12].x = 4;
+    windows[13].y = 8; windows[13].x = 4;
 }
 
 
-void detect_fall_in_hole_or_curtain() {
+static inline uint8_t map_cat_pos_in_holes() {
     if(misifu.state != FALLING) {
-        return;
+        return UNDEF;
+    }
+    // note that udgs have a -2 margin
+    if(misifu.y == 20) {
+        if(misifu.x == 2) {
+            return 0;
+        } else if(misifu.x == 16) {
+            return 1;
+        } else if(misifu.x == 12) {
+            return 2;
+        }
+
+    } else if(misifu.y == 19) {
+        if(misifu.x == 6) {
+            return 3;
+        } else if(misifu.x == 3) {
+            return 4;
+        }
+    } else if(misifu.y == 18) {
+        if(misifu.x == 7) {
+            return 5;
+        } else if(misifu.x == 11) {
+            return 6;
+        }
+    } else if(misifu.y == 16 && misifu.x == 2) {
+        return 7;
+    } else if(misifu.y == 14) {
+        if(misifu.x == 2) {
+            return 8;
+        } else if(misifu.x == 3) {
+            return 9;
+        } else if(misifu.x == 10) {
+            return 10;
+        }
+    } else if(misifu.y == 12 && misifu.x == 4) {
+        return 11;
+    } else if (misifu.y == 10 && misifu.x == 2) {
+        return 12;
+    } else if(misifu.y == 8 && misifu.x == 2) {
+        return 13;
     }
 
-    if(misifu.y == 4) {
-        if(misifu.x == 8) {
-            misifu.in_bin = 13;
-        } else if(misifu.x == 10) {
-            misifu.in_bin = 12;
-        } else if(misifu.x == 14) {
-            misifu.in_bin = 8;
-        } else if(misifu.x == 16) {
-            misifu.in_bin = 7;
-        } else if(misifu.x == 20) {
-            misifu.in_bin = 1;
-        }
-    } else if(misifu.y == 5 && misifu.x == 19) {
-        misifu.in_bin = 4;
-    } else if(misifu.y == 6 && misifu.x == 12) {
-        misifu.in_bin = 11;
-    } else if(misifu.y == 8) {
-        if(misifu.x == 19) {
-            misifu.in_bin = 2;
-        } else if(misifu.x == 14) {
-            misifu.in_bin = 9;
-        }
-    } else if (misifu.y == 9 && misifu.x == 18) {
-        misifu.in_bin = 0;
-    } else if (misifu.y == 12 && misifu.x == 14) {
-        misifu.in_bin = 10;
-    } else if (misifu.y == 13 && misifu.x == 18) {
-        misifu.in_bin = 6;
-    } else if (misifu.y == 14 && misifu.x == 20) {
-        misifu.in_bin = 5;
-    } else if (misifu.y == 18 && misifu.x == 20) {
-        misifu.in_bin = 3;
+    return UNDEF;
+}
+
+void detect_fall_in_hole_or_curtain() {
+    idx = map_cat_pos_in_holes();
+
+    if(idx != UNDEF) {
+        misifu.in_bin = idx;
+        misifu.state = CAT_IN_ROPE;
+        zx_border(INK_GREEN);
     } else {
-        return;
+        zx_border(INK_BLACK);
     }
-    misifu.state = CAT_IN_ROPE;
 }
 
 
@@ -124,6 +140,8 @@ void print_room_walls() {
     sp1_PrintAt( idx, 26, INK_RED | PAPER_GREEN, 'J');
     sp1_PrintAt( idx, 27, INK_RED | PAPER_GREEN, 'J');
   }
+
+  reset_misifu_position();
 }
 
 void  print_background_level2() {
@@ -149,7 +167,7 @@ void  print_background_level2() {
   }
   // paint holes
   for (idx = 0; idx != 14; ++idx) {
-    sp1_PrintAt( windows[idx].x, windows[idx].y, INK_BLACK | PAPER_GREEN, 'A');
+    sp1_PrintAt( windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, 'A');
   }
 
 }

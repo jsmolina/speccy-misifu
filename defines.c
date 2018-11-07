@@ -336,4 +336,14 @@ void loose_a_live() {
     repaint_lives = 1;
 }
 
+void reset_misifu_position() {
+  misifu.in_bin = NONE;
+  misifu.x = 0;
+  misifu.y = FLOOR_Y;
+  misifu.initial_jump_y = 0;
+  misifu.draw_additional = NONE;
+  misifu.offset = RIGHTC1;
+  misifu.state = NONE;
+}
+
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

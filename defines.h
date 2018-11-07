@@ -216,6 +216,9 @@ struct udgstruct {
 
 void loose_a_live();
 
+extern void reset_misifu_position();
+
+
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
 
 #endif

@@ -32,6 +32,5 @@ extern void detect_fall_in_bin();
 
 //extern void add_row_clothes();
 
-extern void reset_misifu_position();
 
 #endif
