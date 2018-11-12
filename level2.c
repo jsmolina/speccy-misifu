@@ -64,7 +64,7 @@ static inline uint8_t map_cat_pos_in_holes() {
     } else if(misifu.y == 14) {
         if(misifu.x == 2) {
             return 8;
-        } else if(misifu.x == 3) {
+        } else if(misifu.x == 7) {
             return 9;
         } else if(misifu.x == 10) {
             return 10;
@@ -86,14 +86,45 @@ void detect_fall_in_hole_or_curtain() {
     if(idx != UNDEF) {
         misifu.in_bin = idx;
         misifu.state = CAT_IN_ROPE;
-        zx_border(INK_GREEN);
+        //zx_border(INK_GREEN);
     } else {
         zx_border(INK_BLACK);
     }
 }
 
+void mousies_dance_and_eat() {
+    if (random_value < 4) {
+        // mousie holes are connected, let's keep switching
+        if (random_value > 2) {
+            windows[5].has_item = 'A'; windows[8].has_item = 'B';
+            windows[10].has_item = 'A'; windows[4].has_item = 'B';
+            windows[13].has_item = 'A'; windows[9].has_item = 'B';
+            windows[12].has_item = 'A'; windows[6].has_item = 'B';
+        } else {
+            windows[5].has_item = 'B'; windows[8].has_item = 'A';
+            windows[10].has_item = 'B'; windows[4].has_item = 'A';
+            windows[13].has_item = 'B'; windows[9].has_item = 'A';
+            windows[12].has_item = 'B'; windows[6].has_item = 'A';
+        }
+        for(idx_j = 0; idx_j != 8; ++idx_j) {
+            idx = udgxs[idx_j];
+            sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, windows[idx].has_item);
+        }
+    }
+    // todo detect eat (set has_item as Z) to both holes
+}
+
 
 void print_room_walls() {
+  // in this level it is used to define holes with mouse
+  udgxs[0] = 5;
+  udgxs[1] = 10;
+  udgxs[2] = 13;
+  udgxs[3] = 12;
+  udgxs[4] = 8;
+  udgxs[5] = 4;
+  udgxs[6] = 9;
+  udgxs[7] = 6;
   sp1_TileEntry('F', wall1);
   sp1_TileEntry('G', wall2);
   sp1_TileEntry('H', wall3);
@@ -155,6 +186,7 @@ void  print_background_level2() {
   sp1_TileEntry('A', hole_empty);
   sp1_TileEntry('B', hole_mouse);
   sp1_TileEntry('C', cheese2);
+  sp1_TileEntry('Z', hole_empty);
 
   print_room_walls();
   define_cheese_holes_pos();

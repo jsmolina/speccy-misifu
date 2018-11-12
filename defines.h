@@ -212,6 +212,7 @@ struct freesprite {
 struct udgstruct {
     uint8_t y;
     uint8_t x;
+    char has_item;
 };
 
 void loose_a_live();
