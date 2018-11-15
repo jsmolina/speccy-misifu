@@ -7,6 +7,7 @@
 
 #define UNDEF 250
 #define NONE 0
+#define WON_LEVEL 10
 #define YES 1
 #define BIN_Y1 15
 #define BIN_Y2 16
@@ -82,6 +83,10 @@ extern uint8_t x, y;
 
 
 // game required vars
+// useful for  controlling amount of things to eat (mouses, fishes, ...)
+extern char left;
+extern char right;
+extern uint8_t eaten_items;
 extern uint8_t frame;
 extern uint8_t x_malo;
 extern uint8_t bincat_appears;
@@ -219,7 +224,7 @@ void loose_a_live();
 
 extern void reset_misifu_position();
 
-
+extern void print_room_walls();
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
 
 #endif

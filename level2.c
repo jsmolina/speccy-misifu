@@ -1,5 +1,7 @@
 #ifndef _LEVEL2
 #define _LEVEL2
+#include <sound.h>
+#include "level1.h"
 // AKA RATS ROOM
 
 #include "defines.h"
@@ -80,99 +82,81 @@ static inline uint8_t map_cat_pos_in_holes() {
     return UNDEF;
 }
 
+void get_out_of_level2(uint8_t fall) {
+
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  INK_WHITE | PAPER_BLACK,
+                  ' ' );
+
+    // control wether if gets out of level by having eat all mouses
+    sp1_Invalidate(&full_screen);
+    level = 1;
+    sp1_UpdateNow();
+    print_background_lvl1();
+}
+
 void detect_fall_in_hole_or_curtain() {
     idx = map_cat_pos_in_holes();
 
     if(idx != UNDEF) {
         misifu.in_bin = idx;
         misifu.state = CAT_IN_ROPE;
-        //zx_border(INK_GREEN);
+
+        // if window has mouse
+        if(windows[idx].has_item == 'B') {
+            windows[idx].has_item = 'Z'; // mark as already eaten
+            // print then the mouse in the up side
+            repaint_lives = 1;
+            sp1_PrintAtInv(1, 1 + eaten_items, INK_BLACK | PAPER_GREEN, 'B');
+            points += 5;
+            bit_beepfx_di(BEEPFX_SCORE);
+            --eaten_items;
+        }
+
     } else {
         zx_border(INK_BLACK);
+    }
+
+
+    if (eaten_items == 0) {
+        get_out_of_level2(WON_LEVEL);
     }
 }
 
 void mousies_dance_and_eat() {
-    if (random_value < 4) {
+    if (random_value < 4 || repaint_lives == 1) {
+        repaint_lives = 0;
         // mousie holes are connected, let's keep switching
         if (random_value > 2) {
-            windows[5].has_item = 'A'; windows[8].has_item = 'B';
-            windows[10].has_item = 'A'; windows[4].has_item = 'B';
-            windows[13].has_item = 'A'; windows[9].has_item = 'B';
-            windows[12].has_item = 'A'; windows[6].has_item = 'B';
+            left = 'A';
+            right = 'B';
         } else {
-            windows[5].has_item = 'B'; windows[8].has_item = 'A';
-            windows[10].has_item = 'B'; windows[4].has_item = 'A';
-            windows[13].has_item = 'B'; windows[9].has_item = 'A';
-            windows[12].has_item = 'B'; windows[6].has_item = 'A';
+            left = 'B';
+            right = 'A';
         }
+        // only switch now if not eaten
+        if(windows[5].has_item != 'Z' && windows[8].has_item != 'Z') {
+            windows[5].has_item = left; windows[8].has_item = right;
+        }
+
+        if(windows[10].has_item != 'Z' && windows[4].has_item != 'Z') {
+            windows[10].has_item = left; windows[4].has_item = right;
+        }
+
+        if(windows[13].has_item != 'Z' && windows[9].has_item != 'Z') {
+            windows[13].has_item = left; windows[9].has_item = right;
+        }
+
+        if(windows[12].has_item != 'Z' && windows[6].has_item != 'Z') {
+            windows[12].has_item = left; windows[6].has_item = right;
+        }
+
         for(idx_j = 0; idx_j != 8; ++idx_j) {
             idx = udgxs[idx_j];
             sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, windows[idx].has_item);
         }
     }
     // todo detect eat (set has_item as Z) to both holes
-}
-
-
-void print_room_walls() {
-  // in this level it is used to define holes with mouse
-  udgxs[0] = 5;
-  udgxs[1] = 10;
-  udgxs[2] = 13;
-  udgxs[3] = 12;
-  udgxs[4] = 8;
-  udgxs[5] = 4;
-  udgxs[6] = 9;
-  udgxs[7] = 6;
-  sp1_TileEntry('F', wall1);
-  sp1_TileEntry('G', wall2);
-  sp1_TileEntry('H', wall3);
-  sp1_TileEntry('I', wall4);
-
-  sp1_TileEntry('J', curtain);
-  sp1_TileEntry('N', udg_win2); // full square
-
-  for(idx = 0; idx != 3; ++idx) {
-    // upper left
-    sp1_PrintAt( 3 + idx, idx,  INK_BLACK | PAPER_RED, 'H');
-    // down left diagonal
-    sp1_PrintAt( 20 - idx, idx, INK_BLACK | PAPER_RED, 'I');
-    // upper right
-    sp1_PrintAt( 5 - idx, 29 + idx,  INK_BLACK | PAPER_RED, 'I');
-    // down right
-    sp1_PrintAt( 18 + idx, 29 + idx,  INK_BLACK | PAPER_RED, 'H');
-  }
-
-  // draw vertical wall
-  for (idx = 6; idx != 18; ++idx) {
-    sp1_PrintAt( idx, 3, INK_BLACK | PAPER_RED, 'F');
-    sp1_PrintAt( idx, 29,  INK_BLACK | PAPER_RED, 'F');
-  }
-
-  // draw horizontal wall
-  for (idx = 3; idx != 29; ++idx) {
-    sp1_PrintAt( 5, idx, INK_BLACK | PAPER_RED, 'G');
-    sp1_PrintAt( 17, idx, INK_BLACK | PAPER_RED, 'G');
-  }
-
-  for (idx = 8; idx != 11; ++idx) {
-    sp1_PrintAt( idx, 20, INK_RED | PAPER_GREEN, 'J');
-    sp1_PrintAt( idx, 21, INK_RED | PAPER_GREEN, 'J');
-
-    // x=8, 9 and y=22-25
-    if (idx != 10) {
-        sp1_PrintAt( idx, 22,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 23,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 24,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 25,  PAPER_BLACK, 'N');
-    }
-
-    sp1_PrintAt( idx, 26, INK_RED | PAPER_GREEN, 'J');
-    sp1_PrintAt( idx, 27, INK_RED | PAPER_GREEN, 'J');
-  }
-
-  reset_misifu_position();
 }
 
 void  print_background_level2() {
@@ -188,7 +172,20 @@ void  print_background_level2() {
   sp1_TileEntry('C', cheese2);
   sp1_TileEntry('Z', hole_empty);
 
+  // in this level it is used to define holes with mouse
+  udgxs[0] = 5;
+  udgxs[1] = 8;
+  udgxs[2] = 10;
+  udgxs[3] = 4;
+  udgxs[4] = 13;
+  udgxs[5] = 9;
+  udgxs[6] = 12;
+  udgxs[7] = 6;
+
   print_room_walls();
+
+  aux_object.offset = AUX_BROOM;
+
   define_cheese_holes_pos();
 
   for (idx = 3; idx != 20; ++idx) {
@@ -201,7 +198,8 @@ void  print_background_level2() {
   for (idx = 0; idx != 14; ++idx) {
     sp1_PrintAt( windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, 'A');
   }
-
+  reset_misifu_position();
+  eaten_items = 4;
 }
 
 

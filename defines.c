@@ -61,6 +61,9 @@ uint8_t x, y;
 
 
 // game required vars
+char left;
+char right;
+uint8_t eaten_items;
 uint8_t frame;
 uint8_t x_malo;
 uint8_t bincat_appears = NONE;
@@ -344,6 +347,56 @@ void reset_misifu_position() {
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
   misifu.state = NONE;
+}
+
+void print_room_walls() {
+  sp1_TileEntry('F', wall1);
+  sp1_TileEntry('G', wall2);
+  sp1_TileEntry('H', wall3);
+  sp1_TileEntry('I', wall4);
+
+  sp1_TileEntry('J', curtain);
+  sp1_TileEntry('N', udg_win2); // full square
+
+  for(idx = 0; idx != 3; ++idx) {
+    // upper left
+    sp1_PrintAt( 3 + idx, idx,  INK_BLACK | PAPER_RED, 'H');
+    // down left diagonal
+    sp1_PrintAt( 20 - idx, idx, INK_BLACK | PAPER_RED, 'I');
+    // upper right
+    sp1_PrintAt( 5 - idx, 29 + idx,  INK_BLACK | PAPER_RED, 'I');
+    // down right
+    sp1_PrintAt( 18 + idx, 29 + idx,  INK_BLACK | PAPER_RED, 'H');
+  }
+
+  // draw vertical wall
+  for (idx = 6; idx != 18; ++idx) {
+    sp1_PrintAt( idx, 3, INK_BLACK | PAPER_RED, 'F');
+    sp1_PrintAt( idx, 29,  INK_BLACK | PAPER_RED, 'F');
+  }
+
+  // draw horizontal wall
+  for (idx = 3; idx != 29; ++idx) {
+    sp1_PrintAt( 5, idx, INK_BLACK | PAPER_RED, 'G');
+    sp1_PrintAt( 17, idx, INK_BLACK | PAPER_RED, 'G');
+  }
+
+  for (idx = 8; idx != 11; ++idx) {
+    sp1_PrintAt( idx, 20, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( idx, 21, INK_RED | PAPER_GREEN, 'J');
+
+    // x=8, 9 and y=22-25
+    if (idx != 10) {
+        sp1_PrintAt( idx, 22,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, 23,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, 24,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, 25,  PAPER_BLACK, 'N');
+    }
+
+    sp1_PrintAt( idx, 26, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( idx, 27, INK_RED | PAPER_GREEN, 'J');
+  }
+
 }
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
