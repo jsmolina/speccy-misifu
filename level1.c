@@ -8,15 +8,6 @@
 #include <sound.h> // for bit_beepfx()
 #include "defines.h"
 
-void reset_misifu_position() {
-  misifu.in_bin = NONE;
-  misifu.x = 0;
-  misifu.y = FLOOR_Y;
-  misifu.initial_jump_y = 0;
-  misifu.draw_additional = NONE;
-  misifu.offset = RIGHTC1;
-  misifu.state = NONE;
-}
 
 uint8_t is_in_bin(uint8_t x_pos) {
     if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
@@ -298,6 +289,7 @@ void anim_windows() {
         if (vertical_direction != NONE || horizontal_direction != NONE) {
             if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 // todo falling to loose a live
+                bit_beepfx_di(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING;
             } else {

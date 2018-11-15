@@ -2,3 +2,6 @@
 .idea
 *.tap
 *.pdf
+*.bin
+*.def
+zcc_proj.lst

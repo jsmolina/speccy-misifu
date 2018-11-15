@@ -19,5 +19,6 @@ extern void  print_background_level2();
 
 extern void detect_fall_in_hole_or_curtain();
 
+extern void mousies_dance_and_eat();
 
 #endif

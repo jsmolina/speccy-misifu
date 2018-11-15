@@ -20,7 +20,7 @@ void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row + 2, col + 2, INK_RED | PAPER_GREEN, 'K');
 }
 
-void get_out_of_level(uint8_t fall) {
+void get_out_of_level3(uint8_t fall) {
 
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_BLACK,
@@ -149,7 +149,7 @@ void detect_fall_in_hearts() {
         if (idx_j < 5 && misifu.x > 1 && floor_holes[idx_j][misifu.x - 2] == 0) {
             misifu.state = FALLING;
             if (misifu.y >= FLOOR_Y) {
-                get_out_of_level(FALLING);
+                get_out_of_level3(FALLING);
                 return;
             }
         }
@@ -170,7 +170,7 @@ void detect_fall_in_hearts() {
             misifu.state = CAT_ON_HIGH;
             misifu.draw_additional = CAT_IN_ROPE3;
             misifu.offset = BORED;
-            get_out_of_level(LEVELFINISHED); // yayyy
+            get_out_of_level3(LEVELFINISHED); // yayyy
         }
     }
 }
