@@ -95,3 +95,16 @@ numbers:
 	@png2udg ./background/udg_7.png
 	@png2udg ./background/udg_8.png
 	@png2udg ./background/udg_9.png
+
+chair:
+	@png2udg ./background/udg_silla11.png
+	@png2udg ./background/udg_silla12.png
+	@png2udg ./background/udg_silla21y22y31.png
+	@png2udg ./background/udg_silla32.png
+	@png2udg ./background/udg_silla41.png
+	@png2udg ./background/udg_silla42.png
+	@png2udg ./background/udg_silla43.png
+	@png2udg ./background/udg_silla44.png
+	@png2udg ./background/udg_silla45.png
+	@png2udg ./background/udg_silla51y53.png
+	@png2udg ./background/udg_silla52y54.png

@@ -114,19 +114,6 @@ extern uint8_t lives;
 extern uint8_t repaint_lives;
 extern uint16_t points;
 
-// level 3 hearts
-extern const uint8_t heart1[];
-extern const uint8_t heart2[];
-extern const uint8_t cupid11[];
-extern const uint8_t cupid12[];
-extern const uint8_t cupid13[];
-extern const uint8_t cupid21[];
-extern const uint8_t cupid22[];
-extern const uint8_t cupid23[];
-extern const uint8_t cupid31[];
-extern const uint8_t cupid32[];
-extern const uint8_t cupid33[];
-
 extern uint8_t floor_holes[][24];
 extern const uint8_t floor_holes_defaults[][24];
 
@@ -145,44 +132,9 @@ extern const uint8_t wall4[];
 extern struct udgstruct windows[14];
 extern const uint8_t bin_places2[];
 
-
-extern const uint8_t udg_valla1[];
-extern const uint8_t udg_valla2[];
-extern const uint8_t udg_valla3[];
-extern const uint8_t udg_valla4[];
-
-extern const uint8_t cubo_down1[];
-extern const uint8_t cubo_down2[];
-extern const uint8_t cubo_down3[];
-extern const uint8_t cubo_middle1[];
-extern const uint8_t cubo_middle2[];
-extern const uint8_t cubo_middle3[];
-
-extern const uint8_t cubotop1[];
-extern const uint8_t cubotop2[];
-extern const uint8_t cubotop3[];
-
-extern const uint8_t udg_rope[];
-extern const uint8_t  udg_win1[]; // with rope
-extern const uint8_t  udg_win3[];
-
-extern const uint8_t udg_c[];
-extern const uint8_t udg_a[];
-extern const uint8_t udg_t[];
-
 extern const uint8_t catheaven1[];
 extern const uint8_t catheaven2[];
 
-extern const uint8_t udg_0[];
-extern const uint8_t udg_1[];
-extern const uint8_t udg_2[];
-extern const uint8_t udg_3[];
-extern const uint8_t udg_4[];
-extern const uint8_t udg_5[];
-extern const uint8_t udg_6[];
-extern const uint8_t udg_7[];
-extern const uint8_t udg_8[];
-extern const uint8_t udg_9[];
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;
@@ -226,5 +178,6 @@ extern void reset_misifu_position();
 
 extern void print_room_walls();
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
+extern void page(uint8_t bank);
 
 #endif
