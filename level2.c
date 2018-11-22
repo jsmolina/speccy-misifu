@@ -8,18 +8,13 @@
 
 
 
-// a very big chair, todo think on paging?
-const uint8_t udg_silla11[] = {0xf8, 0xe0, 0xc0, 0xc0, 0xc0, 0x80, 0x80, 0x80};
-const uint8_t udg_silla12[] = {0x7, 0x3, 0x3, 0x3, 0x1, 0x1, 0x1, 0x0};
-const uint8_t udg_silla21y22y31[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-const uint8_t udg_silla32[] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x1, 0x1, 0x2};
-const uint8_t udg_silla41[] = {0x80, 0x80, 0xc7, 0xd8, 0xc0, 0xc0, 0xce, 0xce};
-const uint8_t udg_silla42[] = {0xc, 0x30, 0xc0, 0x0, 0x0, 0x0, 0x7f, 0x7f};
-const uint8_t udg_silla43[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xce, 0xce};
-const uint8_t udg_silla44[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xce, 0xce};
-const uint8_t udg_silla45[] = {0x7f, 0x3f, 0x3f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f};
-const uint8_t udg_silla51y53[] = {0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x30, 0x30};
-const uint8_t udg_silla52y54[] = {0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x0, 0x0};
+const uint8_t udg_sillaL[] = {0x8f, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f};
+const uint8_t udg_sillaR[] = {0xf8, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8};
+const uint8_t udg_sillaLM[] = {0x80, 0x80, 0x80, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f};
+const uint8_t udg_sillaRM[] = {0x0, 0x0, 0x0, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8};
+
+const uint8_t mesatop[] = {0xff, 0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0};
+const uint8_t mesapata[] = {0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7};
 /**
 Returns 1 if x,y are in window position
 **/
@@ -47,35 +42,22 @@ void define_cheese_holes_pos() {
     windows[12].y = 10; windows[12].x = 4;
     windows[13].y = 8; windows[13].x = 4;
 }
-/**
-  sp1_TileEntry('O', udg_silla11);
-  sp1_TileEntry('P', udg_silla12);
-  sp1_TileEntry('Q', udg_silla21y22y31);
-  sp1_TileEntry('R', udg_silla32);
-  sp1_TileEntry('S', udg_silla41);
-  sp1_TileEntry('T', udg_silla42);
-  sp1_TileEntry('U', udg_silla43);
-  sp1_TileEntry('V', udg_silla44);
-  sp1_TileEntry('W', udg_silla45);
-  sp1_TileEntry('X', udg_silla51y53);
-  sp1_TileEntry('Y', udg_silla52y54);
-**/
+
 static void paint_chair(uint8_t row, uint8_t col) {
-    sp1_PrintAt( row, col,  PAPER_GREEN, 'O');
-    sp1_PrintAt( row, col + 1,  PAPER_GREEN, 'P');
-    sp1_PrintAt( row + 1, col,  PAPER_GREEN, 'Q');
-    sp1_PrintAt( row + 1, col + 1,  PAPER_GREEN, 'Q');
-    sp1_PrintAt( row + 2, col,  PAPER_GREEN, 'Q');
-    sp1_PrintAt( row + 2, col + 1,  PAPER_GREEN, 'R');
-    sp1_PrintAt( row + 3, col,  PAPER_GREEN, 'S');
-    sp1_PrintAt( row + 3, col + 1,  PAPER_GREEN, 'T');
-    sp1_PrintAt( row + 3, col + 2,  PAPER_GREEN, 'U');
-    sp1_PrintAt( row + 3, col + 3,  PAPER_GREEN, 'V');
-    sp1_PrintAt( row + 3, col + 4,  PAPER_GREEN, 'W');
-    sp1_PrintAt( row + 4, col,  PAPER_GREEN, 'X');
-    sp1_PrintAt( row + 4, col + 1,  PAPER_GREEN, 'Y');
-    sp1_PrintAt( row + 4, col + 2,  PAPER_GREEN, 'X');
-    sp1_PrintAt( row + 4, col + 3,  PAPER_GREEN, 'Y');
+    sp1_PrintAt( row, col,  INK_RED | PAPER_GREEN, 'Q'); // L
+    sp1_PrintAt( row + 1, col,  INK_RED | PAPER_GREEN, 'Q'); // L
+    sp1_PrintAt( row + 2, col,  INK_RED | PAPER_GREEN, 'R'); // LM
+    sp1_PrintAt( row + 2, col + 1,  INK_RED | PAPER_GREEN, 'S'); // RM
+    sp1_PrintAt( row + 3, col,  INK_RED | PAPER_GREEN, 'Q'); // L
+    sp1_PrintAt( row + 3, col + 1,  INK_RED | PAPER_GREEN, 'T'); // R
+
+    sp1_PrintAt(row + 1, col + 4, INK_RED |PAPER_GREEN, 'U');
+    sp1_PrintAt(row + 1, col + 5, INK_RED |PAPER_GREEN, 'U');
+    sp1_PrintAt(row + 1, col + 6,  INK_RED |PAPER_GREEN, 'U');
+
+    sp1_PrintAt(row + 2, col + 5,  INK_RED |PAPER_GREEN, 'V');
+    sp1_PrintAt(row + 3, col + 5,  INK_RED |PAPER_GREEN, 'V');
+
 }
 
 
@@ -216,17 +198,13 @@ void  print_background_level2() {
   sp1_TileEntry('C', cheese2);
   sp1_TileEntry('Z', hole_empty);
 
-  sp1_TileEntry('O', udg_silla11);
-  sp1_TileEntry('P', udg_silla12);
-  sp1_TileEntry('Q', udg_silla21y22y31);
-  sp1_TileEntry('R', udg_silla32);
-  sp1_TileEntry('S', udg_silla41);
-  sp1_TileEntry('T', udg_silla42);
-  sp1_TileEntry('U', udg_silla43);
-  sp1_TileEntry('V', udg_silla44);
-  sp1_TileEntry('W', udg_silla45);
-  sp1_TileEntry('X', udg_silla51y53);
-  sp1_TileEntry('Y', udg_silla52y54);
+  sp1_TileEntry('Q', udg_sillaL);
+  sp1_TileEntry('R', udg_sillaLM);
+  sp1_TileEntry('S', udg_sillaRM);
+  sp1_TileEntry('T', udg_sillaR);
+
+  sp1_TileEntry('U', mesatop);
+  sp1_TileEntry('V', mesapata);
 
   // in this level it is used to define holes with mouse
   udgxs[0] = 5;
@@ -256,7 +234,7 @@ void  print_background_level2() {
   }
 
   // paint the chair
-  paint_chair(18, 22);
+  paint_chair(17, 22);
 
   reset_misifu_position();
   eaten_items = 4;

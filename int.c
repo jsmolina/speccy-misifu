@@ -12,7 +12,7 @@
 unsigned char tick;
 unsigned char timer;
 
-IM2_DEFINE_ISR_8080(isr)
+IM2_DEFINE_ISR(isr)
 {
    // update the clock
    ++tick;
@@ -20,7 +20,7 @@ IM2_DEFINE_ISR_8080(isr)
    if (row1_moving != NONE) {
         --row1_moving;
    }
-   vt_play_raw();
+   vt_play();
 }
 
 void
