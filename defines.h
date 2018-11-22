@@ -115,7 +115,6 @@ extern uint8_t repaint_lives;
 extern uint16_t points;
 
 extern uint8_t floor_holes[][24];
-extern const uint8_t floor_holes_defaults[][24];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];
@@ -134,7 +133,6 @@ extern const uint8_t bin_places2[];
 
 extern const uint8_t catheaven1[];
 extern const uint8_t catheaven2[];
-
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;

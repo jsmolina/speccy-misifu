@@ -176,16 +176,6 @@ void  print_background_lvl1() {
   sp1_TileEntry('N', udg_win2); // full square
   sp1_TileEntry('O', udg_win3); // bottom without rope
 
-  sp1_TileEntry('0', udg_0);
-  sp1_TileEntry('1', udg_1);
-  sp1_TileEntry('2', udg_2);
-  sp1_TileEntry('3', udg_3);
-  sp1_TileEntry('4', udg_4);
-  sp1_TileEntry('5', udg_5);
-  sp1_TileEntry('6', udg_6);
-  sp1_TileEntry('7', udg_7);
-  sp1_TileEntry('8', udg_8);
-  sp1_TileEntry('9', udg_9);
 
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
