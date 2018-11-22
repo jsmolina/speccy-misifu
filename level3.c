@@ -5,8 +5,21 @@
 #include <stdlib.h>
 #include <sound.h> // for bit_beepfx()
 
+// level 3 hearts
+const uint8_t heart1[] = {0x0, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x0, 0x0};
+const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
+const uint8_t cupid11[] = {0x0, 0x0, 0x0, 0xe, 0xf, 0x1f, 0x3f, 0x7f};
+const uint8_t cupid12[] = {0x0, 0x0, 0x0, 0x7, 0x1f, 0xdf, 0xff, 0xff};
+const uint8_t cupid13[] = {0x0, 0x0, 0x0, 0x0, 0x80, 0xc0, 0x80, 0xd0};
+const uint8_t cupid21[] = {0x7f, 0x7f, 0x7e, 0x38, 0x1, 0x1, 0x1, 0x33};
+const uint8_t cupid22[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfc, 0xfc};
+const uint8_t cupid23[] = {0xd8, 0x9c, 0x8e, 0xee, 0xfe, 0xe6, 0x76, 0x1e};
+const uint8_t cupid31[] = {0x3f, 0x6e, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const uint8_t cupid32[] = {0x78, 0x60, 0x60, 0xe0, 0xe0, 0x0, 0x0, 0x0};
+const uint8_t cupid33[] = {0x7e, 0xf8, 0xc0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-void paint_cupid(uint8_t row, uint8_t col) {
+
+static void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row, col, INK_RED | PAPER_GREEN, 'C');
     sp1_PrintAt( row, col + 1, INK_RED | PAPER_GREEN, 'D');
     sp1_PrintAt( row, col + 2, INK_RED | PAPER_GREEN, 'E');
@@ -20,7 +33,7 @@ void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row + 2, col + 2, INK_RED | PAPER_GREEN, 'K');
 }
 
-void get_out_of_level3(uint8_t fall) {
+static void get_out_of_level3(uint8_t fall) {
 
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_BLACK,
@@ -58,7 +71,7 @@ void get_out_of_level3(uint8_t fall) {
     print_background_lvl1();
 }
 
-void  print_background_level3() {
+void print_background_level3() {
   level = 3;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_RED | PAPER_GREEN,

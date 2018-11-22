@@ -95,3 +95,13 @@ numbers:
 	@png2udg ./background/udg_7.png
 	@png2udg ./background/udg_8.png
 	@png2udg ./background/udg_9.png
+
+chair:
+	@png2udg ./background/udg_sillaL.png
+	@png2udg ./background/udg_sillaR.png
+	@png2udg ./background/udg_sillaLM.png
+	@png2udg ./background/udg_sillaRM.png
+
+table:
+	@png2udg ./background/mesatop.png
+	@png2udg ./background/mesapata.png
