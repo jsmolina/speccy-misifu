@@ -53,9 +53,9 @@ uint8_t is_in_bin(uint8_t x_pos) {
         return 5;
     } else if(x_pos == 8 || x_pos == 9 || x_pos == 10) {
         return 9;
-    } else if(x_pos == 20 || x_pos == 21 || x_pos == 22) {
+    } else if(x_pos == 19 || x_pos == 20 || x_pos == 21) {
         return 20;
-    } else if(x_pos == 24 || x_pos == 25 || x_pos == 26) {
+    } else if(x_pos == 23 || x_pos == 24 || x_pos == 25) {
         return 24;
     }
 
