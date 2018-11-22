@@ -116,12 +116,15 @@ void print_background_level3() {
     x = idx_j - 4;
 
      for (idx_j=4; idx_j != 28; ++idx_j ) {
-        floor_holes[frame][idx_j - 4] = floor_holes_defaults[frame][idx_j - 4];
-        if (floor_holes[frame][idx_j - 4] == 1) {
+        random_value = rand();
+        if(frame == 4 || (random_value & 1) == 0 ) {
+            floor_holes[frame][idx_j - 4] = 1;
             sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
         } else {
+            floor_holes[frame][idx_j - 4] = 0;
             sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN, 'A');
         }
+
      }
      --frame;
   }
