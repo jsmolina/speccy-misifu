@@ -128,7 +128,6 @@ extern const uint8_t cupid32[];
 extern const uint8_t cupid33[];
 
 extern uint8_t floor_holes[][24];
-extern const uint8_t floor_holes_defaults[][24];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];
@@ -172,17 +171,6 @@ extern const uint8_t udg_t[];
 
 extern const uint8_t catheaven1[];
 extern const uint8_t catheaven2[];
-
-extern const uint8_t udg_0[];
-extern const uint8_t udg_1[];
-extern const uint8_t udg_2[];
-extern const uint8_t udg_3[];
-extern const uint8_t udg_4[];
-extern const uint8_t udg_5[];
-extern const uint8_t udg_6[];
-extern const uint8_t udg_7[];
-extern const uint8_t udg_8[];
-extern const uint8_t udg_9[];
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;
