@@ -183,4 +183,6 @@ extern void check_keys();
 
 extern void dog_checks();
 
+void check_fsm();
+
 #endif

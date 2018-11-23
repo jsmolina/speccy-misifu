@@ -49,6 +49,7 @@ int main()
 
     random_value = rand();
 
+    // todo move this to different loops
     if (level == 1) {
         move_clothes();
         anim_windows();
@@ -60,69 +61,7 @@ int main()
         throw_cupid_arrow();
     }
 
-    // decide new FSM draw status
-    if (misifu.state == NONE && frame == 3) {
-        misifu.offset = BORED;
-    } else if (misifu.state == WALKING_RIGHT) {
-        if (frame < 2) {
-            misifu.offset = RIGHTC1;
-        } else if (frame < 4) {
-            misifu.offset = RIGHTC2;
-        }
-        misifu.state = NONE;
-    } else if (misifu.state == WALKING_LEFT) {
-        if (frame < 2) {
-            misifu.offset = LEFTC1;
-        } else if (frame < 4) {
-            misifu.offset = LEFTC2;
-        }
-        misifu.state = NONE;
-    } else if (misifu.state == JUMPING) {
-        --misifu.y;
-
-        if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max[level]) {
-            ++misifu.x;
-            misifu.offset = JRIGHTC1;
-        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min[level]) {
-            --misifu.x;
-            misifu.offset = JLEFTC1;
-        } else {
-            misifu.offset = JUMPINGC1;
-        }
-
-        if (level == 1) {
-            if (misifu.y <= 1) {
-                misifu.y = 1;
-                misifu.state = CAT_IN_ROPE;
-                misifu.draw_additional = CAT_IN_ROPE3;
-            }
-        }
-
-        if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
-            misifu.state = FALLING;
-            misifu.draw_additional = NONE;
-        }
-    } else if (misifu.state == FALLING) {
-        ++misifu.y;
-        misifu.offset = JUMPINGC1;
-
-        if (level == 1) {
-            detect_fall_in_bin();
-        } else if (level == 2) {
-            detect_fall_in_hole_or_curtain();
-        }
-
-        if(misifu.y >= FLOOR_Y) {
-            misifu.y = FLOOR_Y;
-            misifu.state = NONE;
-            misifu.offset = BORED;
-        }
-    } else if(misifu.state == CAT_IN_ROPE) {
-        if(misifu.x >= 28 || misifu.x == 0) {
-            misifu.state = FALLING;
-            misifu.draw_additional = NONE;
-        }
-    }
+    check_fsm();
 
     if (level == 1) {
         // cat falls appart from bin
