@@ -1,8 +1,14 @@
 #include <z80.h>
+#include <input.h>
+#include <stdlib.h>
+#include "int.h"
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <sound.h> // for bit_beepfx()
 #include "defines.h"
+#include "level1.h"
+#include "level2.h"
+#include "level3.h"
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
@@ -349,6 +355,108 @@ void print_room_walls() {
 void page(uint8_t bank) {
     GLOBAL_ZX_PORT_7FFD = 0x10+bank;
 	IO_7FFD = 0x10 + bank;
+}
+
+
+void check_keys()
+{
+    // checks keys
+    // allow jump in directions
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min[level]) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
+        misifu.state = JUMPING;
+        misifu.in_bin = NONE;
+        misifu.initial_jump_y = misifu.y;
+
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max[level]) {
+            misifu.draw_additional = JUMP_RIGHT;
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min[level]) {
+            misifu.draw_additional = JUMP_LEFT;
+        } else {
+            misifu.draw_additional = JUMP_UP;
+        }
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+        if (first_keypress == NONE) {
+            first_keypress = tick;
+            srand(first_keypress);
+        }
+        misifu.state = WALKING_RIGHT;
+        ++misifu.x;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+        misifu.state = WALKING_LEFT;
+        --misifu.x;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
+        misifu.state = FALLING;
+        misifu.in_bin = NONE;
+    }
+
+    if (in_key_pressed(IN_KEY_SCANCODE_3)) {
+        level = 3;
+        print_background_level3();
+        sp1_UpdateNow();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
+        level = 1;
+        print_background_lvl1();
+        sp1_UpdateNow();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
+        level = 2;
+        print_background_level2();
+        sp1_UpdateNow();
+    }
+}
+
+
+void dog_checks() {
+// time for doggy checks
+    if (misifu.state != FIGHTING && enemy_apears == YES) {
+
+        --x_malo;
+
+
+        if (frame < 2) {
+            dog_offset = DOG1;
+        } else if (frame < 4) {
+            // todo fighting will be 49 + 48
+            dog_offset = DOG2;
+        }
+
+        // detects collission malo->misifu
+        if (x_malo <= 0) {
+            enemy_apears = NONE;
+            x_malo = 33;
+        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
+            enemy_apears = NONE;
+            misifu.state = FIGHTING;
+            misifu.y = FLOOR_Y;
+            anim_frames = 20;
+            // hide cat
+            misifu.x = 33;
+        }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+
+    }
+
+    if (misifu.state == FIGHTING) {
+        if (frame < 2) {
+            dog_offset = DOGFIGHTING1;
+        } else if (frame < 4) {
+            dog_offset = DOGFIGHTING2;
+        }
+
+        --anim_frames;
+        if (anim_frames == 0) {
+            loose_a_live();
+            reset_misifu_position();
+            enemy_apears = NONE;
+            x_malo = 33;
+            // todo remove one live
+        }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+    }
+    // check if dog should appear
+    if (enemy_apears != YES && first_keypress != NONE) {
+        enemy_apears = random_value % 100;
+    }
+
 }
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

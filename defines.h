@@ -21,6 +21,7 @@
 #define CAT_IN_ROPE2 8
 #define CAT_IN_ROPE3 9
 #define CAT_ON_HIGH 10
+#define JUMPING_PUSHED 11
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
@@ -177,5 +178,9 @@ extern void reset_misifu_position();
 extern void print_room_walls();
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
 extern void page(uint8_t bank);
+
+extern void check_keys();
+
+extern void dog_checks();
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef _LEVEL2
 #define _LEVEL2
 #include <sound.h>
+#include <stdlib.h>
 #include "level1.h"
 // AKA RATS ROOM
 
@@ -274,6 +275,9 @@ void  print_background_level2() {
   repaint_lives = 1;
 }
 
+void level2_loop() {
+
+}
 
 
 #endif
