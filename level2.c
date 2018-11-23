@@ -149,6 +149,35 @@ void detect_fall_in_hole_or_curtain() {
     }
 }
 
+void move_broom() {
+ // BROOM MOVE
+    if((random_value & 1) == 0) {
+        if(random_value > 10 && random_value < 80) {
+            ++aux_object.y;
+        } else if (random_value > 80 && random_value < 160) {
+            --aux_object.y;
+        } else if(random_value > 160 && random_value < 210) {
+            ++aux_object.x;
+        } else if(random_value > 210) {
+            --aux_object.x;
+        }
+
+        if(aux_object.x < 3) {
+            aux_object.x = 3;
+        } else if(aux_object.x > 28) {
+            aux_object.x = 28;
+        }
+
+        if (aux_object.y < 1) {
+            aux_object.y = 0;
+        } else if(aux_object.y > 21) {
+            aux_object.y = 21;
+        }
+
+        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+    }
+}
+
 void mousies_dance_and_eat() {
     if (random_value < 4 || repaint_lives == 1) {
         repaint_lives = 0;
@@ -182,7 +211,7 @@ void mousies_dance_and_eat() {
             sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, windows[idx].has_item);
         }
     }
-    // todo detect eat (set has_item as Z) to both holes
+    move_broom();
 }
 
 void  print_background_level2() {
@@ -238,6 +267,11 @@ void  print_background_level2() {
 
   reset_misifu_position();
   eaten_items = 4;
+
+  aux_object.y = 5;
+  aux_object.x = 5;
+  aux_object.offset = AUX_BROOM;
+  repaint_lives = 1;
 }
 
 
