@@ -23,4 +23,6 @@ extern void mousies_dance_and_eat();
 
 extern void check_broom_collision();
 
+extern void check_chair_and_table();
+
 #endif

@@ -73,7 +73,10 @@ int main()
                 misifu.in_bin = NONE;
             }
         }
-    } else  if (level == 3) {
+    } else if(level == 2) {
+        check_chair_and_table();
+    }
+    else  if (level == 3) {
         detect_fall_in_hearts();
     }
 

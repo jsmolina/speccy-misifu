@@ -126,7 +126,7 @@ void detect_fall_in_hole_or_curtain() {
     idx = map_cat_pos_in_holes();
 
     if(idx != UNDEF) {
-        misifu.in_bin = idx;
+        //misifu.in_bin = idx;
         misifu.state = CAT_IN_ROPE;
 
         // if window has mouse
@@ -140,8 +140,6 @@ void detect_fall_in_hole_or_curtain() {
             --eaten_items;
         }
 
-    } else {
-        zx_border(INK_BLACK);
     }
 
 
@@ -230,10 +228,22 @@ void check_broom_collision() {
 }
 
 void check_chair_and_table() {
-    if(misifu.state == FALLING) {
-        if(misifu.x == 15) {
 
+    if(misifu.state == FALLING) {
+        if(misifu.x == 21 && misifu.y == 17) {
+            misifu.state = CAT_ON_HIGH;
+            misifu.in_bin = 1;
+            misifu.offset = BORED;
+        } else if(misifu.y == 17 && (misifu.x >= 25 || misifu.x <= 26)) {
+            misifu.state = CAT_ON_HIGH;
+            misifu.offset = BORED;
+            misifu.in_bin = 2;
         }
+    }
+
+    if(misifu.in_bin != NONE && misifu.x != 21 && misifu.x != 25 && misifu.x != 26) {
+        misifu.state = FALLING;
+        misifu.in_bin = NONE;
     }
 }
 
