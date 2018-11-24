@@ -20,4 +20,4 @@
 #pragma output CLIB_BALLOC_TABLE_SIZE = 1
 
 // thanks, alvin, for this feedback
-#pragma output CRT_STACK_SIZE = 256
+#pragma output CRT_STACK_SIZE = 128

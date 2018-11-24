@@ -57,6 +57,7 @@ int main()
         dog_checks();
     } else if (level == 2) {
         mousies_dance_and_eat();
+        check_broom_collision();
     } else if (level == 3) {
         throw_cupid_arrow();
     }

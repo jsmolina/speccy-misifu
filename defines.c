@@ -459,6 +459,13 @@ void dog_checks() {
 
 }
 
+static void stop_jump_if_needed(uint8_t max_jump) {
+    if (misifu.initial_jump_y - misifu.y >= max_jump || misifu.x > 28) {
+        misifu.state = FALLING;
+        misifu.draw_additional = NONE;
+    }
+}
+
 void check_fsm() {
 // decide new FSM draw status
     if (misifu.state == NONE && frame == 3) {
@@ -477,6 +484,14 @@ void check_fsm() {
             misifu.offset = LEFTC2;
         }
         misifu.state = NONE;
+    } else if (misifu.state == JUMPING_PUSHED){
+        misifu.y = misifu.y - 2;
+        if (misifu.draw_additional == JUMP_LEFT) {
+            misifu.x = misifu.x - 2;
+        } else {
+            misifu.x = misifu.x + 2;
+        }
+        stop_jump_if_needed(10);
     } else if (misifu.state == JUMPING) {
         --misifu.y;
 
@@ -498,10 +513,7 @@ void check_fsm() {
             }
         }
 
-        if (misifu.initial_jump_y - misifu.y == 5 || misifu.x > 28) {
-            misifu.state = FALLING;
-            misifu.draw_additional = NONE;
-        }
+        stop_jump_if_needed(5);
     } else if (misifu.state == FALLING) {
         ++misifu.y;
         misifu.offset = JUMPINGC1;

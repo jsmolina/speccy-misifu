@@ -215,6 +215,21 @@ void mousies_dance_and_eat() {
     move_broom();
 }
 
+void check_broom_collision() {
+
+    if (misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+        misifu.state = JUMPING_PUSHED;
+        misifu.initial_jump_y = misifu.y;
+        // will jump right or left depending on where is hit
+        if(misifu.x < aux_object.x) {
+            misifu.draw_additional = JUMP_LEFT;
+        } else {
+            misifu.draw_additional = JUMP_RIGHT;
+        }
+
+    }
+}
+
 void  print_background_level2() {
   level = 2;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
