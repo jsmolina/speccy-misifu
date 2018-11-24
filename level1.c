@@ -27,7 +27,6 @@ const uint8_t cubotop3[] = {0xb0, 0x58, 0x8b, 0x10, 0x0, 0xf8, 0xff, 0xfb};
 
 const uint8_t udg_rope[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xd2};
 const uint8_t  udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with rope
-const uint8_t  udg_win3[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
@@ -121,7 +120,7 @@ void paint_window(uint8_t num, uint16_t colour) {
     sp1_PrintAtInv(windows[num].y, x, colour, 'N');
     if (num > 7) {
         // bottom varies
-        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'O');
+        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'N');
     } else {
         sp1_PrintAtInv(windows[num].y + 1, x, colour, 'M');
     }
@@ -162,7 +161,6 @@ void  print_background_lvl1() {
   sp1_TileEntry('R', udg_rope); // da rope
   sp1_TileEntry('M', udg_win1); // bottom with rope
   sp1_TileEntry('N', udg_win2); // full square
-  sp1_TileEntry('O', udg_win3); // bottom without rope
 
 
   // paint valla

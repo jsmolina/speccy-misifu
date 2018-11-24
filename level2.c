@@ -226,7 +226,14 @@ void check_broom_collision() {
         } else {
             misifu.draw_additional = JUMP_RIGHT;
         }
+    }
+}
 
+void check_chair_and_table() {
+    if(misifu.state == FALLING) {
+        if(misifu.x == 15) {
+
+        }
     }
 }
 
