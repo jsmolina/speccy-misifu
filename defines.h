@@ -177,7 +177,7 @@ extern void loose_a_live();
 extern void reset_misifu_position();
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
-extern void page(uint8_t bank);
+// extern void page(uint8_t bank);
 
 extern void check_keys();
 

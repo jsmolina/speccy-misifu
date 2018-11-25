@@ -1,11 +1,9 @@
 #ifndef _AY_MUSIC
 #define _AY_MUSIC
 
+extern unsigned char music_module[];
 
-#include "vt_sound.h"
-
-extern void initialize_ay();
-
-extern void keep_playing();
+extern void ay_vt_init(const void *module_address) __z88dk_fastcall;
+extern void ay_vt_mute(void);
 
 #endif
