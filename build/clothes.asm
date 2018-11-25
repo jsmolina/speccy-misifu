@@ -199,20 +199,20 @@ PUBLIC _sprite_clothes6
 ._sprite_clothes6
 
  defb @00000000
+ defb @10000001
+ defb @10000111
+ defb @10000111
+ defb @10000111
  defb @10000110
- defb @10111111
- defb @10111111
- defb @10111111
- defb @10011111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
  defb @00000110
  defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000001
  defb @00000000
  defb @00000000
  defb @00000000
@@ -236,20 +236,20 @@ PUBLIC _sprite_clothes7
 ._sprite_clothes7
 
  defb @00000000
- defb @00000001
- defb @00000111
- defb @11100111
- defb @11100111
- defb @11111011
- defb @11111001
- defb @11100001
- defb @11100001
+ defb @10000000
+ defb @10000001
  defb @11000001
- defb @00000001
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11100111
+ defb @01111111
+ defb @01101111
+ defb @01101111
+ defb @01111111
+ defb @01111111
+ defb @01101111
+ defb @01101111
+ defb @01111101
+ defb @01110001
+ defb @11000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -273,20 +273,20 @@ PUBLIC _sprite_clothes8
 ._sprite_clothes8
 
  defb @00000000
+ defb @01100000
+ defb @11110000
+ defb @11111000
+ defb @11111000
+ defb @10011000
+ defb @10011000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
  defb @11000000
  defb @11100000
- defb @11111000
- defb @11111100
- defb @11111110
- defb @11111110
- defb @11111100
- defb @11111100
- defb @11111000
- defb @11000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11100000
+ defb @01100000
  defb @00000000
  defb @00000000
  defb @00000000

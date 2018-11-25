@@ -105,3 +105,8 @@ chair:
 table:
 	@png2udg ./background/mesatop.png
 	@png2udg ./background/mesapata.png
+
+fish:
+	@png2udg ./background/udg_fishtank1.png
+	@png2udg ./background/udg_fishtank2.png
+	@png2udg ./background/udg_fish.png

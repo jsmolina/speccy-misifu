@@ -9,6 +9,8 @@
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
+#include "level4.h"
+
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
@@ -39,15 +41,6 @@ extern uint8_t sprite_dog4[];
 extern uint8_t sprite_bincat1[];
 extern uint8_t sprite_bincat2[];
 extern uint8_t sprite_bincat3[];
-
-extern uint8_t sprite_clothes1[];
-extern uint8_t sprite_clothes2[];
-extern uint8_t sprite_clothes3[];
-extern uint8_t sprite_clothes4[];
-extern uint8_t sprite_clothes5[];
-extern uint8_t sprite_clothes6[];
-extern uint8_t sprite_clothes7[];
-extern uint8_t sprite_clothes8[];
 
 
 extern uint8_t sprite_clothes21[];
@@ -104,16 +97,22 @@ uint16_t points = 0;
 uint8_t floor_holes[5][24];
 
 
-// level 2 cheese
-const uint8_t hole_empty[] = {0x3c, 0x7e, 0xff, 0xff, 0xff, 0xff, 0x7e, 0x3c};
-const uint8_t hole_mouse[] = {0x3c, 0x5a, 0xe7, 0xc3, 0xa5, 0xe7, 0x5a, 0x3c};
-const uint8_t cheese2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-const uint8_t curtain[] = {0x7e, 0x9c, 0xe3, 0xff, 0xff, 0x7e, 0x9c, 0xe3};
+const uint8_t curtain[] = {0x81, 0x63, 0x1c, 0x0, 0x0, 0x81, 0x63, 0x1c};
 
 const uint8_t wall1[] = {0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80};
 const uint8_t wall2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff};
 const uint8_t wall3[] = {0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1};
 const uint8_t wall4[] = {0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80};
+
+
+
+const uint8_t udg_sillaL[] = {0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70};
+const uint8_t udg_sillaR[] = {0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7};
+const uint8_t udg_sillaLM[] = {0x7f, 0x7f, 0x7f, 0x70, 0x70, 0x70, 0x70, 0x70};
+const uint8_t udg_sillaRM[] = {0xff, 0xff, 0xff, 0x7, 0x7, 0x7, 0x7, 0x7};
+
+const uint8_t mesatop[] = {0x0, 0x0, 0x0, 0x0, 0xff, 0xff, 0xff, 0xff};
+const uint8_t mesapata[] = {0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18};
 
 // level 1
 struct udgstruct windows[14];
@@ -204,23 +203,6 @@ static struct sp1_ss * add_sprite_bincat() {
   return sp;
 }
 
-static struct sp1_ss * add_sprite_clothes1() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_clothes1, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes2, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes3, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes4, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes5, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes6, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes7, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes8, 2);
-
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
-
-  sp1_IterateSprChar(sp, initialiseClothesColour);
-
-  return sp;
-}
 
 static struct sp1_ss * add_sprite_clothes2() {
   struct sp1_ss * sp;
@@ -267,13 +249,13 @@ void add_sprites_for_all_levels() {
   row1clothes[0].col = 1;
   row1clothes[0].sp = add_sprite_clothes2();
   row1clothes[1].col = 18;
-  row1clothes[1].sp = add_sprite_clothes1();
+  row1clothes[1].sp = add_sprite_clothes2();
 
   // row 2 clothes
   row2clothes[0].col = 1;
-  row2clothes[0].sp = add_sprite_clothes1();
+  row2clothes[0].sp = add_sprite_clothes2();
   row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes1();
+  row2clothes[1].sp = add_sprite_clothes2();
 
 }
 
@@ -302,7 +284,7 @@ void reset_misifu_position() {
   misifu.state = NONE;
 }
 
-void print_room_walls() {
+void print_room_walls(uint8_t paper_color) {
   sp1_TileEntry('F', wall1);
   sp1_TileEntry('G', wall2);
   sp1_TileEntry('H', wall3);
@@ -313,30 +295,30 @@ void print_room_walls() {
 
   for(idx = 0; idx != 3; ++idx) {
     // upper left
-    sp1_PrintAt( 3 + idx, idx,  INK_BLACK | PAPER_RED, 'H');
+    sp1_PrintAt( 3 + idx, idx,  INK_BLACK | paper_color, 'H');
     // down left diagonal
-    sp1_PrintAt( 20 - idx, idx, INK_BLACK | PAPER_RED, 'I');
+    sp1_PrintAt( 20 - idx, idx, INK_BLACK | paper_color, 'I');
     // upper right
-    sp1_PrintAt( 5 - idx, 29 + idx,  INK_BLACK | PAPER_RED, 'I');
+    sp1_PrintAt( 5 - idx, 29 + idx,  INK_BLACK | paper_color, 'I');
     // down right
-    sp1_PrintAt( 18 + idx, 29 + idx,  INK_BLACK | PAPER_RED, 'H');
+    sp1_PrintAt( 18 + idx, 29 + idx,  INK_BLACK | paper_color, 'H');
   }
 
   // draw vertical wall
   for (idx = 6; idx != 18; ++idx) {
-    sp1_PrintAt( idx, 3, INK_BLACK | PAPER_RED, 'F');
-    sp1_PrintAt( idx, 29,  INK_BLACK | PAPER_RED, 'F');
+    sp1_PrintAt( idx, 3, INK_BLACK | paper_color, 'F');
+    sp1_PrintAt( idx, 29,  INK_BLACK | paper_color, 'F');
   }
 
   // draw horizontal wall
   for (idx = 3; idx != 29; ++idx) {
-    sp1_PrintAt( 5, idx, INK_BLACK | PAPER_RED, 'G');
-    sp1_PrintAt( 17, idx, INK_BLACK | PAPER_RED, 'G');
+    sp1_PrintAt( 5, idx, INK_BLACK | paper_color, 'G');
+    sp1_PrintAt( 17, idx, INK_BLACK | paper_color, 'G');
   }
 
   for (idx = 8; idx != 11; ++idx) {
-    sp1_PrintAt( idx, 20, INK_RED | PAPER_GREEN, 'J');
-    sp1_PrintAt( idx, 21, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( idx, 20, INK_GREEN | paper_color, 'J');
+    sp1_PrintAt( idx, 21, INK_GREEN | paper_color, 'J');
 
     // x=8, 9 and y=22-25
     if (idx != 10) {
@@ -346,8 +328,8 @@ void print_room_walls() {
         sp1_PrintAt( idx, 25,  PAPER_BLACK, 'N');
     }
 
-    sp1_PrintAt( idx, 26, INK_RED | PAPER_GREEN, 'J');
-    sp1_PrintAt( idx, 27, INK_RED | PAPER_GREEN, 'J');
+    sp1_PrintAt( idx, 26, INK_GREEN | paper_color, 'J');
+    sp1_PrintAt( idx, 27, INK_GREEN | paper_color, 'J');
   }
 
 }
@@ -387,22 +369,23 @@ void check_keys()
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
+    }  else if (in_key_pressed(IN_KEY_SCANCODE_s)) {
+        // todo only for testing collisions, remove later
+        misifu.state = SWIMMING;
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_3)) {
         level = 3;
         print_background_level3();
-        sp1_UpdateNow();
     } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
         level = 1;
         print_background_lvl1();
-        sp1_UpdateNow();
     } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
         level = 2;
         print_background_level2();
-        sp1_UpdateNow();
     } else if (in_key_pressed(IN_KEY_SCANCODE_4)) {
-        misifu.state = SWIMMING;
+        level = 4;
+        print_background_level4();
     }
 }
 
@@ -501,7 +484,7 @@ void check_fsm() {
         misifu.state = NONE;
     } else if (misifu.state == JUMPING_PUSHED){
         misifu.y = misifu.y - 2;
-        if (misifu.draw_additional == JUMP_LEFT) {
+        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1) {
             misifu.x = misifu.x - 2;
         } else {
             misifu.x = misifu.x + 2;
@@ -550,6 +533,33 @@ void check_fsm() {
             misifu.draw_additional = NONE;
         }
     }
+}
+
+void define_silla_udgs() {
+  sp1_TileEntry('Q', udg_sillaL);
+  sp1_TileEntry('R', udg_sillaLM);
+  sp1_TileEntry('S', udg_sillaRM);
+  sp1_TileEntry('T', udg_sillaR);
+
+  sp1_TileEntry('U', mesatop);
+  sp1_TileEntry('V', mesapata);
+}
+
+void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color) {
+    sp1_PrintAt( row, col,  INK_GREEN | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 1, col,  INK_GREEN | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 2, col,  INK_GREEN | paper_color, 'R'); // LM
+    sp1_PrintAt( row + 2, col + 1,  INK_GREEN | paper_color, 'S'); // RM
+    sp1_PrintAt( row + 3, col,  INK_GREEN | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 3, col + 1,  INK_GREEN | paper_color, 'T'); // R
+
+    sp1_PrintAt(row + 1, col + 4, INK_GREEN |paper_color, 'U');
+    sp1_PrintAt(row + 1, col + 5, INK_GREEN |paper_color, 'U');
+    sp1_PrintAt(row + 1, col + 6,  INK_GREEN |paper_color, 'U');
+
+    sp1_PrintAt(row + 2, col + 5,  INK_GREEN |paper_color, 'V');
+    sp1_PrintAt(row + 3, col + 5,  INK_GREEN |paper_color, 'V');
+
 }
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

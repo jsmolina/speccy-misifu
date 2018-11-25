@@ -298,16 +298,16 @@ PUBLIC _sprite_clothes23
 ._sprite_clothes23
 
  defb @00000000
- defb @00001000
- defb @00111100
+ defb @00000011
+ defb @00000011
+ defb @00000011
+ defb @00000011
+ defb @00000011
+ defb @00000011
+ defb @00000111
+ defb @00000111
  defb @00011111
- defb @00001111
- defb @00001110
- defb @00001000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @00011110
  defb @00000000
  defb @00000000
  defb @00000000
@@ -440,15 +440,15 @@ PUBLIC _sprite_clothes24
 ._sprite_clothes24
 
  defb @00000000
- defb @01100000
- defb @11100000
- defb @01111000
- defb @01111000
- defb @01110001
- defb @01100001
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11100001
+ defb @11100001
+ defb @11100001
+ defb @11100001
+ defb @11100001
+ defb @11100001
+ defb @11100001
+ defb @11100001
+ defb @11100001
  defb @00000000
  defb @00000000
  defb @00000000
@@ -582,16 +582,16 @@ PUBLIC _sprite_clothes25
 ._sprite_clothes25
 
  defb @00000000
- defb @01100011
- defb @01100011
- defb @01100011
- defb @01100011
- defb @11101111
- defb @10001100
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11110000
+ defb @11110000
+ defb @11110000
+ defb @11110000
+ defb @11110000
+ defb @11110000
+ defb @11111000
+ defb @11111000
+ defb @11111110
+ defb @00011110
  defb @00000000
  defb @00000000
  defb @00000000

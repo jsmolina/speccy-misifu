@@ -133,6 +133,7 @@ void print_background_level3() {
   misifu.x = 4;
   misifu.y = FLOOR_Y;
   udgxs[0] = udgxs[1] = udgxs[2] = udgxs[3] = 5;
+  sp1_UpdateNow();
 }
 
 

@@ -13,7 +13,6 @@ extern uint8_t thrown_from_window(uint8_t x, uint8_t y);
 
 extern void define_cheese_holes_pos();
 
-extern void print_room_walls();
 
 extern void  print_background_level2();
 

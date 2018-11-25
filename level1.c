@@ -215,6 +215,8 @@ void  print_background_lvl1() {
 
    reset_misifu_position();
    bincat_appears = NONE;
+
+   sp1_UpdateNow();
 }
 
 void leave_level() {
