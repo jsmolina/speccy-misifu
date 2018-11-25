@@ -22,6 +22,7 @@
 #define CAT_IN_ROPE3 9
 #define CAT_ON_HIGH 10
 #define JUMPING_PUSHED 11
+#define SWIMMING 12
 #define JUMP_UP  0
 #define JUMP_RIGHT 1
 #define JUMP_LEFT 2
@@ -182,6 +183,8 @@ extern void page(uint8_t bank);
 extern void check_keys();
 
 extern void dog_checks();
+
+extern void check_swim();
 
 void check_fsm();
 

@@ -401,9 +401,24 @@ void check_keys()
         level = 2;
         print_background_level2();
         sp1_UpdateNow();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_4)) {
+        misifu.state = SWIMMING;
     }
 }
 
+void check_swim() {
+    if(in_key_pressed(IN_KEY_SCANCODE_q)) {
+        --misifu.y;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)) {
+        --misifu.x;
+        misifu.offset = LEFTC1;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_p)) {
+        ++misifu.x;
+        misifu.offset = RIGHTC1;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_a)) {
+        ++misifu.y;
+    }
+}
 
 void dog_checks() {
 // time for doggy checks
