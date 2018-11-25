@@ -334,11 +334,10 @@ void print_room_walls(uint8_t paper_color) {
 
 }
 
-void page(uint8_t bank) {
-    GLOBAL_ZX_PORT_7FFD = 0x10+bank;
-	IO_7FFD = 0x10 + bank;
-}
-
+// void page(uint8_t bank) {
+//     GLOBAL_ZX_PORT_7FFD = 0x10+bank;
+// 	IO_7FFD = 0x10 + bank;
+// }
 
 void check_keys()
 {

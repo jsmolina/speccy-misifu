@@ -1,4 +1,4 @@
-SECTION rodata_user
+SECTION BANK_6
 
 PUBLIC _music_module
 

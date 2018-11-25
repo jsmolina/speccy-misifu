@@ -12,12 +12,11 @@
 #include "level3.h"
 #include "defines.h"
 #include "ay/ay_music.h"
-#include "ay/vt_sound.h"
 
 
 int main()
 {
-  initialize_ay();
+  ay_vt_init(music_module);
   zx_border(INK_BLACK);
 
   // interrupt mode 2

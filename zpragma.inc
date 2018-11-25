@@ -1,12 +1,11 @@
 // COMPILE TIME CRT CONFIGURATION
 
-#pragma output CRT_ORG_CODE           = 24000      // org of compile todo this should be higher to allocate sprites
-#pragma output CRT_INCLUDE_PREAMBLE=0
+#pragma output CRT_ORG_CODE           = 24500      // org of compile todo this should be higher to allocate sprites
 #pragma output REGISTER_SP            = 0xd000     // typical stack location when using sp1
 
 #pragma output CRT_ENABLE_CLOSE       = 0          // don't bother closing files on exit
 #pragma output CRT_ENABLE_EIDI        = 0x1        // disable interrupts at start
-#pragma output CRT_ON_EXIT            = 0x30002    // return to basic on exit
+#pragma output CRT_ON_EXIT            = 0          // jump to 0 on exit
 
 #pragma output CLIB_STDIO_HEAP_SIZE   = 0          // no stdio heap (no files)
 
