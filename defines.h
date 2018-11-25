@@ -172,11 +172,10 @@ struct udgstruct {
     char has_item;
 };
 
-void loose_a_live();
+extern void loose_a_live();
 
 extern void reset_misifu_position();
 
-extern void print_room_walls();
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
 extern void page(uint8_t bank);
 
@@ -186,6 +185,11 @@ extern void dog_checks();
 
 extern void check_swim();
 
-void check_fsm();
+extern void check_fsm();
+
+extern void print_room_walls(uint8_t paper_color);
+void define_silla_udgs();
+
+void paint_chair(uint8_t row, uint8_t col, uint8_t ink_color);
 
 #endif

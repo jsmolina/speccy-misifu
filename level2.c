@@ -7,15 +7,11 @@
 
 #include "defines.h"
 
+// level 2 cheese
+const uint8_t hole_empty[] = {0x3c, 0x7e, 0xff, 0xff, 0xff, 0xff, 0x7e, 0x3c};
+const uint8_t hole_mouse[] = {0x3c, 0x5a, 0xe7, 0xc3, 0xa5, 0xe7, 0x5a, 0x3c};
+const uint8_t cheese2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-
-const uint8_t udg_sillaL[] = {0x8f, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f};
-const uint8_t udg_sillaR[] = {0xf8, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8};
-const uint8_t udg_sillaLM[] = {0x80, 0x80, 0x80, 0x8f, 0x8f, 0x8f, 0x8f, 0x8f};
-const uint8_t udg_sillaRM[] = {0x0, 0x0, 0x0, 0xf8, 0xf8, 0xf8, 0xf8, 0xf8};
-
-const uint8_t mesatop[] = {0xff, 0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0};
-const uint8_t mesapata[] = {0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7};
 /**
 Returns 1 if x,y are in window position
 **/
@@ -42,23 +38,6 @@ void define_cheese_holes_pos() {
     windows[11].y = 12; windows[11].x = 6;
     windows[12].y = 10; windows[12].x = 4;
     windows[13].y = 8; windows[13].x = 4;
-}
-
-static void paint_chair(uint8_t row, uint8_t col) {
-    sp1_PrintAt( row, col,  INK_RED | PAPER_GREEN, 'Q'); // L
-    sp1_PrintAt( row + 1, col,  INK_RED | PAPER_GREEN, 'Q'); // L
-    sp1_PrintAt( row + 2, col,  INK_RED | PAPER_GREEN, 'R'); // LM
-    sp1_PrintAt( row + 2, col + 1,  INK_RED | PAPER_GREEN, 'S'); // RM
-    sp1_PrintAt( row + 3, col,  INK_RED | PAPER_GREEN, 'Q'); // L
-    sp1_PrintAt( row + 3, col + 1,  INK_RED | PAPER_GREEN, 'T'); // R
-
-    sp1_PrintAt(row + 1, col + 4, INK_RED |PAPER_GREEN, 'U');
-    sp1_PrintAt(row + 1, col + 5, INK_RED |PAPER_GREEN, 'U');
-    sp1_PrintAt(row + 1, col + 6,  INK_RED |PAPER_GREEN, 'U');
-
-    sp1_PrintAt(row + 2, col + 5,  INK_RED |PAPER_GREEN, 'V');
-    sp1_PrintAt(row + 3, col + 5,  INK_RED |PAPER_GREEN, 'V');
-
 }
 
 
@@ -174,12 +153,14 @@ void move_broom() {
             ++aux_object.x;
         } else if(random_value > 210) {
             --aux_object.x;
+        } else {
+            // todo make it more difficult by doing depends on misifu pos
         }
 
         if(aux_object.x < 3) {
             aux_object.x = 3;
-        } else if(aux_object.x > 28) {
-            aux_object.x = 28;
+        } else if(aux_object.x > 29) {
+            aux_object.x = 29;
         }
 
         if (aux_object.y < 1) {
@@ -275,13 +256,7 @@ void  print_background_level2() {
   sp1_TileEntry('C', cheese2);
   sp1_TileEntry('Z', hole_empty);
 
-  sp1_TileEntry('Q', udg_sillaL);
-  sp1_TileEntry('R', udg_sillaLM);
-  sp1_TileEntry('S', udg_sillaRM);
-  sp1_TileEntry('T', udg_sillaR);
-
-  sp1_TileEntry('U', mesatop);
-  sp1_TileEntry('V', mesapata);
+  define_silla_udgs();
 
   // in this level it is used to define holes with mouse
   udgxs[0] = 5;
@@ -293,7 +268,7 @@ void  print_background_level2() {
   udgxs[6] = 12;
   udgxs[7] = 6;
 
-  print_room_walls();
+  print_room_walls(PAPER_RED);
 
   aux_object.offset = AUX_BROOM;
 
@@ -311,7 +286,7 @@ void  print_background_level2() {
   }
 
   // paint the chair
-  paint_chair(17, 22);
+  paint_chair(17, 22, PAPER_RED);
 
   reset_misifu_position();
   eaten_items = 4;
@@ -320,6 +295,7 @@ void  print_background_level2() {
   aux_object.x = 5;
   aux_object.offset = AUX_BROOM;
   repaint_lives = 1;
+  sp1_UpdateNow();
 }
 
 void level2_loop() {
