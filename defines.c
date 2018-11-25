@@ -40,15 +40,6 @@ extern uint8_t sprite_bincat1[];
 extern uint8_t sprite_bincat2[];
 extern uint8_t sprite_bincat3[];
 
-extern uint8_t sprite_clothes1[];
-extern uint8_t sprite_clothes2[];
-extern uint8_t sprite_clothes3[];
-extern uint8_t sprite_clothes4[];
-extern uint8_t sprite_clothes5[];
-extern uint8_t sprite_clothes6[];
-extern uint8_t sprite_clothes7[];
-extern uint8_t sprite_clothes8[];
-
 
 extern uint8_t sprite_clothes21[];
 extern uint8_t sprite_clothes22[];
@@ -204,23 +195,6 @@ static struct sp1_ss * add_sprite_bincat() {
   return sp;
 }
 
-static struct sp1_ss * add_sprite_clothes1() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_clothes1, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes2, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes3, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes4, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes5, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes6, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes7, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes8, 2);
-
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
-
-  sp1_IterateSprChar(sp, initialiseClothesColour);
-
-  return sp;
-}
 
 static struct sp1_ss * add_sprite_clothes2() {
   struct sp1_ss * sp;
@@ -267,13 +241,13 @@ void add_sprites_for_all_levels() {
   row1clothes[0].col = 1;
   row1clothes[0].sp = add_sprite_clothes2();
   row1clothes[1].col = 18;
-  row1clothes[1].sp = add_sprite_clothes1();
+  row1clothes[1].sp = add_sprite_clothes2();
 
   // row 2 clothes
   row2clothes[0].col = 1;
-  row2clothes[0].sp = add_sprite_clothes1();
+  row2clothes[0].sp = add_sprite_clothes2();
   row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes1();
+  row2clothes[1].sp = add_sprite_clothes2();
 
 }
 
