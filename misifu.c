@@ -11,13 +11,13 @@
 #include "level2.h"
 #include "level3.h"
 #include "defines.h"
-#include "ay/ay_music.h"
-#include "ay/vt_sound.h"
+//#include "ay/ay_music.h"
+//#include "ay/vt_sound.h"
 
 
 int main()
 {
-  initialize_ay();
+  //initialize_ay();
   zx_border(INK_BLACK);
 
   // interrupt mode 2
@@ -45,7 +45,11 @@ int main()
 
   while(1)
   {
-    check_keys();
+    if(misifu.state != SWIMMING) {
+        check_keys();
+    } else {
+        check_swim();
+    }
 
     random_value = rand();
 

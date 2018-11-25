@@ -115,6 +115,12 @@ void get_out_of_level2(uint8_t fall) {
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
 
+    if(fall == FALLING) {
+        bit_beepfx_di(BEEPFX_GULP);
+    } else {
+        points = points + 10;
+    }
+
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);
     level = 1;
@@ -140,6 +146,15 @@ void detect_fall_in_hole_or_curtain() {
             --eaten_items;
         }
 
+    }
+
+    if( misifu.y >= 8 && misifu.y <= 10) {
+        if(misifu.x == 19 || misifu.x == 25) {
+            misifu.state = CAT_IN_ROPE;
+        } else if(misifu.x >= 20 && misifu.x <= 24) {
+            get_out_of_level2(FALLING);
+            return;
+        }
     }
 
 

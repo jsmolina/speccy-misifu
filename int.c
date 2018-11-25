@@ -5,7 +5,7 @@
 #include <z80.h>
 #include "defines.h"
 #include "int.h"
-#include "ay/vt_sound.h"
+//#include "ay/vt_sound.h"
 
 // timer
 
@@ -20,7 +20,7 @@ IM2_DEFINE_ISR(isr)
    if (row1_moving != NONE) {
         --row1_moving;
    }
-   vt_play();
+   //ay  vt_play();
 }
 
 void

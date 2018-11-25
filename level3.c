@@ -42,6 +42,7 @@ static void get_out_of_level3(uint8_t fall) {
         row1clothes[0].offset = MISIOFFSET;
         zx_border(INK_RED);
     } else {
+        points = points + 100;
         zx_border(INK_MAGENTA);
         row1clothes[0].offset = LOVEOFFSET;
     }
