@@ -475,7 +475,7 @@ void check_fsm() {
         misifu.state = NONE;
     } else if (misifu.state == JUMPING_PUSHED){
         misifu.y = misifu.y - 2;
-        if (misifu.draw_additional == JUMP_LEFT) {
+        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1) {
             misifu.x = misifu.x - 2;
         } else {
             misifu.x = misifu.x + 2;
