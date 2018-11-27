@@ -14,8 +14,9 @@
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
-uint8_t level_x_max[4] = {0, 28, 28, 25};
-uint8_t level_x_min[4] = {0, 0,  0,  3};
+// 28 and 3 for level = 3
+uint8_t level_x_max;
+uint8_t level_x_min;
 
 
 struct prota misifu;
@@ -284,7 +285,7 @@ void reset_misifu_position() {
   misifu.state = NONE;
 }
 
-void print_room_walls(uint8_t paper_color) {
+void print_room_walls(uint16_t paper_color, uint16_t ink_color) {
   sp1_TileEntry('F', wall1);
   sp1_TileEntry('G', wall2);
   sp1_TileEntry('H', wall3);
@@ -317,8 +318,8 @@ void print_room_walls(uint8_t paper_color) {
   }
 
   for (idx = 8; idx != 11; ++idx) {
-    sp1_PrintAt( idx, 20, INK_GREEN | paper_color, 'J');
-    sp1_PrintAt( idx, 21, INK_GREEN | paper_color, 'J');
+    sp1_PrintAt( idx, 20, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, 21, ink_color | paper_color, 'J');
 
     // x=8, 9 and y=22-25
     if (idx != 10) {
@@ -328,8 +329,8 @@ void print_room_walls(uint8_t paper_color) {
         sp1_PrintAt( idx, 25,  PAPER_BLACK, 'N');
     }
 
-    sp1_PrintAt( idx, 26, INK_GREEN | paper_color, 'J');
-    sp1_PrintAt( idx, 27, INK_GREEN | paper_color, 'J');
+    sp1_PrintAt( idx, 26, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, 27, ink_color | paper_color, 'J');
   }
 
 }
@@ -343,26 +344,26 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min[level]) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max[level]) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min[level]) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         if (first_keypress == NONE) {
             first_keypress = tick;
             srand(first_keypress);
         }
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
@@ -383,7 +384,7 @@ void check_keys()
         level = 2;
         print_background_level2();
     } else if (in_key_pressed(IN_KEY_SCANCODE_4)) {
-        level = 4;
+        level = 5;
         print_background_level4();
     }
 }
@@ -492,10 +493,10 @@ void check_fsm() {
     } else if (misifu.state == JUMPING) {
         --misifu.y;
 
-        if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max[level]) {
+        if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
             ++misifu.x;
             misifu.offset = JRIGHTC1;
-        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min[level]) {
+        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min) {
             --misifu.x;
             misifu.offset = JLEFTC1;
         } else {
@@ -544,20 +545,20 @@ void define_silla_udgs() {
   sp1_TileEntry('V', mesapata);
 }
 
-void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color) {
-    sp1_PrintAt( row, col,  INK_GREEN | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 1, col,  INK_GREEN | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 2, col,  INK_GREEN | paper_color, 'R'); // LM
-    sp1_PrintAt( row + 2, col + 1,  INK_GREEN | paper_color, 'S'); // RM
-    sp1_PrintAt( row + 3, col,  INK_GREEN | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 3, col + 1,  INK_GREEN | paper_color, 'T'); // R
+void paint_chair(uint8_t row, uint8_t col, uint16_t paper_color, uint16_t ink_color) {
+    sp1_PrintAt( row, col,  ink_color | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 1, col,  ink_color | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 2, col,  ink_color | paper_color, 'R'); // LM
+    sp1_PrintAt( row + 2, col + 1,  ink_color | paper_color, 'S'); // RM
+    sp1_PrintAt( row + 3, col,  ink_color | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 3, col + 1,  ink_color | paper_color, 'T'); // R
 
-    sp1_PrintAt(row + 1, col + 4, INK_GREEN |paper_color, 'U');
-    sp1_PrintAt(row + 1, col + 5, INK_GREEN |paper_color, 'U');
-    sp1_PrintAt(row + 1, col + 6,  INK_GREEN |paper_color, 'U');
+    sp1_PrintAt(row + 1, col + 4, ink_color |paper_color, 'U');
+    sp1_PrintAt(row + 1, col + 5, ink_color |paper_color, 'U');
+    sp1_PrintAt(row + 1, col + 6,  ink_color |paper_color, 'U');
 
-    sp1_PrintAt(row + 2, col + 5,  INK_GREEN |paper_color, 'V');
-    sp1_PrintAt(row + 3, col + 5,  INK_GREEN |paper_color, 'V');
+    sp1_PrintAt(row + 2, col + 5,  ink_color |paper_color, 'V');
+    sp1_PrintAt(row + 3, col + 5,  ink_color |paper_color, 'V');
 
 }
 

@@ -268,7 +268,7 @@ void  print_background_level2() {
   udgxs[6] = 12;
   udgxs[7] = 6;
 
-  print_room_walls(PAPER_RED);
+  print_room_walls(PAPER_RED, INK_GREEN);
 
   aux_object.offset = AUX_BROOM;
 
@@ -286,7 +286,7 @@ void  print_background_level2() {
   }
 
   // paint the chair
-  paint_chair(17, 22, PAPER_RED);
+  paint_chair(17, 22, PAPER_RED, INK_GREEN);
 
   reset_misifu_position();
   eaten_items = 4;
@@ -295,6 +295,8 @@ void  print_background_level2() {
   aux_object.x = 5;
   aux_object.offset = AUX_BROOM;
   repaint_lives = 1;
+  level_x_max = 28;
+  level_x_min = 0;
   sp1_UpdateNow();
 }
 

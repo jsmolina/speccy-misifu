@@ -10,6 +10,7 @@
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
+#include "level4.h"
 #include "defines.h"
 #include "ay/ay_music.h"
 
@@ -38,6 +39,8 @@ int main()
     print_background_level2();
   } else if(level == 3) {
     print_background_level3();
+  } else if(level == 4) {
+    print_background_level4();
   }
 
   intrinsic_ei();
@@ -63,6 +66,8 @@ int main()
         check_broom_collision();
     } else if (level == 3) {
         throw_cupid_arrow();
+    } else if(level == 4) {
+
     }
 
     check_fsm();
@@ -81,6 +86,8 @@ int main()
     }
     else  if (level == 3) {
         detect_fall_in_hearts();
+    } else if (level == 4) {
+
     }
 
 
