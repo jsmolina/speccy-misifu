@@ -285,7 +285,7 @@ void reset_misifu_position() {
   misifu.state = NONE;
 }
 
-void print_room_walls(uint16_t paper_color, uint16_t ink_color) {
+void print_room_walls(uint8_t paper_color, uint8_t ink_color) {
   sp1_TileEntry('F', wall1);
   sp1_TileEntry('G', wall2);
   sp1_TileEntry('H', wall3);
@@ -545,7 +545,7 @@ void define_silla_udgs() {
   sp1_TileEntry('V', mesapata);
 }
 
-void paint_chair(uint8_t row, uint8_t col, uint16_t paper_color, uint16_t ink_color) {
+void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
     sp1_PrintAt( row, col,  ink_color | paper_color, 'Q'); // L
     sp1_PrintAt( row + 1, col,  ink_color | paper_color, 'Q'); // L
     sp1_PrintAt( row + 2, col,  ink_color | paper_color, 'R'); // LM
