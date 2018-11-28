@@ -1,5 +1,5 @@
 VT_SOUND_LIB_SDCC_IY := ./ay
-
+# ./bas2tap -a loader.bas
 compile:
 	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -lay/vt_sound_6.lib
 	ls *.bin
