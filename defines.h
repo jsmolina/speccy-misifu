@@ -187,7 +187,7 @@ extern void check_swim();
 
 extern void check_fsm();
 
-extern void print_room_walls(uint8_t paper_color, uint8_t ink_color);
+extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color);
 extern void define_silla_udgs();
 
 extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);

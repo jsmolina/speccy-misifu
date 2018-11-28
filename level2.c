@@ -268,7 +268,7 @@ void  print_background_level2() {
   udgxs[6] = 12;
   udgxs[7] = 6;
 
-  print_room_walls(PAPER_RED, INK_GREEN);
+  print_room_walls(20, PAPER_RED, INK_GREEN);
 
   aux_object.offset = AUX_BROOM;
 

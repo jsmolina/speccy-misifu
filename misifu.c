@@ -43,6 +43,9 @@ int main()
     print_background_level4();
   }
 
+  // bit_beep
+
+
   intrinsic_ei();
 
   while(1)

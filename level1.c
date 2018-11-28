@@ -307,7 +307,7 @@ void anim_windows() {
         if (vertical_direction != NONE || horizontal_direction != NONE) {
             if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 // todo falling to loose a live
-                bit_beepfx_di(BEEPFX_HIT_2);
+                bit_beepfx_di_fastcall(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING;
             } else {

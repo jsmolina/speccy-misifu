@@ -285,7 +285,7 @@ void reset_misifu_position() {
   misifu.state = NONE;
 }
 
-void print_room_walls(uint8_t paper_color, uint8_t ink_color) {
+void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
   sp1_TileEntry('F', wall1);
   sp1_TileEntry('G', wall2);
   sp1_TileEntry('H', wall3);
@@ -318,19 +318,19 @@ void print_room_walls(uint8_t paper_color, uint8_t ink_color) {
   }
 
   for (idx = 8; idx != 11; ++idx) {
-    sp1_PrintAt( idx, 20, ink_color | paper_color, 'J');
-    sp1_PrintAt( idx, 21, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window + 1, ink_color | paper_color, 'J');
 
     // x=8, 9 and y=22-25
     if (idx != 10) {
-        sp1_PrintAt( idx, 22,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 23,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 24,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 25,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 2,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 3,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 4,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 5,  PAPER_BLACK, 'N');
     }
 
-    sp1_PrintAt( idx, 26, ink_color | paper_color, 'J');
-    sp1_PrintAt( idx, 27, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window + 6, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window + 7, ink_color | paper_color, 'J');
   }
 
 }

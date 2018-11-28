@@ -10,7 +10,7 @@ void  print_background_level4() {
 
   define_silla_udgs();
 
-  print_room_walls(PAPER_MAGENTA, INK_CYAN);
+  print_room_walls(15, PAPER_MAGENTA, INK_CYAN);
 
   // paint the chair
   paint_chair(17, 22, PAPER_MAGENTA, INK_CYAN);
