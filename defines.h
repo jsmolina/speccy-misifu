@@ -172,6 +172,8 @@ struct udgstruct {
     char has_item;
 };
 
+extern void all_lives_lost();
+
 extern void loose_a_live();
 
 extern void reset_misifu_position();
@@ -191,5 +193,6 @@ extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_
 extern void define_silla_udgs();
 
 extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
+
 
 #endif

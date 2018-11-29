@@ -10,6 +10,8 @@
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "ay/ay_music.h"
+#include <intrinsic.h> // for intrinsic_di()
 
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
@@ -127,6 +129,28 @@ const uint8_t catheaven2[] = {0x4, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0xc, 0xe};
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;
 uint8_t horizontal_direction;
+
+
+
+void all_lives_lost() {
+  ay_vt_init(pcspeaker_module);
+  intrinsic_ei();
+
+  sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
+  sp1_UpdateNow();
+  // todo think on animating the cat a bit in 'demo mode'
+  while(1) {
+      // todo check joystick fire also so joystick is chosen
+      if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
+            first_keypress = tick;
+            srand(first_keypress);
+            break;
+      }
+  }
+  intrinsic_di();
+  ay_vt_init(music_module);
+  intrinsic_ei();
+}
 
 static void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
@@ -271,6 +295,8 @@ void loose_a_live() {
         lives = 5;
         points = 0;
         bit_beepfx_di(BEEPFX_BOOM_1);
+
+        all_lives_lost();
     }
     repaint_lives = 1;
 }
@@ -335,10 +361,6 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
 }
 
-// void page(uint8_t bank) {
-//     GLOBAL_ZX_PORT_7FFD = 0x10+bank;
-// 	IO_7FFD = 0x10 + bank;
-// }
 
 void check_keys()
 {
@@ -357,10 +379,6 @@ void check_keys()
             misifu.draw_additional = JUMP_UP;
         }
     } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
-        if (first_keypress == NONE) {
-            first_keypress = tick;
-            srand(first_keypress);
-        }
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
     } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {

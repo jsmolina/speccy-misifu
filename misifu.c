@@ -3,7 +3,6 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <input.h>
-#include <intrinsic.h> // for intrinsic_di()
 #include <sound.h> // for bit_beepfx()
 #include <string.h>
 #include "int.h"
@@ -12,12 +11,10 @@
 #include "level3.h"
 #include "level4.h"
 #include "defines.h"
-#include "ay/ay_music.h"
 
 
 int main()
 {
-  ay_vt_init(music_module);
   zx_border(INK_BLACK);
 
   // interrupt mode 2
@@ -46,7 +43,7 @@ int main()
   // bit_beep
 
 
-  intrinsic_ei();
+  all_lives_lost();
 
   while(1)
   {
