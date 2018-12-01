@@ -145,16 +145,26 @@ void detect_fall_in_hole_or_curtain() {
 void move_broom() {
  // BROOM MOVE
     if((random_value & 1) == 0) {
-        if(random_value > 10 && random_value < 80) {
+        if(random_value > 10 && random_value < 70) {
             ++aux_object.y;
-        } else if (random_value > 80 && random_value < 160) {
+        } else if (random_value > 70 && random_value < 130 && aux_object.y > 0) {
             --aux_object.y;
-        } else if(random_value > 160 && random_value < 210) {
+        } else if(random_value > 130 && random_value < 190) {
             ++aux_object.x;
-        } else if(random_value > 210) {
+        } else if(random_value > 190 && random_value < 250) {
             --aux_object.x;
         } else {
-            // todo make it more difficult by doing depends on misifu pos
+            if(misifu.x < aux_object.x) {
+                --aux_object.x;
+            } else if(misifu.x > aux_object.x) {
+                ++aux_object.x;
+            }
+
+            if (misifu.y < aux_object.y) {
+                --aux_object.y;
+            } else if (misifu.y > aux_object.y) {
+                ++aux_object.y;
+            }
         }
 
         if(aux_object.x < 3) {
@@ -230,7 +240,7 @@ void check_chair_and_table() {
             misifu.state = CAT_ON_HIGH;
             misifu.in_bin = 1;
             misifu.offset = BORED;
-        } else if(misifu.y == 17 && (misifu.x >= 25 || misifu.x <= 26)) {
+        } else if(misifu.y == 16 && (misifu.x >= 25 || misifu.x <= 26)) {
             misifu.state = CAT_ON_HIGH;
             misifu.offset = BORED;
             misifu.in_bin = 2;
@@ -287,6 +297,7 @@ void  print_background_level2() {
 
   // paint the chair
   paint_chair(17, 22, PAPER_RED, INK_GREEN);
+  paint_table(17, 26, PAPER_RED, INK_GREEN);
 
   reset_misifu_position();
   eaten_items = 4;

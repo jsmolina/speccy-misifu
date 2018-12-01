@@ -194,5 +194,6 @@ extern void define_silla_udgs();
 
 extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
 
+extern void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
 
 #endif

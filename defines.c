@@ -114,8 +114,9 @@ const uint8_t udg_sillaR[] = {0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7};
 const uint8_t udg_sillaLM[] = {0x7f, 0x7f, 0x7f, 0x70, 0x70, 0x70, 0x70, 0x70};
 const uint8_t udg_sillaRM[] = {0xff, 0xff, 0xff, 0x7, 0x7, 0x7, 0x7, 0x7};
 
-const uint8_t mesatop[] = {0x0, 0x0, 0x0, 0x0, 0xff, 0xff, 0xff, 0xff};
+const uint8_t mesatop[] = {0xff, 0xff, 0xff, 0xff, 0x18, 0x18, 0x18, 0x18};
 const uint8_t mesapata[] = {0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18};
+const uint8_t mesaside[] = {0xff, 0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0};
 
 // level 1
 struct udgstruct windows[14];
@@ -501,7 +502,9 @@ void check_fsm() {
         }
         misifu.state = NONE;
     } else if (misifu.state == JUMPING_PUSHED){
-        misifu.y = misifu.y - 2;
+        if(misifu.y > 2) {
+            misifu.y = misifu.y - 2;
+        }
         if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1) {
             misifu.x = misifu.x - 2;
         } else {
@@ -561,6 +564,16 @@ void define_silla_udgs() {
 
   sp1_TileEntry('U', mesatop);
   sp1_TileEntry('V', mesapata);
+  sp1_TileEntry('W', mesaside);
+}
+
+void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
+    sp1_PrintAt(row + 1, col, ink_color |paper_color, 'W');
+    sp1_PrintAt(row + 1, col + 1, ink_color |paper_color, 'U');
+    sp1_PrintAt(row + 1, col + 2,  ink_color |paper_color, 'W');
+
+    sp1_PrintAt(row + 2, col + 1,  ink_color |paper_color, 'V');
+    sp1_PrintAt(row + 3, col + 1,  ink_color |paper_color, 'V');
 }
 
 void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
@@ -571,12 +584,6 @@ void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_colo
     sp1_PrintAt( row + 3, col,  ink_color | paper_color, 'Q'); // L
     sp1_PrintAt( row + 3, col + 1,  ink_color | paper_color, 'T'); // R
 
-    sp1_PrintAt(row + 1, col + 4, ink_color |paper_color, 'U');
-    sp1_PrintAt(row + 1, col + 5, ink_color |paper_color, 'U');
-    sp1_PrintAt(row + 1, col + 6,  ink_color |paper_color, 'U');
-
-    sp1_PrintAt(row + 2, col + 5,  ink_color |paper_color, 'V');
-    sp1_PrintAt(row + 3, col + 5,  ink_color |paper_color, 'V');
 
 }
 
