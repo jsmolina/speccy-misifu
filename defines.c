@@ -9,7 +9,7 @@
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
-#include "level4.h"
+#include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
 
@@ -92,6 +92,7 @@ uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
 uint8_t level = 1;
 uint8_t lives = 5;
+uint8_t last_success_level = 0;
 uint8_t repaint_lives = 0;
 uint16_t points = 0;
 
@@ -290,12 +291,13 @@ void loose_a_live() {
 
     if(lives > 0) {
         --lives;
-        bit_beepfx_di(BEEPFX_DROP_1);
+        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
     } else {
         // reached zero on lives
         lives = 5;
         points = 0;
-        bit_beepfx_di(BEEPFX_BOOM_1);
+        last_success_level = 0;
+        bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
 
         all_lives_lost();
     }
@@ -393,18 +395,18 @@ void check_keys()
         misifu.state = SWIMMING;
     }
 
-    if (in_key_pressed(IN_KEY_SCANCODE_3)) {
-        level = 3;
-        print_background_level3();
+    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+        level = 10;
+        print_background_level_last();
     } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
         level = 1;
         print_background_lvl1();
     } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
         level = 2;
         print_background_level2();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_4)) {
-        level = 4;
-        print_background_level4();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
+        level = 3;
+        print_background_level3();
     }
 }
 
@@ -596,8 +598,10 @@ void get_out_of_level_generic(uint8_t fall) {
                   ' ' );
 
     if(fall == FALLING) {
-        bit_beepfx_di(BEEPFX_GULP);
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
     } else {
+        // keep progress of levels
+        last_success_level = level;
         points = points + 10;
     }
 

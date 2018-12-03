@@ -113,6 +113,7 @@ extern uint8_t opened_window;
 extern uint8_t opened_window_frames;
 extern uint8_t level;
 extern uint8_t lives;
+extern uint8_t last_success_level; // to see user progress
 extern uint8_t repaint_lives;
 extern uint16_t points;
 

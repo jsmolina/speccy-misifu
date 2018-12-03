@@ -376,7 +376,7 @@ void check_bincat() {
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING;
             misifu.in_bin = NONE;
-            bit_beepfx_di(BEEPFX_HIT_1);
+            bit_beepfx_di_fastcall(BEEPFX_HIT_1);
         }
 
         if (bincat_appears < 1 && bincatsp != NULL) {

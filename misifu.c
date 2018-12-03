@@ -8,8 +8,8 @@
 #include "int.h"
 #include "level1.h"
 #include "level2.h"
+#include "level_last.h"
 #include "level3.h"
-#include "level4.h"
 #include "defines.h"
 
 
@@ -37,7 +37,9 @@ int main()
   } else if(level == 3) {
     print_background_level3();
   } else if(level == 4) {
-    print_background_level4();
+
+  } else if(level == 10) {
+    print_background_level_last();
   }
 
   // bit_beep
@@ -64,9 +66,11 @@ int main()
     } else if (level == 2) {
         level2_loop();
     } else if (level == 3) {
-        throw_cupid_arrow();
+        level3_loop();
     } else if(level == 4) {
-        level4_loop();
+
+    } else if(level == 10) {
+        throw_cupid_arrow();
     }
 
     check_fsm();
@@ -82,11 +86,12 @@ int main()
         }
     } else if(level == 2) {
         check_chair_and_table();
-    }
-    else  if (level == 3) {
-        detect_fall_in_hearts();
-    } else if (level == 4) {
+    } else  if (level == 3) {
         detect_fishtank_fall_in_hole_or_curtain();
+    } else if (level == 4) {
+
+    } else if (level == 10) {
+        detect_fall_in_hearts();
     }
 
 
