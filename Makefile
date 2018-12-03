@@ -122,4 +122,9 @@ table:
 fish:
 	@png2udg ./background/udg_fishtank1.png
 	@png2udg ./background/udg_fishtank2.png
+
+water:
+	@png2udg ./background/udg_watertop.png
 	@png2udg ./background/udg_fish.png
+	@png2udg ./background/udg_fishL.png
+	@png2udg ./background/udg_eel.png

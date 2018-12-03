@@ -9,6 +9,7 @@
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
+#include "level4.h"
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()

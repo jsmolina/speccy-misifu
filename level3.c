@@ -1,4 +1,5 @@
 #include "defines.h"
+#include "level4.h"
 
 const uint8_t udg_fishtank1[] = {0x3f, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0x1f, 0x7};
 const uint8_t udg_fishtank2[] = {0xfc, 0xce, 0xff, 0xff, 0x93, 0xfe, 0xf8, 0xe0};
@@ -45,7 +46,7 @@ void  print_background_level3() {
 }
 
 
-static void check_chair_and_fishtank_level3() {
+inline static void check_chair_and_fishtank_level3() {
 
     if(misifu.state == FALLING) {
         if(misifu.x == 9 && misifu.y == 17) {
@@ -59,6 +60,13 @@ static void check_chair_and_fishtank_level3() {
             misifu.offset = BORED;
             misifu.in_bin = 2;
         }
+    }
+
+
+    if(misifu.y == 16 && misifu.x == 21) {
+        // get inside fishtank and outside of this level
+        level = 4;
+        print_background_level4();
     }
 
     if(misifu.in_bin != NONE && misifu.x != 9  && misifu.x != 21 && misifu.x != 22) {
