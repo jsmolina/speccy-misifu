@@ -162,7 +162,7 @@ void check_chair_and_table() {
             misifu.state = CAT_ON_HIGH;
             misifu.in_bin = 1;
             misifu.offset = BORED;
-        } else if(misifu.y == 16 && (misifu.x >= 25 || misifu.x <= 26)) {
+        } else if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
             misifu.state = CAT_ON_HIGH;
             misifu.offset = BORED;
             misifu.in_bin = 2;

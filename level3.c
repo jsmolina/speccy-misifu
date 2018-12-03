@@ -44,9 +44,35 @@ void  print_background_level3() {
   misifu.state = NONE;
 }
 
+
+static void check_chair_and_fishtank_level3() {
+
+    if(misifu.state == FALLING) {
+        if(misifu.x == 9 && misifu.y == 17) {
+            // chair
+            misifu.state = CAT_ON_HIGH;
+            misifu.in_bin = 1;
+            misifu.offset = BORED;
+        } else if(misifu.y == 16 && (misifu.x == 21 || misifu.x == 22)) {
+            // table todo fishtank!
+            misifu.state = CAT_ON_HIGH;
+            misifu.offset = BORED;
+            misifu.in_bin = 2;
+        }
+    }
+
+    if(misifu.in_bin != NONE && misifu.x != 9  && misifu.x != 21 && misifu.x != 22) {
+        misifu.state = FALLING;
+        misifu.in_bin = NONE;
+    }
+}
+
 void detect_fishtank_fall_in_hole_or_curtain() {
     detect_cat_in_window(8);
+    check_chair_and_fishtank_level3();
 }
+
+
 
 void level3_loop() {
     move_broom();
