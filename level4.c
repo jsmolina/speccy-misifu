@@ -4,6 +4,7 @@ const uint8_t udg_fishtank1[] = {0x3f, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0x1f, 0x7};
 const uint8_t udg_fishtank2[] = {0xfc, 0xce, 0xff, 0xff, 0x93, 0xfe, 0xf8, 0xe0};
 
 void  print_background_level4() {
+  level = 4;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_MAGENTA,
                   ' ' );
@@ -41,4 +42,13 @@ void  print_background_level4() {
 
 
   misifu.state = NONE;
+}
+
+void detect_fishtank_fall_in_hole_or_curtain() {
+    detect_cat_in_window(8);
+}
+
+void level4_loop() {
+    move_broom();
+    check_broom_collision();
 }

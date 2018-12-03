@@ -62,12 +62,11 @@ int main()
         check_bincat();
         dog_checks();
     } else if (level == 2) {
-        mousies_dance_and_eat();
-        check_broom_collision();
+        level2_loop();
     } else if (level == 3) {
         throw_cupid_arrow();
     } else if(level == 4) {
-
+        level4_loop();
     }
 
     check_fsm();
@@ -87,7 +86,7 @@ int main()
     else  if (level == 3) {
         detect_fall_in_hearts();
     } else if (level == 4) {
-
+        detect_fishtank_fall_in_hole_or_curtain();
     }
 
 

@@ -403,7 +403,7 @@ void check_keys()
         level = 2;
         print_background_level2();
     } else if (in_key_pressed(IN_KEY_SCANCODE_4)) {
-        level = 5;
+        level = 4;
         print_background_level4();
     }
 }
@@ -586,5 +586,95 @@ void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_colo
 
 
 }
+
+
+
+void get_out_of_level_generic(uint8_t fall) {
+    // todo progress levels count, count how many time player stayed in level
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  INK_WHITE | PAPER_BLACK,
+                  ' ' );
+
+    if(fall == FALLING) {
+        bit_beepfx_di(BEEPFX_GULP);
+    } else {
+        points = points + 10;
+    }
+
+    // control wether if gets out of level by having eat all mouses
+    sp1_Invalidate(&full_screen);
+    level = 1;
+    sp1_UpdateNow();
+    print_background_lvl1();
+}
+
+
+
+void detect_cat_in_window(uint8_t offset) {
+    if( misifu.y >= 8 && misifu.y <= 10) {
+        if(misifu.x == (19 - offset) || misifu.x == (25 - offset)) {
+            misifu.state = CAT_IN_ROPE;
+        } else if(misifu.x >= (20 - offset) && misifu.x <= (24 - offset)) {
+            get_out_of_level_generic(FALLING);
+            return;
+        }
+    }
+}
+
+void move_broom() {
+ // BROOM MOVE
+    if((random_value & 1) == 0) {
+        if(random_value > 10 && random_value < 70) {
+            ++aux_object.y;
+        } else if (random_value > 70 && random_value < 130 && aux_object.y > 0) {
+            --aux_object.y;
+        } else if(random_value > 130 && random_value < 190) {
+            ++aux_object.x;
+        } else if(random_value > 190 && random_value < 250) {
+            --aux_object.x;
+        } else {
+            if(misifu.x < aux_object.x) {
+                --aux_object.x;
+            } else if(misifu.x > aux_object.x) {
+                ++aux_object.x;
+            }
+
+            if (misifu.y < aux_object.y) {
+                --aux_object.y;
+            } else if (misifu.y > aux_object.y) {
+                ++aux_object.y;
+            }
+        }
+
+        if(aux_object.x < 3) {
+            aux_object.x = 3;
+        } else if(aux_object.x > 29) {
+            aux_object.x = 29;
+        }
+
+        if (aux_object.y < 1) {
+            aux_object.y = 0;
+        } else if(aux_object.y > 21) {
+            aux_object.y = 21;
+        }
+
+        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+    }
+}
+
+void check_broom_collision() {
+
+    if (misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+        misifu.state = JUMPING_PUSHED;
+        misifu.initial_jump_y = misifu.y;
+        // will jump right or left depending on where is hit
+        if(misifu.x < aux_object.x) {
+            misifu.draw_additional = JUMP_LEFT;
+        } else {
+            misifu.draw_additional = JUMP_RIGHT;
+        }
+    }
+}
+
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

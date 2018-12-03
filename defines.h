@@ -196,4 +196,12 @@ extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t i
 
 extern void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
 
+extern void get_out_of_level_generic(uint8_t fall);
+
+extern void detect_cat_in_window(uint8_t offset);
+
+extern void move_broom();
+
+extern void check_broom_collision();
+
 #endif
