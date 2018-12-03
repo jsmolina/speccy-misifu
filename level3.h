@@ -1,6 +1,9 @@
-#ifndef _LEVEL4
-#define _LEVEL4
+#ifndef _LEVEL3
+#define _LEVEL3
 
+/**
+OUTSIDE FISHTANK LEVEL
+*/
 
 
 extern void  print_background_level3();
