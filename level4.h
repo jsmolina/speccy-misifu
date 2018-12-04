@@ -7,4 +7,6 @@ INSIDE FISHTANK LEVEL
 
 extern void  print_background_level4();
 
+
+extern void level4_loop();
 #endif

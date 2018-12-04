@@ -49,6 +49,9 @@
 #define OUCHOFFSET 65
 #define LOVEOFFSET 97
 
+#define FISHES_HORIZ_DIR 2
+#define FISHES_VERT_DIR 3
+
 #define LEVELFINISHED 100
 
 #define UP 1

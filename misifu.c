@@ -10,6 +10,7 @@
 #include "level2.h"
 #include "level_last.h"
 #include "level3.h"
+#include "level4.h"
 #include "defines.h"
 
 
@@ -68,7 +69,7 @@ int main()
     } else if (level == 3) {
         level3_loop();
     } else if(level == 4) {
-
+        level4_loop();
     } else if(level == 10) {
         throw_cupid_arrow();
     }
