@@ -29,24 +29,28 @@ void  print_background_level4() {
   }
 
   // udgxs, udgys are fishes. Mod is slow, but helps reduce code and paint might be slow.
+  idx_j = 3;
   for(idx = 0; idx != 8; ++idx) {
         udgxs[idx] = rand() % 28;
-        udgys[idx] = rand() % 22;
+        udgys[idx] = idx_j;
 
         // fish up direction (ojo 0-5)
         floor_holes[FISHES_HORIZ_DIR][idx] = RIGHT;
         floor_holes[FISHES_VERT_DIR][idx] = UP;
          // row, col
         sp1_PrintAt( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, 'F');
+        idx_j += 2; // fishes are 3 5 7 9 11 13 15 19
   }
 
   // now eels
+  idx_j = 4;
   for(idx = 0; idx != 5; ++idx) {
        // paint eels... if there's an overlap... bad luck
-       floor_holes[0][idx] = rand() % 28;
-       floor_holes[1][idx] = rand() % 22;
+       floor_holes[X_AXIS][idx] = rand() % 28;
+       floor_holes[Y_AXIS][idx] = idx_j;
        // row, col
-       sp1_PrintAt( floor_holes[1][idx], floor_holes[0][idx],  INK_BLACK | PAPER_CYAN, 'E');
+       sp1_PrintAt( floor_holes[Y_AXIS][idx], floor_holes[X_AXIS][idx],  INK_BLACK | PAPER_CYAN, 'E');
+       idx_j += 5; // eels are  4, 9, 14, 19
   }
 
   level_x_max = 28;
@@ -66,57 +70,53 @@ static void print_fishes(uint8_t clean) {
     for (idx = 0; idx != 8; ++idx) {
         if (clean == 1) {
             // used for simulating the animation with udg
-            sp1_PrintAtInv( udgxs[idx], udgys[idx],  INK_BLACK | PAPER_CYAN, ' ');
+            sp1_PrintAtInv( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, ' ');
         } else if (floor_holes[FISHES_HORIZ_DIR][idx] == RIGHT) {
-            sp1_PrintAtInv( udgxs[idx], udgys[idx],  INK_BLACK | PAPER_CYAN, 'F');
+            sp1_PrintAtInv( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, 'F');
         } else if (floor_holes[FISHES_HORIZ_DIR][idx] == LEFT) {
-            sp1_PrintAtInv( udgxs[idx], udgys[idx],  INK_BLACK | PAPER_CYAN, 'G');
+            sp1_PrintAtInv( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, 'G');
         }
     }
 }
 
+static void print_eels(uint8_t color) {
+    for(idx = 0; idx != 5; ++idx) {
+       // row, col
+       sp1_PrintAt( floor_holes[Y_AXIS][idx], floor_holes[X_AXIS][idx],  color | PAPER_CYAN, 'E');
+  }
+}
+
 inline void fishes_on_move() {
-    print_fishes(1);
-    // modify udgxs, udgxys todo direction
+    if(frame == 1) { // 1/4 of times
+        print_fishes(1);
+        // modify udgxs, udgxys todo direction
 
-    for(idx = 0; idx != 8; ++idx) {
-        // move to the right until reached limits
-        if(floor_holes[FISHES_HORIZ_DIR][idx] == RIGHT) {
-            ++udgxs[idx];
-        } else {
-            --udgxs[idx];
-        }
-
-        if(udgxs[idx] >= 30) {
-            floor_holes[FISHES_HORIZ_DIR][idx] = LEFT;
-        } else if(udgxs[idx] < 1) {
-            floor_holes[FISHES_HORIZ_DIR][idx] = RIGHT;
-        }
-        // move up and down
-        /*if(anim_frames == 0) {
-            if(floor_holes[idx][FISHES_VERT_DIR] == UP) {
-                floor_holes[idx][FISHES_VERT_DIR] == DOWN;
-                anim_frames = 3;
+        for(idx = 0; idx != 8; ++idx) {
+            // move to the right until reached limits
+            if(floor_holes[FISHES_HORIZ_DIR][idx] == RIGHT) {
+                ++udgxs[idx];
             } else {
-                floor_holes[idx][FISHES_VERT_DIR] == UP;
-                anim_frames = 3;
+                --udgxs[idx];
             }
-        } else if(random_value > 200) {
-            if(floor_holes[idx][FISHES_VERT_DIR] == UP) {
-                --udgys[idx];
-            } else {
-                ++udgys[idx];
-            }
-            --anim_frames;
-        }*/
 
-        // todo should do up and down, left and right
+            if(udgxs[idx] >= 30) {
+                floor_holes[FISHES_HORIZ_DIR][idx] = LEFT;
+            } else if(udgxs[idx] < 1) {
+                floor_holes[FISHES_HORIZ_DIR][idx] = RIGHT;
+            }
+
+
+            // todo maybe move a bit up and down
+        }
+        print_fishes(0);
+        print_eels(INK_WHITE);
+    } else {
+        print_eels(INK_BLACK);
     }
 
-    print_fishes(0);
 
 }
 
 void level4_loop() {
-    //fishes_on_move();
+    fishes_on_move();
 }

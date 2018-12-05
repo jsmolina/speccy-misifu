@@ -49,6 +49,9 @@
 #define OUCHOFFSET 65
 #define LOVEOFFSET 97
 
+#define Y_AXIS 0
+#define X_AXIS 1
+
 #define FISHES_HORIZ_DIR 2
 #define FISHES_VERT_DIR 3
 
