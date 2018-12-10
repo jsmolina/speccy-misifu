@@ -64,6 +64,10 @@ void  print_background_level4() {
   anim_frames = 3;
 
   sp1_UpdateNow();
+
+  // sprite changed
+  sp1_DeleteSpr_fastcall(misifu.sp);
+  misifu.sp = add_sprite_swim();
 }
 
 static void print_fishes(uint8_t clean) {

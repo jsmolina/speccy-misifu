@@ -26,7 +26,7 @@ prota:
 	png2sp1sprite ./sprites/cat_sprites.png -i sprite_protar -f 32 > ./build/protar.asm
 
 protaswim:
-	png2sp1sprite ./sprites/cat_swimsprites.png -i sprite_swim -f 32 > ./build/protaswim.asm
+	png2sp1sprite ./sprites/cat_swimsprites.png --bit -i sprite_swim -f 32 > ./build/protaswim.asm
 
 dogsprites:
 	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > ./build/dogr.asm

@@ -209,7 +209,7 @@ static struct sp1_ss * add_sprite_protar1() {
   return sp;
 }
 
-static struct sp1_ss * add_sprite_swim() {
+struct sp1_ss * add_sprite_swim() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_swim1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim2, 0);
@@ -432,14 +432,16 @@ void check_keys()
 void check_swim() {
     if(in_key_pressed(IN_KEY_SCANCODE_q)) {
         --misifu.y;
+        misifu.offset = SWIM_UP1;
     } else if(in_key_pressed(IN_KEY_SCANCODE_o)) {
         --misifu.x;
-        misifu.offset = LEFTC1;
+        misifu.offset = SWIM_LC1;
     } else if(in_key_pressed(IN_KEY_SCANCODE_p)) {
         ++misifu.x;
-        misifu.offset = RIGHTC1;
+        misifu.offset = SWIM_RC1;
     } else if(in_key_pressed(IN_KEY_SCANCODE_a)) {
         ++misifu.y;
+        misifu.offset = SWIM_DOWN1;
     }
 }
 
