@@ -58,6 +58,10 @@ extern uint8_t auxiliar2[];
 extern uint8_t auxiliar3[];
 extern uint8_t auxiliar4[];
 
+extern uint8_t sprite_swim1[];
+extern uint8_t sprite_swim2[];
+extern uint8_t sprite_swim3[];
+extern uint8_t sprite_swim4[];
 
 // shared vars
 uint8_t x, y;
@@ -199,6 +203,20 @@ static struct sp1_ss * add_sprite_protar1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar4, 1);
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColour);
+
+  return sp;
+}
+
+static struct sp1_ss * add_sprite_swim() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_swim1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim4, 0);
+
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
 
   sp1_IterateSprChar(sp, initialiseColour);
 

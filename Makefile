@@ -20,10 +20,13 @@ develop:
 	cat loader.tap screen.tap code.tap bank6.tap > misifu.tap
 	echo "Done"
 
-sprites: prota dogsprites bincat clothes auxiliar
+sprites: prota dogsprites bincat clothes auxiliar protaswim
 
 prota:
 	png2sp1sprite ./sprites/cat_sprites.png -i sprite_protar -f 32 > ./build/protar.asm
+
+protaswim:
+	png2sp1sprite ./sprites/cat_swimsprites.png -i sprite_swim -f 32 > ./build/protaswim.asm
 
 dogsprites:
 	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > ./build/dogr.asm
