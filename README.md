@@ -33,11 +33,15 @@ https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_06_SomeDeta
 
 
 # Collaborators
-
 * alvin, first for being author of the GREAT z88dk, and second for helping me with moving AY to bank 6.
 * ER on the graphic material.
 * nq for music
 * beykersoft for music as well.
+
+# Special Thanks to
+* Matthew Logue helping with some testing.
+* Ivan Sánchez, testing and motivation.
+* Alexey, helping on very good ideas.
 
 # Dedicated to
 Clàudia :)
