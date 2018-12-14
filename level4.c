@@ -123,4 +123,9 @@ inline void fishes_on_move() {
 
 void level4_loop() {
     fishes_on_move();
+
+    // misifu floats
+    if(frame == 1 && misifu.y >= 1) {
+        // todo make the cat loose breath
+    }
 }
