@@ -58,6 +58,8 @@ void  print_background_level4() {
 
   reset_misifu_position();
   misifu.state = SWIMMING;
+  // loose breathe
+  misifu.draw_additional = 100;
 
   misifu.x = 5;
   misifu.y = 5;
@@ -126,6 +128,19 @@ void level4_loop() {
 
     // misifu floats
     if(frame == 1 && misifu.y >= 1) {
-        // todo make the cat loose breath
+        --misifu.draw_additional;
+
+        if(misifu.draw_additional == 80) {
+            zx_border(INK_BLUE);
+        } else if(misifu.draw_additional == 40) {
+            zx_border(INK_RED);
+        } else if(misifu.draw_additional == 0) {
+            // todo get out of level and loose a live
+            zx_border(INK_GREEN);
+        }
+    } else if(misifu.y == 0) {
+        // breathe
+        misifu.draw_additional = 100;
+        zx_border(INK_BLACK);
     }
 }
