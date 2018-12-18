@@ -31,14 +31,12 @@ void  print_background_level4() {
   // udgxs, udgys are fishes. Mod is slow, but helps reduce code and paint might be slow.
   idx_j = 3;
   for(idx = 0; idx != 8; ++idx) {
-        udgxs[idx] = rand() % 28;
-        udgys[idx] = idx_j;
+        windows[idx].x = rand() % 28;
+        windows[idx].y = idx_j;
+        windows[idx].has_item = RIGHT;
 
-        // fish up direction (ojo 0-5)
-        floor_holes[FISHES_HORIZ_DIR][idx] = RIGHT;
-        floor_holes[FISHES_VERT_DIR][idx] = UP;
          // row, col
-        sp1_PrintAt( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, 'F');
+        sp1_PrintAt( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'F');
         idx_j += 2; // fishes are 3 5 7 9 11 13 15 19
   }
 
@@ -76,11 +74,11 @@ static void print_fishes(uint8_t clean) {
     for (idx = 0; idx != 8; ++idx) {
         if (clean == 1) {
             // used for simulating the animation with udg
-            sp1_PrintAtInv( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, ' ');
-        } else if (floor_holes[FISHES_HORIZ_DIR][idx] == RIGHT) {
-            sp1_PrintAtInv( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, 'F');
-        } else if (floor_holes[FISHES_HORIZ_DIR][idx] == LEFT) {
-            sp1_PrintAtInv( udgys[idx], udgxs[idx],  INK_BLACK | PAPER_CYAN, 'G');
+            sp1_PrintAtInv( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, ' ');
+        } else if ( windows[idx].has_item == RIGHT) {
+            sp1_PrintAtInv(  windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'F');
+        } else if ( windows[idx].has_item == LEFT) {
+            sp1_PrintAtInv(  windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'G');
         }
     }
 }
@@ -99,16 +97,16 @@ inline void fishes_on_move() {
 
         for(idx = 0; idx != 8; ++idx) {
             // move to the right until reached limits
-            if(floor_holes[FISHES_HORIZ_DIR][idx] == RIGHT) {
-                ++udgxs[idx];
-            } else {
-                --udgxs[idx];
+            if( windows[idx].has_item == RIGHT) {
+                ++windows[idx].x;
+            } else if( windows[idx].has_item == LEFT) {
+                --windows[idx].x;
             }
 
-            if(udgxs[idx] >= 30) {
-                floor_holes[FISHES_HORIZ_DIR][idx] = LEFT;
-            } else if(udgxs[idx] < 1) {
-                floor_holes[FISHES_HORIZ_DIR][idx] = RIGHT;
+            if(windows[idx].x >= 30) {
+                windows[idx].has_item = LEFT;
+            } else if(windows[idx].x < 1) {
+                windows[idx].has_item = RIGHT;
             }
 
 
@@ -121,6 +119,29 @@ inline void fishes_on_move() {
     }
 
 
+}
+
+inline void map_to_fish_index() {
+    // 3 5 7 9 11 13 15 19
+    // 0 1 2 3  4  5  6 7
+    if(misifu.y == 3) {
+        return 0;
+    } else if(misifu.y == 5) {
+        return 1;
+    } else if(misifu.y == 7) {
+        return 2;
+    } else if(misifu.y == 9) {
+        return 3;
+    } else if(misifu.y == 11) {
+        return 4;
+    } else if(misifu.y == 13) {
+        return 5;
+    } else if(misifu.y == 15) {
+        return 6;
+    } else if(misifu.y == 19) {
+        return 7;
+    }
+    return UNDEF;
 }
 
 void level4_loop() {
