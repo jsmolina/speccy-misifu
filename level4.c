@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <sound.h>
 #include "defines.h"
 
 const uint8_t udg_watertop[] = {0xff, 0xef, 0xc5, 0x80, 0x0, 0x0, 0x0, 0x0};
@@ -9,6 +10,7 @@ const uint8_t udg_eel[] = {0x0, 0x0, 0x0, 0x48, 0x36, 0x1, 0x0, 0x0};
 
 void  print_background_level4() {
   level = 4;
+  eaten_items = 8;
   // todo cat should not take too much or get out of breath... level timer
   // swimming state always here
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
@@ -37,7 +39,7 @@ void  print_background_level4() {
 
          // row, col
         sp1_PrintAt( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'F');
-        idx_j += 2; // fishes are 3 5 7 9 11 13 15 19
+        idx_j += 2; // fishes are 3, 5, 7, 9, 11, 13, 15, 17
   }
 
   // now eels
@@ -72,7 +74,7 @@ void  print_background_level4() {
 
 static void print_fishes(uint8_t clean) {
     for (idx = 0; idx != 8; ++idx) {
-        if (clean == 1) {
+        if (clean == 1 && windows[idx].has_item != 'Z') {
             // used for simulating the animation with udg
             sp1_PrintAtInv( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, ' ');
         } else if ( windows[idx].has_item == RIGHT) {
@@ -98,9 +100,9 @@ inline void fishes_on_move() {
         for(idx = 0; idx != 8; ++idx) {
             // move to the right until reached limits
             if( windows[idx].has_item == RIGHT) {
-                ++windows[idx].x;
+                //++windows[idx].x;
             } else if( windows[idx].has_item == LEFT) {
-                --windows[idx].x;
+                //--windows[idx].x;
             }
 
             if(windows[idx].x >= 30) {
@@ -121,33 +123,53 @@ inline void fishes_on_move() {
 
 }
 
-inline void map_to_fish_index() {
+static inline uint8_t map_to_fish_index() {
     // 3 5 7 9 11 13 15 19
     // 0 1 2 3  4  5  6 7
-    if(misifu.y == 3) {
+    if(misifu.y == 2 || misifu.y == 3) {
         return 0;
-    } else if(misifu.y == 5) {
+    } else if(misifu.y == 4 || misifu.y == 5) {
         return 1;
-    } else if(misifu.y == 7) {
+    } else if(misifu.y == 6 || misifu.y == 7) {
         return 2;
-    } else if(misifu.y == 9) {
+    } else if(misifu.y == 8 || misifu.y == 9) {
         return 3;
-    } else if(misifu.y == 11) {
+    } else if(misifu.y == 10 || misifu.y == 11) {
         return 4;
-    } else if(misifu.y == 13) {
+    } else if(misifu.y == 12 || misifu.y == 13) {
         return 5;
-    } else if(misifu.y == 15) {
+    } else if(misifu.y == 14 || misifu.y == 15) {
         return 6;
-    } else if(misifu.y == 19) {
+    } else if(misifu.y == 17 || misifu.y == 18) {
         return 7;
     }
+
     return UNDEF;
+}
+
+
+void detect_fish_collission() {
+    idx = map_to_fish_index();
+
+    if(windows[idx].x == misifu.x && windows[idx].has_item != 'Z') {
+            zx_border(INK_MAGENTA);
+        windows[idx].has_item = 'Z';  // eaten fish
+        repaint_lives = 1;
+        // delete collided fish
+        sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_CYAN, ' ');
+        windows[idx].x = 1;
+        windows[idx].y = 23;
+        sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'F');
+        points += 5;
+        bit_beepfx_di_fastcall(BEEPFX_SCORE);
+        --eaten_items;
+    }
 }
 
 void level4_loop() {
     fishes_on_move();
+    detect_fish_collission();
 
-    // misifu floats
     if(frame == 1 && misifu.y >= 1) {
         --misifu.draw_additional;
 
