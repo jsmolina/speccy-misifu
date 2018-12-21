@@ -83,7 +83,6 @@ uint8_t anim_frames = 0;
 
 // used for udg animations (e.g. heaven cats, eel, ...)
 uint8_t udgxs[] = {0, 0, 0, 0, 0, 0, 0, 0};
-uint8_t udgys[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 uint8_t first_keypress = NONE;
 

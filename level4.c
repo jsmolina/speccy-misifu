@@ -42,16 +42,12 @@ void  print_background_level4() {
         idx_j += 2; // fishes are 3, 5, 7, 9, 11, 13, 15, 17
   }
 
-  // now eels
-  idx_j = 4;
-  for(idx = 0; idx != 5; ++idx) {
-       // paint eels... if there's an overlap... bad luck
-       floor_holes[X_AXIS][idx] = rand() % 28;
-       floor_holes[Y_AXIS][idx] = idx_j;
-       // row, col
-       sp1_PrintAt( floor_holes[Y_AXIS][idx], floor_holes[X_AXIS][idx],  INK_BLACK | PAPER_CYAN, 'E');
-       idx_j += 5; // eels are  4, 9, 14, 19
-  }
+  // eels
+  sp1_PrintAt(4, 3,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(8, 24,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(12, 12,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(16, 5,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(4, 12,  INK_BLACK | PAPER_CYAN, 'E');
 
   level_x_max = 28;
   level_x_min = 0;
@@ -59,7 +55,7 @@ void  print_background_level4() {
   reset_misifu_position();
   misifu.state = SWIMMING;
   // loose breathe
-  misifu.draw_additional = 100;
+  misifu.draw_additional = 60;
 
   misifu.x = 5;
   misifu.y = 5;
@@ -85,13 +81,6 @@ static void print_fishes(uint8_t clean) {
     }
 }
 
-static void print_eels(uint8_t color) {
-    for(idx = 0; idx != 5; ++idx) {
-       // row, col
-       sp1_PrintAt( floor_holes[Y_AXIS][idx], floor_holes[X_AXIS][idx],  color | PAPER_CYAN, 'E');
-  }
-}
-
 inline void fishes_on_move() {
     if(frame == 1) { // 1/4 of times
         print_fishes(1);
@@ -100,9 +89,9 @@ inline void fishes_on_move() {
         for(idx = 0; idx != 8; ++idx) {
             // move to the right until reached limits
             if( windows[idx].has_item == RIGHT) {
-                //++windows[idx].x;
+                ++windows[idx].x;
             } else if( windows[idx].has_item == LEFT) {
-                //--windows[idx].x;
+                --windows[idx].x;
             }
 
             if(windows[idx].x >= 30) {
@@ -115,9 +104,6 @@ inline void fishes_on_move() {
             // todo maybe move a bit up and down
         }
         print_fishes(0);
-        print_eels(INK_WHITE);
-    } else {
-        print_eels(INK_BLACK);
     }
 
 
@@ -152,7 +138,6 @@ void detect_fish_collission() {
     idx = map_to_fish_index();
 
     if(windows[idx].x == misifu.x && windows[idx].has_item != 'Z') {
-            zx_border(INK_MAGENTA);
         windows[idx].has_item = 'Z';  // eaten fish
         repaint_lives = 1;
         // delete collided fish
@@ -163,7 +148,24 @@ void detect_fish_collission() {
         points += 5;
         bit_beepfx_di_fastcall(BEEPFX_SCORE);
         --eaten_items;
+    } else {
+        if(
+            (misifu.y == 4 && (misifu.x == 3 || misifu.x == 12)) ||
+            (misifu.y == 8 && misifu.x == 24) ||
+            (misifu.y == 12 && misifu.x == 12) ||
+            (misifu.y == 16 && misifu.x == 5)) {
+            // loose a life and out of level
+            zx_border(INK_MAGENTA);
+        }
     }
+
+    /**
+      sp1_PrintAt(4, 3,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(8, 24,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(12, 12,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(16, 5,  INK_BLACK | PAPER_CYAN, 'E');
+  sp1_PrintAt(4, 12,  INK_BLACK | PAPER_CYAN, 'E');
+    **/
 }
 
 void level4_loop() {
@@ -173,17 +175,17 @@ void level4_loop() {
     if(frame == 1 && misifu.y >= 1) {
         --misifu.draw_additional;
 
-        if(misifu.draw_additional == 80) {
+        if(misifu.draw_additional == 40) {
             zx_border(INK_BLUE);
-        } else if(misifu.draw_additional == 40) {
+        } else if(misifu.draw_additional == 20) {
             zx_border(INK_RED);
         } else if(misifu.draw_additional == 0) {
             // todo get out of level and loose a live
-            zx_border(INK_GREEN);
+            zx_border(INK_MAGENTA);
         }
     } else if(misifu.y == 0) {
         // breathe
-        misifu.draw_additional = 100;
+        misifu.draw_additional = 60;
         zx_border(INK_BLACK);
     }
 }
