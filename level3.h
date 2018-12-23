@@ -1,13 +1,15 @@
 #ifndef _LEVEL3
 #define _LEVEL3
-#include "defines.h"
-// HEARTS LEVEL
+
+/**
+OUTSIDE FISHTANK LEVEL
+*/
+
 
 extern void  print_background_level3();
 
-extern void detect_fall_in_hearts();
+extern void detect_fishtank_fall_in_hole_or_curtain();
 
-extern void throw_cupid_arrow();
-
+extern void level3_loop();
 
 #endif

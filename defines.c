@@ -10,12 +10,16 @@
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "level_last.h"
+#include "ay/ay_music.h"
+#include <intrinsic.h> // for intrinsic_di()
 
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
-uint8_t level_x_max[4] = {0, 28, 28, 25};
-uint8_t level_x_min[4] = {0, 0,  0,  3};
+// 28 and 3 for level = 3
+uint8_t level_x_max;
+uint8_t level_x_min;
 
 
 struct prota misifu;
@@ -54,6 +58,10 @@ extern uint8_t auxiliar2[];
 extern uint8_t auxiliar3[];
 extern uint8_t auxiliar4[];
 
+extern uint8_t sprite_swim1[];
+extern uint8_t sprite_swim2[];
+extern uint8_t sprite_swim3[];
+extern uint8_t sprite_swim4[];
 
 // shared vars
 uint8_t x, y;
@@ -75,7 +83,6 @@ uint8_t anim_frames = 0;
 
 // used for udg animations (e.g. heaven cats, eel, ...)
 uint8_t udgxs[] = {0, 0, 0, 0, 0, 0, 0, 0};
-uint8_t udgys[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 uint8_t first_keypress = NONE;
 
@@ -89,6 +96,7 @@ uint8_t opened_window = NONE;
 uint8_t opened_window_frames = NONE;
 uint8_t level = 1;
 uint8_t lives = 5;
+uint8_t last_success_level = 0;
 uint8_t repaint_lives = 0;
 uint16_t points = 0;
 
@@ -111,8 +119,9 @@ const uint8_t udg_sillaR[] = {0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7};
 const uint8_t udg_sillaLM[] = {0x7f, 0x7f, 0x7f, 0x70, 0x70, 0x70, 0x70, 0x70};
 const uint8_t udg_sillaRM[] = {0xff, 0xff, 0xff, 0x7, 0x7, 0x7, 0x7, 0x7};
 
-const uint8_t mesatop[] = {0x0, 0x0, 0x0, 0x0, 0xff, 0xff, 0xff, 0xff};
+const uint8_t mesatop[] = {0xff, 0xff, 0xff, 0xff, 0x18, 0x18, 0x18, 0x18};
 const uint8_t mesapata[] = {0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18};
+const uint8_t mesaside[] = {0xff, 0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0};
 
 // level 1
 struct udgstruct windows[14];
@@ -126,6 +135,28 @@ const uint8_t catheaven2[] = {0x4, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0xc, 0xe};
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;
 uint8_t horizontal_direction;
+
+
+
+void all_lives_lost() {
+  ay_vt_init(pcspeaker_module);
+  intrinsic_ei();
+
+  sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
+  sp1_UpdateNow();
+  // todo think on animating the cat a bit in 'demo mode'
+  while(1) {
+      // todo check joystick fire also so joystick is chosen
+      if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
+            first_keypress = tick;
+            srand(first_keypress);
+            break;
+      }
+  }
+  intrinsic_di();
+  ay_vt_init(music_module);
+  intrinsic_ei();
+}
 
 static void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
@@ -163,7 +194,7 @@ static void initialisePinkColour(unsigned int count, struct sp1_cs *c)
 
 
 
-static struct sp1_ss * add_sprite_protar1() {
+struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
@@ -171,6 +202,20 @@ static struct sp1_ss * add_sprite_protar1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar4, 1);
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColour);
+
+  return sp;
+}
+
+struct sp1_ss * add_sprite_swim() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 4, (int)sprite_swim1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim4, 0);
+
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
 
   sp1_IterateSprChar(sp, initialiseColour);
 
@@ -264,12 +309,15 @@ void loose_a_live() {
 
     if(lives > 0) {
         --lives;
-        bit_beepfx_di(BEEPFX_DROP_1);
+        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
     } else {
         // reached zero on lives
         lives = 5;
         points = 0;
-        bit_beepfx_di(BEEPFX_BOOM_1);
+        last_success_level = 0;
+        bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
+
+        all_lives_lost();
     }
     repaint_lives = 1;
 }
@@ -284,7 +332,7 @@ void reset_misifu_position() {
   misifu.state = NONE;
 }
 
-void print_room_walls(uint8_t paper_color) {
+void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
   sp1_TileEntry('F', wall1);
   sp1_TileEntry('G', wall2);
   sp1_TileEntry('H', wall3);
@@ -317,52 +365,44 @@ void print_room_walls(uint8_t paper_color) {
   }
 
   for (idx = 8; idx != 11; ++idx) {
-    sp1_PrintAt( idx, 20, INK_GREEN | paper_color, 'J');
-    sp1_PrintAt( idx, 21, INK_GREEN | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window + 1, ink_color | paper_color, 'J');
 
     // x=8, 9 and y=22-25
     if (idx != 10) {
-        sp1_PrintAt( idx, 22,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 23,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 24,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, 25,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 2,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 3,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 4,  PAPER_BLACK, 'N');
+        sp1_PrintAt( idx, initial_window + 5,  PAPER_BLACK, 'N');
     }
 
-    sp1_PrintAt( idx, 26, INK_GREEN | paper_color, 'J');
-    sp1_PrintAt( idx, 27, INK_GREEN | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window + 6, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window + 7, ink_color | paper_color, 'J');
   }
 
 }
 
-// void page(uint8_t bank) {
-//     GLOBAL_ZX_PORT_7FFD = 0x10+bank;
-// 	IO_7FFD = 0x10 + bank;
-// }
 
 void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min[level]) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max[level]) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min[level]) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
-        if (first_keypress == NONE) {
-            first_keypress = tick;
-            srand(first_keypress);
-        }
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min[level] && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
@@ -373,32 +413,63 @@ void check_keys()
         misifu.state = SWIMMING;
     }
 
-    if (in_key_pressed(IN_KEY_SCANCODE_3)) {
-        level = 3;
-        print_background_level3();
+    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+        level = 10;
+        print_background_level_last();
     } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
         level = 1;
         print_background_lvl1();
     } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
         level = 2;
         print_background_level2();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_4)) {
-        level = 4;
-        print_background_level4();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
+        level = 3;
+        print_background_level3();
     }
 }
 
 void check_swim() {
-    if(in_key_pressed(IN_KEY_SCANCODE_q)) {
-        --misifu.y;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)) {
+    if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > 0) {
         --misifu.x;
-        misifu.offset = LEFTC1;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_p)) {
+        if (frame < 2) {
+            misifu.offset = SWIM_LC1;
+        } else if (frame < 4) {
+            misifu.offset = SWIM_LC2;
+        }
+
+        if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 1) {
+            --misifu.y;
+        } else if(in_key_pressed(IN_KEY_SCANCODE_a)) {
+            ++misifu.y;
+        }
+    } else if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < 31) {
         ++misifu.x;
-        misifu.offset = RIGHTC1;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_a)) {
+        if (frame < 2) {
+            misifu.offset = SWIM_RC1;
+        } else if (frame < 4) {
+            misifu.offset = SWIM_RC2;
+        }
+        if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 1) {
+            --misifu.y;
+        } else if(in_key_pressed(IN_KEY_SCANCODE_a)) {
+            ++misifu.y;
+        }
+
+    } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 29) {
         ++misifu.y;
+        if (frame < 2) {
+            misifu.offset = SWIM_DOWN1;
+        } else if (frame < 4) {
+            misifu.offset = SWIM_DOWN2;
+        }
+    } else if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 0) {
+        --misifu.y;
+        if (frame < 2) {
+            misifu.offset = SWIM_UP1;
+        } else if (frame < 4) {
+            misifu.offset = SWIM_UP2;
+        }
+
     }
 }
 
@@ -482,7 +553,9 @@ void check_fsm() {
         }
         misifu.state = NONE;
     } else if (misifu.state == JUMPING_PUSHED){
-        misifu.y = misifu.y - 2;
+        if(misifu.y > 2) {
+            misifu.y = misifu.y - 2;
+        }
         if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1) {
             misifu.x = misifu.x - 2;
         } else {
@@ -492,10 +565,10 @@ void check_fsm() {
     } else if (misifu.state == JUMPING) {
         --misifu.y;
 
-        if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max[level]) {
+        if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
             ++misifu.x;
             misifu.offset = JRIGHTC1;
-        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min[level]) {
+        }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min) {
             --misifu.x;
             misifu.offset = JLEFTC1;
         } else {
@@ -542,23 +615,119 @@ void define_silla_udgs() {
 
   sp1_TileEntry('U', mesatop);
   sp1_TileEntry('V', mesapata);
+  sp1_TileEntry('W', mesaside);
 }
 
-void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color) {
-    sp1_PrintAt( row, col,  INK_GREEN | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 1, col,  INK_GREEN | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 2, col,  INK_GREEN | paper_color, 'R'); // LM
-    sp1_PrintAt( row + 2, col + 1,  INK_GREEN | paper_color, 'S'); // RM
-    sp1_PrintAt( row + 3, col,  INK_GREEN | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 3, col + 1,  INK_GREEN | paper_color, 'T'); // R
+void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
+    sp1_PrintAt(row + 1, col, ink_color |paper_color, 'W');
+    sp1_PrintAt(row + 1, col + 1, ink_color |paper_color, 'U');
+    sp1_PrintAt(row + 1, col + 2,  ink_color |paper_color, 'W');
 
-    sp1_PrintAt(row + 1, col + 4, INK_GREEN |paper_color, 'U');
-    sp1_PrintAt(row + 1, col + 5, INK_GREEN |paper_color, 'U');
-    sp1_PrintAt(row + 1, col + 6,  INK_GREEN |paper_color, 'U');
+    sp1_PrintAt(row + 2, col + 1,  ink_color |paper_color, 'V');
+    sp1_PrintAt(row + 3, col + 1,  ink_color |paper_color, 'V');
+}
 
-    sp1_PrintAt(row + 2, col + 5,  INK_GREEN |paper_color, 'V');
-    sp1_PrintAt(row + 3, col + 5,  INK_GREEN |paper_color, 'V');
+void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
+    sp1_PrintAt( row, col,  ink_color | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 1, col,  ink_color | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 2, col,  ink_color | paper_color, 'R'); // LM
+    sp1_PrintAt( row + 2, col + 1,  ink_color | paper_color, 'S'); // RM
+    sp1_PrintAt( row + 3, col,  ink_color | paper_color, 'Q'); // L
+    sp1_PrintAt( row + 3, col + 1,  ink_color | paper_color, 'T'); // R
+
 
 }
+
+
+
+void get_out_of_level_generic(uint8_t fall) {
+    // todo progress levels count, count how many time player stayed in level
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  INK_WHITE | PAPER_BLACK,
+                  ' ' );
+
+    if(fall == FALLING) {
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
+    } else {
+        // keep progress of levels
+        last_success_level = level;
+        points = points + 10;
+    }
+
+    // control wether if gets out of level by having eat all mouses
+    sp1_Invalidate(&full_screen);
+    level = 1;
+    sp1_UpdateNow();
+    print_background_lvl1();
+}
+
+
+
+void detect_cat_in_window(uint8_t offset) {
+    if( misifu.y >= 8 && misifu.y <= 10) {
+        if(misifu.x == (19 - offset) || misifu.x == (25 - offset)) {
+            misifu.state = CAT_IN_ROPE;
+        } else if(misifu.x >= (20 - offset) && misifu.x <= (24 - offset)) {
+            get_out_of_level_generic(FALLING);
+            return;
+        }
+    }
+}
+
+void move_broom() {
+ // BROOM MOVE
+    if((random_value & 1) == 0) {
+        if(random_value > 10 && random_value < 70) {
+            ++aux_object.y;
+        } else if (random_value > 70 && random_value < 130 && aux_object.y > 0) {
+            --aux_object.y;
+        } else if(random_value > 130 && random_value < 190) {
+            ++aux_object.x;
+        } else if(random_value > 190 && random_value < 250) {
+            --aux_object.x;
+        } else {
+            if(misifu.x < aux_object.x) {
+                --aux_object.x;
+            } else if(misifu.x > aux_object.x) {
+                ++aux_object.x;
+            }
+
+            if (misifu.y < aux_object.y) {
+                --aux_object.y;
+            } else if (misifu.y > aux_object.y) {
+                ++aux_object.y;
+            }
+        }
+
+        if(aux_object.x < 3) {
+            aux_object.x = 3;
+        } else if(aux_object.x > 29) {
+            aux_object.x = 29;
+        }
+
+        if (aux_object.y < 1) {
+            aux_object.y = 0;
+        } else if(aux_object.y > 21) {
+            aux_object.y = 21;
+        }
+
+        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+    }
+}
+
+void check_broom_collision() {
+
+    if (misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+        misifu.state = JUMPING_PUSHED;
+        misifu.initial_jump_y = misifu.y;
+        // will jump right or left depending on where is hit
+        if(misifu.x < aux_object.x) {
+            misifu.draw_additional = JUMP_LEFT;
+        } else {
+            misifu.draw_additional = JUMP_RIGHT;
+        }
+    }
+}
+
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

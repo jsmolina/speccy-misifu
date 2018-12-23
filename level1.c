@@ -21,7 +21,7 @@ const uint8_t cubo_middle1[] = {0x9e, 0xa5, 0xa5, 0xba, 0x9d, 0xcf, 0xb1, 0xde};
 const uint8_t cubo_middle2[] = {0x0, 0xff, 0x52, 0xad, 0x52, 0xff, 0xff, 0x0};
 const uint8_t cubo_middle3[] = {0x7d, 0xa9, 0xad, 0x5d, 0xfd, 0x7b, 0x8d, 0x7f};
 
-const uint8_t cubotop1[] = {0x0, 0x0, 0x33, 0x4f, 0x9f, 0xbf, 0x9f, 0xcf};
+const uint8_t cubotop1[] = {0xff, 0xff, 0xf3, 0xcf, 0x9f, 0xbf, 0x9f, 0xcf};
 const uint8_t cubotop2[] = {0x31, 0xff, 0x0, 0xe0, 0xfc, 0xff, 0xff, 0xff};
 const uint8_t cubotop3[] = {0xb0, 0x58, 0x8b, 0x10, 0x0, 0xf8, 0xff, 0xfb};
 
@@ -216,6 +216,9 @@ void  print_background_lvl1() {
    reset_misifu_position();
    bincat_appears = NONE;
 
+   level_x_max = 28;
+   level_x_min = 0;
+
    sp1_UpdateNow();
 }
 
@@ -304,7 +307,7 @@ void anim_windows() {
         if (vertical_direction != NONE || horizontal_direction != NONE) {
             if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 // todo falling to loose a live
-                bit_beepfx_di(BEEPFX_HIT_2);
+                bit_beepfx_di_fastcall(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING;
             } else {
@@ -373,7 +376,7 @@ void check_bincat() {
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING;
             misifu.in_bin = NONE;
-            bit_beepfx_di(BEEPFX_HIT_1);
+            bit_beepfx_di_fastcall(BEEPFX_HIT_1);
         }
 
         if (bincat_appears < 1 && bincatsp != NULL) {

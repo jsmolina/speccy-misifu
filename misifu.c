@@ -3,20 +3,19 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <input.h>
-#include <intrinsic.h> // for intrinsic_di()
 #include <sound.h> // for bit_beepfx()
 #include <string.h>
 #include "int.h"
 #include "level1.h"
 #include "level2.h"
+#include "level_last.h"
 #include "level3.h"
+#include "level4.h"
 #include "defines.h"
-#include "ay/ay_music.h"
 
 
 int main()
 {
-  ay_vt_init(music_module);
   zx_border(INK_BLACK);
 
   // interrupt mode 2
@@ -38,9 +37,16 @@ int main()
     print_background_level2();
   } else if(level == 3) {
     print_background_level3();
+  } else if(level == 4) {
+
+  } else if(level == 10) {
+    print_background_level_last();
   }
 
-  intrinsic_ei();
+  // bit_beep
+
+
+  all_lives_lost();
 
   while(1)
   {
@@ -59,9 +65,12 @@ int main()
         check_bincat();
         dog_checks();
     } else if (level == 2) {
-        mousies_dance_and_eat();
-        check_broom_collision();
+        level2_loop();
     } else if (level == 3) {
+        level3_loop();
+    } else if(level == 4) {
+        level4_loop();
+    } else if(level == 10) {
         throw_cupid_arrow();
     }
 
@@ -78,8 +87,11 @@ int main()
         }
     } else if(level == 2) {
         check_chair_and_table();
-    }
-    else  if (level == 3) {
+    } else  if (level == 3) {
+        detect_fishtank_fall_in_hole_or_curtain();
+    } else if (level == 4) {
+
+    } else if (level == 10) {
         detect_fall_in_hearts();
     }
 

@@ -88,24 +88,6 @@ static inline uint8_t map_cat_pos_in_holes() {
     return UNDEF;
 }
 
-void get_out_of_level2(uint8_t fall) {
-
-    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_BLACK,
-                  ' ' );
-
-    if(fall == FALLING) {
-        bit_beepfx_di(BEEPFX_GULP);
-    } else {
-        points = points + 10;
-    }
-
-    // control wether if gets out of level by having eat all mouses
-    sp1_Invalidate(&full_screen);
-    level = 1;
-    sp1_UpdateNow();
-    print_background_lvl1();
-}
 
 void detect_fall_in_hole_or_curtain() {
     idx = map_cat_pos_in_holes();
@@ -121,59 +103,21 @@ void detect_fall_in_hole_or_curtain() {
             repaint_lives = 1;
             sp1_PrintAtInv(1, 1 + eaten_items, INK_BLACK | PAPER_GREEN, 'B');
             points += 5;
-            bit_beepfx_di(BEEPFX_SCORE);
+            bit_beepfx_di_fastcall(BEEPFX_SCORE);
             --eaten_items;
         }
 
     }
 
-    if( misifu.y >= 8 && misifu.y <= 10) {
-        if(misifu.x == 19 || misifu.x == 25) {
-            misifu.state = CAT_IN_ROPE;
-        } else if(misifu.x >= 20 && misifu.x <= 24) {
-            get_out_of_level2(FALLING);
-            return;
-        }
-    }
-
+    detect_cat_in_window(0);
 
     if (eaten_items == 0) {
-        get_out_of_level2(WON_LEVEL);
+        get_out_of_level_generic(WON_LEVEL);
     }
 }
 
-void move_broom() {
- // BROOM MOVE
-    if((random_value & 1) == 0) {
-        if(random_value > 10 && random_value < 80) {
-            ++aux_object.y;
-        } else if (random_value > 80 && random_value < 160) {
-            --aux_object.y;
-        } else if(random_value > 160 && random_value < 210) {
-            ++aux_object.x;
-        } else if(random_value > 210) {
-            --aux_object.x;
-        } else {
-            // todo make it more difficult by doing depends on misifu pos
-        }
-
-        if(aux_object.x < 3) {
-            aux_object.x = 3;
-        } else if(aux_object.x > 29) {
-            aux_object.x = 29;
-        }
-
-        if (aux_object.y < 1) {
-            aux_object.y = 0;
-        } else if(aux_object.y > 21) {
-            aux_object.y = 21;
-        }
-
-        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
-    }
-}
-
-void mousies_dance_and_eat() {
+void level2_loop() {
+    // dance mousies, dance!
     if (random_value < 4 || repaint_lives == 1) {
         repaint_lives = 0;
         // mousie holes are connected, let's keep switching
@@ -207,21 +151,9 @@ void mousies_dance_and_eat() {
         }
     }
     move_broom();
+    check_broom_collision();
 }
 
-void check_broom_collision() {
-
-    if (misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-        misifu.state = JUMPING_PUSHED;
-        misifu.initial_jump_y = misifu.y;
-        // will jump right or left depending on where is hit
-        if(misifu.x < aux_object.x) {
-            misifu.draw_additional = JUMP_LEFT;
-        } else {
-            misifu.draw_additional = JUMP_RIGHT;
-        }
-    }
-}
 
 void check_chair_and_table() {
 
@@ -230,7 +162,7 @@ void check_chair_and_table() {
             misifu.state = CAT_ON_HIGH;
             misifu.in_bin = 1;
             misifu.offset = BORED;
-        } else if(misifu.y == 17 && (misifu.x >= 25 || misifu.x <= 26)) {
+        } else if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
             misifu.state = CAT_ON_HIGH;
             misifu.offset = BORED;
             misifu.in_bin = 2;
@@ -268,7 +200,7 @@ void  print_background_level2() {
   udgxs[6] = 12;
   udgxs[7] = 6;
 
-  print_room_walls(PAPER_RED);
+  print_room_walls(20, PAPER_RED, INK_GREEN);
 
   aux_object.offset = AUX_BROOM;
 
@@ -286,7 +218,8 @@ void  print_background_level2() {
   }
 
   // paint the chair
-  paint_chair(17, 22, PAPER_RED);
+  paint_chair(17, 22, PAPER_RED, INK_GREEN);
+  paint_table(17, 26, PAPER_RED, INK_GREEN);
 
   reset_misifu_position();
   eaten_items = 4;
@@ -295,11 +228,9 @@ void  print_background_level2() {
   aux_object.x = 5;
   aux_object.offset = AUX_BROOM;
   repaint_lives = 1;
+  level_x_max = 28;
+  level_x_min = 0;
   sp1_UpdateNow();
-}
-
-void level2_loop() {
-
 }
 
 

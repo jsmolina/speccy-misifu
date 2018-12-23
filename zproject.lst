@@ -3,6 +3,7 @@
 int.asm
 int.c
 defines.c
+level_last.c
 level4.c
 level3.c
 level2.c

@@ -15,6 +15,7 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define OXYGEN 99
 #define FIGHTING 5
 #define CAT_IN_ROPE 6
 #define CAT_IN_ROPE1 7
@@ -45,9 +46,24 @@
 #define AUX_ARROWLEFT  97
 #define AUX_BROOM 129
 
+#define SWIM_RC1 1
+#define SWIM_RC2 33  // 24 + 8 + 1
+#define SWIM_LC1 65
+#define SWIM_LC2  97
+#define SWIM_UP1 129
+#define SWIM_UP2 161
+#define SWIM_DOWN1 193
+#define SWIM_DOWN2 225
+
 #define MISIOFFSET 33
 #define OUCHOFFSET 65
 #define LOVEOFFSET 97
+
+#define Y_AXIS 0
+#define X_AXIS 1
+
+#define FISHES_HORIZ_DIR 2
+#define FISHES_VERT_DIR 3
 
 #define LEVELFINISHED 100
 
@@ -77,8 +93,8 @@ extern unsigned char udg_win2[];
 
 extern struct sp1_Rect full_screen;
 
-extern uint8_t level_x_max[];
-extern uint8_t level_x_min[];
+extern uint8_t level_x_max;
+extern uint8_t level_x_min;
 
 // shared vars
 extern uint8_t x, y;
@@ -113,6 +129,7 @@ extern uint8_t opened_window;
 extern uint8_t opened_window_frames;
 extern uint8_t level;
 extern uint8_t lives;
+extern uint8_t last_success_level; // to see user progress
 extern uint8_t repaint_lives;
 extern uint16_t points;
 
@@ -172,6 +189,8 @@ struct udgstruct {
     char has_item;
 };
 
+extern void all_lives_lost();
+
 extern void loose_a_live();
 
 extern void reset_misifu_position();
@@ -187,9 +206,23 @@ extern void check_swim();
 
 extern void check_fsm();
 
-extern void print_room_walls(uint8_t paper_color);
-void define_silla_udgs();
+extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color);
+extern void define_silla_udgs();
 
-void paint_chair(uint8_t row, uint8_t col, uint8_t ink_color);
+extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
+
+extern void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
+
+extern void get_out_of_level_generic(uint8_t fall);
+
+extern void detect_cat_in_window(uint8_t offset);
+
+extern void move_broom();
+
+extern void check_broom_collision();
+
+extern struct sp1_ss * add_sprite_swim();
+
+extern struct sp1_ss * add_sprite_protar1();
 
 #endif

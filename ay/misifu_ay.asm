@@ -4,3 +4,8 @@ PUBLIC _music_module
 
 _music_module:
 BINARY "alley_cat.pt3"
+
+PUBLIC _pcspeaker_module
+
+_pcspeaker_module:
+BINARY "pcspeaker_alleycat.pt3"
