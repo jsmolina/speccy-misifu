@@ -194,7 +194,7 @@ static void initialisePinkColour(unsigned int count, struct sp1_cs *c)
 
 
 
-static struct sp1_ss * add_sprite_protar1() {
+struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);

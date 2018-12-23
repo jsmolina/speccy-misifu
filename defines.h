@@ -15,6 +15,7 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define OXYGEN 99
 #define FIGHTING 5
 #define CAT_IN_ROPE 6
 #define CAT_IN_ROPE1 7
@@ -221,5 +222,7 @@ extern void move_broom();
 extern void check_broom_collision();
 
 extern struct sp1_ss * add_sprite_swim();
+
+extern struct sp1_ss * add_sprite_protar1();
 
 #endif

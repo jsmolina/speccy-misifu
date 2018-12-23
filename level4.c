@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <sound.h>
 #include "defines.h"
+#include "level1.h"
+#include "int.h"
 
 const uint8_t udg_watertop[] = {0xff, 0xef, 0xc5, 0x80, 0x0, 0x0, 0x0, 0x0};
 const uint8_t udg_fish[] = {0x0, 0x9c, 0xbe, 0xfd, 0xff, 0xbf, 0x9e, 0x0};
@@ -55,7 +57,7 @@ void  print_background_level4() {
   reset_misifu_position();
   misifu.state = SWIMMING;
   // loose breathe
-  misifu.draw_additional = 60;
+  misifu.draw_additional = 30;
 
   misifu.x = 5;
   misifu.y = 5;
@@ -66,6 +68,44 @@ void  print_background_level4() {
   // sprite changed
   sp1_DeleteSpr_fastcall(misifu.sp);
   misifu.sp = add_sprite_swim();
+}
+
+static void get_out_of_level4(uint8_t fall) {
+
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  INK_WHITE | PAPER_BLACK,
+                  ' ' );
+
+    if(fall == FALLING) {
+        --lives;
+        repaint_lives = 1;
+
+        for (idx = 0; idx != 5; ++idx) {
+            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+
+            if((idx & 1) == 0) {
+                zx_border(INK_BLUE);
+            } else {
+                zx_border(INK_WHITE);
+            }
+            wait();
+        }
+    } else if(fall == OXYGEN) {
+        --lives;
+    }
+
+    if(fall == FALLING) {
+        bit_beepfx_di_fastcall(BEEPFX_AWW);
+    } if(fall == OXYGEN) {
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
+    } else {
+        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
+    }
+
+    sp1_DeleteSpr_fastcall(misifu.sp);
+    misifu.sp = add_sprite_protar1();
+
+    print_background_lvl1();
 }
 
 static void print_fishes(uint8_t clean) {
@@ -110,8 +150,6 @@ inline void fishes_on_move() {
 }
 
 static inline uint8_t map_to_fish_index() {
-    // 3 5 7 9 11 13 15 19
-    // 0 1 2 3  4  5  6 7
     if(misifu.y == 2 || misifu.y == 3) {
         return 0;
     } else if(misifu.y == 4 || misifu.y == 5) {
@@ -137,7 +175,7 @@ static inline uint8_t map_to_fish_index() {
 void detect_fish_collission() {
     idx = map_to_fish_index();
 
-    if(windows[idx].x == misifu.x && windows[idx].has_item != 'Z') {
+    if(abs(windows[idx].x - misifu.x) < 2 && windows[idx].has_item != 'Z') {
         windows[idx].has_item = 'Z';  // eaten fish
         repaint_lives = 1;
         // delete collided fish
@@ -148,24 +186,21 @@ void detect_fish_collission() {
         points += 5;
         bit_beepfx_di_fastcall(BEEPFX_SCORE);
         --eaten_items;
+
+        if(eaten_items == 0) {
+            get_out_of_level4(NONE);
+        }
     } else {
         if(
-            (misifu.y == 4 && (misifu.x == 3 || misifu.x == 12)) ||
-            (misifu.y == 8 && misifu.x == 24) ||
-            (misifu.y == 12 && misifu.x == 12) ||
-            (misifu.y == 16 && misifu.x == 5)) {
+            (abs(3 - misifu.y) < 2 && (abs(3 - misifu.x) < 2 || abs(12 - misifu.x) < 2)) ||
+            (abs(7 - misifu.y) < 2 && abs(24 - misifu.x) < 2) ||
+            (abs(11 - misifu.y) < 2 && abs(12 - misifu.x) < 2) ||
+            (abs(15 - misifu.y) < 2 && abs(5 - misifu.x) < 2)) {
             // loose a life and out of level
-            zx_border(INK_MAGENTA);
+            get_out_of_level4(FALLING);
+            return;
         }
     }
-
-    /**
-      sp1_PrintAt(4, 3,  INK_BLACK | PAPER_CYAN, 'E');
-  sp1_PrintAt(8, 24,  INK_BLACK | PAPER_CYAN, 'E');
-  sp1_PrintAt(12, 12,  INK_BLACK | PAPER_CYAN, 'E');
-  sp1_PrintAt(16, 5,  INK_BLACK | PAPER_CYAN, 'E');
-  sp1_PrintAt(4, 12,  INK_BLACK | PAPER_CYAN, 'E');
-    **/
 }
 
 void level4_loop() {
@@ -175,17 +210,17 @@ void level4_loop() {
     if(frame == 1 && misifu.y >= 1) {
         --misifu.draw_additional;
 
-        if(misifu.draw_additional == 40) {
+        if(misifu.draw_additional == 20) {
             zx_border(INK_BLUE);
-        } else if(misifu.draw_additional == 20) {
+        } else if(misifu.draw_additional == 10) {
             zx_border(INK_RED);
         } else if(misifu.draw_additional == 0) {
-            // todo get out of level and loose a live
-            zx_border(INK_MAGENTA);
+            get_out_of_level4(OXYGEN);
+            return;
         }
     } else if(misifu.y == 0) {
         // breathe
-        misifu.draw_additional = 60;
+        misifu.draw_additional = 30;
         zx_border(INK_BLACK);
     }
 }
