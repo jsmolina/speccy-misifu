@@ -1,6 +1,6 @@
 SECTION rodata_user
 
-; Original: 24, 16 (=3 x 2 chars)
+; Original: 48, 16 (=6 x 2 chars)
 ; Blocks: 3
  defb @00000000
  defb @00000000
@@ -29,6 +29,33 @@ PUBLIC _sprite_bincat1
  defb @00111111
  defb @00011111
  defb @00000111
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_bincat1_f2
+ defb @00000111
+ defb @00001111
+ defb @00001111
+ defb @00001100
+ defb @00000000
+ defb @00000000
+ defb @00011110
+ defb @00111111
+ defb @00111011
+ defb @00000001
+ defb @00000000
+ defb @00000111
+ defb @00001111
+ defb @00011110
+ defb @00011100
+ defb @00011100
 
  defb @00000000
  defb @00000000
@@ -68,6 +95,33 @@ PUBLIC _sprite_bincat2
  defb @00000000
  defb @00000000
 
+._sprite_bincat2_f2
+ defb @00000000
+ defb @11000000
+ defb @11100001
+ defb @11101101
+ defb @11111111
+ defb @01111111
+ defb @00111111
+ defb @01111111
+ defb @11111111
+ defb @11111111
+ defb @01111111
+ defb @11011110
+ defb @10111111
+ defb @00111111
+ defb @00111111
+ defb @00001100
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
 PUBLIC _sprite_bincat3
 ._sprite_bincat3
 
@@ -87,6 +141,33 @@ PUBLIC _sprite_bincat3
  defb @11111100
  defb @11111000
  defb @11100000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_bincat3_f2
+ defb @00111000
+ defb @11111100
+ defb @11111100
+ defb @11001100
+ defb @11000000
+ defb @10000000
+ defb @00011110
+ defb @10111111
+ defb @11110111
+ defb @11100000
+ defb @10000000
+ defb @11111000
+ defb @01111100
+ defb @00011110
+ defb @00001110
+ defb @00001110
 
  defb @00000000
  defb @00000000
