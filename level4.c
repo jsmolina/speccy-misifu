@@ -92,6 +92,8 @@ static void get_out_of_level4(uint8_t fall) {
         }
     } else if(fall == OXYGEN) {
         --lives;
+    } else {
+        last_success_level = level;
     }
 
     if(fall == FALLING) {

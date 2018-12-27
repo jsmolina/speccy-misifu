@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <sound.h> // for bit_beepfx()
 #include "defines.h"
+#include "level2.h"
+#include "level3.h"
+#include "level4.h"
 
 
 const uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
@@ -417,6 +420,25 @@ void detect_fall_in_bin() {
     }
 }
 
+
+void detect_fall_in_window() {
+    if(misifu.state != FALLING) {
+        return;
+    }
+
+    if(opened_window < 12 && (abs(misifu.y - windows[opened_window].y) < 2)
+        && ((misifu.x > windows[opened_window].x && misifu.x < windows[opened_window].x + 5)) ) {
+        if(last_success_level == 0) {
+            print_background_level2();
+        } else if(last_success_level == 2) {
+            print_background_level3();
+        } else if(last_success_level == 3) {
+            print_background_level4();
+        }
+        return;
+    }
+
+}
 
 
 

@@ -31,17 +31,8 @@ int main()
 
   row1_moving = 10;
 
-  if (level == 1) {
-    print_background_lvl1();
-  } else if(level == 2) {
-    print_background_level2();
-  } else if(level == 3) {
-    print_background_level3();
-  } else if(level == 4) {
+  print_background_lvl1();
 
-  } else if(level == 10) {
-    print_background_level_last();
-  }
 
   // bit_beep
 
@@ -64,6 +55,7 @@ int main()
         anim_windows();
         check_bincat();
         dog_checks();
+        detect_fall_in_window();
     } else if (level == 2) {
         level2_loop();
     } else if (level == 3) {

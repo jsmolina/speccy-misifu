@@ -85,4 +85,5 @@ void detect_fishtank_fall_in_hole_or_curtain() {
 void level3_loop() {
     move_broom();
     check_broom_collision();
+    // todo exit from window
 }

@@ -31,6 +31,6 @@ extern void check_bincat();
 extern void detect_fall_in_bin();
 
 //extern void add_row_clothes();
-
+void detect_fall_in_window();
 
 #endif
