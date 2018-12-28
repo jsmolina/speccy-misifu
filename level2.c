@@ -38,6 +38,10 @@ void define_cheese_holes_pos() {
     windows[11].y = 12; windows[11].x = 6;
     windows[12].y = 10; windows[12].x = 4;
     windows[13].y = 8; windows[13].x = 4;
+
+    for(idx = 0; idx != 13; ++idx) {
+        windows[idx].has_item = NONE;
+    }
 }
 
 

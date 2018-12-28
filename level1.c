@@ -425,9 +425,9 @@ void detect_fall_in_window() {
     if(misifu.state != FALLING) {
         return;
     }
-
+    idx = misifu.x - 1;
     if(opened_window < 12 && (abs(misifu.y - windows[opened_window].y) < 2)
-        && ((misifu.x > windows[opened_window].x && misifu.x < windows[opened_window].x + 5)) ) {
+        && ((idx >= windows[opened_window].x && idx < windows[opened_window].x + 5)) ) {
         if(last_success_level == 0) {
             print_background_level2();
         } else if(last_success_level == 2) {
