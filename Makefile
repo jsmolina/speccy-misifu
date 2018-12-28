@@ -131,3 +131,14 @@ water:
 	@png2udg ./background/udg_fish.png
 	@png2udg ./background/udg_fishL.png
 	@png2udg ./background/udg_eel.png
+
+spider:
+	@png2udg ./background/udg_spiderplant11.png
+	@png2udg ./background/udg_spiderplant12.png
+	@png2udg ./background/udg_spiderplant21.png
+	@png2udg ./background/udg_spiderplant22.png
+	@png2udg ./background/udg_spidershelfleft.png
+	@png2udg ./background/udg_spidershelfright.png
+	@png2udg ./background/udg_spiderempty.png
+	@png2udg ./background/udg_spiderbook.png
+	@png2udg ./background/udg_spiderbook2.png

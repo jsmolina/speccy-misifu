@@ -10,6 +10,7 @@
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "level5.h"
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
@@ -427,6 +428,9 @@ void check_keys()
     } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
         level = 3;
         print_background_level3();
+    }  else if (in_key_pressed(IN_KEY_SCANCODE_5)) {
+        level = 5;
+        print_background_level5();
     }
 }
 
