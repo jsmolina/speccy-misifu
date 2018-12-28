@@ -139,6 +139,8 @@ uint8_t horizontal_direction;
 
 
 void all_lives_lost() {
+  print_background_lvl1();
+
   ay_vt_init(pcspeaker_module);
   intrinsic_ei();
 

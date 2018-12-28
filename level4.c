@@ -76,8 +76,11 @@ static void get_out_of_level4(uint8_t fall) {
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
 
+    sp1_DeleteSpr_fastcall(misifu.sp);
+    misifu.sp = add_sprite_protar1();
+
     if(fall == FALLING) {
-        --lives;
+        loose_a_live();
         repaint_lives = 1;
 
         for (idx = 0; idx != 5; ++idx) {
@@ -91,7 +94,7 @@ static void get_out_of_level4(uint8_t fall) {
             wait();
         }
     } else if(fall == OXYGEN) {
-        --lives;
+        loose_a_live();
     } else {
         last_success_level = level;
     }
@@ -104,8 +107,6 @@ static void get_out_of_level4(uint8_t fall) {
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     }
 
-    sp1_DeleteSpr_fastcall(misifu.sp);
-    misifu.sp = add_sprite_protar1();
 
     print_background_lvl1();
 }
