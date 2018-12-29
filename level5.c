@@ -76,6 +76,8 @@ void  print_background_level5() {
   // spider starts here
   windows[0].x = 10;
   windows[0].y = 3;
+  windows[0].has_item = LEFT;
+  bincat_appears = NONE;
 
   sp1_UpdateNow();
 }
@@ -92,6 +94,9 @@ void level5_loop() {
     move_broom();
     check_broom_collision();
     // SPIDER, row (5-12), col (17-28)
+
+    // see how to move spider in short code
+
     // bincat_appears, bincat_in_bin
     sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
     detect_cat_in_window(12);

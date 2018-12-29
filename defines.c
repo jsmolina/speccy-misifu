@@ -126,11 +126,6 @@ const uint8_t mesaside[] = {0xff, 0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0};
 struct udgstruct windows[14];
 const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
 
-
-// use tiles
-const uint8_t catheaven1[] = {0x60, 0xc3, 0xc7, 0xef, 0x7e, 0x1e, 0x18, 0x1c};
-const uint8_t catheaven2[] = {0x4, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0xc, 0xe};
-
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;
 uint8_t horizontal_direction;

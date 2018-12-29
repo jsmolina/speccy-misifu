@@ -151,8 +151,6 @@ extern const uint8_t wall4[];
 extern struct udgstruct windows[14];
 extern const uint8_t bin_places2[];
 
-extern const uint8_t catheaven1[];
-extern const uint8_t catheaven2[];
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;
