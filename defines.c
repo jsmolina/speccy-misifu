@@ -69,8 +69,6 @@ uint8_t x, y;
 
 
 // game required vars
-char left;
-char right;
 uint8_t eaten_items;
 uint8_t frame;
 uint8_t x_malo;

@@ -40,6 +40,7 @@
 #define JUMPINGC1 385
 #define BORED 449
 #define JUMPINGC2 513
+#define SPIDER 25 // 16 + 8 + 1
 
 #define AUX_ZAP 33  // 24 + 8 + 1
 #define AUX_ARROWRIGHT 65

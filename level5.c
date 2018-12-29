@@ -11,7 +11,6 @@ const uint8_t udg_spidershelfleft[] = {0xff, 0xfc, 0xf0, 0xc0, 0xc0, 0xf0, 0xfc,
 const uint8_t udg_spidershelfright[] = {0xff, 0x3f, 0xf, 0x3, 0x3, 0xf, 0x3f, 0xff};
 const uint8_t udg_spiderempty[] = {0xff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff};
 const uint8_t udg_spiderbook[] = {0xff, 0x0, 0xfe, 0x86, 0xfe, 0xfc, 0x0, 0xff};
-const uint8_t udg_spiderbook2[] = {0xff, 0x0, 0x36, 0x0, 0x36, 0x36, 0x0, 0xff};
 
 static void paint_plant(uint8_t row, uint8_t col) {
     sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, 'W');
@@ -35,7 +34,6 @@ void  print_background_level5() {
 
   sp1_TileEntry('E', udg_spiderempty);
   sp1_TileEntry('B', udg_spiderbook);
-  sp1_TileEntry('C', udg_spiderbook2);
 
   sp1_TileEntry('W', udg_spiderplant11);
   sp1_TileEntry('X', udg_spiderplant12);
@@ -55,10 +53,8 @@ void  print_background_level5() {
 
      for(idx = 19; idx != 29; ++idx) {
         random_value = rand();
-        if (random_value > 200) {
+        if (random_value > 150) {
             sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'B');
-        } else if(random_value > 150) {
-            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'C');
         } else {
             sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'E');
         }
@@ -77,6 +73,9 @@ void  print_background_level5() {
   aux_object.offset = AUX_BROOM;
 
   reset_misifu_position();
+  // spider starts here
+  windows[0].x = 10;
+  windows[0].y = 3;
 
   sp1_UpdateNow();
 }
@@ -92,7 +91,9 @@ void level5_loop() {
 
     move_broom();
     check_broom_collision();
-
+    // SPIDER, row (5-12), col (17-28)
+    // bincat_appears, bincat_in_bin
+    sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
     detect_cat_in_window(12);
 
 }

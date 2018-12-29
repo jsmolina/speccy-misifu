@@ -126,27 +126,27 @@ void level2_loop() {
         repaint_lives = 0;
         // mousie holes are connected, let's keep switching
         if (random_value > 2) {
-            left = 'A';
-            right = 'B';
+            idx = 'A';
+            idx_j = 'B';
         } else {
-            left = 'B';
-            right = 'A';
+            idx = 'B';
+            idx_j = 'A';
         }
         // only switch now if not eaten
         if(windows[5].has_item != 'Z' && windows[8].has_item != 'Z') {
-            windows[5].has_item = left; windows[8].has_item = right;
+            windows[5].has_item = idx; windows[8].has_item = idx_j;
         }
 
         if(windows[10].has_item != 'Z' && windows[4].has_item != 'Z') {
-            windows[10].has_item = left; windows[4].has_item = right;
+            windows[10].has_item = idx; windows[4].has_item = idx_j;
         }
 
         if(windows[13].has_item != 'Z' && windows[9].has_item != 'Z') {
-            windows[13].has_item = left; windows[9].has_item = right;
+            windows[13].has_item = idx; windows[9].has_item = idx_j;
         }
 
         if(windows[12].has_item != 'Z' && windows[6].has_item != 'Z') {
-            windows[12].has_item = left; windows[6].has_item = right;
+            windows[12].has_item = idx; windows[6].has_item = idx_j;
         }
 
         for(idx_j = 0; idx_j != 8; ++idx_j) {
