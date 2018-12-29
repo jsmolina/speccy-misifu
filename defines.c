@@ -332,7 +332,7 @@ void reset_misifu_position() {
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
-  misifu.state = NONE;
+  misifu.state = WALKING_RIGHT;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
@@ -683,13 +683,13 @@ void detect_cat_in_window(uint8_t offset) {
 void move_broom() {
  // BROOM MOVE
     if((random_value & 1) == 0) {
-        if(random_value > 10 && random_value < 70) {
+        if(random_value > 0 && random_value < 50) {
             ++aux_object.y;
-        } else if (random_value > 70 && random_value < 130 && aux_object.y > 0) {
+        } else if (random_value > 50 && random_value < 100 && aux_object.y > 0) {
             --aux_object.y;
-        } else if(random_value > 130 && random_value < 190) {
+        } else if(random_value > 100 && random_value < 150) {
             ++aux_object.x;
-        } else if(random_value > 190 && random_value < 250) {
+        } else if(random_value > 150 && random_value < 200) {
             --aux_object.x;
         } else {
             if(misifu.x < aux_object.x) {

@@ -11,6 +11,7 @@
 #include "level_last.h"
 #include "level3.h"
 #include "level4.h"
+#include "level5.h"
 #include "defines.h"
 
 
@@ -81,8 +82,8 @@ int main()
         check_chair_and_table();
     } else  if (level == 3) {
         detect_fishtank_fall_in_hole_or_curtain();
-    } else if (level == 4) {
-
+    } else if (level == 5) {
+        level5_loop();
     } else if (level == 10) {
         detect_fall_in_hearts();
     }

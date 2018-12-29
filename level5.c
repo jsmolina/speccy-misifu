@@ -51,30 +51,48 @@ void  print_background_level5() {
   level_x_min = 0;
 
   for(idx_j = 5; idx_j != 20; ++idx_j ) {
-     sp1_PrintAt(idx_j, 18,  INK_CYAN | PAPER_MAGENTA, 'L');
+     sp1_PrintAt(idx_j, 18,  INK_BLACK | PAPER_MAGENTA, 'L');
 
      for(idx = 19; idx != 29; ++idx) {
         random_value = rand();
         if (random_value > 200) {
-            sp1_PrintAt(idx_j, idx,  INK_CYAN | PAPER_MAGENTA, 'B');
+            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'B');
         } else if(random_value > 150) {
-            sp1_PrintAt(idx_j, idx,  INK_CYAN | PAPER_MAGENTA, 'C');
+            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'C');
         } else {
-            sp1_PrintAt(idx_j, idx,  INK_CYAN | PAPER_MAGENTA, 'E');
+            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'E');
         }
 
      }
 
-     sp1_PrintAt(idx_j, 29,  INK_CYAN | PAPER_MAGENTA, 'M');
+     sp1_PrintAt(idx_j, 29,  INK_BLACK | PAPER_MAGENTA, 'M');
   }
 
   paint_plant(3, 20);
   paint_plant(3, 24);
   paint_plant(3, 28);
 
+  aux_object.y = 5;
+  aux_object.x = 5;
+  aux_object.offset = AUX_BROOM;
+
+  reset_misifu_position();
+
   sp1_UpdateNow();
 }
 
 void level5_loop() {
-    //
+    // misifu.state = CAT_IN_ROPE;
+    if(misifu.state == FALLING) {
+        // 5 to 19, impair
+        if(misifu.x > 16 && misifu.x < 28 && misifu.y >= 5 && misifu.y < 20 && (misifu.y & 1) == 0) {
+            misifu.state = CAT_IN_ROPE;
+        }
+    }
+
+    move_broom();
+    check_broom_collision();
+
+    detect_cat_in_window(12);
+
 }
