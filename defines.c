@@ -325,7 +325,7 @@ void reset_misifu_position() {
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
-  misifu.state = WALKING_RIGHT;
+  misifu.state = NONE;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {

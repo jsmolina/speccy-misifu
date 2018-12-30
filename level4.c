@@ -153,27 +153,18 @@ inline void fishes_on_move() {
 }
 
 static inline uint8_t map_to_fish_index() {
-    if(misifu.y == 2 || misifu.y == 3) {
-        return 0;
-    } else if(misifu.y == 4 || misifu.y == 5) {
-        return 1;
-    } else if(misifu.y == 6 || misifu.y == 7) {
-        return 2;
-    } else if(misifu.y == 8 || misifu.y == 9) {
-        return 3;
-    } else if(misifu.y == 10 || misifu.y == 11) {
-        return 4;
-    } else if(misifu.y == 12 || misifu.y == 13) {
-        return 5;
-    } else if(misifu.y == 14 || misifu.y == 15) {
-        return 6;
-    } else if(misifu.y == 17 || misifu.y == 18) {
-        return 7;
+    for(idx = 0; idx != 8; ++idx) {
+        if(abs(misifu.y - windows[idx].y) < 2) {
+            return idx;
+        }
     }
 
     return UNDEF;
 }
 
+static uint8_t is_misifu_in_eel(uint8_t y, uint8_t x) {
+    return (abs(y - misifu.y) < 2 && abs(x - misifu.x) < 2);
+}
 
 void detect_fish_collission() {
     idx = map_to_fish_index();
@@ -194,11 +185,12 @@ void detect_fish_collission() {
             get_out_of_level4(NONE);
         }
     } else {
-        if(
-            (abs(3 - misifu.y) < 2 && (abs(3 - misifu.x) < 2 || abs(12 - misifu.x) < 2)) ||
-            (abs(7 - misifu.y) < 2 && abs(24 - misifu.x) < 2) ||
-            (abs(11 - misifu.y) < 2 && abs(12 - misifu.x) < 2) ||
-            (abs(15 - misifu.y) < 2 && abs(5 - misifu.x) < 2)) {
+        if(is_misifu_in_eel(3, 3)
+        || is_misifu_in_eel(3, 12)
+        || is_misifu_in_eel(7, 24)
+        || is_misifu_in_eel(11, 12)
+        || is_misifu_in_eel(15, 5))
+        {
             // loose a life and out of level
             get_out_of_level4(FALLING);
             return;
