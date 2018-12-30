@@ -52,9 +52,7 @@
 #define SWIM_LC1 65
 #define SWIM_LC2  97
 #define SWIM_UP1 129
-#define SWIM_UP2 161
-#define SWIM_DOWN1 193
-#define SWIM_DOWN2 225
+#define SWIM_DOWN1 161
 
 #define MISIOFFSET 33
 #define OUCHOFFSET 65

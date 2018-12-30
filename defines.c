@@ -206,7 +206,7 @@ struct sp1_ss * add_sprite_protar1() {
 
 struct sp1_ss * add_sprite_swim() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 4, (int)sprite_swim1, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_swim1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim4, 0);
@@ -456,18 +456,11 @@ void check_swim() {
 
     } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 29) {
         ++misifu.y;
-        if (frame < 2) {
-            misifu.offset = SWIM_DOWN1;
-        } else if (frame < 4) {
-            misifu.offset = SWIM_DOWN2;
-        }
+        misifu.offset = SWIM_DOWN1;
+
     } else if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 0) {
         --misifu.y;
-        if (frame < 2) {
-            misifu.offset = SWIM_UP1;
-        } else if (frame < 4) {
-            misifu.offset = SWIM_UP2;
-        }
+        misifu.offset = SWIM_UP1;
 
     }
 }

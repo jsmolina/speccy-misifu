@@ -11,7 +11,8 @@ compile:
 	echo "Done!"
 
 develop:
-	zcc +zx -v -m -startup=31 -DWFRAMES=3 -clib=sdcc_iy -O3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -lay/vt_sound_6.lib
+# -DWFRAMES=3
+	sudo nice -n -20 su jordism -c "zcc +zx -v -m -startup=31 -clib=sdcc_iy -O3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -lay/vt_sound_6.lib"
 	ls *.bin
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
