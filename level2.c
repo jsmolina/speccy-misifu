@@ -162,21 +162,19 @@ void level2_loop() {
 void check_chair_and_table() {
 
     if(misifu.state == FALLING) {
-        if(misifu.x == 21 && misifu.y == 17) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.in_bin = 1;
-            misifu.offset = BORED;
-        } else if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
+        if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
             misifu.state = CAT_ON_HIGH;
             misifu.offset = BORED;
             misifu.in_bin = 2;
         }
     }
 
-    if(misifu.in_bin != NONE && misifu.x != 21 && misifu.x != 25 && misifu.x != 26) {
+    if(misifu.in_bin == 2 && misifu.x != 25 && misifu.x != 26) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
+
+    detect_fall_in_chair(21);
 }
 
 void  print_background_level2() {

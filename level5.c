@@ -77,6 +77,28 @@ void  print_background_level5() {
   sp1_UpdateNow();
 }
 
+static void anim_spider() {
+    if((frame & 1) == 0 && random_value < 29 && bincat_appears == NONE) {
+        windows[0].x = random_value;
+        windows[0].y = 3;
+        bincat_appears = 15;
+    }
+    // if already animating
+    if (bincat_appears != NONE) {
+        --bincat_appears;
+        ++windows[0].y;
+
+    }
+}
+
+static void detect_spider_bite() {
+    if(windows[0].y == misifu.y && windows[0].x == misifu.x) {
+        // SPIDER BITE
+        get_out_of_level_generic(BITE);
+        zx_border(INK_MAGENTA);
+    }
+}
+
 void level5_loop() {
     // misifu.state = CAT_IN_ROPE;
     if(misifu.state == FALLING) {
@@ -89,11 +111,13 @@ void level5_loop() {
     move_broom();
     check_broom_collision();
     // SPIDER, row (5-12), col (17-28)
+    anim_spider();
 
-    // see how to move spider in short code
+    detect_fall_in_chair(9);
 
     // bincat_appears, bincat_in_bin
     sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
     detect_cat_in_window(12);
 
+    detect_spider_bite();
 }

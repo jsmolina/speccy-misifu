@@ -520,7 +520,7 @@ void dog_checks() {
 }
 
 static void stop_jump_if_needed(uint8_t max_jump) {
-    if (misifu.initial_jump_y - misifu.y >= max_jump || misifu.x > 28) {
+    if (misifu.initial_jump_y - misifu.y >= max_jump || misifu.x > 28 || misifu.x < 1) {
         misifu.state = FALLING;
         misifu.draw_additional = NONE;
     }
@@ -630,7 +630,18 @@ void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_colo
 
 }
 
+void detect_fall_in_chair(uint8_t x_chair) {
+    if(misifu.state == FALLING && misifu.x == x_chair && misifu.y == 17) {
+        misifu.state = CAT_ON_HIGH;
+        misifu.in_bin = 1;
+        misifu.offset = BORED;
+    }
 
+    if(misifu.in_bin == 1 && misifu.x != x_chair) {
+        misifu.state = FALLING;
+        misifu.in_bin = NONE;
+    }
+}
 
 void get_out_of_level_generic(uint8_t fall) {
     // todo progress levels count, count how many time player stayed in level
@@ -638,7 +649,7 @@ void get_out_of_level_generic(uint8_t fall) {
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
 
-    if(fall == FALLING) {
+    if(fall != WON_LEVEL) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     } else {
         // keep progress of levels

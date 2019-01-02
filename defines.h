@@ -15,6 +15,7 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define BITE 55
 #define OXYGEN 99
 #define FIGHTING 5
 #define CAT_IN_ROPE 6
@@ -207,6 +208,8 @@ extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_
 extern void define_silla_udgs();
 
 extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
+
+extern void detect_fall_in_chair(uint8_t x_chair);
 
 extern void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
 
