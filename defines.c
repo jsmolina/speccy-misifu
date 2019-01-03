@@ -10,6 +10,7 @@
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "level5.h"
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
@@ -68,8 +69,6 @@ uint8_t x, y;
 
 
 // game required vars
-char left;
-char right;
 uint8_t eaten_items;
 uint8_t frame;
 uint8_t x_malo;
@@ -127,11 +126,6 @@ const uint8_t mesaside[] = {0xff, 0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0};
 struct udgstruct windows[14];
 const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
 
-
-// use tiles
-const uint8_t catheaven1[] = {0x60, 0xc3, 0xc7, 0xef, 0x7e, 0x1e, 0x18, 0x1c};
-const uint8_t catheaven2[] = {0x4, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0xc, 0xe};
-
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;
 uint8_t horizontal_direction;
@@ -139,6 +133,8 @@ uint8_t horizontal_direction;
 
 
 void all_lives_lost() {
+  print_background_lvl1();
+
   ay_vt_init(pcspeaker_module);
   intrinsic_ei();
 
@@ -210,7 +206,7 @@ struct sp1_ss * add_sprite_protar1() {
 
 struct sp1_ss * add_sprite_swim() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 4, (int)sprite_swim1, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_swim1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim4, 0);
@@ -392,9 +388,9 @@ void check_keys()
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max && misifu.draw_additional != CAT_IN_SHELVE) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min && misifu.draw_additional != CAT_IN_SHELVE) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
@@ -408,9 +404,6 @@ void check_keys()
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
-    }  else if (in_key_pressed(IN_KEY_SCANCODE_s)) {
-        // todo only for testing collisions, remove later
-        misifu.state = SWIMMING;
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
@@ -425,6 +418,9 @@ void check_keys()
     } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
         level = 3;
         print_background_level3();
+    }  else if (in_key_pressed(IN_KEY_SCANCODE_5)) {
+        level = 5;
+        print_background_level5();
     }
 }
 
@@ -457,18 +453,11 @@ void check_swim() {
 
     } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 29) {
         ++misifu.y;
-        if (frame < 2) {
-            misifu.offset = SWIM_DOWN1;
-        } else if (frame < 4) {
-            misifu.offset = SWIM_DOWN2;
-        }
+        misifu.offset = SWIM_DOWN1;
+
     } else if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 0) {
         --misifu.y;
-        if (frame < 2) {
-            misifu.offset = SWIM_UP1;
-        } else if (frame < 4) {
-            misifu.offset = SWIM_UP2;
-        }
+        misifu.offset = SWIM_UP1;
 
     }
 }
@@ -638,7 +627,18 @@ void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_colo
 
 }
 
+void detect_fall_in_chair(uint8_t x_chair) {
+    if(misifu.state == FALLING && misifu.x == x_chair && misifu.y == 17) {
+        misifu.state = CAT_ON_HIGH;
+        misifu.in_bin = 1;
+        misifu.offset = BORED;
+    }
 
+    if(misifu.in_bin == 1 && misifu.x != x_chair) {
+        misifu.state = FALLING;
+        misifu.in_bin = NONE;
+    }
+}
 
 void get_out_of_level_generic(uint8_t fall) {
     // todo progress levels count, count how many time player stayed in level
@@ -646,7 +646,7 @@ void get_out_of_level_generic(uint8_t fall) {
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
 
-    if(fall == FALLING) {
+    if(fall != WON_LEVEL) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     } else {
         // keep progress of levels
@@ -677,13 +677,13 @@ void detect_cat_in_window(uint8_t offset) {
 void move_broom() {
  // BROOM MOVE
     if((random_value & 1) == 0) {
-        if(random_value > 10 && random_value < 70) {
+        if(random_value > 0 && random_value < 50) {
             ++aux_object.y;
-        } else if (random_value > 70 && random_value < 130 && aux_object.y > 0) {
+        } else if (random_value > 50 && random_value < 100 && aux_object.y > 0) {
             --aux_object.y;
-        } else if(random_value > 130 && random_value < 190) {
+        } else if(random_value > 100 && random_value < 150) {
             ++aux_object.x;
-        } else if(random_value > 190 && random_value < 250) {
+        } else if(random_value > 150 && random_value < 200) {
             --aux_object.x;
         } else {
             if(misifu.x < aux_object.x) {

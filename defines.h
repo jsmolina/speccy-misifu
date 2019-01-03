@@ -9,18 +9,21 @@
 #define NONE 0
 #define WON_LEVEL 10
 #define YES 1
+#define CLEAN 1
 #define BIN_Y1 15
 #define BIN_Y2 16
 #define WALKING_LEFT 1
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define BITE 55
 #define OXYGEN 99
 #define FIGHTING 5
 #define CAT_IN_ROPE 6
 #define CAT_IN_ROPE1 7
 #define CAT_IN_ROPE2 8
 #define CAT_IN_ROPE3 9
+#define CAT_IN_SHELVE 20
 #define CAT_ON_HIGH 10
 #define JUMPING_PUSHED 11
 #define SWIMMING 12
@@ -40,6 +43,7 @@
 #define JUMPINGC1 385
 #define BORED 449
 #define JUMPINGC2 513
+#define SPIDER 25 // 16 + 8 + 1
 
 #define AUX_ZAP 33  // 24 + 8 + 1
 #define AUX_ARROWRIGHT 65
@@ -51,9 +55,7 @@
 #define SWIM_LC1 65
 #define SWIM_LC2  97
 #define SWIM_UP1 129
-#define SWIM_UP2 161
-#define SWIM_DOWN1 193
-#define SWIM_DOWN2 225
+#define SWIM_DOWN1 161
 
 #define MISIOFFSET 33
 #define OUCHOFFSET 65
@@ -150,8 +152,6 @@ extern const uint8_t wall4[];
 extern struct udgstruct windows[14];
 extern const uint8_t bin_places2[];
 
-extern const uint8_t catheaven1[];
-extern const uint8_t catheaven2[];
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t vertical_direction;
@@ -210,6 +210,8 @@ extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_
 extern void define_silla_udgs();
 
 extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
+
+extern void detect_fall_in_chair(uint8_t x_chair);
 
 extern void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
 

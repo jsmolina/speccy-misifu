@@ -38,6 +38,10 @@ void define_cheese_holes_pos() {
     windows[11].y = 12; windows[11].x = 6;
     windows[12].y = 10; windows[12].x = 4;
     windows[13].y = 8; windows[13].x = 4;
+
+    for(idx = 0; idx != 13; ++idx) {
+        windows[idx].has_item = NONE;
+    }
 }
 
 
@@ -122,27 +126,27 @@ void level2_loop() {
         repaint_lives = 0;
         // mousie holes are connected, let's keep switching
         if (random_value > 2) {
-            left = 'A';
-            right = 'B';
+            idx = 'A';
+            idx_j = 'B';
         } else {
-            left = 'B';
-            right = 'A';
+            idx = 'B';
+            idx_j = 'A';
         }
         // only switch now if not eaten
         if(windows[5].has_item != 'Z' && windows[8].has_item != 'Z') {
-            windows[5].has_item = left; windows[8].has_item = right;
+            windows[5].has_item = idx; windows[8].has_item = idx_j;
         }
 
         if(windows[10].has_item != 'Z' && windows[4].has_item != 'Z') {
-            windows[10].has_item = left; windows[4].has_item = right;
+            windows[10].has_item = idx; windows[4].has_item = idx_j;
         }
 
         if(windows[13].has_item != 'Z' && windows[9].has_item != 'Z') {
-            windows[13].has_item = left; windows[9].has_item = right;
+            windows[13].has_item = idx; windows[9].has_item = idx_j;
         }
 
         if(windows[12].has_item != 'Z' && windows[6].has_item != 'Z') {
-            windows[12].has_item = left; windows[6].has_item = right;
+            windows[12].has_item = idx; windows[6].has_item = idx_j;
         }
 
         for(idx_j = 0; idx_j != 8; ++idx_j) {
@@ -158,21 +162,19 @@ void level2_loop() {
 void check_chair_and_table() {
 
     if(misifu.state == FALLING) {
-        if(misifu.x == 21 && misifu.y == 17) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.in_bin = 1;
-            misifu.offset = BORED;
-        } else if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
+        if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
             misifu.state = CAT_ON_HIGH;
             misifu.offset = BORED;
             misifu.in_bin = 2;
         }
     }
 
-    if(misifu.in_bin != NONE && misifu.x != 21 && misifu.x != 25 && misifu.x != 26) {
+    if(misifu.in_bin == 2 && misifu.x != 25 && misifu.x != 26) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
+
+    detect_fall_in_chair(21);
 }
 
 void  print_background_level2() {

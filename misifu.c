@@ -11,6 +11,7 @@
 #include "level_last.h"
 #include "level3.h"
 #include "level4.h"
+#include "level5.h"
 #include "defines.h"
 
 
@@ -31,17 +32,8 @@ int main()
 
   row1_moving = 10;
 
-  if (level == 1) {
-    print_background_lvl1();
-  } else if(level == 2) {
-    print_background_level2();
-  } else if(level == 3) {
-    print_background_level3();
-  } else if(level == 4) {
+  print_background_lvl1();
 
-  } else if(level == 10) {
-    print_background_level_last();
-  }
 
   // bit_beep
 
@@ -64,6 +56,7 @@ int main()
         anim_windows();
         check_bincat();
         dog_checks();
+        detect_fall_in_window();
     } else if (level == 2) {
         level2_loop();
     } else if (level == 3) {
@@ -89,8 +82,8 @@ int main()
         check_chair_and_table();
     } else  if (level == 3) {
         detect_fishtank_fall_in_hole_or_curtain();
-    } else if (level == 4) {
-
+    } else if (level == 5) {
+        level5_loop();
     } else if (level == 10) {
         detect_fall_in_hearts();
     }
