@@ -10,10 +10,16 @@ const uint8_t udg_spidershelfright[] = {0xff, 0x3f, 0xf, 0x3, 0x3, 0xf, 0x3f, 0x
 const uint8_t udg_spiderempty[] = {0xff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff};
 const uint8_t udg_spiderbook[] = {0xff, 0x0, 0xfe, 0x86, 0xfe, 0xfc, 0x0, 0xff};
 
-static void paint_plant(uint8_t row, uint8_t col) {
-    sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, 'W');
-    sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, 'W');
-    sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_MAGENTA, 'Y');
+static void paint_plant(uint8_t row, uint8_t col, uint8_t clean) {
+    if(clean == CLEAN) {
+        sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_MAGENTA, ' ');
+    } else {
+        sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, 'W');
+        sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, 'W');
+        sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_MAGENTA, 'Y');
+    }
 }
 
 void  print_background_level5() {
@@ -59,9 +65,9 @@ void  print_background_level5() {
      sp1_PrintAt(idx_j, 29,  INK_BLACK | PAPER_MAGENTA, 'M');
   }
 
-  paint_plant(3, 20);
-  paint_plant(3, 24);
-  paint_plant(3, 28);
+  paint_plant(3, 20, 0);
+  paint_plant(3, 24, 0);
+  paint_plant(3, 28, 0);
 
   aux_object.y = 5;
   aux_object.x = 5;
@@ -72,13 +78,18 @@ void  print_background_level5() {
   windows[0].x = 10;
   windows[0].y = 3;
   windows[0].has_item = LEFT;
+  windows[1].has_item = NONE; windows[1].x = 20;
+  windows[2].has_item = NONE; windows[2].x = 24;
+  windows[3].has_item = NONE; windows[3].x = 28;
   bincat_appears = NONE;
+  eaten_items = 3;
+  level = 5;
 
   sp1_UpdateNow();
 }
 
 static void anim_spider() {
-    if((frame & 1) == 0 && random_value < 29 && bincat_appears == NONE) {
+    if(random_value < 29 && random_value > 14 && bincat_appears == NONE) {
         windows[0].x = random_value;
         windows[0].y = 3;
         bincat_appears = 15;
@@ -91,11 +102,40 @@ static void anim_spider() {
     }
 }
 
-static void detect_spider_bite() {
-    if(windows[0].y == misifu.y && windows[0].x == misifu.x) {
+static inline void detect_spider_bite() {
+    if(abs(windows[0].y - misifu.y) < 2 && abs(windows[0].x - misifu.x) <2) {
         // SPIDER BITE
+        loose_a_live();
         get_out_of_level_generic(BITE);
-        zx_border(INK_MAGENTA);
+    }
+}
+
+static void vase_falls(uint8_t i) {
+    if (windows[i].has_item == 'Z') {
+        return;
+    }
+
+    windows[i].has_item = 'Z';
+    bit_beepfx_di_fastcall(BEEPFX_HIT_2);
+    paint_plant(3, windows[i].x, CLEAN);
+    --eaten_items;
+
+    if(eaten_items == 0) {
+        get_out_of_level_generic(WON_LEVEL);
+    }
+}
+
+static inline void detect_vase_falling() {
+    if(misifu.y == 4) { // 17-28
+        // thrown vase
+        if(misifu.x >= 19 && misifu.x < 21) {
+            vase_falls(1);
+        } else if(misifu.x >= 23 && misifu.x < 25) {
+            vase_falls(2);
+        } else if(misifu.x >= 27 && misifu.x < 29) {
+            vase_falls(3);
+        }
+
     }
 }
 
@@ -120,4 +160,5 @@ void level5_loop() {
     detect_cat_in_window(12);
 
     detect_spider_bite();
+    detect_vase_falling();
 }

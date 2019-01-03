@@ -520,7 +520,7 @@ void dog_checks() {
 }
 
 static void stop_jump_if_needed(uint8_t max_jump) {
-    if (misifu.initial_jump_y - misifu.y >= max_jump || misifu.x > 28 || misifu.x < 1) {
+    if (misifu.initial_jump_y - misifu.y >= max_jump || misifu.x > 28) {
         misifu.state = FALLING;
         misifu.draw_additional = NONE;
     }

@@ -9,6 +9,7 @@
 #define NONE 0
 #define WON_LEVEL 10
 #define YES 1
+#define CLEAN 1
 #define BIN_Y1 15
 #define BIN_Y2 16
 #define WALKING_LEFT 1
