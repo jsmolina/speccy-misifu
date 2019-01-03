@@ -128,9 +128,9 @@ static void vase_falls(uint8_t i) {
 static inline void detect_vase_falling() {
     if(misifu.y == 4) { // 17-28
         // thrown vase
-        if(misifu.x >= 19 && misifu.x < 21) {
+        if(misifu.x >= 16 && misifu.x < 21) {
             vase_falls(1);
-        } else if(misifu.x >= 23 && misifu.x < 25) {
+        } else if(misifu.x >= 22 && misifu.x < 25) {
             vase_falls(2);
         } else if(misifu.x >= 27 && misifu.x < 29) {
             vase_falls(3);
@@ -145,6 +145,7 @@ void level5_loop() {
         // 5 to 19, impair
         if(misifu.x > 16 && misifu.x < 28 && misifu.y >= 5 && misifu.y < 20 && (misifu.y & 1) == 0) {
             misifu.state = CAT_IN_ROPE;
+            misifu.draw_additional = CAT_IN_SHELVE;
         }
     }
 

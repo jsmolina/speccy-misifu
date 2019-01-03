@@ -388,9 +388,9 @@ void check_keys()
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
+        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max && misifu.draw_additional != CAT_IN_SHELVE) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
+        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min && misifu.draw_additional != CAT_IN_SHELVE) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
@@ -404,9 +404,6 @@ void check_keys()
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
-    }  else if (in_key_pressed(IN_KEY_SCANCODE_s)) {
-        // todo only for testing collisions, remove later
-        misifu.state = SWIMMING;
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {

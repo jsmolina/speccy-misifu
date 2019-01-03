@@ -23,6 +23,7 @@
 #define CAT_IN_ROPE1 7
 #define CAT_IN_ROPE2 8
 #define CAT_IN_ROPE3 9
+#define CAT_IN_SHELVE 20
 #define CAT_ON_HIGH 10
 #define JUMPING_PUSHED 11
 #define SWIMMING 12
