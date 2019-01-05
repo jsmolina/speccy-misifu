@@ -22,7 +22,9 @@ void  print_background_level6() {
   // paint the chair
   paint_chair(17, 22, PAPER_RED, INK_GREEN);
   paint_table(17, 26, PAPER_RED, INK_GREEN);
-
+  // 18, 27
+  sp1_PrintAt(17, 26, INK_GREEN | PAPER_RED, 'A');
+  sp1_PrintAt(17, 27, INK_GREEN | PAPER_RED, 'B');
   reset_misifu_position();
 }
 
