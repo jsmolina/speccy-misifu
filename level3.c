@@ -9,7 +9,6 @@ void  print_background_level3() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_MAGENTA,
                   ' ' );
-  zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
 
   // O R S T U V
@@ -38,11 +37,6 @@ void  print_background_level3() {
 
   level_x_max = 28;
   level_x_min = 0;
-
-  sp1_UpdateNow();
-
-
-  misifu.state = NONE;
 }
 
 
@@ -84,6 +78,5 @@ void detect_fishtank_fall_in_hole_or_curtain() {
 
 void level3_loop() {
     move_broom();
-    check_broom_collision();
-    // todo exit from window
+    dog_checks();
 }

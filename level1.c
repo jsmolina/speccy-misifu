@@ -141,7 +141,6 @@ void  print_background_lvl1() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_MAGENTA,
                   ' ' );
-  zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
 
   sp1_TileEntry('V', udg_valla2);  // middle of fence

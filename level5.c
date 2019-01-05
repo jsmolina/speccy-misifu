@@ -27,7 +27,6 @@ void  print_background_level5() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_CYAN | PAPER_MAGENTA,
                   ' ' );
-  zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
 
   define_silla_udgs();
@@ -68,10 +67,6 @@ void  print_background_level5() {
   paint_plant(3, 20, 0);
   paint_plant(3, 24, 0);
   paint_plant(3, 28, 0);
-
-  aux_object.y = 5;
-  aux_object.x = 5;
-  aux_object.offset = AUX_BROOM;
 
   reset_misifu_position();
   // spider starts here
@@ -150,9 +145,9 @@ void level5_loop() {
     }
 
     move_broom();
-    check_broom_collision();
     // SPIDER, row (5-12), col (17-28)
     anim_spider();
+    dog_checks();
 
     detect_fall_in_chair(9);
 

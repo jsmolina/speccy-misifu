@@ -155,26 +155,7 @@ void level2_loop() {
         }
     }
     move_broom();
-    check_broom_collision();
-}
-
-
-void check_chair_and_table() {
-
-    if(misifu.state == FALLING) {
-        if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.offset = BORED;
-            misifu.in_bin = 2;
-        }
-    }
-
-    if(misifu.in_bin == 2 && misifu.x != 25 && misifu.x != 26) {
-        misifu.state = FALLING;
-        misifu.in_bin = NONE;
-    }
-
-    detect_fall_in_chair(21);
+    dog_checks();
 }
 
 void  print_background_level2() {
@@ -182,7 +163,6 @@ void  print_background_level2() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_RED,
                   ' ' );
-  zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
 
   sp1_TileEntry('A', hole_empty);
@@ -204,8 +184,6 @@ void  print_background_level2() {
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
 
-  aux_object.offset = AUX_BROOM;
-
   define_cheese_holes_pos();
 
   for (idx = 3; idx != 20; ++idx) {
@@ -223,7 +201,6 @@ void  print_background_level2() {
   paint_chair(17, 22, PAPER_RED, INK_GREEN);
   paint_table(17, 26, PAPER_RED, INK_GREEN);
 
-  reset_misifu_position();
   eaten_items = 4;
 
   aux_object.y = 5;
@@ -232,7 +209,7 @@ void  print_background_level2() {
   repaint_lives = 1;
   level_x_max = 28;
   level_x_min = 0;
-  sp1_UpdateNow();
+  reset_misifu_position();
 }
 
 

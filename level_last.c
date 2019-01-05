@@ -150,18 +150,17 @@ void print_background_level_last() {
 /**
  hearts y are 23, 19, 15, 11, 7
 **/
-static inline uint8_t lvl3_y_to_idj() {
+static inline uint8_t lvl3_y_to_idj(uint8_t offset) {
 
-    if(misifu.y == 5) {
-        zx_border(INK_RED);
+    if(misifu.y == 5 + offset) {
         return 0;
-    } else if(misifu.y == 9) {
+    } else if(misifu.y == 9 + offset) {
         return 1;
-    } else if(misifu.y == 13) {
+    } else if(misifu.y == 13 + offset) {
         return 2;
-    } else if(misifu.y == 17) {
+    } else if(misifu.y == 17 + offset) {
         return 3;
-    } else if (misifu.y == FLOOR_Y) {
+    } else if (misifu.y == FLOOR_Y + offset) {
         return 4;
     } else {
         return UNDEF;
@@ -170,7 +169,7 @@ static inline uint8_t lvl3_y_to_idj() {
 
 
 void detect_fall_in_hearts() {
-    idx_j = lvl3_y_to_idj();
+    idx_j = lvl3_y_to_idj(0);
 
     if (misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_ON_HIGH || misifu.state == NONE) {
         // 0 - 24
@@ -216,7 +215,6 @@ static void print_heavencats(uint8_t clean) {
             sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  INK_BLACK  | PAPER_GREEN, 'M');
         }
         idx_j += 4;
-
     }
 }
 
@@ -236,16 +234,11 @@ inline void heavencat_on_move() {
             ++udgxs[3];
         }
         // if going to right, return left
-        if(udgxs[0] > 25) {
-            udgxs[0] = 5;
-        } else if(udgxs[1] > 25) {
-            udgxs[1] = 5;
-        } if(udgxs[2] > 25) {
-            udgxs[2] = 5;
-        } if(udgxs[3] > 25) {
-            udgxs[3] = 5;
+        for(idx_j = 0; idx != 4; ++idx) {
+            if(udgxs[idx_j] > 25) {
+                udgxs[idx_j] = 5;
+            }
         }
-
     }
 
     // repaint
@@ -273,8 +266,10 @@ void throw_cupid_arrow() {
 
         if(aux_object.x > 16) {
             horizontal_direction = LEFT;
+            aux_object.offset = AUX_ARROWLEFT;
         } else {
             horizontal_direction = RIGHT;
+            aux_object.offset = AUX_ARROWRIGHT;
         }
     }
 
@@ -282,37 +277,19 @@ void throw_cupid_arrow() {
         ++aux_object.y;
         if (horizontal_direction == RIGHT) {
             ++aux_object.x;
-            aux_object.offset = AUX_ARROWRIGHT;
-
         } else {
             --aux_object.x;
-            aux_object.offset = AUX_ARROWLEFT;
 
         }
 
         // hearts y are 23, 19, 15, 11, 7
-        if(aux_object.y == 23) {
-            idx_j = 4;
-        } else if(aux_object.y == 19) {
-            idx_j = 3;
-        } else if(aux_object.y == 15) {
-            idx_j = 2;
-        } else if(aux_object.y == 11) {
-            idx_j = 1;
-        } else if (aux_object.y == 7) {
-            idx_j = 0;
-        } else {
-            idx_j = UNDEF;
-        }
+        idx_j = lvl3_y_to_idj(2);
 
         if(idx_j < 5 && aux_object.x > 3 && aux_object.x < 27) {
             // broke the heart :(
             sp1_PrintAtInv( aux_object.y, aux_object.x,  INK_BLUE | PAPER_GREEN, 'A');
-            // todo reset these values floor_holes to ones at the paint of the level to defaults
             floor_holes[idx_j][aux_object.x] = 0;
         }
-
-        // todo detect collision with 'red' hearts
     } else {
         // out of screen
         aux_object.x = 33;

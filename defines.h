@@ -200,7 +200,7 @@ extern void reset_misifu_position();
 
 extern void check_keys();
 
-extern void dog_checks();
+extern uint8_t dog_checks();
 
 extern void check_swim();
 
@@ -221,10 +221,10 @@ extern void detect_cat_in_window(uint8_t offset);
 
 extern void move_broom();
 
-extern void check_broom_collision();
-
 extern struct sp1_ss * add_sprite_swim();
 
 extern struct sp1_ss * add_sprite_protar1();
+
+extern void check_chair_and_table();
 
 #endif
