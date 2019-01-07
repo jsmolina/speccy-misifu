@@ -19,7 +19,7 @@ void  print_background_level6() {
   sp1_TileEntry('B', udg_birdcage2);
   sp1_TileEntry('C', udg_bird);
   sp1_TileEntry('D', udg_bird2);
-  level_x_max = 28;
+  level_x_max = 27;
   level_x_min = 0;
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
@@ -40,8 +40,8 @@ static void check_cage_and_bird() {
     if(misifu.x == windows[0].x && windows[0].has_item == 'B') {
         windows[0].has_item = 'Z';
         misifu.state = FALLING;
-        sp1_PrintAt(17, 26, INK_GREEN | PAPER_RED, ' ');
-        sp1_PrintAt(17, 27, INK_GREEN | PAPER_RED, ' ');
+        sp1_PrintAtInv(17, 26, INK_GREEN | PAPER_RED, ' ');
+        sp1_PrintAtInv(17, 27, INK_GREEN | PAPER_RED, ' ');
         sp1_PrintAt(FLOOR_Y, 26, INK_GREEN | PAPER_RED, 'A');
         sp1_PrintAt(FLOOR_Y, 27, INK_GREEN | PAPER_RED, 'B');
     }

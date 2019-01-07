@@ -12,9 +12,9 @@ const uint8_t udg_spiderbook[] = {0xff, 0x0, 0xfe, 0x86, 0xfe, 0xfc, 0x0, 0xff};
 
 static void paint_plant(uint8_t row, uint8_t col, uint8_t clean) {
     if(clean == CLEAN) {
-        sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row, col, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row, col + 1, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row + 1, col, INK_BLACK | PAPER_MAGENTA, ' ');
     } else {
         sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, 'W');
         sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, 'W');
