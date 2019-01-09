@@ -153,8 +153,8 @@ void level5_loop() {
 
     // bincat_appears, bincat_in_bin
     sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
-    detect_cat_in_window(12);
-
-    detect_spider_bite();
     detect_vase_falling();
+
+    detect_cat_in_window(12);
+    detect_spider_bite();
 }

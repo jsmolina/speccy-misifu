@@ -753,5 +753,22 @@ void check_chair_and_table() {
     detect_fall_in_chair(21);
 }
 
+void move_right_and_left() {
+    for(idx = 0; idx != opened_window_frames; ++idx) {
+        // move to the right until reached limits
+        if( windows[idx].has_item == RIGHT) {
+            ++windows[idx].x;
+        } else if( windows[idx].has_item == LEFT) {
+            --windows[idx].x;
+        }
+
+        if(windows[idx].x >= 30) {
+            windows[idx].has_item = LEFT;
+        } else if(windows[idx].x < 1) {
+            windows[idx].has_item = RIGHT;
+        }
+
+    }
+}
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

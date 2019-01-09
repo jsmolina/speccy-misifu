@@ -22,8 +22,8 @@ void  print_background_level4() {
 
 
   sp1_TileEntry('W', udg_watertop);
-  sp1_TileEntry('F', udg_fish);
-  sp1_TileEntry('G', udg_fishL);
+  sp1_TileEntry('A', udg_fish);
+  sp1_TileEntry('B', udg_fishL);
   sp1_TileEntry('E', udg_eel);
 
   // paint watertop (once)
@@ -39,7 +39,7 @@ void  print_background_level4() {
         windows[idx].has_item = RIGHT;
 
          // row, col
-        sp1_PrintAt( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'F');
+        sp1_PrintAt( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'A');
         idx_j += 2; // fishes are 3, 5, 7, 9, 11, 13, 15, 17
   }
 
@@ -58,9 +58,10 @@ void  print_background_level4() {
   // loose breathe
   misifu.draw_additional = 30;
 
-  misifu.x = 5;
   misifu.y = 5;
   anim_frames = 3;
+
+  opened_window_frames = 8;
 
   // sprite changed
   sp1_DeleteSpr_fastcall(misifu.sp);
@@ -114,9 +115,9 @@ static void print_fishes(uint8_t clean) {
             // used for simulating the animation with udg
             sp1_PrintAtInv( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, ' ');
         } else if ( windows[idx].has_item == RIGHT) {
-            sp1_PrintAtInv(  windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'F');
+            sp1_PrintAtInv(  windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'A');
         } else if ( windows[idx].has_item == LEFT) {
-            sp1_PrintAtInv(  windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'G');
+            sp1_PrintAtInv(  windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'B');
         }
     }
 }
@@ -124,25 +125,7 @@ static void print_fishes(uint8_t clean) {
 inline void fishes_on_move() {
     if(frame == 1) { // 1/4 of times
         print_fishes(1);
-        // modify udgxs, udgxys todo direction
-
-        for(idx = 0; idx != 8; ++idx) {
-            // move to the right until reached limits
-            if( windows[idx].has_item == RIGHT) {
-                ++windows[idx].x;
-            } else if( windows[idx].has_item == LEFT) {
-                --windows[idx].x;
-            }
-
-            if(windows[idx].x >= 30) {
-                windows[idx].has_item = LEFT;
-            } else if(windows[idx].x < 1) {
-                windows[idx].has_item = RIGHT;
-            }
-
-
-            // todo maybe move a bit up and down
-        }
+        move_right_and_left();
         print_fishes(0);
     }
 
@@ -173,7 +156,7 @@ void detect_fish_collission() {
         sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_CYAN, ' ');
         windows[idx].x = 1;
         windows[idx].y = 23;
-        sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'F');
+        sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'A');
         points += 5;
         bit_beepfx_di_fastcall(BEEPFX_SCORE);
         --eaten_items;

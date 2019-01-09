@@ -74,6 +74,8 @@
 #define LEFT 3
 #define RIGHT 4
 
+#define BIRD 244
+
 #define DOG1 1
 #define DOG2 49
 #define DOGFIGHTING1 97
@@ -226,5 +228,7 @@ extern struct sp1_ss * add_sprite_swim();
 extern struct sp1_ss * add_sprite_protar1();
 
 extern void check_chair_and_table();
+
+extern void move_right_and_left();
 
 #endif
