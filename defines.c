@@ -235,7 +235,7 @@ static struct sp1_ss * add_sprite_dogr1() {
 
 static struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_OR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_bincat1, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_OR1LB, SP1_TYPE_1BYTE, 2, (int)sprite_bincat1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_OR1RB,  SP1_TYPE_1BYTE, 0, 0);
@@ -753,22 +753,5 @@ void check_chair_and_table() {
     detect_fall_in_chair(21);
 }
 
-void move_right_and_left() {
-    for(idx = 0; idx != opened_window_frames; ++idx) {
-        // move to the right until reached limits
-        if( windows[idx].has_item == RIGHT) {
-            ++windows[idx].x;
-        } else if( windows[idx].has_item == LEFT) {
-            --windows[idx].x;
-        }
-
-        if(windows[idx].x >= 30) {
-            windows[idx].has_item = LEFT;
-        } else if(windows[idx].x < 1) {
-            windows[idx].has_item = RIGHT;
-        }
-
-    }
-}
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

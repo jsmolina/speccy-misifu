@@ -29,8 +29,8 @@ void  print_background_level6() {
   reset_misifu_position();
   // cage is in 25 position
   windows[0].x = 25;
+  windows[0].y = 0;
   windows[0].has_item = BIRD; // bird is inside cage
-  opened_window_frames = 1;
 }
 
 static void check_cage_and_bird() {
@@ -46,8 +46,16 @@ static void check_cage_and_bird() {
     }
 
     if(windows[0].has_item != BIRD) {
-        move_right_and_left();
-        // todo move sprite bincat with a bird also
+        ++windows[0].x;
+        if(windows[0].x > 28) {
+            ++windows[0].y;
+            windows[0].x = 0;
+        }
+
+        if(windows[0].y > 17) {
+            windows[0].y = 0;
+        }
+        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)BIRD, windows[0].y, windows[0].x, 0, 0);
     }
 }
 

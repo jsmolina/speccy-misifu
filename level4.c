@@ -61,8 +61,6 @@ void  print_background_level4() {
   misifu.y = 5;
   anim_frames = 3;
 
-  opened_window_frames = 8;
-
   // sprite changed
   sp1_DeleteSpr_fastcall(misifu.sp);
   misifu.sp = add_sprite_swim();
@@ -125,7 +123,21 @@ static void print_fishes(uint8_t clean) {
 inline void fishes_on_move() {
     if(frame == 1) { // 1/4 of times
         print_fishes(1);
-        move_right_and_left();
+        for(idx = 0; idx != 8; ++idx) {
+            // move to the right until reached limits
+            if( windows[idx].has_item == RIGHT) {
+                ++windows[idx].x;
+            } else if( windows[idx].has_item == LEFT) {
+                --windows[idx].x;
+            }
+
+            if(windows[idx].x >= 30) {
+                windows[idx].has_item = LEFT;
+            } else if(windows[idx].x < 1) {
+                windows[idx].has_item = RIGHT;
+            }
+
+        }
         print_fishes(0);
     }
 
