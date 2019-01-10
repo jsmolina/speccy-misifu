@@ -504,6 +504,10 @@ uint8_t dog_checks() {
         if (anim_frames == 0) {
             loose_a_live();
             reset_misifu_position();
+            if(level != 1) {
+                get_out_of_level_generic(FIGHTING);
+                return;
+            }
             enemy_apears = NONE;
             x_malo = 33;
             idx = 1;
@@ -546,7 +550,7 @@ void check_fsm() {
         if(misifu.y > 2) {
             misifu.y = misifu.y - 2;
         }
-        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1) {
+        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1 && misifu.x < (level_x_max - 2)) {
             misifu.x = misifu.x - 2;
         } else {
             misifu.x = misifu.x + 2;
@@ -681,10 +685,10 @@ static void check_broom_collision() {
         misifu.state = JUMPING_PUSHED;
         misifu.initial_jump_y = misifu.y;
         // will jump right or left depending on where is hit
-        if(misifu.x < aux_object.x) {
-            misifu.draw_additional = JUMP_LEFT;
-        } else {
+        if(misifu.x > aux_object.x) {
             misifu.draw_additional = JUMP_RIGHT;
+        } else {
+            misifu.draw_additional = JUMP_LEFT;
         }
     }
 }
@@ -693,15 +697,15 @@ static void check_broom_collision() {
 void move_broom() {
  // BROOM MOVE
     if((random_value & 1) == 0) {
-        if(random_value > 0 && random_value < 50) {
+        if(random_value < 50) {
             ++aux_object.y;
-        } else if (random_value > 50 && random_value < 100 && aux_object.y > 0) {
+        } else if (random_value < 100 && aux_object.y > 0) {
             --aux_object.y;
-        } else if(random_value > 100 && random_value < 150) {
+        } else if(random_value < 150) {
             ++aux_object.x;
-        } else if(random_value > 150 && random_value < 200) {
+        } else if(random_value < 200) {
             --aux_object.x;
-        } else {
+        } else if(misifu.state != JUMPING_PUSHED) {
             if(misifu.x < aux_object.x) {
                 --aux_object.x;
             } else if(misifu.x > aux_object.x) {

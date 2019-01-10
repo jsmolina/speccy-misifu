@@ -54,13 +54,12 @@ inline static void check_chair_and_fishtank_level3() {
             misifu.offset = BORED;
             misifu.in_bin = 2;
         }
-    }
 
-
-    if(misifu.y == 16 && misifu.x == 21) {
-        // get inside fishtank and outside of this level
-        level = 4;
-        print_background_level4();
+        if(misifu.y == 16 && misifu.x == 21) {
+            // get inside fishtank and outside of this level
+            level = 4;
+            print_background_level4();
+        }
     }
 
     if(misifu.in_bin != NONE && misifu.x != 9  && misifu.x != 21 && misifu.x != 22) {

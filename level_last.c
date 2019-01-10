@@ -68,7 +68,7 @@ static void get_out_of_level_last(uint8_t fall) {
             }
             y = 20;
         }
-        sp1_MoveSprAbs(row1clothes[0].sp, &full_screen,(void*) row1clothes[0].offset, y, x, 0, 0);
+        //sp1_MoveSprAbs(row1clothes[0].sp, &full_screen,(void*) row1clothes[0].offset, y, x, 0, 0);
         sp1_UpdateNow();
         wait();
     }
