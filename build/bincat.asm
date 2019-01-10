@@ -67,22 +67,22 @@ PUBLIC _sprite_bincat1
  defb @00000000
 
 ._sprite_bincat1_f3
+ defb @00000000
+ defb @00000000
+ defb @00000100
  defb @00000111
  defb @00000111
  defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
- defb @00000111
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
 
  defb @00000000
  defb @00000000
@@ -150,22 +150,22 @@ PUBLIC _sprite_bincat2
  defb @00000000
 
 ._sprite_bincat2_f3
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111110
- defb @11111110
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
- defb @11111111
+ defb @01100000
+ defb @11110000
+ defb @11011000
+ defb @11110000
+ defb @11110000
+ defb @11100000
+ defb @11100000
+ defb @10100000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
 
  defb @00000000
  defb @00000000
@@ -233,22 +233,22 @@ PUBLIC _sprite_bincat3
  defb @00000000
 
 ._sprite_bincat3_f3
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @01111000
- defb @01111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
- defb @11111000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
 
  defb @00000000
  defb @00000000

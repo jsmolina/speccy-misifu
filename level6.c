@@ -55,7 +55,7 @@ static void check_cage_and_bird() {
         if(windows[0].y > 17) {
             windows[0].y = 0;
         }
-        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)BIRD, windows[0].y, windows[0].x, 0, 0);
+        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)BIRD_OFFSET, windows[0].y, windows[0].x, 0, 0);
     }
 }
 

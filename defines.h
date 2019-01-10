@@ -44,7 +44,7 @@
 #define BORED 449
 #define JUMPINGC2 513
 #define SPIDER 25 // 16 + 8 + 1
-#define BIRD 49
+#define BIRD_OFFSET 49
 
 #define AUX_ZAP 33  // 24 + 8 + 1
 #define AUX_ARROWRIGHT 65
