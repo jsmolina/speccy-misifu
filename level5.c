@@ -12,9 +12,9 @@ const uint8_t udg_spiderbook[] = {0xff, 0x0, 0xfe, 0x86, 0xfe, 0xfc, 0x0, 0xff};
 
 static void paint_plant(uint8_t row, uint8_t col, uint8_t clean) {
     if(clean == CLEAN) {
-        sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row, col, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row, col + 1, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row + 1, col, INK_BLACK | PAPER_MAGENTA, ' ');
     } else {
         sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, 'W');
         sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, 'W');
@@ -27,7 +27,6 @@ void  print_background_level5() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_CYAN | PAPER_MAGENTA,
                   ' ' );
-  zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
 
   define_silla_udgs();
@@ -68,10 +67,6 @@ void  print_background_level5() {
   paint_plant(3, 20, 0);
   paint_plant(3, 24, 0);
   paint_plant(3, 28, 0);
-
-  aux_object.y = 5;
-  aux_object.x = 5;
-  aux_object.offset = AUX_BROOM;
 
   reset_misifu_position();
   // spider starts here
@@ -150,16 +145,16 @@ void level5_loop() {
     }
 
     move_broom();
-    check_broom_collision();
     // SPIDER, row (5-12), col (17-28)
     anim_spider();
+    dog_checks();
 
     detect_fall_in_chair(9);
 
     // bincat_appears, bincat_in_bin
     sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
-    detect_cat_in_window(12);
-
-    detect_spider_bite();
     detect_vase_falling();
+
+    detect_cat_in_window(12);
+    detect_spider_bite();
 }

@@ -12,6 +12,7 @@
 #include "level3.h"
 #include "level4.h"
 #include "level5.h"
+#include "level6.h"
 #include "defines.h"
 
 
@@ -84,6 +85,8 @@ int main()
         detect_fishtank_fall_in_hole_or_curtain();
     } else if (level == 5) {
         level5_loop();
+    } else if(level == 6) {
+        level6_loop();
     } else if (level == 10) {
         detect_fall_in_hearts();
     }

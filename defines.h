@@ -44,6 +44,7 @@
 #define BORED 449
 #define JUMPINGC2 513
 #define SPIDER 25 // 16 + 8 + 1
+#define BIRD_OFFSET 49
 
 #define AUX_ZAP 33  // 24 + 8 + 1
 #define AUX_ARROWRIGHT 65
@@ -73,6 +74,8 @@
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
+
+#define BIRD 244
 
 #define DOG1 1
 #define DOG2 49
@@ -200,7 +203,7 @@ extern void reset_misifu_position();
 
 extern void check_keys();
 
-extern void dog_checks();
+extern uint8_t dog_checks();
 
 extern void check_swim();
 
@@ -221,10 +224,12 @@ extern void detect_cat_in_window(uint8_t offset);
 
 extern void move_broom();
 
-extern void check_broom_collision();
-
 extern struct sp1_ss * add_sprite_swim();
 
 extern struct sp1_ss * add_sprite_protar1();
+
+extern void check_chair_and_table();
+
+extern void move_right_and_left();
 
 #endif

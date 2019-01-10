@@ -20,8 +20,5 @@ extern void detect_fall_in_hole_or_curtain();
 
 extern void level2_loop();
 
-extern void check_broom_collision();
-
-extern void check_chair_and_table();
 
 #endif

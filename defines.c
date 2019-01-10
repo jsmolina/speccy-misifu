@@ -11,6 +11,7 @@
 #include "level3.h"
 #include "level4.h"
 #include "level5.h"
+#include "level6.h"
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
@@ -326,6 +327,9 @@ void reset_misifu_position() {
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
   misifu.state = NONE;
+  zx_border(INK_BLACK);
+  sp1_UpdateNow();
+  aux_object.offset = AUX_BROOM;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
@@ -407,20 +411,17 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        level = 10;
         print_background_level_last();
     } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        level = 1;
         print_background_lvl1();
     } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
-        level = 2;
         print_background_level2();
     } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
-        level = 3;
         print_background_level3();
     }  else if (in_key_pressed(IN_KEY_SCANCODE_5)) {
-        level = 5;
         print_background_level5();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_6)) {
+        print_background_level6();
     }
 }
 
@@ -462,7 +463,7 @@ void check_swim() {
     }
 }
 
-void dog_checks() {
+uint8_t dog_checks() {
 // time for doggy checks
     if (misifu.state != FIGHTING && enemy_apears == YES) {
 
@@ -491,7 +492,7 @@ void dog_checks() {
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
     }
-
+    idx = 0;
     if (misifu.state == FIGHTING) {
         if (frame < 2) {
             dog_offset = DOGFIGHTING1;
@@ -503,9 +504,13 @@ void dog_checks() {
         if (anim_frames == 0) {
             loose_a_live();
             reset_misifu_position();
+            if(level != 1) {
+                get_out_of_level_generic(FIGHTING);
+                return;
+            }
             enemy_apears = NONE;
             x_malo = 33;
-            // todo remove one live
+            idx = 1;
         }
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
     }
@@ -513,7 +518,7 @@ void dog_checks() {
     if (enemy_apears != YES && first_keypress != NONE) {
         enemy_apears = random_value % 100;
     }
-
+    return idx;
 }
 
 static void stop_jump_if_needed(uint8_t max_jump) {
@@ -545,7 +550,7 @@ void check_fsm() {
         if(misifu.y > 2) {
             misifu.y = misifu.y - 2;
         }
-        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1) {
+        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1 && misifu.x < (level_x_max - 2)) {
             misifu.x = misifu.x - 2;
         } else {
             misifu.x = misifu.x + 2;
@@ -674,18 +679,33 @@ void detect_cat_in_window(uint8_t offset) {
     }
 }
 
+static void check_broom_collision() {
+
+    if (misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+        misifu.state = JUMPING_PUSHED;
+        misifu.initial_jump_y = misifu.y;
+        // will jump right or left depending on where is hit
+        if(misifu.x > aux_object.x) {
+            misifu.draw_additional = JUMP_RIGHT;
+        } else {
+            misifu.draw_additional = JUMP_LEFT;
+        }
+    }
+}
+
+
 void move_broom() {
  // BROOM MOVE
     if((random_value & 1) == 0) {
-        if(random_value > 0 && random_value < 50) {
+        if(random_value < 50) {
             ++aux_object.y;
-        } else if (random_value > 50 && random_value < 100 && aux_object.y > 0) {
+        } else if (random_value < 100 && aux_object.y > 0) {
             --aux_object.y;
-        } else if(random_value > 100 && random_value < 150) {
+        } else if(random_value < 150) {
             ++aux_object.x;
-        } else if(random_value > 150 && random_value < 200) {
+        } else if(random_value < 200) {
             --aux_object.x;
-        } else {
+        } else if(misifu.state != JUMPING_PUSHED) {
             if(misifu.x < aux_object.x) {
                 --aux_object.x;
             } else if(misifu.x > aux_object.x) {
@@ -713,20 +733,28 @@ void move_broom() {
 
         sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
     }
+
+    check_broom_collision();
 }
 
-void check_broom_collision() {
 
-    if (misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-        misifu.state = JUMPING_PUSHED;
-        misifu.initial_jump_y = misifu.y;
-        // will jump right or left depending on where is hit
-        if(misifu.x < aux_object.x) {
-            misifu.draw_additional = JUMP_LEFT;
-        } else {
-            misifu.draw_additional = JUMP_RIGHT;
+
+void check_chair_and_table() {
+
+    if(misifu.state == FALLING) {
+        if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
+            misifu.state = CAT_ON_HIGH;
+            misifu.offset = BORED;
+            misifu.in_bin = 2;
         }
     }
+
+    if(misifu.in_bin == 2 && misifu.x != 25 && misifu.x != 26) {
+        misifu.state = FALLING;
+        misifu.in_bin = NONE;
+    }
+
+    detect_fall_in_chair(21);
 }
 
 
