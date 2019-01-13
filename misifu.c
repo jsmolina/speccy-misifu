@@ -42,7 +42,7 @@ int main()
 
   while(1)
   {
-    if(misifu.state != SWIMMING) {
+    if(misifu.state != SWIMMING && level != 7) {
         check_keys();
     } else if(level == 7) {
         check_level7_keys();
