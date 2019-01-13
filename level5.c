@@ -135,6 +135,9 @@ static inline void detect_vase_falling() {
 }
 
 void level5_loop() {
+    // bincat_appears, bincat_in_bin
+    sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
+
     // misifu.state = CAT_IN_ROPE;
     if(misifu.state == FALLING) {
         // 5 to 19, impair
@@ -151,8 +154,6 @@ void level5_loop() {
 
     detect_fall_in_chair(9);
 
-    // bincat_appears, bincat_in_bin
-    sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
     detect_vase_falling();
 
     detect_cat_in_window(12);

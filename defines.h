@@ -104,7 +104,7 @@ extern uint8_t level_x_min;
 // shared vars
 extern uint8_t x, y;
 
-
+extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
 extern char left;
@@ -202,8 +202,9 @@ extern void reset_misifu_position();
 // extern void page(uint8_t bank);
 
 extern void check_keys();
+extern void check_level7_keys();
 
-extern uint8_t dog_checks();
+extern void dog_checks();
 
 extern void check_swim();
 

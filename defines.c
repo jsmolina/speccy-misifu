@@ -12,6 +12,7 @@
 #include "level4.h"
 #include "level5.h"
 #include "level6.h"
+#include "level7.h"
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
@@ -70,6 +71,7 @@ uint8_t x, y;
 
 
 // game required vars
+uint8_t paws = 0;
 uint8_t eaten_items;
 uint8_t frame;
 uint8_t x_malo;
@@ -382,6 +384,19 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
 }
 
+void check_level7_keys() {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 17) {
+        --misifu.y;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
+        ++misifu.x;
+        misifu.state = WALKING_RIGHT;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
+        --misifu.x;
+        misifu.state = WALKING_LEFT;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 22) {
+        ++misifu.y;
+    }
+}
 
 void check_keys()
 {
@@ -422,6 +437,12 @@ void check_keys()
         print_background_level5();
     } else if (in_key_pressed(IN_KEY_SCANCODE_6)) {
         print_background_level6();
+    } else if (in_key_pressed(IN_KEY_SCANCODE_7)) {
+        print_background_level7();
+    }
+
+    if (in_key_pressed(IN_KEY_SCANCODE_f)) {
+        paws = ~paws;
     }
 }
 
@@ -463,7 +484,7 @@ void check_swim() {
     }
 }
 
-uint8_t dog_checks() {
+void dog_checks() {
 // time for doggy checks
     if (misifu.state != FIGHTING && enemy_apears == YES) {
 
@@ -518,7 +539,7 @@ uint8_t dog_checks() {
     if (enemy_apears != YES && first_keypress != NONE) {
         enemy_apears = random_value % 100;
     }
-    return idx;
+    return;
 }
 
 static void stop_jump_if_needed(uint8_t max_jump) {

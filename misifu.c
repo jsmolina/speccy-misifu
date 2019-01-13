@@ -13,6 +13,7 @@
 #include "level4.h"
 #include "level5.h"
 #include "level6.h"
+#include "level7.h"
 #include "defines.h"
 
 
@@ -37,14 +38,14 @@ int main()
 
 
   // bit_beep
-
-
   all_lives_lost();
 
   while(1)
   {
     if(misifu.state != SWIMMING) {
         check_keys();
+    } else if(level == 7) {
+        check_level7_keys();
     } else {
         check_swim();
     }

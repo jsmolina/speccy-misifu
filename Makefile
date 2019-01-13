@@ -147,3 +147,9 @@ spider:
 bird:
 	@png2udg ./background/udg_birdcage1.png
 	@png2udg ./background/udg_birdcage2.png
+
+dog:
+	@png2udg ./background/udg_dog1.png
+	@png2udg ./background/udg_dog1m.png
+	@png2udg ./background/udg_dog2.png
+	@png2udg ./background/udg_dogmilk.png
