@@ -8,6 +8,7 @@
 #define UNDEF 250
 #define NONE 0
 #define WON_LEVEL 10
+#define DOG_AWAKEN 30
 #define YES 1
 #define CLEAN 1
 #define BIN_Y1 15
@@ -102,7 +103,7 @@ extern uint8_t level_x_max;
 extern uint8_t level_x_min;
 
 // shared vars
-extern uint8_t x, y;
+extern uint8_t x;
 
 extern uint8_t paws;
 // game required vars

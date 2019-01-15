@@ -55,22 +55,6 @@ uint8_t is_in_bin(uint8_t x_pos) {
     return NONE;
 }
 
-static uint8_t has_a_bin(uint8_t x_pos) {
-    if (x_pos == 1 || x_pos == 2 || x_pos == 3) {
-        return 1;
-    } else if(x_pos == 5 || x_pos == 6 || x_pos == 7) {
-        return 5;
-    } else if(x_pos == 9 || x_pos == 10 || x_pos == 11) {
-        return 9;
-    } else if(x_pos == 20 || x_pos == 21 || x_pos == 22) {
-        return 20;
-    } else if(x_pos == 24 || x_pos == 25 || x_pos == 26) {
-        return 24;
-    }
-
-    return NONE;
-}
-
 // todo add udg for numbers (score, lives)
 
 void  print_cubo(uint8_t x) {
@@ -170,7 +154,7 @@ void  print_background_lvl1() {
 
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
-      frame = has_a_bin(x);
+      frame = is_in_bin(x - 1);
       if (frame == NONE) {
           if (x % 2 == 0) {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'W');
@@ -180,9 +164,9 @@ void  print_background_lvl1() {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'X');
           }
 
-          for (y=16; y!=21; ++y)
+          for (idx_j=16; idx_j!=21; ++idx_j)
           {
-              sp1_PrintAt( y, x,  PAPER_CYAN, 'V');
+              sp1_PrintAt( idx_j, x,  PAPER_CYAN, 'V');
           }
       } else if(frame == x) {
           print_cubo(x);

@@ -57,16 +57,16 @@ static void get_out_of_level_last(uint8_t fall) {
 
     sp1_Invalidate(&full_screen);
     x = 14;
-    y = 0;
+    idx_j = 0;
 
     for (idx = 0; idx != 40; ++idx) {
-        ++y;
+        ++idx_j;
 
-        if(y > 20) {
+        if(idx_j > 20) {
             if (fall == FALLING) {
                 row1clothes[0].offset = OUCHOFFSET;
             }
-            y = 20;
+            idx_j = 20;
         }
         //sp1_MoveSprAbs(row1clothes[0].sp, &full_screen,(void*) row1clothes[0].offset, y, x, 0, 0);
         sp1_UpdateNow();

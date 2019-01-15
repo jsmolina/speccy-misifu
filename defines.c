@@ -387,14 +387,17 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 void check_level7_keys() {
     if (in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 17) {
         --misifu.y;
+        misifu.state = misifu.draw_additional;
     } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
         ++misifu.x;
-        misifu.state = WALKING_RIGHT;
+        misifu.state = misifu.draw_additional = WALKING_RIGHT;
     } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
         --misifu.x;
-        misifu.state = WALKING_LEFT;
+        misifu.state = misifu.draw_additional = WALKING_LEFT;
     } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 22) {
         ++misifu.y;
+        misifu.state = misifu.draw_additional;
+
     }
 }
 
@@ -551,7 +554,7 @@ static void stop_jump_if_needed(uint8_t max_jump) {
 
 void check_fsm() {
 // decide new FSM draw status
-    if (misifu.state == NONE && frame == 3) {
+    if (misifu.state == NONE && frame == 3 && level != 7) {
         misifu.offset = BORED;
     } else if (misifu.state == WALKING_RIGHT) {
         if (frame < 2) {
