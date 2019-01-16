@@ -68,43 +68,9 @@ void  print_background_level4() {
 
 static void get_out_of_level4(uint8_t fall) {
 
-    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_BLACK,
-                  ' ' );
-
     sp1_DeleteSpr_fastcall(misifu.sp);
     misifu.sp = add_sprite_protar1();
-
-    if(fall == FALLING) {
-        loose_a_live();
-        repaint_lives = 1;
-
-        for (idx = 0; idx != 5; ++idx) {
-            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
-
-            if((idx & 1) == 0) {
-                zx_border(INK_BLUE);
-            } else {
-                zx_border(INK_WHITE);
-            }
-            wait();
-        }
-    } else if(fall == OXYGEN) {
-        loose_a_live();
-    } else {
-        last_success_level = level;
-    }
-
-    if(fall == FALLING) {
-        bit_beepfx_di_fastcall(BEEPFX_AWW);
-    } if(fall == OXYGEN) {
-        bit_beepfx_di_fastcall(BEEPFX_GULP);
-    } else {
-        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
-    }
-
-
-    print_background_lvl1();
+    get_out_of_level_generic(fall);
 }
 
 static void print_fishes(uint8_t clean) {
@@ -174,7 +140,7 @@ void detect_fish_collission() {
         --eaten_items;
 
         if(eaten_items == 0) {
-            get_out_of_level4(NONE);
+            get_out_of_level4(WON_LEVEL);
         }
     } else {
         if(is_misifu_in_eel(3, 3)
@@ -184,7 +150,8 @@ void detect_fish_collission() {
         || is_misifu_in_eel(15, 5))
         {
             // loose a life and out of level
-            get_out_of_level4(FALLING);
+            get_out_of_level4(ELECTRIFIED);
+            loose_a_live();
             return;
         }
     }

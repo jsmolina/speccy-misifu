@@ -30,8 +30,6 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
-struct row_clothes row1clothes[2];
-struct row_clothes row2clothes[2];
 unsigned char udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 
@@ -50,11 +48,6 @@ extern uint8_t sprite_bincat2[];
 extern uint8_t sprite_bincat3[];
 
 
-extern uint8_t sprite_clothes21[];
-extern uint8_t sprite_clothes22[];
-extern uint8_t sprite_clothes23[];
-extern uint8_t sprite_clothes24[];
-extern uint8_t sprite_clothes25[];
 
 extern uint8_t auxiliar1[];
 extern uint8_t auxiliar2[];
@@ -248,21 +241,6 @@ static struct sp1_ss * add_sprite_bincat() {
 }
 
 
-static struct sp1_ss * add_sprite_clothes2() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_clothes21, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes22, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes23, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes24, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes25, 2);
-
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
-
-  sp1_IterateSprChar(sp, initialiseClothesColour);
-
-  return sp;
-}
-
 static struct sp1_ss * add_sprite_auxiliar() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)auxiliar1, 0);
@@ -287,20 +265,6 @@ void add_sprites_for_all_levels() {
   aux_object.x = 0;
   aux_object.y = 0;
   aux_object.offset = RIGHTC1;
-
-
-  // row 1 clothes
-  row1clothes[0].col = 1;
-  row1clothes[0].sp = add_sprite_clothes2();
-  row1clothes[1].col = 18;
-  row1clothes[1].sp = add_sprite_clothes2();
-
-  // row 2 clothes
-  row2clothes[0].col = 1;
-  row2clothes[0].sp = add_sprite_clothes2();
-  row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes2();
-
 }
 
 void loose_a_live() {
@@ -675,17 +639,29 @@ void get_out_of_level_generic(uint8_t fall) {
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
 
-    if(fall != WON_LEVEL) {
-        bit_beepfx_di_fastcall(BEEPFX_GULP);
-    } else {
-        // keep progress of levels
+    if(fall == WON_LEVEL) {
         last_success_level = level;
         points = points + 10;
+        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
+    } else {
+        loose_a_live();
+    }
+
+    if (fall == ELECTRIFIED) {
+        for (idx = 0; idx != 5; ++idx) {
+            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+            zx_border(INK_WHITE);
+            wait();
+            zx_border(INK_BLUE);
+        }
+    } else {
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
     }
 
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);
     level = 1;
+    x_malo = 33;
     sp1_UpdateNow();
     print_background_lvl1();
 }

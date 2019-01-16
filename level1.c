@@ -38,6 +38,13 @@ const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
 const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 
+const uint8_t udg_clothes11[] = {0x0, 0x30, 0xf0, 0xf8, 0xfc, 0xcf, 0xcd, 0xd};
+const uint8_t udg_clothes12[] = {0x0, 0xc, 0x3e, 0x3f, 0xff, 0xf3, 0xf3, 0xf0};
+const uint8_t udg_clothes21[] = {0xf, 0xf, 0xd, 0xd, 0xf, 0xe, 0x38, 0x0};
+const uint8_t udg_clothes22[] = {0xf0, 0xf0, 0xf0, 0xf8, 0xbc, 0x3c, 0xc, 0x0};
+const uint8_t udg_boot[] = {0x1f, 0x1f, 0x1f, 0x1f, 0x3f, 0x3f, 0xff, 0xf0};
+const uint8_t udg_boot2[] = {0xf8, 0xf8, 0xf8, 0xf8, 0xfc, 0xfc, 0xff, 0xf};
+
 
 uint8_t is_in_bin(uint8_t x_pos) {
     if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
@@ -151,6 +158,12 @@ void  print_background_lvl1() {
   sp1_TileEntry('M', udg_win1); // bottom with rope
   sp1_TileEntry('N', udg_win2); // full square
 
+  sp1_TileEntry('O', udg_clothes11);
+  sp1_TileEntry('P', udg_clothes12);
+  sp1_TileEntry('Q', udg_clothes21);
+  sp1_TileEntry('S', udg_clothes22);
+  sp1_TileEntry('U', udg_boot);
+  sp1_TileEntry('Z', udg_boot2);
 
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
@@ -208,14 +221,61 @@ void  print_background_lvl1() {
    level_x_max = 28;
    level_x_min = 0;
 
+   // floor holes initialize, save memory ftw
+   floor_holes[0][0] = 1;  // row1clothes
+   floor_holes[0][1] = 18; // row1clothes
+   floor_holes[1][0] = 1;  // row2clothes
+   floor_holes[1][1] = 18; // row2clothes
+
    sp1_UpdateNow();
 }
 
-void leave_level() {
+/**
+  sp1_TileEntry('O', udg_clothes11);
+  sp1_TileEntry('P', udg_clothes12);
+  sp1_TileEntry('Q', udg_clothes21);
+  sp1_TileEntry('S', udg_clothes22);
+  sp1_TileEntry('U', udg_boot);
+  sp1_TileEntry('Z', udg_boot2);
+  row1 == 10, row2 == 6
+**/
+static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
+    if(clean == 1) {
+        sp1_PrintAtInv(row, col, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row, col + 1, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row + 1, col, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row + 1, col + 1, PAPER_MAGENTA, ' ');
 
+        sp1_PrintAtInv(row, col + 3, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row, col + 4, PAPER_MAGENTA, ' ');
+    } else {
+        sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, 'O');
+        sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, 'P');
+        sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, 'Q');
+        sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, 'S');
+
+        sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, 'U');
+        sp1_PrintAtInv(row, col + 4, INK_WHITE | PAPER_MAGENTA, 'Z');
+    }
 }
 
+static void increase_indexes_clothes(uint8_t idx) {
+    repaint_clothes(10, floor_holes[0][idx], 1);
+    repaint_clothes(6, floor_holes[1][idx], 1);
+    // row1
+    --floor_holes[1][idx];
+    // row2
+    ++floor_holes[0][idx];
+    if(floor_holes[0][idx] > 26) {
+        floor_holes[0][idx] = 0;
+    }
 
+    if (floor_holes[1][idx] < 2) {
+        floor_holes[1][idx] = 28;
+    }
+    repaint_clothes(10, floor_holes[0][idx], 0);
+    repaint_clothes(6, floor_holes[1][idx], 0);
+}
 
 void move_clothes() {
 // now take decisions
@@ -226,19 +286,8 @@ void move_clothes() {
         //--row1_moving in int.c
         if ((row1_moving & 1) == 0) {
             // check if clothes should move
-            for (idx = 0; idx != 2; ++idx) {
-                --row2clothes[idx].col;
-                ++row1clothes[idx].col;
-                if(row1clothes[idx].col > 26) {
-                    row1clothes[idx].col = 0;
-                }
-
-                if (row2clothes[idx].col < 2) {
-                    row2clothes[idx].col = 28;
-                }
-                sp1_MoveSprAbs(row1clothes[idx].sp, &full_screen, (void*)1, 10, row1clothes[idx].col, 0, 0);
-                sp1_MoveSprAbs(row2clothes[idx].sp, &full_screen, (void*)1, 6, row2clothes[idx].col, 0, 0);
-            }
+            increase_indexes_clothes(0);
+            increase_indexes_clothes(1);
             // now move cat
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
                  ++misifu.x;

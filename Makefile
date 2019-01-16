@@ -36,8 +36,12 @@ bincat:
 	png2sp1sprite ./sprites/bincat_sprites.png --bit -i sprite_bincat -f 24 > ./build/bincat.asm
 
 clothes:
-	png2sp1sprite ./sprites/clothes_sprites.png --bit -i sprite_clothes  -f 64 > ./build/clothes.asm
-	png2sp1sprite ./sprites/clothes_sprites2.png --bit -i sprite_clothes2 -f 40 > ./build/clothes2.asm
+	@png2udg ./background/udg_clothes11.png
+	@png2udg ./background/udg_clothes12.png
+	@png2udg ./background/udg_clothes21.png
+	@png2udg ./background/udg_clothes22.png
+	@png2udg ./background/udg_boot.png
+	@png2udg ./background/udg_boot2.png
 
 auxiliar:
 	png2sp1sprite ./sprites/auxiliar.png --bit -i auxiliar -f 32 > ./build/auxiliar.asm

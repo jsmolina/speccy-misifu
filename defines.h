@@ -9,6 +9,7 @@
 #define NONE 0
 #define WON_LEVEL 10
 #define DOG_AWAKEN 30
+#define ELECTRIFIED 40
 #define YES 1
 #define CLEAN 1
 #define BIN_Y1 15
@@ -162,12 +163,6 @@ extern uint8_t vertical_direction;
 extern uint8_t horizontal_direction;
 
 extern void add_sprites_for_all_levels();
-
-struct row_clothes {
-    struct sp1_ss* sp;
-    uint8_t col;
-    uint8_t offset;
-};
 
 struct prota {
     struct sp1_ss* sp;

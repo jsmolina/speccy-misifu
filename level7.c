@@ -18,68 +18,86 @@ void print_a_dog(uint8_t row, uint8_t col) {
     sp1_PrintAt(row, col + 4, INK_BLUE | PAPER_MAGENTA, 'O');
 }
 
-void  print_background_level7() {
- sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  PAPER_MAGENTA,
-                  ' ' );
- level = 7;
-
- sp1_Invalidate(&full_screen);
-
- sp1_TileEntry('C', udg_dog1);
- sp1_TileEntry('D', udg_dog1m);
- sp1_TileEntry('E', udg_dog2);
- sp1_TileEntry('O', udg_dogmilk);
-
- level_x_max = 26;
- level_x_min = 2;
- eaten_items = 6;
-
- print_room_walls(20, PAPER_MAGENTA, INK_CYAN);
- /*
- windows[0].y = 23; windows[0].x = 5;
- windows[1].y = 23; windows[1].x = 15;
- windows[2].y = 21; windows[2].x = 10;
- windows[3].y = 21; windows[3].x = 22;
- windows[4].y = 18; windows[4].x = 5;
- windows[5].y = 18; windows[5].x = 12;
- for (idx = 0; idx != 6; ++idx) {
-    windows[idx].has_item = 'O';
-    print_a_dog(windows[idx].y, windows[idx].x);
- }*/
-
-  reset_misifu_position();
-  misifu.draw_additional = WALKING_RIGHT;
+void assign_dogs(uint8_t index, uint8_t y, uint8_t x) {
+    windows[index].y = y;
+    windows[index].x = x;
+    windows[index].has_item = 'O';
+    print_a_dog(y, x);
 }
 
-static inline void drink_milk() {
-    /*if(windows[idx].has_item != 'Z') {
+void  print_background_level7() {
+     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                      PAPER_MAGENTA,
+                      ' ' );
+     level = 7;
+
+     sp1_Invalidate(&full_screen);
+
+     sp1_TileEntry('C', udg_dog1);
+     sp1_TileEntry('D', udg_dog1m);
+     sp1_TileEntry('E', udg_dog2);
+     sp1_TileEntry('O', udg_dogmilk);
+
+     level_x_max = 26;
+     level_x_min = 2;
+     eaten_items = 6;
+
+     print_room_walls(20, PAPER_MAGENTA, INK_CYAN);
+     assign_dogs(0, 23, 5);
+     assign_dogs(1, 23, 15);
+     assign_dogs(2, 21, 10);
+     assign_dogs(3, 21, 22);
+     assign_dogs(4, 18, 5);
+     assign_dogs(5, 18, 12);
+
+     reset_misifu_position();
+     misifu.draw_additional = WALKING_RIGHT;
+}
+
+static inline void drink_milk(uint8_t index) {
+    if(windows[index].has_item != 'Z') {
         //sp1_PrintAt(windows[idx].y, windows[idx].x + 4, INK_BLACK | PAPER_MAGENTA, 'O');
-        windows[idx].has_item = 'Z';
+        windows[index].has_item = 'Z';
         --eaten_items;
 
         if(eaten_items == 0) {
-            //get_out_of_level_generic(WON_LEVEL);
+            get_out_of_level_generic(WON_LEVEL);
         }
-    }*/
+    }
 }
 
 static inline void got_awaken() {
     get_out_of_level_generic(DOG_AWAKEN);
 }
 
+static uint8_t get_index_from_misifu_position() {
+    if(misifu.y == 22) {
+        if(misifu.x == 7) {
+            return 0;
+        } else if(misifu.x == 17) {
+            return 1;
+        }
+
+    } else if(misifu.y == 20) {
+        if(misifu.x == 12) {
+            return 2;
+        } else if(misifu.x == 24) {
+            return 3;
+        }
+    } else if(misifu.y == 17) {
+        if(misifu.x == 7) {
+            return 4;
+        } else if(misifu.x == 14) {
+            return 5;
+        }
+    }
+
+    return NONE;
+}
+
 static void check_eat_milk_or_dog() {
     // misifu.x - 1 is the real udg position
-    /*for (idx = 0; idx != 6; ++idx) {
-        if(misifu.y == (windows[idx].y - 1)) {
-            if(misifu.x == (windows[idx].x + 2)) {
-                drink_milk();
-                return;
-            } else if(misifu.x >= (windows[idx].x - 2) && misifu.x <= windows[idx].x) {
-                return;
-            }
-        }
-    }*/
+    idx = get_index_from_misifu_position();
 }
 
 

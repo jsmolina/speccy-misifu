@@ -45,14 +45,14 @@ static void get_out_of_level_last(uint8_t fall) {
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
     if(fall == FALLING) {
-        row1clothes[0].offset = MISIOFFSET;
+        //row1clothes[0].offset = MISIOFFSET;
         zx_border(INK_RED);
     } else {
         // this will mean a level ending!
         last_success_level = 0;
         points = points + 100;
         zx_border(INK_MAGENTA);
-        row1clothes[0].offset = LOVEOFFSET;
+        //row1clothes[0].offset = LOVEOFFSET;
     }
 
     sp1_Invalidate(&full_screen);
@@ -64,7 +64,7 @@ static void get_out_of_level_last(uint8_t fall) {
 
         if(idx_j > 20) {
             if (fall == FALLING) {
-                row1clothes[0].offset = OUCHOFFSET;
+                //row1clothes[0].offset = OUCHOFFSET;
             }
             idx_j = 20;
         }
