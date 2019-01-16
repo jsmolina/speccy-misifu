@@ -19,29 +19,23 @@ uint8_t thrown_from_window(uint8_t x, uint8_t y) {
    return (x>7 && x < 10 && y > 21 && y < 26);
 }
 
-// Candidate to be shared
-
-
 void define_cheese_holes_pos() {
     // init to zero
-    windows[0].y = 20; windows[0].x = 4;
-    windows[1].y = 20; windows[1].x = 18;
-    windows[2].y = 20; windows[2].x = 14;
-    windows[3].y = 19; windows[3].x = 8;
-    windows[4].y = 19; windows[4].x = 5;
-    windows[5].y = 18; windows[5].x = 9;
-    windows[6].y = 18; windows[6].x = 13;
-    windows[7].y = 16; windows[7].x = 4;
-    windows[8].y = 14; windows[8].x = 4;
-    windows[9].y = 14; windows[9].x = 9;
-    windows[10].y = 14; windows[10].x = 12;
-    windows[11].y = 12; windows[11].x = 6;
-    windows[12].y = 10; windows[12].x = 4;
-    windows[13].y = 8; windows[13].x = 4;
-
-    for(idx = 0; idx != 13; ++idx) {
-        windows[idx].has_item = NONE;
-    }
+    idx = 0;
+    assign_window_pos(20, 4);
+    assign_window_pos(20, 18);
+    assign_window_pos(20, 14);
+    assign_window_pos(19, 8);
+    assign_window_pos(19, 5);
+    assign_window_pos(18, 9);
+    assign_window_pos(18, 13);
+    assign_window_pos(16, 4);
+    assign_window_pos(14, 4);
+    assign_window_pos(14, 9);
+    assign_window_pos(14, 12);
+    assign_window_pos(12, 6);
+    assign_window_pos(10, 4);
+    assign_window_pos(8, 4);
 }
 
 

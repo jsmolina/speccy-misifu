@@ -228,5 +228,6 @@ extern struct sp1_ss * add_sprite_protar1();
 extern void check_chair_and_table();
 
 extern void move_right_and_left();
+extern void assign_window_pos(uint8_t y, uint8_t x);
 
 #endif

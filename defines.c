@@ -757,5 +757,12 @@ void check_chair_and_table() {
     detect_fall_in_chair(21);
 }
 
+void assign_window_pos(uint8_t y, uint8_t x) {
+    windows[idx].has_item = NONE;
+    windows[idx].x = x;
+    windows[idx].y = y;
+    ++idx;
+}
+
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83

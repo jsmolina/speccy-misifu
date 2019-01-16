@@ -18,10 +18,8 @@ void print_a_dog(uint8_t row, uint8_t col) {
     sp1_PrintAt(row, col + 4, INK_BLUE | PAPER_MAGENTA, 'O');
 }
 
-void assign_dogs(uint8_t index, uint8_t y, uint8_t x) {
-    windows[index].y = y;
-    windows[index].x = x;
-    windows[index].has_item = 'O';
+void assign_dogs(uint8_t y, uint8_t x) {
+    assign_window_pos(y, x);
     print_a_dog(y, x);
 }
 
@@ -43,12 +41,13 @@ void  print_background_level7() {
      eaten_items = 6;
 
      print_room_walls(20, PAPER_MAGENTA, INK_CYAN);
-     assign_dogs(0, 23, 5);
-     assign_dogs(1, 23, 15);
-     assign_dogs(2, 21, 10);
-     assign_dogs(3, 21, 22);
-     assign_dogs(4, 18, 5);
-     assign_dogs(5, 18, 12);
+     idx = 0;
+     assign_dogs(23, 5);
+     assign_dogs(23, 15);
+     assign_dogs(21, 10);
+     assign_dogs(21, 22);
+     assign_dogs(18, 5);
+     assign_dogs(18, 12);
 
      reset_misifu_position();
      misifu.draw_additional = WALKING_RIGHT;
