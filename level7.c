@@ -42,7 +42,7 @@ void  print_background_level7() {
 
      print_room_walls(20, PAPER_MAGENTA, INK_CYAN);
      idx = 0;
-     assign_dogs(23, 5);
+     assign_dogs(23, 5); //  x + 2 is the bowl position
      assign_dogs(23, 15);
      assign_dogs(21, 10);
      assign_dogs(21, 22);
@@ -53,11 +53,14 @@ void  print_background_level7() {
      misifu.draw_additional = WALKING_RIGHT;
 }
 
-static inline void drink_milk(uint8_t index) {
-    if(windows[index].has_item != 'Z') {
-        //sp1_PrintAt(windows[idx].y, windows[idx].x + 4, INK_BLACK | PAPER_MAGENTA, 'O');
+static inline void drink_milk_or_got_awaken(uint8_t index) {
+    if(misifu.x == (windows[index].x + 2)) { // todo not working
+        get_out_of_level_generic(DOG_AWAKEN);
+    } else if(windows[index].has_item != 'Z') {
+        sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
         windows[index].has_item = 'Z';
         --eaten_items;
+        bit_beepfx_di_fastcall(BEEPFX_SELECT_4);
 
         if(eaten_items == 0) {
             get_out_of_level_generic(WON_LEVEL);
@@ -65,28 +68,25 @@ static inline void drink_milk(uint8_t index) {
     }
 }
 
-static inline void got_awaken() {
-    get_out_of_level_generic(DOG_AWAKEN);
-}
 
 static uint8_t get_index_from_misifu_position() {
     if(misifu.y == 22) {
-        if(misifu.x == 7) {
+        if(misifu.x > 2 && misifu.x < 8) {
             return 0;
-        } else if(misifu.x == 17) {
+        } else if(misifu.x > 12 && misifu.x < 18) {
             return 1;
         }
 
     } else if(misifu.y == 20) {
-        if(misifu.x == 12) {
+        if(misifu.x > 7 && misifu.x < 13) {
             return 2;
-        } else if(misifu.x == 24) {
+        } else if(misifu.x > 20 && misifu.x < 25) {
             return 3;
         }
     } else if(misifu.y == 17) {
-        if(misifu.x == 7) {
+        if(misifu.x > 2 && misifu.x < 8) {
             return 4;
-        } else if(misifu.x == 14) {
+        } else if(misifu.x > 9 && misifu.x < 15) {
             return 5;
         }
     }
@@ -97,6 +97,10 @@ static uint8_t get_index_from_misifu_position() {
 static void check_eat_milk_or_dog() {
     // misifu.x - 1 is the real udg position
     idx = get_index_from_misifu_position();
+
+    if(idx != NONE) {
+        drink_milk_or_got_awaken(idx);
+    }
 }
 
 
