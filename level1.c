@@ -247,7 +247,7 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
         sp1_PrintAtInv(row + 1, col + 1, PAPER_MAGENTA, ' ');
 
         sp1_PrintAtInv(row, col + 3, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row, col + 4, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row, col + 5, PAPER_MAGENTA, ' ');
     } else {
         sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, 'O');
         sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, 'P');
@@ -255,7 +255,7 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
         sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, 'S');
 
         sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, 'U');
-        sp1_PrintAtInv(row, col + 4, INK_WHITE | PAPER_MAGENTA, 'Z');
+        sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, 'Z');
     }
 }
 

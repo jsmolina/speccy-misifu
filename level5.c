@@ -72,10 +72,11 @@ void  print_background_level5() {
   // spider starts here
   windows[0].x = 10;
   windows[0].y = 3;
-  windows[0].has_item = LEFT;
-  windows[1].has_item = NONE; windows[1].x = 20;
-  windows[2].has_item = NONE; windows[2].x = 24;
-  windows[3].has_item = NONE; windows[3].x = 28;
+  idx = 1;
+  assign_window_pos(0, 20);
+  assign_window_pos(0, 24);
+  assign_window_pos(0, 28);
+
   bincat_appears = NONE;
   eaten_items = 3;
   level = 5;

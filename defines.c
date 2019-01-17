@@ -296,6 +296,7 @@ void reset_misifu_position() {
   zx_border(INK_BLACK);
   sp1_UpdateNow();
   aux_object.offset = AUX_BROOM;
+  x_malo = 33;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
