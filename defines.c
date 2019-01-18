@@ -399,14 +399,6 @@ void check_keys()
             last_success_level = 0;
         }
     }
-
-    if (in_key_pressed(IN_KEY_SCANCODE_f)) {
-        if(paws == 0) {
-            paws = 1;
-        } else {
-            paws = 0;
-        }
-    }
 }
 
 void check_swim() {
