@@ -394,23 +394,18 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        print_background_level_last();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        print_background_lvl1();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
-        print_background_level2();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
-        print_background_level3();
-    }  else if (in_key_pressed(IN_KEY_SCANCODE_5)) {
-        print_background_level5();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_6)) {
-        print_background_level6();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_7)) {
-        print_background_level7();
+        ++last_success_level;
+        if(last_success_level > 7) {
+            last_success_level = 0;
+        }
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_f)) {
-        paws = ~paws;
+        if(paws == 0) {
+            paws = 1;
+        } else {
+            paws = 0;
+        }
     }
 }
 

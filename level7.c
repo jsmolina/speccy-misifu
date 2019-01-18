@@ -54,17 +54,18 @@ void  print_background_level7() {
 }
 
 static inline void drink_milk_or_got_awaken(uint8_t index) {
-    if(misifu.x > (windows[index].x + 2) && windows[index].has_item != 'Z') {
-        sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
-        windows[index].has_item = 'Z';
-        --eaten_items;
-        bit_beepfx_di_fastcall(BEEPFX_SELECT_4);
+    if(misifu.x > (windows[index].x + 2)) {
+        if(windows[index].has_item != 'Z') {
+            sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
+            windows[index].has_item = 'Z';
+            --eaten_items;
+            bit_beepfx_di_fastcall(BEEPFX_SELECT_4);
 
-        if(eaten_items == 0) {
-            get_out_of_level_generic(WON_LEVEL);
+            if(eaten_items == 0) {
+                get_out_of_level_generic(WON_LEVEL);
+            }
         }
-
-    } else if(windows[index].has_item != 'Z') {
+    } else {
         get_out_of_level_generic(DOG_AWAKEN);
     }
 }

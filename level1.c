@@ -13,6 +13,7 @@
 #include "level5.h"
 #include "level6.h"
 #include "level7.h"
+#include "level_last.h"
 
 
 const uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
@@ -464,6 +465,8 @@ void detect_fall_in_window() {
             print_background_level6();
         } else if(last_success_level == 6) {
             print_background_level7();
+        } else if(last_success_level == 7) {
+            print_background_level_last();
         }
         return;
     }

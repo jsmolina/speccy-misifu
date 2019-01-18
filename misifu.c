@@ -106,5 +106,9 @@ int main()
 
     wait();
     sp1_UpdateNow();
+
+    while(paws) {
+
+    }
   }
 }
