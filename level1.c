@@ -11,6 +11,10 @@
 #include "level3.h"
 #include "level4.h"
 #include "level5.h"
+#include "level6.h"
+#include "level7.h"
+#include "level_last.h"
+
 
 const uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
 const uint8_t udg_valla2[] = {0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81};
@@ -35,6 +39,13 @@ const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
 const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
 const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
 
+const uint8_t udg_clothes11[] = {0x0, 0x30, 0xf0, 0xf8, 0xfc, 0xcf, 0xcd, 0xd};
+const uint8_t udg_clothes12[] = {0x0, 0xc, 0x3e, 0x3f, 0xff, 0xf3, 0xf3, 0xf0};
+const uint8_t udg_clothes21[] = {0xf, 0xf, 0xd, 0xd, 0xf, 0xe, 0x38, 0x0};
+const uint8_t udg_clothes22[] = {0xf0, 0xf0, 0xf0, 0xf8, 0xbc, 0x3c, 0xc, 0x0};
+const uint8_t udg_boot[] = {0x1f, 0x1f, 0x1f, 0x1f, 0x3f, 0x3f, 0xff, 0xf0};
+const uint8_t udg_boot2[] = {0xf8, 0xf8, 0xf8, 0xf8, 0xfc, 0xfc, 0xff, 0xf};
+
 
 uint8_t is_in_bin(uint8_t x_pos) {
     if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
@@ -46,22 +57,6 @@ uint8_t is_in_bin(uint8_t x_pos) {
     } else if(x_pos == 19 || x_pos == 20 || x_pos == 21) {
         return 20;
     } else if(x_pos == 23 || x_pos == 24 || x_pos == 25) {
-        return 24;
-    }
-
-    return NONE;
-}
-
-static uint8_t has_a_bin(uint8_t x_pos) {
-    if (x_pos == 1 || x_pos == 2 || x_pos == 3) {
-        return 1;
-    } else if(x_pos == 5 || x_pos == 6 || x_pos == 7) {
-        return 5;
-    } else if(x_pos == 9 || x_pos == 10 || x_pos == 11) {
-        return 9;
-    } else if(x_pos == 20 || x_pos == 21 || x_pos == 22) {
-        return 20;
-    } else if(x_pos == 24 || x_pos == 25 || x_pos == 26) {
         return 24;
     }
 
@@ -164,10 +159,16 @@ void  print_background_lvl1() {
   sp1_TileEntry('M', udg_win1); // bottom with rope
   sp1_TileEntry('N', udg_win2); // full square
 
+  sp1_TileEntry('O', udg_clothes11);
+  sp1_TileEntry('P', udg_clothes12);
+  sp1_TileEntry('Q', udg_clothes21);
+  sp1_TileEntry('S', udg_clothes22);
+  sp1_TileEntry('U', udg_boot);
+  sp1_TileEntry('Z', udg_boot2);
 
   // paint valla
   for (x = 0; x!=MAX_X; ++x) {
-      frame = has_a_bin(x);
+      frame = is_in_bin(x - 1);
       if (frame == NONE) {
           if (x % 2 == 0) {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'W');
@@ -177,9 +178,9 @@ void  print_background_lvl1() {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'X');
           }
 
-          for (y=16; y!=21; ++y)
+          for (idx_j=16; idx_j!=21; ++idx_j)
           {
-              sp1_PrintAt( y, x,  PAPER_CYAN, 'V');
+              sp1_PrintAt( idx_j, x,  PAPER_CYAN, 'V');
           }
       } else if(frame == x) {
           print_cubo(x);
@@ -221,14 +222,53 @@ void  print_background_lvl1() {
    level_x_max = 28;
    level_x_min = 0;
 
+   // floor holes initialize, save memory ftw
+   floor_holes[0][0] = 1;  // row1clothes
+   floor_holes[0][1] = 18; // row1clothes
+   floor_holes[1][0] = 1;  // row2clothes
+   floor_holes[1][1] = 18; // row2clothes
+
    sp1_UpdateNow();
 }
 
-void leave_level() {
 
+static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
+    if(clean == 1) {
+        sp1_PrintAtInv(row, col, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row, col + 1, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row + 1, col, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row + 1, col + 1, PAPER_MAGENTA, ' ');
+
+        sp1_PrintAtInv(row, col + 3, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row, col + 5, PAPER_MAGENTA, ' ');
+    } else {
+        sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, 'O');
+        sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, 'P');
+        sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, 'Q');
+        sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, 'S');
+
+        sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, 'U');
+        sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, 'Z');
+    }
 }
 
+static void increase_indexes_clothes(uint8_t idx) {
+    repaint_clothes(10, floor_holes[0][idx], 1);
+    repaint_clothes(6, floor_holes[1][idx], 1);
+    // row1
+    --floor_holes[1][idx];
+    // row2
+    ++floor_holes[0][idx];
+    if(floor_holes[0][idx] > 26) {
+        floor_holes[0][idx] = 0;
+    }
 
+    if (floor_holes[1][idx] < 2) {
+        floor_holes[1][idx] = 28;
+    }
+    repaint_clothes(10, floor_holes[0][idx], 0);
+    repaint_clothes(6, floor_holes[1][idx], 0);
+}
 
 void move_clothes() {
 // now take decisions
@@ -239,19 +279,8 @@ void move_clothes() {
         //--row1_moving in int.c
         if ((row1_moving & 1) == 0) {
             // check if clothes should move
-            for (idx = 0; idx != 2; ++idx) {
-                --row2clothes[idx].col;
-                ++row1clothes[idx].col;
-                if(row1clothes[idx].col > 26) {
-                    row1clothes[idx].col = 0;
-                }
-
-                if (row2clothes[idx].col < 2) {
-                    row2clothes[idx].col = 28;
-                }
-                sp1_MoveSprAbs(row1clothes[idx].sp, &full_screen, (void*)1, 10, row1clothes[idx].col, 0, 0);
-                sp1_MoveSprAbs(row2clothes[idx].sp, &full_screen, (void*)1, 6, row2clothes[idx].col, 0, 0);
-            }
+            increase_indexes_clothes(0);
+            increase_indexes_clothes(1);
             // now move cat
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
                  ++misifu.x;
@@ -287,8 +316,8 @@ void anim_windows() {
             horizontal_direction = NONE;
             vertical_direction = NONE;
 
-            if (misifu.y < 14 && (random_value & 1) == 0) {
-                // detect where to go and todo randomly throw an object
+            if (misifu.y < 14 && random_value < 200) {
+                // detect where to go and randomly throw an object
                 if(misifu.x < aux_object.x && (aux_object.x - misifu.x) > 2) {
                     horizontal_direction = LEFT;
                 } else if(misifu.x > aux_object.x && ( misifu.x - aux_object.x) > 2) {
@@ -308,10 +337,9 @@ void anim_windows() {
 
         if (vertical_direction != NONE || horizontal_direction != NONE) {
             if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-                // todo falling to loose a live
                 bit_beepfx_di_fastcall(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
-                misifu.state = FALLING;
+                misifu.state = FALLING_FLOOR;
             } else {
                 // now move accordingly
                 if (horizontal_direction == LEFT) {
@@ -431,10 +459,14 @@ void detect_fall_in_window() {
             print_background_level2();
         } else if(last_success_level == 2) {
             print_background_level3();
-        } else if(last_success_level == 3) {
-            print_background_level4();
-        } else if(last_success_level == 4) {
+        }  else if(last_success_level == 4) {
             print_background_level5();
+        } else if(last_success_level == 5) {
+            print_background_level6();
+        } else if(last_success_level == 6) {
+            print_background_level7();
+        } else if(last_success_level == 7) {
+            print_background_level_last();
         }
         return;
     }

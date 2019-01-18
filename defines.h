@@ -8,6 +8,8 @@
 #define UNDEF 250
 #define NONE 0
 #define WON_LEVEL 10
+#define DOG_AWAKEN 30
+#define ELECTRIFIED 40
 #define YES 1
 #define CLEAN 1
 #define BIN_Y1 15
@@ -16,6 +18,7 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define FALLING_FLOOR 69
 #define BITE 55
 #define OXYGEN 99
 #define FIGHTING 5
@@ -102,9 +105,9 @@ extern uint8_t level_x_max;
 extern uint8_t level_x_min;
 
 // shared vars
-extern uint8_t x, y;
+extern uint8_t x;
 
-
+extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
 extern char left;
@@ -162,12 +165,6 @@ extern uint8_t horizontal_direction;
 
 extern void add_sprites_for_all_levels();
 
-struct row_clothes {
-    struct sp1_ss* sp;
-    uint8_t col;
-    uint8_t offset;
-};
-
 struct prota {
     struct sp1_ss* sp;
     uint8_t x;
@@ -202,8 +199,9 @@ extern void reset_misifu_position();
 // extern void page(uint8_t bank);
 
 extern void check_keys();
+extern void check_level7_keys();
 
-extern uint8_t dog_checks();
+extern void dog_checks();
 
 extern void check_swim();
 
@@ -231,5 +229,6 @@ extern struct sp1_ss * add_sprite_protar1();
 extern void check_chair_and_table();
 
 extern void move_right_and_left();
+extern void assign_window_pos(uint8_t y, uint8_t x);
 
 #endif

@@ -12,6 +12,7 @@
 #include "level4.h"
 #include "level5.h"
 #include "level6.h"
+#include "level7.h"
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
@@ -29,8 +30,6 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
-struct row_clothes row1clothes[2];
-struct row_clothes row2clothes[2];
 unsigned char udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 
@@ -49,11 +48,6 @@ extern uint8_t sprite_bincat2[];
 extern uint8_t sprite_bincat3[];
 
 
-extern uint8_t sprite_clothes21[];
-extern uint8_t sprite_clothes22[];
-extern uint8_t sprite_clothes23[];
-extern uint8_t sprite_clothes24[];
-extern uint8_t sprite_clothes25[];
 
 extern uint8_t auxiliar1[];
 extern uint8_t auxiliar2[];
@@ -70,6 +64,7 @@ uint8_t x, y;
 
 
 // game required vars
+uint8_t paws = 0;
 uint8_t eaten_items;
 uint8_t frame;
 uint8_t x_malo;
@@ -246,21 +241,6 @@ static struct sp1_ss * add_sprite_bincat() {
 }
 
 
-static struct sp1_ss * add_sprite_clothes2() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_clothes21, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes22, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes23, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes24, 2);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_clothes25, 2);
-
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
-
-  sp1_IterateSprChar(sp, initialiseClothesColour);
-
-  return sp;
-}
-
 static struct sp1_ss * add_sprite_auxiliar() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)auxiliar1, 0);
@@ -285,20 +265,6 @@ void add_sprites_for_all_levels() {
   aux_object.x = 0;
   aux_object.y = 0;
   aux_object.offset = RIGHTC1;
-
-
-  // row 1 clothes
-  row1clothes[0].col = 1;
-  row1clothes[0].sp = add_sprite_clothes2();
-  row1clothes[1].col = 18;
-  row1clothes[1].sp = add_sprite_clothes2();
-
-  // row 2 clothes
-  row2clothes[0].col = 1;
-  row2clothes[0].sp = add_sprite_clothes2();
-  row2clothes[1].col = 18;
-  row2clothes[1].sp = add_sprite_clothes2();
-
 }
 
 void loose_a_live() {
@@ -326,10 +292,11 @@ void reset_misifu_position() {
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
-  misifu.state = NONE;
+  misifu.state = FALLING_FLOOR;
   zx_border(INK_BLACK);
   sp1_UpdateNow();
   aux_object.offset = AUX_BROOM;
+  x_malo = 33;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
@@ -382,6 +349,22 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
 }
 
+void check_level7_keys() {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 17) {
+        --misifu.y;
+        misifu.state = misifu.draw_additional;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
+        ++misifu.x;
+        misifu.state = misifu.draw_additional = WALKING_RIGHT;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
+        --misifu.x;
+        misifu.state = misifu.draw_additional = WALKING_LEFT;
+    } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 22) {
+        ++misifu.y;
+        misifu.state = misifu.draw_additional;
+
+    }
+}
 
 void check_keys()
 {
@@ -411,17 +394,18 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        print_background_level_last();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        print_background_lvl1();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
-        print_background_level2();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
-        print_background_level3();
-    }  else if (in_key_pressed(IN_KEY_SCANCODE_5)) {
-        print_background_level5();
-    } else if (in_key_pressed(IN_KEY_SCANCODE_6)) {
-        print_background_level6();
+        ++last_success_level;
+        if(last_success_level > 7) {
+            last_success_level = 0;
+        }
+    }
+
+    if (in_key_pressed(IN_KEY_SCANCODE_f)) {
+        if(paws == 0) {
+            paws = 1;
+        } else {
+            paws = 0;
+        }
     }
 }
 
@@ -463,12 +447,11 @@ void check_swim() {
     }
 }
 
-uint8_t dog_checks() {
+void dog_checks() {
 // time for doggy checks
     if (misifu.state != FIGHTING && enemy_apears == YES) {
 
         --x_malo;
-
 
         if (frame < 2) {
             dog_offset = DOG1;
@@ -509,7 +492,6 @@ uint8_t dog_checks() {
                 return;
             }
             enemy_apears = NONE;
-            x_malo = 33;
             idx = 1;
         }
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
@@ -518,7 +500,7 @@ uint8_t dog_checks() {
     if (enemy_apears != YES && first_keypress != NONE) {
         enemy_apears = random_value % 100;
     }
-    return idx;
+    return;
 }
 
 static void stop_jump_if_needed(uint8_t max_jump) {
@@ -530,7 +512,7 @@ static void stop_jump_if_needed(uint8_t max_jump) {
 
 void check_fsm() {
 // decide new FSM draw status
-    if (misifu.state == NONE && frame == 3) {
+    if (misifu.state == NONE && frame == 3 && level != 7) {
         misifu.offset = BORED;
     } else if (misifu.state == WALKING_RIGHT) {
         if (frame < 2) {
@@ -593,6 +575,13 @@ void check_fsm() {
             misifu.state = NONE;
             misifu.offset = BORED;
         }
+    } else if (misifu.state == FALLING_FLOOR) {
+        ++misifu.y;
+        misifu.draw_additional = NONE;
+        if(misifu.y >= FLOOR_Y) {
+            misifu.y = FLOOR_Y;
+            misifu.state = NONE;
+        }
     } else if(misifu.state == CAT_IN_ROPE) {
         if(misifu.x >= 28 || misifu.x == 0) {
             misifu.state = FALLING;
@@ -651,17 +640,29 @@ void get_out_of_level_generic(uint8_t fall) {
                   INK_WHITE | PAPER_BLACK,
                   ' ' );
 
-    if(fall != WON_LEVEL) {
-        bit_beepfx_di_fastcall(BEEPFX_GULP);
-    } else {
-        // keep progress of levels
+    if(fall == WON_LEVEL) {
         last_success_level = level;
         points = points + 10;
+        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
+    } else {
+        loose_a_live();
+    }
+
+    if (fall == ELECTRIFIED) {
+        for (idx = 0; idx != 5; ++idx) {
+            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+            zx_border(INK_WHITE);
+            wait();
+            zx_border(INK_BLUE);
+        }
+    } else {
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
     }
 
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);
     level = 1;
+    x_malo = 33;
     sp1_UpdateNow();
     print_background_lvl1();
 }
@@ -755,6 +756,13 @@ void check_chair_and_table() {
     }
 
     detect_fall_in_chair(21);
+}
+
+void assign_window_pos(uint8_t y, uint8_t x) {
+    windows[idx].has_item = NONE;
+    windows[idx].x = x;
+    windows[idx].y = y;
+    ++idx;
 }
 
 
