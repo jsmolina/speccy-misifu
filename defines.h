@@ -18,6 +18,7 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define FALLING_FLOOR 69
 #define BITE 55
 #define OXYGEN 99
 #define FIGHTING 5

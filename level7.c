@@ -54,9 +54,7 @@ void  print_background_level7() {
 }
 
 static inline void drink_milk_or_got_awaken(uint8_t index) {
-    if(misifu.x == (windows[index].x + 2)) { // todo not working
-        get_out_of_level_generic(DOG_AWAKEN);
-    } else if(windows[index].has_item != 'Z') {
+    if(misifu.x > (windows[index].x + 2) && windows[index].has_item != 'Z') {
         sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
         windows[index].has_item = 'Z';
         --eaten_items;
@@ -65,40 +63,43 @@ static inline void drink_milk_or_got_awaken(uint8_t index) {
         if(eaten_items == 0) {
             get_out_of_level_generic(WON_LEVEL);
         }
+
+    } else if(windows[index].has_item != 'Z') {
+        get_out_of_level_generic(DOG_AWAKEN);
     }
 }
 
 
 static uint8_t get_index_from_misifu_position() {
     if(misifu.y == 22) {
-        if(misifu.x > 2 && misifu.x < 8) {
+        if(misifu.x > 2 && misifu.x < 9) {
             return 0;
-        } else if(misifu.x > 12 && misifu.x < 18) {
+        } else if(misifu.x > 12 && misifu.x < 19) {
             return 1;
         }
 
     } else if(misifu.y == 20) {
-        if(misifu.x > 7 && misifu.x < 13) {
+        if(misifu.x > 7 && misifu.x < 14) {
             return 2;
-        } else if(misifu.x > 20 && misifu.x < 25) {
+        } else if(misifu.x > 20 && misifu.x < 26) {
             return 3;
         }
     } else if(misifu.y == 17) {
-        if(misifu.x > 2 && misifu.x < 8) {
+        if(misifu.x > 2 && misifu.x < 9) {
             return 4;
-        } else if(misifu.x > 9 && misifu.x < 15) {
+        } else if(misifu.x > 9 && misifu.x < 16) {
             return 5;
         }
     }
 
-    return NONE;
+    return UNDEF;
 }
 
 static void check_eat_milk_or_dog() {
     // misifu.x - 1 is the real udg position
     idx = get_index_from_misifu_position();
 
-    if(idx != NONE) {
+    if(idx != UNDEF) {
         drink_milk_or_got_awaken(idx);
     }
 }

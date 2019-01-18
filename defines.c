@@ -292,7 +292,7 @@ void reset_misifu_position() {
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
-  misifu.state = NONE;
+  misifu.state = FALLING_FLOOR;
   zx_border(INK_BLACK);
   sp1_UpdateNow();
   aux_object.offset = AUX_BROOM;
@@ -458,7 +458,6 @@ void dog_checks() {
 
         --x_malo;
 
-
         if (frame < 2) {
             dog_offset = DOG1;
         } else if (frame < 4) {
@@ -498,7 +497,6 @@ void dog_checks() {
                 return;
             }
             enemy_apears = NONE;
-            x_malo = 33;
             idx = 1;
         }
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
@@ -581,6 +579,13 @@ void check_fsm() {
             misifu.y = FLOOR_Y;
             misifu.state = NONE;
             misifu.offset = BORED;
+        }
+    } else if (misifu.state == FALLING_FLOOR) {
+        ++misifu.y;
+        misifu.draw_additional = NONE;
+        if(misifu.y >= FLOOR_Y) {
+            misifu.y = FLOOR_Y;
+            misifu.state = NONE;
         }
     } else if(misifu.state == CAT_IN_ROPE) {
         if(misifu.x >= 28 || misifu.x == 0) {

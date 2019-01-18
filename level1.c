@@ -230,15 +230,7 @@ void  print_background_lvl1() {
    sp1_UpdateNow();
 }
 
-/**
-  sp1_TileEntry('O', udg_clothes11);
-  sp1_TileEntry('P', udg_clothes12);
-  sp1_TileEntry('Q', udg_clothes21);
-  sp1_TileEntry('S', udg_clothes22);
-  sp1_TileEntry('U', udg_boot);
-  sp1_TileEntry('Z', udg_boot2);
-  row1 == 10, row2 == 6
-**/
+
 static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
     if(clean == 1) {
         sp1_PrintAtInv(row, col, PAPER_MAGENTA, ' ');
@@ -323,8 +315,8 @@ void anim_windows() {
             horizontal_direction = NONE;
             vertical_direction = NONE;
 
-            if (misifu.y < 14 && (random_value & 1) == 0) {
-                // detect where to go and todo randomly throw an object
+            if (misifu.y < 14 && random_value < 200) {
+                // detect where to go and randomly throw an object
                 if(misifu.x < aux_object.x && (aux_object.x - misifu.x) > 2) {
                     horizontal_direction = LEFT;
                 } else if(misifu.x > aux_object.x && ( misifu.x - aux_object.x) > 2) {
@@ -344,10 +336,9 @@ void anim_windows() {
 
         if (vertical_direction != NONE || horizontal_direction != NONE) {
             if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-                // todo falling to loose a live
                 bit_beepfx_di_fastcall(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
-                misifu.state = FALLING;
+                misifu.state = FALLING_FLOOR;
             } else {
                 // now move accordingly
                 if (horizontal_direction == LEFT) {
