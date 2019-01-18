@@ -1,24 +1,11 @@
 VT_SOUND_LIB_SDCC_IY := ./ay
 # ./bas2tap -a loader.bas
 compile:
-	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -lay/vt_sound_6.lib
-	ls *.bin
-	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
-	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
-	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
-	rm misifu.tap
-	cat loader.tap screen.tap code.tap bank6.tap > misifu.tap
-	echo "Done!"
+	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=screen.scr -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -create-app
+	echo "Done"
 
 develop:
-# -DWFRAMES=3
-	sudo nice -n -20 su jordism -c "zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --opt-code-size -zopt --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -lay/vt_sound_6.lib"
-	ls *.bin
-	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
-	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
-	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
-	rm misifu.tap
-	cat loader.tap screen.tap code.tap bank6.tap > misifu.tap
+	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu -pragma-include:zpragma.inc -create-app
 	echo "Done"
 
 sprites: prota dogsprites bincat clothes auxiliar protaswim

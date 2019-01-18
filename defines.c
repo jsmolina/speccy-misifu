@@ -14,7 +14,6 @@
 #include "level6.h"
 #include "level7.h"
 #include "level_last.h"
-#include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
 
 
@@ -131,7 +130,6 @@ uint8_t horizontal_direction;
 void all_lives_lost() {
   print_background_lvl1();
 
-  ay_vt_init(pcspeaker_module);
   intrinsic_ei();
 
   sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
@@ -145,9 +143,7 @@ void all_lives_lost() {
             break;
       }
   }
-  intrinsic_di();
-  ay_vt_init(music_module);
-  intrinsic_ei();
+
 }
 
 static void initialiseColour(unsigned int count, struct sp1_cs *c)
