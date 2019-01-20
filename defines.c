@@ -660,8 +660,6 @@ void get_out_of_level_generic(uint8_t fall) {
 
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);
-    level = 1;
-    x_malo = 33;
     sp1_UpdateNow();
     print_background_lvl1();
 }
