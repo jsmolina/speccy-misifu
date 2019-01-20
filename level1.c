@@ -389,10 +389,6 @@ void check_bincat() {
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, bincat_appears, bincat_in_bin, 0, 0);
             bincat_appears = 40;
 
-            // cat falls if misifu.in_bin is the same of bincat_in_bin
-            if (bincat_in_bin == misifu.in_bin) {
-                misifu.state = FALLING;
-            }
         } else {
             bincat_in_bin = NONE;
         }
@@ -409,10 +405,10 @@ void check_bincat() {
             bit_beepfx_di_fastcall(BEEPFX_HIT_1);
         }
 
-        if (bincat_appears < 1 && bincatsp != NULL) {
+        if (bincat_appears < 1) {
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
             bincat_appears = NONE;
-            bincat_in_bin = 0;
+            // todo migh broke something bincat_in_bin = 0;
         }
     }
 }

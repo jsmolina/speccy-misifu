@@ -472,7 +472,7 @@ void dog_checks() {
     if (misifu.state == FIGHTING) {
         if (frame < 2) {
             dog_offset = DOGFIGHTING1;
-        } else if (frame < 4) {
+        } else {
             dog_offset = DOGFIGHTING2;
         }
 
@@ -510,14 +510,14 @@ void check_fsm() {
     } else if (misifu.state == WALKING_RIGHT) {
         if (frame < 2) {
             misifu.offset = RIGHTC1;
-        } else if (frame < 4) {
+        } else  {
             misifu.offset = RIGHTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == WALKING_LEFT) {
         if (frame < 2) {
             misifu.offset = LEFTC1;
-        } else if (frame < 4) {
+        } else {
             misifu.offset = LEFTC2;
         }
         misifu.state = NONE;
