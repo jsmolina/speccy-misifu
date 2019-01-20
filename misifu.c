@@ -54,11 +54,7 @@ int main()
 
     // todo move this to different loops
     if (level == 1) {
-        move_clothes();
-        anim_windows();
-        check_bincat();
-        dog_checks();
-        detect_fall_in_window();
+        level1_loop();
     } else if (level == 2) {
         level2_loop();
     } else if (level == 3) {
