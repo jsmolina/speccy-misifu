@@ -456,7 +456,7 @@ void dog_checks() {
         if (x_malo <= 0) {
             enemy_apears = NONE;
             x_malo = 33;
-        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
+        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 19) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
@@ -523,11 +523,17 @@ void check_fsm() {
     } else if (misifu.state == JUMPING_PUSHED){
         if(misifu.y > 2) {
             misifu.y = misifu.y - 2;
-        }
-        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1 && misifu.x < (level_x_max - 2)) {
-            misifu.x = misifu.x - 2;
         } else {
-            misifu.x = misifu.x + 2;
+            misifu.state = FALLING;
+        }
+        if (misifu.draw_additional == JUMP_LEFT) {
+            if(misifu.x > 1) {
+                misifu.x = misifu.x - 2;
+            }
+        } else {
+            if(misifu.x < (level_x_max - 2)) {
+                misifu.x = misifu.x + 2;
+            }
         }
         stop_jump_if_needed(10);
     } else if (misifu.state == JUMPING) {
@@ -678,10 +684,10 @@ static void check_broom_collision() {
         misifu.state = JUMPING_PUSHED;
         misifu.initial_jump_y = misifu.y;
         // will jump right or left depending on where is hit
-        if(misifu.x > aux_object.x) {
-            misifu.draw_additional = JUMP_RIGHT;
-        } else {
+        if(misifu.x < aux_object.x) {
             misifu.draw_additional = JUMP_LEFT;
+        } else {
+            misifu.draw_additional = JUMP_RIGHT;
         }
     }
 }
