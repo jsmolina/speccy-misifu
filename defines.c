@@ -391,6 +391,7 @@ void check_keys()
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
+        ++misifu.y;
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
@@ -406,7 +407,7 @@ void check_swim() {
         --misifu.x;
         if (frame < 2) {
             misifu.offset = SWIM_LC1;
-        } else if (frame < 4) {
+        } else {
             misifu.offset = SWIM_LC2;
         }
 
@@ -419,7 +420,7 @@ void check_swim() {
         ++misifu.x;
         if (frame < 2) {
             misifu.offset = SWIM_RC1;
-        } else if (frame < 4) {
+        } else {
             misifu.offset = SWIM_RC2;
         }
         if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 1) {
@@ -447,7 +448,7 @@ void dog_checks() {
 
         if (frame < 2) {
             dog_offset = DOG1;
-        } else if (frame < 4) {
+        } else  {
             // todo fighting will be 49 + 48
             dog_offset = DOG2;
         }

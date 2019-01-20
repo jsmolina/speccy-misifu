@@ -473,6 +473,12 @@ void detect_fall_in_window() {
 
 }
 
-
+void level1_loop() {
+    move_clothes();
+    anim_windows();
+    check_bincat();
+    dog_checks();
+    detect_fall_in_window();
+}
 
 #endif
