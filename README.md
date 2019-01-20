@@ -42,6 +42,7 @@ https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_06_SomeDeta
 * Matthew Logue helping with some testing.
 * Ivan Sánchez, testing and motivation.
 * Alexey, helping on very good ideas.
+* Dario, who helped with feedback.
 
 # Dedicated to
 Clàudia :)
