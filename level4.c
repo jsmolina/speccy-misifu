@@ -94,7 +94,7 @@ static void print_fish(uint8_t idx, uint8_t to_print) {
 }
 
 inline void eels_on_move() {
-    if(random_value < 10) {
+    if(random_value < 100) {
         for(idx = 0; idx != 5; ++idx) {
             print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
             ++floor_holes[idx][X_POS];
@@ -180,6 +180,7 @@ void detect_fish_collission() {
 
 void level4_loop() {
     fishes_on_move();
+    eels_on_move();
     detect_fish_collission();
 
     if(frame == 1 && misifu.y >= 1) {
