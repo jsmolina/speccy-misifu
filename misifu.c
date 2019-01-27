@@ -94,7 +94,11 @@ int main()
     ++frame;
     if (frame >= 4) {
         frame = 0;
+        if (points < 254) {
+            ++points;
+        }
     }
+
 
     // paint 'prota here'
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);

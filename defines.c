@@ -93,7 +93,7 @@ uint8_t level = 1;
 uint8_t lives = 5;
 uint8_t last_success_level = 0;
 uint8_t repaint_lives = 0;
-uint16_t points = 0;
+uint8_t points = 0;
 
 
 // hearts holes
@@ -276,7 +276,6 @@ void loose_a_live() {
     } else {
         // reached zero on lives
         lives = 5;
-        points = 0;
         last_success_level = 0;
         bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
 
@@ -297,6 +296,7 @@ void reset_misifu_position() {
   sp1_UpdateNow();
   aux_object.offset = AUX_BROOM;
   x_malo = 33;
+  points = 0;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
@@ -395,10 +395,7 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        ++last_success_level;
-        if(last_success_level > 7) {
-            last_success_level = 0;
-        }
+        print_background_level_last();
     }
 }
 
@@ -636,12 +633,41 @@ void detect_fall_in_chair(uint8_t x_chair) {
 void get_out_of_level_generic(uint8_t fall) {
     // todo progress levels count, count how many time player stayed in level
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_BLACK,
+                  INK_WHITE | PAPER_WHITE,
                   ' ' );
+    // control wether if gets out of level by having eat all mouses
+    sp1_Invalidate(&full_screen);
 
-    if(fall == WON_LEVEL) {
+    if(fall == LEVELFINISHED) {
+        last_success_level = 0;
+        sp1_DeleteSpr_fastcall(dogr1sp);
+        dogr1sp = add_sprite_protar1();
+        sp1_PrintAt(10, 14, INK_BLACK | PAPER_WHITE, 'l');
+        sp1_PrintAt(10, 15, INK_BLACK | PAPER_WHITE, 'o');
+        sp1_PrintAt(10, 16, INK_BLACK | PAPER_WHITE, 'v');
+        sp1_PrintAt(10, 17, INK_BLACK | PAPER_WHITE, 'e');
+        for (idx = 0; idx != 12; ++idx) {
+
+            if((idx & 1) == 0) {
+                misifu.offset = RIGHTC1;
+                idx_j = LEFTC1;
+            } else {
+                misifu.offset = RIGHTC2;
+                idx_j = LEFTC2;
+            }
+            sp1_MoveSprAbs(misifu.sp, &full_screen,(void*) misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
+
+            sp1_MoveSprAbs(dogr1sp, &full_screen,(void*) idx_j, FLOOR_Y, 30 - idx, 0, 0);
+            sp1_UpdateNow();
+            for(idx_j = 0; idx_j != 10; ++idx_j) {
+                wait();
+            }
+        }
+        sp1_DeleteSpr_fastcall(dogr1sp);
+        dogr1sp = add_sprite_dogr1();
+
+    } else if(fall == WON_LEVEL) {
         last_success_level = level;
-        points = points + 10;
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else {
         loose_a_live();
@@ -658,11 +684,6 @@ void get_out_of_level_generic(uint8_t fall) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     }
 
-    // control wether if gets out of level by having eat all mouses
-    sp1_Invalidate(&full_screen);
-    level = 1;
-    x_malo = 33;
-    sp1_UpdateNow();
     print_background_lvl1();
 }
 
