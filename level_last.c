@@ -81,8 +81,7 @@ void print_background_level_last() {
   // frame = floor
   frame = 4;
 
-  for(idx=23; idx > 3; idx = idx - 4) {
-    x = idx_j - 4;
+  for(idx=23; idx != 3; idx = idx - 4) {
 
      for (idx_j=4; idx_j != 28; ++idx_j ) {
         random_value = rand();
@@ -134,7 +133,7 @@ void detect_fall_in_hearts() {
         return;
     }
 
-    idx = misifu.x - 1;
+    idx = misifu.x - 2;
     // todo this is not always working, maybe related to painting?
     if (floor_holes[idx_j][idx] == 0) {
         misifu.state = FALLING;
@@ -227,9 +226,8 @@ void throw_cupid_arrow() {
 
         if(idx_j < 5 && aux_object.x > 3 && aux_object.x < 27) {
             // broke the heart :(
-            sp1_PrintAtInv( aux_object.y, aux_object.x, INK_BLUE | PAPER_GREEN, 'A');
-            // todo +1 or -1?
-            floor_holes[idx_j][aux_object.x + 1] = 0;
+            sp1_PrintAtInv( aux_object.y, aux_object.x + 1, INK_BLUE | PAPER_GREEN, 'A');
+            floor_holes[idx_j][aux_object.x - 3] = 0;
         }
     } else {
         // out of screen
