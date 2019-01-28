@@ -164,16 +164,14 @@ void detect_fish_collission() {
             get_out_of_level4(WON_LEVEL);
         }
     } else {
-        if(is_misifu_in_eel(3, 3)
-        || is_misifu_in_eel(3, 12)
-        || is_misifu_in_eel(7, 24)
-        || is_misifu_in_eel(11, 12)
-        || is_misifu_in_eel(15, 5))
-        {
-            // loose a life and out of level
-            get_out_of_level4(ELECTRIFIED);
-            loose_a_live();
-            return;
+        for(idx = 0; idx != 5; ++idx) {
+            if((abs(floor_holes[idx][Y_POS] - misifu.y) < 2 && abs(floor_holes[idx][X_POS] - misifu.x) < 2))
+            {
+                // loose a life and out of level
+                get_out_of_level4(ELECTRIFIED);
+                loose_a_live();
+                return;
+            }
         }
     }
 }
