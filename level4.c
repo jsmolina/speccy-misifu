@@ -10,7 +10,7 @@ const uint8_t udg_fishL[] = {0x0, 0x39, 0x7d, 0xbf, 0xff, 0xfd, 0x79, 0x0};
 const uint8_t udg_eel[] = {0x0, 0x0, 0x0, 0x48, 0x36, 0x1, 0x0, 0x0};
 
 static void print_eel(uint8_t y, uint8_t x, uint8_t toprint) {
-    sp1_PrintAt(y, x,  INK_BLACK | PAPER_CYAN, toprint);
+    sp1_PrintAtInv(y, x,  INK_BLACK | PAPER_CYAN, toprint);
 }
 
 static void assign_eels_pos(uint8_t y, uint8_t x) {
@@ -94,15 +94,15 @@ static void print_fish(uint8_t idx, uint8_t to_print) {
 }
 
 inline void eels_on_move() {
-    if(random_value < 100) {
+    if(random_value < 10) {
         for(idx = 0; idx != 5; ++idx) {
             print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
-            ++floor_holes[idx][X_POS];
-            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], 'E');
-
             if(floor_holes[idx][X_POS] > 30) {
                 floor_holes[idx][X_POS] = 0;
             }
+            ++floor_holes[idx][X_POS];
+            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], 'E');
+
         }
     }
 }
