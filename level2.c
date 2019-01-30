@@ -100,7 +100,6 @@ void detect_fall_in_hole_or_curtain() {
             // print then the mouse in the up side
             repaint_lives = 1;
             sp1_PrintAtInv(1, 1 + eaten_items, INK_BLACK | PAPER_GREEN, 'B');
-            points += 5;
             bit_beepfx_di_fastcall(BEEPFX_SCORE);
             --eaten_items;
         }
