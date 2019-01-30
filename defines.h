@@ -5,6 +5,8 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
+#define Y_POS 0
+#define X_POS 1
 #define UNDEF 250
 #define NONE 0
 #define WON_LEVEL 10
@@ -77,6 +79,9 @@
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
+
+#define FISH_LEFT 'B'
+#define FISH_RIGHT 'A'
 
 #define BIRD 244
 
