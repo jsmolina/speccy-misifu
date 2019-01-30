@@ -676,9 +676,9 @@ void get_out_of_level_generic(uint8_t fall) {
         }
 
         for (idx = 0; idx != idx_j; ++idx) {
-            sp1_PrintAt(22 - idx, 14, INK_BLACK | PAPER_WHITE, 'H');
-            sp1_PrintAt(22 - idx, 16, INK_BLACK | PAPER_WHITE, 'H');
-            sp1_PrintAt(22 - idx, 18, INK_BLACK | PAPER_WHITE, 'H');
+            sp1_PrintAtInv(22 - idx, 14, INK_RED | PAPER_WHITE, 'H');
+            sp1_PrintAtInv(22 - idx, 16, INK_RED | PAPER_WHITE, 'H');
+            sp1_PrintAtInv(22 - idx, 18, INK_RED | PAPER_WHITE, 'H');
             sp1_UpdateNow();
             wait();
         }
