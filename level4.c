@@ -141,9 +141,6 @@ static inline uint8_t map_to_fish_index() {
     return UNDEF;
 }
 
-static uint8_t is_misifu_in_eel(uint8_t y, uint8_t x) {
-    return (abs(y - misifu.y) < 2 && abs(x - misifu.x) < 2);
-}
 
 void detect_fish_collission() {
     idx = map_to_fish_index();
@@ -165,7 +162,7 @@ void detect_fish_collission() {
         }
     } else {
         for(idx = 0; idx != 5; ++idx) {
-            if((abs(floor_holes[idx][Y_POS] - misifu.y) < 2 && abs(floor_holes[idx][X_POS] - misifu.x) < 2))
+            if((floor_holes[idx][Y_POS] == misifu.y && abs(floor_holes[idx][X_POS] - misifu.x) < 2))
             {
                 // loose a life and out of level
                 get_out_of_level4(ELECTRIFIED);
