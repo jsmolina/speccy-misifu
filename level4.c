@@ -153,7 +153,6 @@ void detect_fish_collission() {
         windows[idx].x = 1;
         windows[idx].y = 23;
         sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'A');
-        points += 5;
         bit_beepfx_di_fastcall(BEEPFX_SCORE);
         --eaten_items;
 

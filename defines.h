@@ -102,7 +102,6 @@ extern struct sp1_ss  *bincatsp;
 
 extern struct row_clothes row1clothes[2];
 extern struct row_clothes row2clothes[2];
-extern unsigned char udg_win2[];
 
 extern struct sp1_Rect full_screen;
 
@@ -115,6 +114,8 @@ extern uint8_t x;
 extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
+extern const uint8_t udg_win2[];
+extern const uint8_t heart2[];
 extern char left;
 extern char right;
 extern uint8_t eaten_items;

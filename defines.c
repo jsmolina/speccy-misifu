@@ -30,7 +30,8 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
-unsigned char udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const uint8_t udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
 
 extern uint8_t sprite_protar1[];
@@ -395,7 +396,7 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        print_background_level4();
+        print_background_level7();
     }
 }
 
@@ -446,7 +447,6 @@ void dog_checks() {
         if (frame < 2) {
             dog_offset = DOG1;
         } else  {
-            // todo fighting will be 49 + 48
             dog_offset = DOG2;
         }
 
@@ -631,12 +631,12 @@ void detect_fall_in_chair(uint8_t x_chair) {
 }
 
 void get_out_of_level_generic(uint8_t fall) {
-    // todo progress levels count, count how many time player stayed in level
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_WHITE,
                   ' ' );
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);
+    sp1_TileEntry('H', heart2);
 
     if(fall == LEVELFINISHED) {
         last_success_level = 0;
@@ -668,6 +668,19 @@ void get_out_of_level_generic(uint8_t fall) {
 
     } else if(fall == WON_LEVEL) {
         last_success_level = level;
+        idx_j = 250 / points;  // number of VUs
+
+        if(idx_j > 20) {
+            idx_j = 20;
+        }
+
+        for (idx = 0; idx != idx_j; ++idx) {
+            sp1_PrintAtInv(22 - idx, 14, INK_RED | PAPER_WHITE, 'H');
+            sp1_PrintAtInv(22 - idx, 16, INK_RED | PAPER_WHITE, 'H');
+            sp1_PrintAtInv(22 - idx, 18, INK_RED | PAPER_WHITE, 'H');
+            sp1_UpdateNow();
+            wait();
+        }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else {
         loose_a_live();
