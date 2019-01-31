@@ -109,4 +109,5 @@ static void check_eat_milk_or_dog() {
 
 void level7_loop() {
     check_eat_milk_or_dog();
+    move_broom();
 }

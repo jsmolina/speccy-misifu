@@ -351,6 +351,10 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 }
 
 void check_level7_keys() {
+    if (misifu.state == JUMPING_PUSHED || misifu.state == FALLING) {
+        return;
+    }
+
     if (in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 17) {
         --misifu.y;
         misifu.state = misifu.draw_additional;
