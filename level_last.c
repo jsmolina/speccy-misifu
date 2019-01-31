@@ -7,7 +7,6 @@
 
 // level 3 hearts
 const uint8_t heart1[] = {0x0, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x0, 0x0};
-const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 const uint8_t cupid11[] = {0x0, 0x0, 0x0, 0xe, 0xf, 0x1f, 0x3f, 0x7f};
 const uint8_t cupid12[] = {0x0, 0x0, 0x0, 0x7, 0x1f, 0xdf, 0xff, 0xff};
 const uint8_t cupid13[] = {0x0, 0x0, 0x0, 0x0, 0x80, 0xc0, 0x80, 0xd0};
@@ -39,46 +38,6 @@ static void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row + 2, col + 2, INK_RED | PAPER_GREEN, 'K');
 }
 
-static void get_out_of_level_last(uint8_t fall) {
-
-    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_BLACK,
-                  ' ' );
-    if(fall == FALLING) {
-        //row1clothes[0].offset = MISIOFFSET;
-        zx_border(INK_RED);
-    } else {
-        // this will mean a level ending!
-        last_success_level = 0;
-        points = points + 100;
-        zx_border(INK_MAGENTA);
-        //row1clothes[0].offset = LOVEOFFSET;
-    }
-
-    sp1_Invalidate(&full_screen);
-    x = 14;
-    idx_j = 0;
-
-    for (idx = 0; idx != 40; ++idx) {
-        ++idx_j;
-
-        if(idx_j > 20) {
-            if (fall == FALLING) {
-                //row1clothes[0].offset = OUCHOFFSET;
-            }
-            idx_j = 20;
-        }
-        //sp1_MoveSprAbs(row1clothes[0].sp, &full_screen,(void*) row1clothes[0].offset, y, x, 0, 0);
-        sp1_UpdateNow();
-        wait();
-    }
-    if(fall == FALLING) {
-        bit_beepfx_di_fastcall(BEEPFX_AWW);
-    } else {
-        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
-    }
-    print_background_lvl1();
-}
 
 void print_background_level_last() {
   level = 10;
@@ -121,8 +80,7 @@ void print_background_level_last() {
   // frame = floor
   frame = 4;
 
-  for(idx=23; idx > 3; idx = idx - 4) {
-    x = idx_j - 4;
+  for(idx=23; idx != 3; idx = idx - 4) {
 
      for (idx_j=4; idx_j != 28; ++idx_j ) {
         random_value = rand();
@@ -150,17 +108,17 @@ void print_background_level_last() {
 /**
  hearts y are 23, 19, 15, 11, 7
 **/
-static inline uint8_t lvl3_y_to_idj(uint8_t offset) {
+static inline uint8_t lvl3_y_to_idj(uint8_t y) {
 
-    if(misifu.y == 5 + offset) {
+    if(y == 5) {
         return 0;
-    } else if(misifu.y == 9 + offset) {
+    } else if(y == 9) {
         return 1;
-    } else if(misifu.y == 13 + offset) {
+    } else if(y == 13) {
         return 2;
-    } else if(misifu.y == 17 + offset) {
+    } else if(y == 17) {
         return 3;
-    } else if (misifu.y == FLOOR_Y + offset) {
+    } else if (y == FLOOR_Y) {
         return 4;
     } else {
         return UNDEF;
@@ -169,36 +127,28 @@ static inline uint8_t lvl3_y_to_idj(uint8_t offset) {
 
 
 void detect_fall_in_hearts() {
-    idx_j = lvl3_y_to_idj(0);
+    idx_j = lvl3_y_to_idj(misifu.y);
+    if (idx_j == UNDEF) {
+        return;
+    }
 
-    if (misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_ON_HIGH || misifu.state == NONE) {
-        // 0 - 24
-        if (idx_j < 5 && misifu.x > 1 && floor_holes[idx_j][misifu.x - 2] == 0) {
-            misifu.state = FALLING;
-            if (misifu.y >= FLOOR_Y) {
-                get_out_of_level_last(FALLING);
-                return;
-            }
+    idx = misifu.x - 2;
+    // todo this is not always working, maybe related to painting?
+    if (floor_holes[idx_j][idx] == 0) {
+        misifu.state = FALLING;
+        if (misifu.y >= FLOOR_Y) {
+            get_out_of_level_generic(FALLING);
+            return;
         }
-    } else if (misifu.state == FALLING && idx_j < 5 && floor_holes[idx_j][misifu.x - 2] == 1) {
-        if(misifu.y == 17) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.draw_additional = CAT_IN_ROPE;
-            misifu.offset = BORED;
-        } else if(misifu.y == 13) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.draw_additional = CAT_IN_ROPE1;
-            misifu.offset = BORED;
-        } else if(misifu.y == 9) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.draw_additional = CAT_IN_ROPE2;
-            misifu.offset = BORED;
-        } else if(misifu.y == 5) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.draw_additional = CAT_IN_ROPE3;
-            misifu.offset = BORED;
-            get_out_of_level_last(LEVELFINISHED); // yayyy
+    } else if (floor_holes[idx_j][idx] == 1 && misifu.state == FALLING) {
+        if(idx_j == 0) {
+            get_out_of_level_generic(LEVELFINISHED); // yayyy
+            return;
         }
+        zx_border(INK_BLACK);
+        misifu.state = CAT_ON_HIGH;
+        misifu.draw_additional = CAT_IN_ROPE;
+        misifu.offset = BORED;
     }
 }
 
@@ -224,20 +174,11 @@ inline void heavencat_on_move() {
     print_heavencats(1);
 
     if(frame == 3) {
-        if(random_value > 40 && random_value < 80) {
-            ++udgxs[0];
-        } else if(random_value > 80 && random_value < 150) {
-            ++udgxs[1];
-        } else if(random_value > 150 && random_value < 190) {
-            ++udgxs[2];
-        } else if(random_value > 190 && random_value < 230) {
-            ++udgxs[3];
-        }
-        // if going to right, return left
-        for(idx_j = 0; idx != 4; ++idx) {
-            if(udgxs[idx_j] > 25) {
-                udgxs[idx_j] = 5;
-            }
+        idx_j = random_value % 4;
+        ++udgxs[idx_j];
+        if(udgxs[idx_j] > 25) {
+            // if reaching right, return left
+            udgxs[idx_j] = 5;
         }
     }
 
@@ -245,15 +186,12 @@ inline void heavencat_on_move() {
     print_heavencats(0);
 
     // detect collision with misifu
-    if(misifu.y == 5 && abs(misifu.x - udgxs[0]) < 2 ) {
+    idx_j = lvl3_y_to_idj(misifu.y);
+    if(idx_j != UNDEF && abs(misifu.x - udgxs[idx_j]) < 2) {
         misifu.state = FALLING;
-    } else if(misifu.y == 9 && abs(misifu.x - udgxs[1]) < 2) {
-        misifu.state = FALLING;
-    } else if(misifu.y == 13 && abs(misifu.x - udgxs[2]) < 2) {
-        misifu.state = FALLING;
-    } else if(misifu.y == 17 && abs(misifu.x - udgxs[3]) < 2) {
-        misifu.state = FALLING;
+        bit_beepfx_di_fastcall(BEEPFX_HIT_1);
     }
+
     // saves lot of memory to use udg in this animation
 }
 
@@ -283,12 +221,12 @@ void throw_cupid_arrow() {
         }
 
         // hearts y are 23, 19, 15, 11, 7
-        idx_j = lvl3_y_to_idj(2);
+        idx_j = lvl3_y_to_idj(aux_object.y - 2);
 
         if(idx_j < 5 && aux_object.x > 3 && aux_object.x < 27) {
             // broke the heart :(
-            sp1_PrintAtInv( aux_object.y, aux_object.x,  INK_BLUE | PAPER_GREEN, 'A');
-            floor_holes[idx_j][aux_object.x] = 0;
+            sp1_PrintAtInv( aux_object.y, aux_object.x + 1, INK_BLUE | PAPER_GREEN, 'A');
+            floor_holes[idx_j][aux_object.x - 3] = 0;
         }
     } else {
         // out of screen

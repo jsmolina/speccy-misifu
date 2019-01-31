@@ -5,6 +5,8 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
+#define Y_POS 0
+#define X_POS 1
 #define UNDEF 250
 #define NONE 0
 #define WON_LEVEL 10
@@ -78,6 +80,9 @@
 #define LEFT 3
 #define RIGHT 4
 
+#define FISH_LEFT 'B'
+#define FISH_RIGHT 'A'
+
 #define BIRD 244
 
 #define DOG1 1
@@ -97,7 +102,6 @@ extern struct sp1_ss  *bincatsp;
 
 extern struct row_clothes row1clothes[2];
 extern struct row_clothes row2clothes[2];
-extern unsigned char udg_win2[];
 
 extern struct sp1_Rect full_screen;
 
@@ -110,6 +114,8 @@ extern uint8_t x;
 extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
+extern const uint8_t udg_win2[];
+extern const uint8_t heart2[];
 extern char left;
 extern char right;
 extern uint8_t eaten_items;
@@ -139,7 +145,7 @@ extern uint8_t level;
 extern uint8_t lives;
 extern uint8_t last_success_level; // to see user progress
 extern uint8_t repaint_lives;
-extern uint16_t points;
+extern uint8_t points;
 
 extern uint8_t floor_holes[][24];
 

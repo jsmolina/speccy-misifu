@@ -29,7 +29,8 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
-unsigned char udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const uint8_t udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
 
 extern uint8_t sprite_protar1[];
@@ -92,7 +93,7 @@ uint8_t level = 1;
 uint8_t lives = 5;
 uint8_t last_success_level = 0;
 uint8_t repaint_lives = 0;
-uint16_t points = 0;
+uint8_t points = 0;
 
 
 // hearts holes
@@ -272,7 +273,6 @@ void loose_a_live() {
     } else {
         // reached zero on lives
         lives = 5;
-        points = 0;
         last_success_level = 0;
         bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
 
@@ -293,6 +293,7 @@ void reset_misifu_position() {
   sp1_UpdateNow();
   aux_object.offset = AUX_BROOM;
   x_malo = 33;
+  points = 0;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
@@ -387,13 +388,11 @@ void check_keys()
     } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
+        ++misifu.y;
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        ++last_success_level;
-        if(last_success_level > 7) {
-            last_success_level = 0;
-        }
+        print_background_level7();
     }
 }
 
@@ -402,7 +401,7 @@ void check_swim() {
         --misifu.x;
         if (frame < 2) {
             misifu.offset = SWIM_LC1;
-        } else if (frame < 4) {
+        } else {
             misifu.offset = SWIM_LC2;
         }
 
@@ -415,7 +414,7 @@ void check_swim() {
         ++misifu.x;
         if (frame < 2) {
             misifu.offset = SWIM_RC1;
-        } else if (frame < 4) {
+        } else {
             misifu.offset = SWIM_RC2;
         }
         if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 1) {
@@ -443,8 +442,7 @@ void dog_checks() {
 
         if (frame < 2) {
             dog_offset = DOG1;
-        } else if (frame < 4) {
-            // todo fighting will be 49 + 48
+        } else  {
             dog_offset = DOG2;
         }
 
@@ -452,7 +450,7 @@ void dog_checks() {
         if (x_malo <= 0) {
             enemy_apears = NONE;
             x_malo = 33;
-        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 18) {
+        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 19) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
@@ -467,7 +465,7 @@ void dog_checks() {
     if (misifu.state == FIGHTING) {
         if (frame < 2) {
             dog_offset = DOGFIGHTING1;
-        } else if (frame < 4) {
+        } else {
             dog_offset = DOGFIGHTING2;
         }
 
@@ -505,25 +503,31 @@ void check_fsm() {
     } else if (misifu.state == WALKING_RIGHT) {
         if (frame < 2) {
             misifu.offset = RIGHTC1;
-        } else if (frame < 4) {
+        } else  {
             misifu.offset = RIGHTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == WALKING_LEFT) {
         if (frame < 2) {
             misifu.offset = LEFTC1;
-        } else if (frame < 4) {
+        } else {
             misifu.offset = LEFTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == JUMPING_PUSHED){
         if(misifu.y > 2) {
             misifu.y = misifu.y - 2;
-        }
-        if (misifu.draw_additional == JUMP_LEFT && misifu.x > 1 && misifu.x < (level_x_max - 2)) {
-            misifu.x = misifu.x - 2;
         } else {
-            misifu.x = misifu.x + 2;
+            misifu.state = FALLING;
+        }
+        if (misifu.draw_additional == JUMP_LEFT) {
+            if(misifu.x > 1) {
+                misifu.x = misifu.x - 2;
+            }
+        } else {
+            if(misifu.x < (level_x_max - 2)) {
+                misifu.x = misifu.x + 2;
+            }
         }
         stop_jump_if_needed(10);
     } else if (misifu.state == JUMPING) {
@@ -623,14 +627,56 @@ void detect_fall_in_chair(uint8_t x_chair) {
 }
 
 void get_out_of_level_generic(uint8_t fall) {
-    // todo progress levels count, count how many time player stayed in level
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_BLACK,
+                  INK_WHITE | PAPER_WHITE,
                   ' ' );
+    // control wether if gets out of level by having eat all mouses
+    sp1_Invalidate(&full_screen);
+    sp1_TileEntry('H', heart2);
 
-    if(fall == WON_LEVEL) {
+    if(fall == LEVELFINISHED) {
+        last_success_level = 0;
+        sp1_DeleteSpr_fastcall(dogr1sp);
+        dogr1sp = add_sprite_protar1();
+        sp1_PrintAt(10, 14, INK_BLACK | PAPER_WHITE, 'l');
+        sp1_PrintAt(10, 15, INK_BLACK | PAPER_WHITE, 'o');
+        sp1_PrintAt(10, 16, INK_BLACK | PAPER_WHITE, 'v');
+        sp1_PrintAt(10, 17, INK_BLACK | PAPER_WHITE, 'e');
+        for (idx = 0; idx != 12; ++idx) {
+
+            if((idx & 1) == 0) {
+                misifu.offset = RIGHTC1;
+                idx_j = LEFTC1;
+            } else {
+                misifu.offset = RIGHTC2;
+                idx_j = LEFTC2;
+            }
+            sp1_MoveSprAbs(misifu.sp, &full_screen,(void*) misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
+
+            sp1_MoveSprAbs(dogr1sp, &full_screen,(void*) idx_j, FLOOR_Y, 30 - idx, 0, 0);
+            sp1_UpdateNow();
+            for(idx_j = 0; idx_j != 10; ++idx_j) {
+                wait();
+            }
+        }
+        sp1_DeleteSpr_fastcall(dogr1sp);
+        dogr1sp = add_sprite_dogr1();
+
+    } else if(fall == WON_LEVEL) {
         last_success_level = level;
-        points = points + 10;
+        idx_j = 250 / points;  // number of VUs
+
+        if(idx_j > 20) {
+            idx_j = 20;
+        }
+
+        for (idx = 0; idx != idx_j; ++idx) {
+            sp1_PrintAtInv(22 - idx, 14, INK_RED | PAPER_WHITE, 'H');
+            sp1_PrintAtInv(22 - idx, 16, INK_RED | PAPER_WHITE, 'H');
+            sp1_PrintAtInv(22 - idx, 18, INK_RED | PAPER_WHITE, 'H');
+            sp1_UpdateNow();
+            wait();
+        }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else {
         loose_a_live();
@@ -647,11 +693,6 @@ void get_out_of_level_generic(uint8_t fall) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     }
 
-    // control wether if gets out of level by having eat all mouses
-    sp1_Invalidate(&full_screen);
-    level = 1;
-    x_malo = 33;
-    sp1_UpdateNow();
     print_background_lvl1();
 }
 
@@ -674,10 +715,10 @@ static void check_broom_collision() {
         misifu.state = JUMPING_PUSHED;
         misifu.initial_jump_y = misifu.y;
         // will jump right or left depending on where is hit
-        if(misifu.x > aux_object.x) {
-            misifu.draw_additional = JUMP_RIGHT;
-        } else {
+        if(misifu.x < aux_object.x) {
             misifu.draw_additional = JUMP_LEFT;
+        } else {
+            misifu.draw_additional = JUMP_RIGHT;
         }
     }
 }

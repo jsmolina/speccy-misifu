@@ -22,20 +22,20 @@ uint8_t thrown_from_window(uint8_t x, uint8_t y) {
 void define_cheese_holes_pos() {
     // init to zero
     idx = 0;
-    assign_window_pos(20, 4);
-    assign_window_pos(20, 18);
-    assign_window_pos(20, 14);
-    assign_window_pos(19, 8);
-    assign_window_pos(19, 5);
-    assign_window_pos(18, 9);
-    assign_window_pos(18, 13);
-    assign_window_pos(16, 4);
-    assign_window_pos(14, 4);
-    assign_window_pos(14, 9);
-    assign_window_pos(14, 12);
-    assign_window_pos(12, 6);
-    assign_window_pos(10, 4);
-    assign_window_pos(8, 4);
+    assign_window_pos(19, 4);
+    assign_window_pos(19, 18);
+    assign_window_pos(19, 14);
+    assign_window_pos(18, 8);
+    assign_window_pos(18, 5);
+    assign_window_pos(17, 9);
+    assign_window_pos(17, 13);
+    assign_window_pos(15, 4);
+    assign_window_pos(13, 4);
+    assign_window_pos(13, 9);
+    assign_window_pos(13, 12);
+    assign_window_pos(11, 6);
+    assign_window_pos(9, 4);
+    assign_window_pos(7, 4);
 }
 
 
@@ -44,7 +44,7 @@ static inline uint8_t map_cat_pos_in_holes() {
         return UNDEF;
     }
     // note that udgs have a -2 margin
-    if(misifu.y == 20) {
+    if(misifu.y == 19) {
         if(misifu.x == 2) {
             return 0;
         } else if(misifu.x == 16) {
@@ -53,21 +53,21 @@ static inline uint8_t map_cat_pos_in_holes() {
             return 2;
         }
 
-    } else if(misifu.y == 19) {
+    } else if(misifu.y == 18) {
         if(misifu.x == 6) {
             return 3;
         } else if(misifu.x == 3) {
             return 4;
         }
-    } else if(misifu.y == 18) {
+    } else if(misifu.y == 17) {
         if(misifu.x == 7) {
             return 5;
         } else if(misifu.x == 11) {
             return 6;
         }
-    } else if(misifu.y == 16 && misifu.x == 2) {
+    } else if(misifu.y == 15 && misifu.x == 2) {
         return 7;
-    } else if(misifu.y == 14) {
+    } else if(misifu.y == 13) {
         if(misifu.x == 2) {
             return 8;
         } else if(misifu.x == 7) {
@@ -75,11 +75,11 @@ static inline uint8_t map_cat_pos_in_holes() {
         } else if(misifu.x == 10) {
             return 10;
         }
-    } else if(misifu.y == 12 && misifu.x == 4) {
+    } else if(misifu.y == 11 && misifu.x == 4) {
         return 11;
-    } else if (misifu.y == 10 && misifu.x == 2) {
+    } else if (misifu.y == 9 && misifu.x == 2) {
         return 12;
-    } else if(misifu.y == 8 && misifu.x == 2) {
+    } else if(misifu.y == 7 && misifu.x == 2) {
         return 13;
     }
 
@@ -100,7 +100,6 @@ void detect_fall_in_hole_or_curtain() {
             // print then the mouse in the up side
             repaint_lives = 1;
             sp1_PrintAtInv(1, 1 + eaten_items, INK_BLACK | PAPER_GREEN, 'B');
-            points += 5;
             bit_beepfx_di_fastcall(BEEPFX_SCORE);
             --eaten_items;
         }
@@ -183,7 +182,7 @@ void  print_background_level2() {
   for (idx = 3; idx != 20; ++idx) {
 
     for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
-        sp1_PrintAt( idx_j, idx, PAPER_GREEN, 'C');
+        sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN, 'C');
     }
   }
   // paint holes

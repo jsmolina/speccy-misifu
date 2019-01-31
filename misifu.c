@@ -54,11 +54,7 @@ int main()
 
     // todo move this to different loops
     if (level == 1) {
-        move_clothes();
-        anim_windows();
-        check_bincat();
-        dog_checks();
-        detect_fall_in_window();
+        level1_loop();
     } else if (level == 2) {
         level2_loop();
     } else if (level == 3) {
@@ -98,7 +94,11 @@ int main()
     ++frame;
     if (frame >= 4) {
         frame = 0;
+        if (points < 254) {
+            ++points;
+        }
     }
+
 
     // paint 'prota here'
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);

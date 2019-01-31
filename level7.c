@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <sound.h>
+#include <input.h>
 #include "defines.h"
 #include "level1.h"
 
@@ -54,8 +55,8 @@ void  print_background_level7() {
 }
 
 static inline void drink_milk_or_got_awaken(uint8_t index) {
-    if(misifu.x > (windows[index].x + 2)) {
-        if(windows[index].has_item != 'Z') {
+    if(misifu.x > (windows[index].x + 1)) {
+        if(windows[index].has_item != 'Z' && in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
             sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
             windows[index].has_item = 'Z';
             --eaten_items;
@@ -73,22 +74,22 @@ static inline void drink_milk_or_got_awaken(uint8_t index) {
 
 static uint8_t get_index_from_misifu_position() {
     if(misifu.y == 22) {
-        if(misifu.x > 2 && misifu.x < 9) {
+        if(misifu.x > 2 && misifu.x < 10) {
             return 0;
-        } else if(misifu.x > 12 && misifu.x < 19) {
+        } else if(misifu.x > 12 && misifu.x < 20) {
             return 1;
         }
 
     } else if(misifu.y == 20) {
-        if(misifu.x > 7 && misifu.x < 14) {
+        if(misifu.x > 7 && misifu.x < 15) {
             return 2;
-        } else if(misifu.x > 20 && misifu.x < 26) {
+        } else if(misifu.x > 20 && misifu.x < 27) {
             return 3;
         }
     } else if(misifu.y == 17) {
-        if(misifu.x > 2 && misifu.x < 9) {
+        if(misifu.x > 2 && misifu.x < 10) {
             return 4;
-        } else if(misifu.x > 9 && misifu.x < 16) {
+        } else if(misifu.x > 9 && misifu.x < 17) {
             return 5;
         }
     }
