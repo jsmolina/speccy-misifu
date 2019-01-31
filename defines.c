@@ -396,7 +396,7 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        get_out_of_level_generic(WON_LEVEL);
+        print_background_level7();
     }
 }
 
@@ -631,7 +631,6 @@ void detect_fall_in_chair(uint8_t x_chair) {
 }
 
 void get_out_of_level_generic(uint8_t fall) {
-    // todo progress levels count, count how many time player stayed in level
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_WHITE,
                   ' ' );
