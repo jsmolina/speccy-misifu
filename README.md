@@ -17,8 +17,6 @@ https://github.com/jsmolina/png2sp1sprite
 
 See the Makefile as it contains udg and sprites lines.
 
-# Current status
-See youtube  https://www.youtube.com/watch?v=Hrh6m7NBaZs
 
 
 # To improve
@@ -26,7 +24,7 @@ See youtube  https://www.youtube.com/watch?v=Hrh6m7NBaZs
 
 Contributions/suggestions are more than welcome!
 
-![Image of Misifu](https://user-images.githubusercontent.com/447481/45633520-45009580-baa0-11e8-9383-1fa9f4f9dbc4.png)
+![Image of Misifu](https://user-images.githubusercontent.com/447481/50655530-c5d09800-0f90-11e9-8c1a-0f209cd2cd70.png)
 
 # Considerations
 https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_06_SomeDetails.md
