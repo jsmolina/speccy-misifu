@@ -85,7 +85,11 @@ void  print_background_level5() {
 }
 
 static void anim_spider() {
-    if(random_value < 29 && random_value > 14 && bincat_appears == NONE) {
+    if(random_value < 18 && bincat_appears == NONE) {
+        if(random_value < 4) {
+            windows[0].x = misifu.x;
+        }
+
         windows[0].x = random_value;
         windows[0].y = 3;
         bincat_appears = 15;
@@ -128,7 +132,7 @@ static inline void detect_vase_falling() {
             vase_falls(1);
         } else if(misifu.x >= 22 && misifu.x < 25) {
             vase_falls(2);
-        } else if(misifu.x >= 27 && misifu.x < 29) {
+        } else if(misifu.x >= 26 && misifu.x < 29) {
             vase_falls(3);
         }
 

@@ -293,9 +293,9 @@ void reset_misifu_position() {
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
   misifu.state = NONE;
-  zx_border(INK_BLACK);
-  sp1_UpdateNow();
   aux_object.offset = AUX_BROOM;
+  sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, 0, 33, 0, 0);
+  opened_window = NONE;
   x_malo = 33;
   points = 0;
 }
@@ -402,6 +402,9 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_1)) {
+        print_background_level7();
     }
 }
 
@@ -694,6 +697,8 @@ void get_out_of_level_generic(uint8_t fall) {
             wait();
         }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
+    } else if(fall == FALLING) {
+        bit_beepfx_di_fastcall(BEEPFX_UH_HUH);
     } else {
         loose_a_live();
     }

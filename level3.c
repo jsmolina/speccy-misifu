@@ -32,7 +32,6 @@ void  print_background_level3() {
 
   aux_object.y = 5;
   aux_object.x = 5;
-  aux_object.offset = AUX_BROOM;
   repaint_lives = 1;
 
   level_x_max = 28;
