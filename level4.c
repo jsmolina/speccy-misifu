@@ -94,7 +94,7 @@ static void print_fish(uint8_t idx, uint8_t to_print) {
 }
 
 inline void eels_on_move() {
-    if(random_value < 10) {
+    if(random_value < 40) {
         for(idx = 0; idx != 5; ++idx) {
             print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
             if(floor_holes[idx][X_POS] > 30) {
