@@ -3,6 +3,7 @@
 #include <sound.h>
 #include <stdlib.h>
 #include "level1.h"
+#include <input.h>
 // AKA RATS ROOM
 
 #include "defines.h"
@@ -40,47 +41,11 @@ void define_cheese_holes_pos() {
 
 
 static inline uint8_t map_cat_pos_in_holes() {
-    if(misifu.state != FALLING) {
-        return UNDEF;
-    }
-    // note that udgs have a -2 margin
-    if(misifu.y == 19) {
-        if(misifu.x == 2) {
-            return 0;
-        } else if(misifu.x == 16) {
-            return 1;
-        } else if(misifu.x == 12) {
-            return 2;
-        }
 
-    } else if(misifu.y == 18) {
-        if(misifu.x == 6) {
-            return 3;
-        } else if(misifu.x == 3) {
-            return 4;
+    for(idx = 0; idx != 14; ++idx) {
+        if(misifu.y == windows[idx].y && misifu.x == (windows[idx].x - 2)) {
+            return idx;
         }
-    } else if(misifu.y == 17) {
-        if(misifu.x == 7) {
-            return 5;
-        } else if(misifu.x == 11) {
-            return 6;
-        }
-    } else if(misifu.y == 15 && misifu.x == 2) {
-        return 7;
-    } else if(misifu.y == 13) {
-        if(misifu.x == 2) {
-            return 8;
-        } else if(misifu.x == 7) {
-            return 9;
-        } else if(misifu.x == 10) {
-            return 10;
-        }
-    } else if(misifu.y == 11 && misifu.x == 4) {
-        return 11;
-    } else if (misifu.y == 9 && misifu.x == 2) {
-        return 12;
-    } else if(misifu.y == 7 && misifu.x == 2) {
-        return 13;
     }
 
     return UNDEF;
@@ -91,7 +56,6 @@ void detect_fall_in_hole_or_curtain() {
     idx = map_cat_pos_in_holes();
 
     if(idx != UNDEF) {
-        //misifu.in_bin = idx;
         misifu.state = CAT_IN_ROPE;
 
         // if window has mouse
@@ -111,6 +75,13 @@ void detect_fall_in_hole_or_curtain() {
     if (eaten_items == 0) {
         get_out_of_level_generic(WON_LEVEL);
     }
+}
+
+
+static void move_misifu(uint8_t index) {
+    first_keypress = index;
+    misifu.x = windows[index].x - 2;
+    misifu.y = windows[index].y;
 }
 
 void level2_loop() {
@@ -147,6 +118,29 @@ void level2_loop() {
             sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, windows[idx].has_item);
         }
     }
+
+    if (in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
+        idx = map_cat_pos_in_holes();
+        if(idx == 5) {
+            move_misifu(8);
+        } else if(idx == 8) {
+            move_misifu(5);
+        } else if(idx == 10) {
+            move_misifu(4);
+        } else if(idx == 4) {
+            move_misifu(10);
+        } else if(idx == 13) {
+            move_misifu(9);
+        } else if(idx == 9) {
+            move_misifu(13);
+        } else if(idx == 12) {
+            move_misifu(6);
+        } else if(idx == 6) {
+            move_misifu(12);
+        }
+        in_wait_nokey();
+    }
+
     move_broom();
     dog_checks();
 }
