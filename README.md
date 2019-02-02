@@ -6,11 +6,15 @@ http://zx-dev-mia-remakes.proboards.com/thread/12/misifu-gatita-alley-cat-demake
 
 # Story
 ```
-La pérrada ha raptado a Fred, y sólo lo liberará si destrozas las habitaciones del edificio del propietario del banco que ha deshauciado a sus amigos. ¿Cómo lo harás? Como ya sabes, ¡a lo gatuno, misifu!
+La pérrada ha raptado a Fred, y sólo lo liberará si destrozas las habitaciones del edificio del 
+propietario del banco que ha deshauciado a sus amigos. ¿Cómo lo harás? Como ya sabes, 
+¡a lo gatuno, misifu!
 ```
 
 ```
-The dogad has kidnapped Fred, and they will only free him if you destroy the rooms of a building. This building belongs to the bank that evicted 'dogad' friends. How do you do it? Just be a cat, misifu!!
+The dogad has kidnapped Fred, and they will only free him if you destroy the rooms of a building. 
+This building belongs to the bank that evicted 'dogad' friends. How do you do it? 
+Just be a cat, misifu!!
 ```
 Controls: OPQA SPACE
 
