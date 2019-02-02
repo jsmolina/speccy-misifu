@@ -292,7 +292,7 @@ void reset_misifu_position() {
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.offset = RIGHTC1;
-  misifu.state = FALLING_FLOOR;
+  misifu.state = NONE;
   zx_border(INK_BLACK);
   sp1_UpdateNow();
   aux_object.offset = AUX_BROOM;
@@ -375,7 +375,7 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > level_x_min) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
+    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
@@ -400,7 +400,8 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        print_background_level7();
+        in_wait_nokey();
+        paws = 1;
     }
 }
 
@@ -544,9 +545,16 @@ void check_fsm() {
         if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
             ++misifu.x;
             misifu.offset = JRIGHTC1;
+            if(in_key_pressed(IN_KEY_SCANCODE_o)) {
+                misifu.state = FALLING;
+            }
         }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min) {
             --misifu.x;
             misifu.offset = JLEFTC1;
+
+            if(in_key_pressed(IN_KEY_SCANCODE_p)) {
+                misifu.state = FALLING;
+            }
         } else {
             misifu.offset = JUMPINGC1;
         }

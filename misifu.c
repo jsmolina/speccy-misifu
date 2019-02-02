@@ -99,6 +99,10 @@ int main()
         }
     }
 
+    if(paws == 1) {
+        in_wait_key();
+        paws = 0;
+    }
 
     // paint 'prota here'
     sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
