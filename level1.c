@@ -336,7 +336,7 @@ void anim_windows() {
         --opened_window_frames;
 
         if (vertical_direction != NONE || horizontal_direction != NONE) {
-            if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+            if(misifu.state != FALLING_FLOOR && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 bit_beepfx_di_fastcall(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING_FLOOR;
@@ -445,12 +445,12 @@ void detect_fall_in_bin() {
 
 
 void detect_fall_in_window() {
-    if(misifu.state != FALLING) {
+    if(misifu.state != FALLING && misifu.state != JUMPING) {
         return;
     }
     idx = misifu.x - 1;
     if(opened_window < 12 && (abs(misifu.y - windows[opened_window].y) < 2)
-        && ((idx >= windows[opened_window].x && idx < windows[opened_window].x + 5)) ) {
+        && ((idx >= (windows[opened_window].x - 1) && idx < windows[opened_window].x + 5)) ) {
         if(last_success_level == 0) {
             print_background_level2();
         } else if(last_success_level == 2) {

@@ -17,19 +17,16 @@ https://github.com/jsmolina/png2sp1sprite
 
 See the Makefile as it contains udg and sprites lines.
 
-# Current status
-See youtube  https://www.youtube.com/watch?v=Hrh6m7NBaZs
 
+# Story
+```
+La pérrada ha raptado a Fred, y sólo lo liberará si destrozas las habitaciones del edificio del propietario del banco que ha deshauciado a sus amigos. ¿Cómo lo harás? Como ya sabes, ¡a lo gatuno, misifu!
+```
 
-# To improve
-* Keep building!
 
 Contributions/suggestions are more than welcome!
 
-![Image of Misifu](https://user-images.githubusercontent.com/447481/45633520-45009580-baa0-11e8-9383-1fa9f4f9dbc4.png)
-
-# Considerations
-https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_06_SomeDetails.md
+![Image of Misifu](https://user-images.githubusercontent.com/447481/50655530-c5d09800-0f90-11e9-8c1a-0f209cd2cd70.png)
 
 
 # Collaborators
@@ -46,3 +43,8 @@ https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_06_SomeDeta
 
 # Dedicated to
 Clàudia :)
+
+# Why it is not Fred again?
+First, the original, GREAT AND ORIGINAL game Alley Cat is what it is, and I have to give it a respect. 
+Second, nowadays my daughter asks me why most of the game heroes are 'males'.
+Third, because `misifu` is a very affectionate way of calling a cat in Spain, my grandma did it so often.
