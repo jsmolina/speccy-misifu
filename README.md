@@ -28,7 +28,7 @@ Game will restart from Alley after hearts.
 - Pecera. Entra en la pecera saltando sobre ella desde más arriba. Dentro de la pecera: cómete todos los peces, pero cuidado con las anguilas electricas y el oxígeno.
 - Estantería. Rompe los jarrones de la estanteria, pero cuidado con la araña... y como siempre, el perro!
 - Jaula/pajaro. Tira la jaula, cómete el pájaro y ojo con el perro.
-- Perros durmiendo. Presiona espacio en los bebederos, pero cuidado con tocarlos tres veces, o los levantarás... y ya sabemos que eso no acaba bien.
+- Perros durmiendo. Presiona espacio en los bebederos, pero cuidado con tocar los perros tres veces, o los levantarás... y ya sabemos que eso no acaba bien.
 - Corazones. Este es el último nivel, y el más dificil. Consigue llegar a lo más arriba y rescatarás a Fred, para ver el final.
 El juego empezará de nuevo en el callejón.
 
@@ -61,7 +61,7 @@ Contributions/suggestions are more than welcome!
 
 # Special Thanks to
 * Matthew Logue helping with some testing.
-* Ivan Sánchez, testing and motivation.
+* Ivan Sánchez, motivation.
 * Alexey, helping on very good ideas.
 * Dario, who helped with feedback.
 
