@@ -13,12 +13,6 @@ const uint8_t hole_empty[] = {0x3c, 0x7e, 0xff, 0xff, 0xff, 0xff, 0x7e, 0x3c};
 const uint8_t hole_mouse[] = {0x3c, 0x5a, 0xe7, 0xc3, 0xa5, 0xe7, 0x5a, 0x3c};
 const uint8_t cheese2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-/**
-Returns 1 if x,y are in window position
-**/
-uint8_t thrown_from_window(uint8_t x, uint8_t y) {
-   return (x>7 && x < 10 && y > 21 && y < 26);
-}
 
 void define_cheese_holes_pos() {
     // init to zero
@@ -81,7 +75,8 @@ void detect_fall_in_hole_or_curtain() {
 static void move_misifu(uint8_t index) {
     first_keypress = index;
     misifu.x = windows[index].x - 2;
-    misifu.y = windows[index].y;
+    misifu.y = windows[index].y - 1;
+    misifu.state = FALLING;
 }
 
 void level2_loop() {
@@ -192,7 +187,6 @@ void  print_background_level2() {
 
   aux_object.y = 5;
   aux_object.x = 5;
-  aux_object.offset = AUX_BROOM;
   repaint_lives = 1;
   level_x_max = 28;
   level_x_min = 0;

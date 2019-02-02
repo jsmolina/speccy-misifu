@@ -187,7 +187,7 @@ inline void heavencat_on_move() {
 
     // detect collision with misifu
     idx_j = lvl3_y_to_idj(misifu.y);
-    if(idx_j != UNDEF && abs(misifu.x - udgxs[idx_j]) < 2) {
+    if(idx_j < 4 && abs(misifu.x - udgxs[idx_j]) < 2) {
         misifu.state = FALLING;
         bit_beepfx_di_fastcall(BEEPFX_HIT_1);
     }

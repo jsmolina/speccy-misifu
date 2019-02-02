@@ -35,7 +35,7 @@ void  print_background_level6() {
 
 static void check_cage_and_bird() {
     // todo think on moving cage
-    if(misifu.y == 16 && misifu.x == windows[0].x && windows[0].has_item == BIRD) {
+    if(misifu.y == 16 && abs(misifu.x - windows[0].x) < 2 && windows[0].has_item == BIRD) {
         windows[0].has_item = RIGHT;
         misifu.state = FALLING;
         sp1_PrintAtInv(17, 26, INK_GREEN | PAPER_RED, ' ');

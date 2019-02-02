@@ -40,6 +40,7 @@ void  print_background_level7() {
      level_x_max = 26;
      level_x_min = 2;
      eaten_items = 6;
+     horizontal_direction = 3; // you can touch up to three dogs before getting out of level
 
      print_room_walls(20, PAPER_MAGENTA, INK_CYAN);
      idx = 0;
@@ -60,14 +61,21 @@ static inline void drink_milk_or_got_awaken(uint8_t index) {
             sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
             windows[index].has_item = 'Z';
             --eaten_items;
-            bit_beepfx_di_fastcall(BEEPFX_SELECT_4);
+            bit_beepfx_di_fastcall(BEEPFX_EAT);
 
             if(eaten_items == 0) {
                 get_out_of_level_generic(WON_LEVEL);
             }
         }
     } else {
-        get_out_of_level_generic(DOG_AWAKEN);
+        --horizontal_direction;
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
+        misifu.state = JUMPING_PUSHED;
+        misifu.draw_additional = JUMP_RIGHT;
+
+        if(horizontal_direction == 0) {
+            get_out_of_level_generic(DOG_AWAKEN);
+        }
     }
 }
 
@@ -110,4 +118,5 @@ static void check_eat_milk_or_dog() {
 void level7_loop() {
     check_eat_milk_or_dog();
     move_broom();
+    detect_cat_in_window(0);
 }
