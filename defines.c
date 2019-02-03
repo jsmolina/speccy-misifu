@@ -650,7 +650,6 @@ void get_out_of_level_generic(uint8_t fall) {
         sp1_DeleteSpr_fastcall(dogr1sp);
         dogr1sp = add_sprite_protar1();
 
-        ay_vt_init(sweet_module);
         sp1_PrintAt(10, 14, INK_BLACK | PAPER_WHITE, 'l');
         sp1_PrintAt(10, 15, INK_BLACK | PAPER_WHITE, 'o');
         sp1_PrintAt(10, 16, INK_BLACK | PAPER_WHITE, 'v');
@@ -674,7 +673,6 @@ void get_out_of_level_generic(uint8_t fall) {
         }
         sp1_DeleteSpr_fastcall(dogr1sp);
         dogr1sp = add_sprite_dogr1();
-        ay_vt_init(music_module);
 
     } else if(fall == WON_LEVEL) {
         last_success_level = level;
