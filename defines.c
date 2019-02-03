@@ -353,10 +353,10 @@ void check_level7_keys() {
     if (in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 17) {
         --misifu.y;
         misifu.state = misifu.draw_additional;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
         ++misifu.x;
         misifu.state = misifu.draw_additional = WALKING_RIGHT;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
         --misifu.x;
         misifu.state = misifu.draw_additional = WALKING_LEFT;
     } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 22) {
@@ -397,9 +397,6 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        print_background_level7();
     }
 }
 
@@ -652,11 +649,13 @@ void get_out_of_level_generic(uint8_t fall) {
         last_success_level = 0;
         sp1_DeleteSpr_fastcall(dogr1sp);
         dogr1sp = add_sprite_protar1();
+
+        ay_vt_init(sweet_module);
         sp1_PrintAt(10, 14, INK_BLACK | PAPER_WHITE, 'l');
         sp1_PrintAt(10, 15, INK_BLACK | PAPER_WHITE, 'o');
         sp1_PrintAt(10, 16, INK_BLACK | PAPER_WHITE, 'v');
         sp1_PrintAt(10, 17, INK_BLACK | PAPER_WHITE, 'e');
-        for (idx = 0; idx != 12; ++idx) {
+        for (idx = 0; idx != 13; ++idx) {
 
             if((idx & 1) == 0) {
                 misifu.offset = RIGHTC1;
@@ -669,12 +668,13 @@ void get_out_of_level_generic(uint8_t fall) {
 
             sp1_MoveSprAbs(dogr1sp, &full_screen,(void*) idx_j, FLOOR_Y, 30 - idx, 0, 0);
             sp1_UpdateNow();
-            for(idx_j = 0; idx_j != 10; ++idx_j) {
+            for(idx_j = 0; idx_j != 15; ++idx_j) {
                 wait();
             }
         }
         sp1_DeleteSpr_fastcall(dogr1sp);
         dogr1sp = add_sprite_dogr1();
+        ay_vt_init(music_module);
 
     } else if(fall == WON_LEVEL) {
         last_success_level = level;

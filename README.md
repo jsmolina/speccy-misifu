@@ -78,6 +78,7 @@ Contributions/suggestions are more than welcome!
 * ER on the graphic material.
 * nq for ingame music.
 * beykersoft for intro music.
+* Marcelo Nunes for the portuguese translation of instructions.
 
 # Special Thanks to
 * Matthew Logue helping with some testing.
