@@ -79,7 +79,6 @@ void  print_background_level4() {
 }
 
 static void get_out_of_level4(uint8_t fall) {
-    zx_border(INK_BLACK);
     sp1_DeleteSpr_fastcall(misifu.sp);
     misifu.sp = add_sprite_protar1();
     get_out_of_level_generic(fall);

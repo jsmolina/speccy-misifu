@@ -19,7 +19,6 @@
 
 int main()
 {
-  zx_border(INK_BLACK);
 
   // interrupt mode 2
   setup_int();
