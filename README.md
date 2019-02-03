@@ -19,6 +19,8 @@ Just be a cat, misifu!!
 Controls: OPQA SPACE
 
 # Levels
+
+EN
 - Alley. Try to jump inside a window, but be aware of the dog, he will try to bite you and take a live.
 - Cheese. Try to eat ALL the mousies. Some holes are connected if you press space, just discover them
 - Fishtank. Enter inside fishtank jumping inside it. Inside fishtank: eat all fishes but be aware of eels and oxygen.
@@ -28,6 +30,7 @@ Controls: OPQA SPACE
 - Hearts. That's the last level and thus the most difficult. Reach the topmost without falling and you'll rescue Fred and see the ending. 
 Game will restart from Alley after hearts.
 
+ES
 - Alley. intenta saltar en una ventana, pero cuidado con el perro ya que intentará morderte y quitarte una vida!
 - Queso. Intenta comerte todos los ratones. Algunos agujeros están conectados si pulsas espacio, tendrás que descubrir cuáles.
 - Pecera. Entra en la pecera saltando sobre ella desde más arriba. Dentro de la pecera: cómete todos los peces, pero cuidado con las anguilas electricas y el oxígeno.
@@ -36,6 +39,18 @@ Game will restart from Alley after hearts.
 - Perros durmiendo. Presiona espacio en los bebederos, pero cuidado con tocar los perros tres veces, o los levantarás... y ya sabemos que eso no acaba bien.
 - Corazones. Este es el último nivel, y el más dificil. Consigue llegar a lo más arriba y rescatarás a Fred, para ver el final.
 El juego empezará de nuevo en el callejón.
+
+PT
+- Alley. Tenta pular em uma janela, mas cuidado com o cão já que tentará tirar-lhe uma vida!
+- Queijo. Tenta comer todos os ratos. Alguns buracos estão conectados si você aperta espaço, você terá que descobrir quais. 
+- Aquário. Entra no aquário pulando sobre ele um pouco mais de cima. Dentro do aquário: coma todos os peixes, mas cuidado com as enguias elétricas e com o oxigênio. 
+- Estante. Quebre os jarros da estante, mas cuidado com a aranha... e como sempre, com o cão!
+- Gaiola/Pássaro. Quebre a gaiola, coma o pássaro e cuidado com o cão. 
+- Cães dormindo. Pressione espaço nos bebedouros, mas cuidado para não tocar os cães três vezes ou você os acordará... e já sabemos que isso não termina bem. 
+- Corações. Este é o último nível e o mais difícil. Tente chegar o mais alto possível e resgate Fred para ver o final. O jogo começará novamente no beco. 
+
+Apesar de que se abram diferentes janelas... até que você não termines este nível não poderá passar ao próximo. 
+
 
 # Building
 You'll need z88dk, so you could download it from here:
