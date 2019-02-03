@@ -66,21 +66,18 @@ uint8_t is_in_bin(uint8_t x_pos) {
 // todo add udg for numbers (score, lives)
 
 void  print_cubo(uint8_t x) {
-  uint8_t idx_j;
+  sp1_PrintAt(22, x, INK_BLACK | PAPER_MAGENTA, 'L');
+  sp1_PrintAt(22, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
+  sp1_PrintAt(22, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
 
-  idx_j = 22;
-  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'L');
-  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
-  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
-  --idx_j;
-  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+  sp1_PrintAt(21, x, INK_BLACK | PAPER_MAGENTA, 'F');
+  sp1_PrintAt(21, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(21, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
 
-  --idx_j;
-  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+  sp1_PrintAt(20, x, INK_BLACK | PAPER_MAGENTA, 'F');
+  sp1_PrintAt(20, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(20, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+  idx_j = 20;
   // onlidx_j second bin is higher
   if(x == HIGHER_BIN_X) {
       --idx_j;
@@ -132,7 +129,7 @@ void print_lives() {
 
 void  print_background_lvl1() {
   level = 1;
-
+  opened_window = NONE;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_WHITE | PAPER_MAGENTA,
                   ' ' );
@@ -400,7 +397,7 @@ void check_bincat() {
 
         // cat falls if cat_in_bin is the same of bincat_in_bin
         if (bincat_in_bin == misifu.in_bin) {
-            misifu.state = FALLING;
+            misifu.state = FALLING_FLOOR;
             misifu.in_bin = NONE;
             bit_beepfx_di_fastcall(BEEPFX_HIT_1);
         }
@@ -419,7 +416,7 @@ void detect_fall_in_bin() {
         misifu.in_bin = is_in_bin(misifu.x);
         // store that it is on first bin pos so collide will bincat is easier
         //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
-        if (misifu.in_bin != NONE) {
+        if (misifu.in_bin != NONE && misifu.in_bin != bincat_in_bin) {
             if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
                 // stop falling
                 misifu.state = NONE;
