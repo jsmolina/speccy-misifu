@@ -357,10 +357,10 @@ void check_level7_keys() {
     if (in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 17) {
         --misifu.y;
         misifu.state = misifu.draw_additional;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
         ++misifu.x;
         misifu.state = misifu.draw_additional = WALKING_RIGHT;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min) {
+    } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
         --misifu.x;
         misifu.state = misifu.draw_additional = WALKING_LEFT;
     } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 22) {

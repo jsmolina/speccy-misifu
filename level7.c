@@ -116,6 +116,10 @@ static void check_eat_milk_or_dog() {
 
 
 void level7_loop() {
+    if(misifu.y < 17 && misifu.state != CAT_IN_ROPE && misifu.state != JUMPING_PUSHED) {
+        misifu.state = FALLING;
+    }
+
     check_eat_milk_or_dog();
     move_broom();
     detect_cat_in_window(0);
