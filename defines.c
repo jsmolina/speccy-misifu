@@ -16,7 +16,6 @@
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
-#include "zx_kempston.h"
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
@@ -146,12 +145,10 @@ void all_lives_lost() {
       if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
           joy = (JOYFUNC)in_stick_keyboard;
           break;
-      } else if(zx_kempston() && (in_stick_kempston() & IN_STICK_FIRE)) {
-          joy = (JOYFUNC)in_stick_kempston;
-          break;
+      } else if(in_key_pressed( IN_KEY_SCANCODE_k )) {
+         joy = (JOYFUNC)in_stick_kempston;
+         break;
       }
-
-
   }
   first_keypress = tick;
   srand(first_keypress);
