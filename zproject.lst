@@ -1,5 +1,6 @@
 @build/sprites.lst
 @ay/ay.lst
+zx_kempston.asm
 int.asm
 int.c
 defines.c
