@@ -132,6 +132,8 @@ uint16_t in;
 
 
 void all_lives_lost() {
+  uint16_t has_kempston = in_stick_kempston();
+
   print_background_lvl1();
 
   ay_vt_init(pcspeaker_module);
@@ -139,15 +141,17 @@ void all_lives_lost() {
 
   sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
   sp1_UpdateNow();
+
+
   // todo think on animating the cat a bit in 'demo mode'
   while(1) {
       // todo check joystick fire also so joystick is chosen
       if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
           joy = (JOYFUNC)in_stick_keyboard;
           break;
-      } else if(in_key_pressed( IN_KEY_SCANCODE_k )) {
-         joy = (JOYFUNC)in_stick_kempston;
-         break;
+      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_LEFT)) {
+          joy = (JOYFUNC)in_stick_kempston;
+          break;
       }
   }
   first_keypress = tick;
