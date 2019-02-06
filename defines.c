@@ -149,7 +149,7 @@ void all_lives_lost() {
       if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
           joy = (JOYFUNC)in_stick_keyboard;
           break;
-      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_LEFT)) {
+      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_FIRE)) {
           joy = (JOYFUNC)in_stick_kempston;
           break;
       }
@@ -555,14 +555,14 @@ void check_fsm() {
         if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
             ++misifu.x;
             misifu.offset = JRIGHTC1;
-            if(in_key_pressed(IN_KEY_SCANCODE_o)) {
+            if((in & IN_STICK_LEFT)) {
                 misifu.state = FALLING;
             }
         }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min) {
             --misifu.x;
             misifu.offset = JLEFTC1;
 
-            if(in_key_pressed(IN_KEY_SCANCODE_p)) {
+            if((in & IN_STICK_RIGHT)) {
                 misifu.state = FALLING;
             }
         } else {

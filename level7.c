@@ -57,7 +57,7 @@ void  print_background_level7() {
 
 static inline void drink_milk_or_got_awaken(uint8_t index) {
     if(misifu.x > (windows[index].x + 1)) {
-        if(windows[index].has_item != 'Z' && in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
+        if(windows[index].has_item != 'Z' && (in & IN_STICK_FIRE)) {
             sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
             windows[index].has_item = 'Z';
             --eaten_items;

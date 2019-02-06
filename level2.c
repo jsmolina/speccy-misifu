@@ -114,7 +114,7 @@ void level2_loop() {
         }
     }
 
-    if (in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
+    if ((in & IN_STICK_FIRE)) {
         idx = map_cat_pos_in_holes();
         if(idx == 5) {
             move_misifu(8);
