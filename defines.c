@@ -17,7 +17,6 @@
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
 
-
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 // 28 and 3 for level = 3
@@ -127,9 +126,14 @@ const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
 uint8_t vertical_direction;
 uint8_t horizontal_direction;
 
+JOYFUNC joy;
+udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
+uint16_t in;
 
 
 void all_lives_lost() {
+  uint16_t has_kempston = in_stick_kempston();
+
   print_background_lvl1();
 
   ay_vt_init(pcspeaker_module);
@@ -137,15 +141,22 @@ void all_lives_lost() {
 
   sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
   sp1_UpdateNow();
+
+
   // todo think on animating the cat a bit in 'demo mode'
   while(1) {
       // todo check joystick fire also so joystick is chosen
       if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
-            first_keypress = tick;
-            srand(first_keypress);
-            break;
+          joy = (JOYFUNC)in_stick_keyboard;
+          break;
+      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_FIRE)) {
+          joy = (JOYFUNC)in_stick_kempston;
+          break;
       }
   }
+  first_keypress = tick;
+  srand(first_keypress);
+
   intrinsic_di();
   ay_vt_init(music_module);
   intrinsic_ei();
@@ -354,16 +365,16 @@ void check_level7_keys() {
         return;
     }
 
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 17) {
+    if ((in & IN_STICK_UP) && misifu.y > 17) {
         --misifu.y;
         misifu.state = misifu.draw_additional;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
+    } else if ((in & IN_STICK_RIGHT) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
         ++misifu.x;
         misifu.state = misifu.draw_additional = WALKING_RIGHT;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
+    } else if ((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
         --misifu.x;
         misifu.state = misifu.draw_additional = WALKING_LEFT;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 22) {
+    } else if((in & IN_STICK_DOWN) && misifu.y < 22) {
         ++misifu.y;
         misifu.state = misifu.draw_additional;
 
@@ -374,25 +385,25 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if (in_key_pressed(IN_KEY_SCANCODE_q) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
+    if ((in & IN_STICK_UP) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < level_x_max && misifu.draw_additional != CAT_IN_SHELVE) {
+        if((in & IN_STICK_RIGHT) && misifu.x < level_x_max && misifu.draw_additional != CAT_IN_SHELVE) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > level_x_min && misifu.draw_additional != CAT_IN_SHELVE) {
+        } else if((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.draw_additional != CAT_IN_SHELVE) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
         }
-    } else if (in_key_pressed(IN_KEY_SCANCODE_p)  && misifu.x < level_x_max && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+    } else if ((in & IN_STICK_RIGHT)  && misifu.x < level_x_max && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if(in_key_pressed(IN_KEY_SCANCODE_o)  && misifu.x > level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+    } else if((in & IN_STICK_LEFT)  && misifu.x > level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
-    } else if (in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < FLOOR_Y) {
+    } else if ((in & IN_STICK_DOWN) && misifu.y < FLOOR_Y) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
         ++misifu.y;
@@ -405,7 +416,7 @@ void check_keys()
 }
 
 void check_swim() {
-    if(in_key_pressed(IN_KEY_SCANCODE_o) && misifu.x > 0) {
+    if((in & IN_STICK_LEFT) && misifu.x > 0) {
         --misifu.x;
         if (frame < 2) {
             misifu.offset = SWIM_LC1;
@@ -413,29 +424,29 @@ void check_swim() {
             misifu.offset = SWIM_LC2;
         }
 
-        if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 1) {
+        if((in & IN_STICK_UP) && misifu.y > 1) {
             --misifu.y;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_a)) {
+        } else if((in & IN_STICK_DOWN)) {
             ++misifu.y;
         }
-    } else if(in_key_pressed(IN_KEY_SCANCODE_p) && misifu.x < 31) {
+    } else if((in & IN_STICK_RIGHT) && misifu.x < 31) {
         ++misifu.x;
         if (frame < 2) {
             misifu.offset = SWIM_RC1;
         } else {
             misifu.offset = SWIM_RC2;
         }
-        if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 1) {
+        if((in & IN_STICK_UP) && misifu.y > 1) {
             --misifu.y;
-        } else if(in_key_pressed(IN_KEY_SCANCODE_a)) {
+        } else if((in & IN_STICK_DOWN)) {
             ++misifu.y;
         }
 
-    } else if(in_key_pressed(IN_KEY_SCANCODE_a) && misifu.y < 29) {
+    } else if((in & IN_STICK_DOWN) && misifu.y < 29) {
         ++misifu.y;
         misifu.offset = SWIM_DOWN1;
 
-    } else if(in_key_pressed(IN_KEY_SCANCODE_q) && misifu.y > 0) {
+    } else if((in & IN_STICK_UP) && misifu.y > 0) {
         --misifu.y;
         misifu.offset = SWIM_UP1;
 
@@ -544,14 +555,14 @@ void check_fsm() {
         if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
             ++misifu.x;
             misifu.offset = JRIGHTC1;
-            if(in_key_pressed(IN_KEY_SCANCODE_o)) {
+            if((in & IN_STICK_LEFT)) {
                 misifu.state = FALLING;
             }
         }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min) {
             --misifu.x;
             misifu.offset = JLEFTC1;
 
-            if(in_key_pressed(IN_KEY_SCANCODE_p)) {
+            if((in & IN_STICK_RIGHT)) {
                 misifu.state = FALLING;
             }
         } else {
