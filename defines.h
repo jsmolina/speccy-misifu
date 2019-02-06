@@ -4,6 +4,7 @@
 #include <z80.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
+#include <input.h>
 
 #define Y_POS 0
 #define X_POS 1
@@ -194,6 +195,10 @@ struct udgstruct {
     uint8_t x;
     char has_item;
 };
+
+extern JOYFUNC joy;
+extern udk_t joy_keys;
+extern uint16_t in;
 
 extern void all_lives_lost();
 

@@ -41,6 +41,8 @@ int main()
 
   while(1)
   {
+    in = (joy)(&joy_keys);
+
     if(misifu.state != SWIMMING && level != 7) {
         check_keys();
     } else if(level == 7) {
