@@ -133,7 +133,9 @@ void level2_loop() {
         } else if(idx == 6) {
             move_misifu(12);
         }
-        in_wait_nokey();
+        while((joy)(&joy_keys) != 0) {
+
+        }
     }
 
     move_broom();
