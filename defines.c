@@ -299,7 +299,7 @@ void reset_misifu_position() {
   misifu.offset = RIGHTC1;
   misifu.state = NONE;
   aux_object.offset = AUX_BROOM;
-  sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, 0, 33, 0, 0);
+  aux_object.x = 33;
   x_malo = 33;
   points = 0;
 }
@@ -712,7 +712,7 @@ void get_out_of_level_generic(uint8_t fall) {
     } else {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     }
-
+    opened_window_frames = 2;
     print_background_lvl1();
 }
 
