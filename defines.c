@@ -720,7 +720,7 @@ void get_out_of_level_generic(uint8_t fall) {
     } else {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     }
-
+    opened_window_frames = 2;
     print_background_lvl1();
 }
 
