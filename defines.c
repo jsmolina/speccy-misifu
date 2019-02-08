@@ -490,14 +490,11 @@ void dog_checks() {
 
         --anim_frames;
         if (anim_frames == 0) {
-            loose_a_live();
-            reset_misifu_position();
-            if(level != 1) {
-                get_out_of_level_generic(FIGHTING);
-                return;
-            }
             enemy_apears = NONE;
+
+            get_out_of_level_generic(FIGHTING);
             idx = 1;
+            return;
         }
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
     }
@@ -756,6 +753,10 @@ static void check_broom_collision() {
 
 
 void move_broom() {
+ if(misifu.state == FIGHTING) {
+    return;
+ }
+
  // BROOM MOVE
     if((random_value & 1) == 0) {
         if(random_value < 50) {
