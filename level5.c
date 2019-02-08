@@ -86,11 +86,12 @@ void  print_background_level5() {
 
 static void anim_spider() {
     if(random_value < 18 && bincat_appears == NONE) {
-        if(random_value < 4) {
+        windows[0].x = random_value;
+
+        if(random_value < 6) {
             windows[0].x = misifu.x;
         }
 
-        windows[0].x = random_value;
         windows[0].y = 3;
         bincat_appears = 15;
     }

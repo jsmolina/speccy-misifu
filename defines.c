@@ -305,7 +305,7 @@ void reset_misifu_position() {
   misifu.offset = RIGHTC1;
   misifu.state = NONE;
   aux_object.offset = AUX_BROOM;
-  sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, 0, 33, 0, 0);
+  aux_object.x = 33;
   x_malo = 33;
   points = 0;
 }

@@ -226,7 +226,7 @@ void  print_background_lvl1() {
    floor_holes[0][1] = 18; // row1clothes
    floor_holes[1][0] = 1;  // row2clothes
    floor_holes[1][1] = 18; // row2clothes
-
+   aux_object.offset = RIGHTC1;
    sp1_UpdateNow();
 }
 
@@ -335,7 +335,7 @@ void anim_windows() {
         --opened_window_frames;
 
         if (vertical_direction != NONE || horizontal_direction != NONE) {
-            if(misifu.state != FALLING_FLOOR && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+            if(misifu.state != FALLING_FLOOR && misifu.y < 14 && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 bit_beepfx_di_fastcall(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING_FLOOR;
