@@ -105,7 +105,6 @@ static void anim_spider() {
 static inline void detect_spider_bite() {
     if(abs(windows[0].y - misifu.y) < 2 && abs(windows[0].x - misifu.x) <2) {
         // SPIDER BITE
-        loose_a_live();
         get_out_of_level_generic(BITE);
     }
 }

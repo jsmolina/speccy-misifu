@@ -164,7 +164,6 @@ void detect_fish_collission() {
             {
                 // loose a life and out of level
                 get_out_of_level4(ELECTRIFIED);
-                loose_a_live();
                 return;
             }
         }
