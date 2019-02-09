@@ -114,7 +114,7 @@ void level2_loop() {
         }
     }
 
-    if ((in & IN_STICK_FIRE)) {
+    if ((in & IN_STICK_FIRE) && first_keypress == 0) {
         idx = map_cat_pos_in_holes();
         if(idx == 5) {
             move_misifu(8);
@@ -133,9 +133,10 @@ void level2_loop() {
         } else if(idx == 6) {
             move_misifu(12);
         }
-        while((joy)(&joy_keys) != 0) {
+    }
 
-        }
+    if(!(in & IN_STICK_FIRE)) {
+        first_keypress = 0;
     }
 
     move_broom();
@@ -144,6 +145,7 @@ void level2_loop() {
 
 void  print_background_level2() {
   level = 2;
+  first_keypress = 0;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_RED,
                   ' ' );
