@@ -108,16 +108,20 @@ void  print_cubo(uint8_t x) {
 }
 
 
-void paint_window(uint8_t num, uint16_t colour) {
+void paint_window(uint16_t colour) {
 
-  for (x = windows[num].x; x != windows[num].x + 5; ++x) {
+  if(opened_window > 11) {
+    return;
+  }
+
+  for (x = windows[opened_window].x; x != windows[opened_window].x + 5; ++x) {
     // top is equal
-    sp1_PrintAtInv(windows[num].y, x, colour, 'N');
-    if (num > 7) {
+    sp1_PrintAtInv(windows[opened_window].y, x, colour, 'N');
+    if (opened_window > 7) {
         // bottom varies
-        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'N');
+        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, 'N');
     } else {
-        sp1_PrintAtInv(windows[num].y + 1, x, colour, 'M');
+        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, 'M');
     }
   }
 }
@@ -203,17 +207,18 @@ void  print_background_lvl1() {
    idx_j = 4;
    idx = 2;
    // define how to paint windows
-   for(frame = 0; frame != 12; ++frame) {
-      windows[frame].x = idx;
-      windows[frame].y = idx_j;
+   for(opened_window = 0; opened_window != 12; ++opened_window) {
+      windows[opened_window].x = idx;
+      windows[opened_window].y = idx_j;
       idx = idx + 8;
       if (idx >= 32) {
         idx = 2;
         idx_j = idx_j + 4;
       }
 
-      paint_window(frame, PAPER_CYAN);
+      paint_window(PAPER_CYAN);
    }
+   opened_window = UNDEF;
 
    reset_misifu_position();
    bincat_appears = NONE;
@@ -309,7 +314,7 @@ void anim_windows() {
         if(opened_window < 12) {
             // makes the window to be opened for about 20 frames
             opened_window_frames = 50;
-            paint_window(opened_window, PAPER_BLACK);
+            paint_window(PAPER_BLACK);
             aux_object.y = windows[opened_window].y;
             aux_object.x = windows[opened_window].x;
             horizontal_direction = NONE;
@@ -359,8 +364,8 @@ void anim_windows() {
     }
     // end of windows
     if (opened_window_frames == 1) {
-        paint_window(opened_window, PAPER_CYAN);
-        opened_window = NONE;
+        paint_window(PAPER_CYAN);
+        opened_window = UNDEF;
         opened_window_frames = NONE;
         aux_object.offset = RIGHTC1;
         // move outside of screen
