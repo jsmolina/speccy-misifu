@@ -1,11 +1,11 @@
 VT_SOUND_LIB_SDCC_IY := ./ay
 # ./bas2tap -a loader.bas
 compile:
-	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=screen.scr -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -create-app
+	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=screen.scr -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu48k -create-app
 	echo "Done"
 
 develop:
-	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu -pragma-include:zpragma.inc -create-app
+	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu48k -pragma-include:zpragma.inc -create-app
 	echo "Done"
 
 sprites: prota dogsprites bincat clothes auxiliar protaswim
