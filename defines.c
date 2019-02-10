@@ -410,8 +410,12 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        in_wait_nokey();
-        paws = 1;
+        print_background_level_last();
+        //in_wait_nokey();
+        //paws = 1;
+    }
+    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
+        print_background_level7();
     }
 }
 
@@ -500,13 +504,15 @@ void dog_checks() {
     }
     // check if dog should appear
     if (enemy_apears != YES && first_keypress != NONE) {
-        enemy_apears = random_value % 100;
+        if(random_value < 3) {
+            enemy_apears = YES;
+        }
     }
     return;
 }
 
 static void stop_jump_if_needed(uint8_t max_jump) {
-    if (misifu.initial_jump_y - misifu.y >= max_jump || misifu.x > 28) {
+    if ((misifu.initial_jump_y - misifu.y) >= max_jump || misifu.x > 28) {
         misifu.state = FALLING;
         misifu.draw_additional = NONE;
     }

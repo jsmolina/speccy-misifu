@@ -134,7 +134,7 @@ void detect_fall_in_hearts() {
 
     idx = misifu.x - 2;
     // todo this is not always working, maybe related to painting?
-    if (floor_holes[idx_j][idx] == 0) {
+    if (floor_holes[idx_j][idx] == 0 && floor_holes[idx_j][idx + 1] == 0) {
         misifu.state = FALLING;
         if (misifu.y >= FLOOR_Y) {
             get_out_of_level_generic(FALLING);
@@ -198,7 +198,7 @@ inline void heavencat_on_move() {
 void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
-    if (aux_object.x == 33 && random_value < 33 && (random_value & 1) == 0) {
+    if (aux_object.x == 33 && random_value < 29 && (tick & 1) == 0) {
         aux_object.x = random_value;
         aux_object.y = 0;
 
@@ -217,7 +217,6 @@ void throw_cupid_arrow() {
             ++aux_object.x;
         } else {
             --aux_object.x;
-
         }
 
         // hearts y are 23, 19, 15, 11, 7
