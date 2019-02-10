@@ -412,7 +412,7 @@ void check_bincat() {
         if (bincat_appears < 1) {
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
             bincat_appears = NONE;
-            // todo migh broke something bincat_in_bin = 0;
+            bincat_in_bin = 0;
         }
     }
 }
