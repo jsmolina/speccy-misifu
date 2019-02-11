@@ -502,8 +502,8 @@ void dog_checks() {
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
     }
     // check if dog should appear
-    if (enemy_apears != YES && first_keypress != NONE) {
-        if(random_value < 3) {
+    if (enemy_apears != YES) {
+        if(random_value < 10) {
             enemy_apears = YES;
         }
     }
