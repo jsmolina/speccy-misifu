@@ -105,9 +105,9 @@ void print_background_level_last() {
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
-  udgxs[0] = udgxs[1] = udgxs[2] = udgxs[3] = 5;
   level_x_max = 25;
   level_x_min = 3;
+  aux_object.offset = AUX_ARROWLEFT;
   sp1_UpdateNow();
 }
 
