@@ -76,6 +76,13 @@ void print_background_level_last() {
     paint_cupid(0, idx_j);
   }
 
+  frame = 6;
+  for(idx_j = 0; idx_j != 4; ++idx_j) {
+      windows[idx_j].x = (rand() % 19) + 5;
+      windows[idx_j].y = frame;
+      frame += 4;
+  }
+
     sp1_PrintAt( 23, 6, INK_RED | PAPER_GREEN, 'B');
   // frame = floor
   frame = 4;
@@ -152,42 +159,41 @@ void detect_fall_in_hearts() {
     }
 }
 
-
-static void print_heavencats(uint8_t clean) {
-    idx_j = 6;
-    for (idx = 0; idx != 4; ++idx) {
-        if (clean == 1) {
-            // used for simulating the animation with udg
-            sp1_PrintAtInv( idx_j, udgxs[idx],  PAPER_GREEN, ' ');
-            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  PAPER_GREEN, ' ');
-        } else {
-            sp1_PrintAtInv( idx_j, udgxs[idx],  INK_BLACK | PAPER_GREEN, 'L');
-            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  INK_BLACK  | PAPER_GREEN, 'M');
-        }
-        idx_j += 4;
+static inline uint8_t rand_cat_to_move() {
+    if(random_value < 50) {
+        return 0;
+    } else if(random_value < 100) {
+        return 1;
+    } else if(random_value < 150) {
+        return 2;
+    } else if(random_value < 200) {
+        return 3;
     }
+    return UNDEF;
+}
+
+static void print_heavencat(uint8_t to_print1, uint8_t to_print2) {
+    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x, PAPER_GREEN, to_print1);
+    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + 1, PAPER_GREEN, to_print2);
 }
 
 
 inline void heavencat_on_move() {
     // clean
-    print_heavencats(1);
-
-    if(frame == 3) {
-        idx_j = random_value % 4;
-        ++udgxs[idx_j];
-        if(udgxs[idx_j] > 25) {
+    idx_j = rand_cat_to_move();
+    if(idx_j != UNDEF) {
+        print_heavencat(' ', ' ');
+        ++windows[idx_j].x;
+        if(windows[idx_j].x > 25) {
             // if reaching right, return left
-            udgxs[idx_j] = 5;
+            windows[idx_j].x = 5;
         }
+        print_heavencat('L', 'M');
     }
-
-    // repaint
-    print_heavencats(0);
 
     // detect collision with misifu
     idx_j = lvl3_y_to_idj(misifu.y);
-    if(idx_j < 4 && abs(misifu.x - udgxs[idx_j]) < 2) {
+    if(idx_j < 4 && abs(misifu.x - windows[idx_j].x) < 2) {
         misifu.state = FALLING;
         bit_beepfx_di_fastcall(BEEPFX_HIT_1);
     }

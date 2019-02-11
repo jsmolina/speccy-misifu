@@ -70,9 +70,8 @@ static inline void drink_milk_or_got_awaken(uint8_t index) {
     } else {
         --horizontal_direction;
         bit_beepfx_di_fastcall(BEEPFX_GULP);
-        misifu.x = 0;
-        misifu.y = 15;
-        misifu.state = FALLING;
+        misifu.state = JUMPING_PUSHED;
+        misifu.draw_additional = JUMP_LEFT;
 
         if(horizontal_direction == 0) {
             get_out_of_level_generic(DOG_AWAKEN);

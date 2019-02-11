@@ -299,11 +299,10 @@ void loose_a_live() {
 void reset_misifu_position() {
   misifu.in_bin = NONE;
   misifu.x = 0;
-  misifu.y = FLOOR_Y;
+  misifu.y = 18;
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
-  misifu.offset = RIGHTC1;
-  misifu.state = NONE;
+  misifu.state = FALLING_FLOOR;
   aux_object.offset = AUX_BROOM;
   aux_object.x = 33;
   x_malo = 33;
