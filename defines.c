@@ -409,12 +409,8 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        print_background_level_last();
-        //in_wait_nokey();
-        //paws = 1;
-    }
-    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
-        print_background_level7();
+        in_wait_nokey();
+        paws = 1;
     }
 }
 
