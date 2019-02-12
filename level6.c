@@ -29,7 +29,7 @@ void  print_background_level6() {
   reset_misifu_position();
   // cage is in 25 position
   windows[0].x = 25;
-  windows[0].y = 0;
+  windows[0].y = 7;
   windows[0].has_item = BIRD; // bird is inside cage
 }
 
@@ -52,8 +52,8 @@ static void check_cage_and_bird() {
             windows[0].x = 0;
         }
 
-        if(windows[0].y > 17) {
-            windows[0].y = 0;
+        if(windows[0].y > 19) {
+            windows[0].y = 7;
         }
 
         if(abs(windows[0].y - misifu.y) < 2 && abs(windows[0].x - misifu.x) < 2) {
