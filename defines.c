@@ -299,11 +299,10 @@ void loose_a_live() {
 void reset_misifu_position() {
   misifu.in_bin = NONE;
   misifu.x = 0;
-  misifu.y = FLOOR_Y;
+  misifu.y = 18;
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
-  misifu.offset = RIGHTC1;
-  misifu.state = NONE;
+  misifu.state = FALLING_FLOOR;
   aux_object.offset = AUX_BROOM;
   aux_object.x = 33;
   x_malo = 33;
@@ -410,8 +409,12 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        in_wait_nokey();
-        paws = 1;
+        print_background_level_last();
+        //in_wait_nokey();
+        //paws = 1;
+    }
+    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
+        print_background_level7();
     }
 }
 
@@ -499,14 +502,16 @@ void dog_checks() {
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
     }
     // check if dog should appear
-    if (enemy_apears != YES && first_keypress != NONE) {
-        enemy_apears = random_value % 100;
+    if (enemy_apears != YES) {
+        if(random_value < 10) {
+            enemy_apears = YES;
+        }
     }
     return;
 }
 
 static void stop_jump_if_needed(uint8_t max_jump) {
-    if (misifu.initial_jump_y - misifu.y >= max_jump || misifu.x > 28) {
+    if ((misifu.initial_jump_y - misifu.y) >= max_jump || misifu.x > 28) {
         misifu.state = FALLING;
         misifu.draw_additional = NONE;
     }

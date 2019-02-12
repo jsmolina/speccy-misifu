@@ -38,6 +38,15 @@ static void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row + 2, col + 2, INK_RED | PAPER_GREEN, 'K');
 }
 
+static void assign_holes() {
+    if(frame == 4 || (random_value & 1) == 0 ) {
+        floor_holes[frame][idx_j - 4] = 1;
+        sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
+    } else {
+        floor_holes[frame][idx_j - 4] = 0;
+        sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN, 'A');
+    }
+}
 
 void print_background_level_last() {
   level = 10;
@@ -76,21 +85,24 @@ void print_background_level_last() {
     paint_cupid(0, idx_j);
   }
 
+  frame = 6;
+  for(idx_j = 0; idx_j != 4; ++idx_j) {
+      windows[idx_j].x = (rand() % 19) + 5;
+      windows[idx_j].y = frame;
+      frame += 4;
+  }
+
     sp1_PrintAt( 23, 6, INK_RED | PAPER_GREEN, 'B');
   // frame = floor
   frame = 4;
 
   for(idx=23; idx != 3; idx = idx - 4) {
 
-     for (idx_j=4; idx_j != 28; ++idx_j ) {
+     for (idx_j=4; idx_j != 28; ++idx_j) {
         random_value = rand();
-        if(frame == 4 || (random_value & 1) == 0 ) {
-            floor_holes[frame][idx_j - 4] = 1;
-            sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
-        } else {
-            floor_holes[frame][idx_j - 4] = 0;
-            sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN, 'A');
-        }
+        assign_holes();
+        ++idx_j;
+        assign_holes();
 
      }
      --frame;
@@ -98,9 +110,9 @@ void print_background_level_last() {
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
-  udgxs[0] = udgxs[1] = udgxs[2] = udgxs[3] = 5;
   level_x_max = 25;
   level_x_min = 3;
+  aux_object.offset = AUX_ARROWLEFT;
   sp1_UpdateNow();
 }
 
@@ -134,7 +146,7 @@ void detect_fall_in_hearts() {
 
     idx = misifu.x - 2;
     // todo this is not always working, maybe related to painting?
-    if (floor_holes[idx_j][idx] == 0) {
+    if (floor_holes[idx_j][idx] == 0 && floor_holes[idx_j][idx + 1] == 0) {
         misifu.state = FALLING;
         if (misifu.y >= FLOOR_Y) {
             get_out_of_level_generic(FALLING);
@@ -145,49 +157,46 @@ void detect_fall_in_hearts() {
             get_out_of_level_generic(LEVELFINISHED); // yayyy
             return;
         }
-        zx_border(INK_BLACK);
         misifu.state = CAT_ON_HIGH;
         misifu.draw_additional = CAT_IN_ROPE;
         misifu.offset = BORED;
     }
 }
 
-
-static void print_heavencats(uint8_t clean) {
-    idx_j = 6;
-    for (idx = 0; idx != 4; ++idx) {
-        if (clean == 1) {
-            // used for simulating the animation with udg
-            sp1_PrintAtInv( idx_j, udgxs[idx],  PAPER_GREEN, ' ');
-            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  PAPER_GREEN, ' ');
-        } else {
-            sp1_PrintAtInv( idx_j, udgxs[idx],  INK_BLACK | PAPER_GREEN, 'L');
-            sp1_PrintAtInv( idx_j, udgxs[idx] + 1,  INK_BLACK  | PAPER_GREEN, 'M');
-        }
-        idx_j += 4;
+static inline uint8_t rand_cat_to_move() {
+    if(random_value < 50) {
+        return 0;
+    } else if(random_value < 100) {
+        return 1;
+    } else if(random_value < 150) {
+        return 2;
+    } else  {
+        return 3;
     }
+}
+
+static void print_heavencat(uint8_t to_print1, uint8_t to_print2) {
+    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x, PAPER_GREEN, to_print1);
+    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + 1, PAPER_GREEN, to_print2);
 }
 
 
 inline void heavencat_on_move() {
     // clean
-    print_heavencats(1);
-
-    if(frame == 3) {
-        idx_j = random_value % 4;
-        ++udgxs[idx_j];
-        if(udgxs[idx_j] > 25) {
+    idx_j = rand_cat_to_move();
+    if(idx_j != UNDEF) {
+        print_heavencat(' ', ' ');
+        ++windows[idx_j].x;
+        if(windows[idx_j].x > 25) {
             // if reaching right, return left
-            udgxs[idx_j] = 5;
+            windows[idx_j].x = 5;
         }
+        print_heavencat('L', 'M');
     }
-
-    // repaint
-    print_heavencats(0);
 
     // detect collision with misifu
     idx_j = lvl3_y_to_idj(misifu.y);
-    if(idx_j < 4 && abs(misifu.x - udgxs[idx_j]) < 2) {
+    if(idx_j < 4 && abs(misifu.x - windows[idx_j].x) < 2) {
         misifu.state = FALLING;
         bit_beepfx_di_fastcall(BEEPFX_HIT_1);
     }
@@ -198,26 +207,25 @@ inline void heavencat_on_move() {
 void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
-    if (aux_object.x == 33 && random_value < 33 && (random_value & 1) == 0) {
+    if (aux_object.x == 33 && random_value > 2 && random_value < 27 && (tick & 1) == 0) {
         aux_object.x = random_value;
         aux_object.y = 0;
 
         if(aux_object.x > 16) {
-            horizontal_direction = LEFT;
             aux_object.offset = AUX_ARROWLEFT;
         } else {
-            horizontal_direction = RIGHT;
             aux_object.offset = AUX_ARROWRIGHT;
         }
     }
 
     if (aux_object.y < 25) {
         ++aux_object.y;
-        if (horizontal_direction == RIGHT) {
-            ++aux_object.x;
-        } else {
-            --aux_object.x;
-
+        if((random_value & 1) == 0) {
+            if (aux_object.offset == AUX_ARROWRIGHT) {
+                ++aux_object.x;
+            } else {
+                --aux_object.x;
+            }
         }
 
         // hearts y are 23, 19, 15, 11, 7
@@ -233,6 +241,10 @@ void throw_cupid_arrow() {
         aux_object.x = 33;
     }
     sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+
+    if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+        misifu.state = FALLING;
+    }
 
     heavencat_on_move();
 }
