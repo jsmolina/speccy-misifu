@@ -5,7 +5,7 @@ compile:
 	echo "Done"
 
 develop:
-	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -O3 @zproject.lst -o misifu48k -pragma-include:zpragma.inc -create-app
+	zcc +zx -v -clib=sdcc_iy -Cz--screen=screen.scr -startup=31 -DWFRAMES=3 -SO3 @zproject.lst -o misifu48k -pragma-include:zpragma.inc -create-app
 	echo "Done"
 
 sprites: prota dogsprites bincat clothes auxiliar protaswim
