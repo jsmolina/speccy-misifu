@@ -38,6 +38,15 @@ static void paint_cupid(uint8_t row, uint8_t col) {
     sp1_PrintAt( row + 2, col + 2, INK_RED | PAPER_GREEN, 'K');
 }
 
+static void assign_holes() {
+    if(frame == 4 || (random_value & 1) == 0 ) {
+        floor_holes[frame][idx_j - 4] = 1;
+        sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
+    } else {
+        floor_holes[frame][idx_j - 4] = 0;
+        sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN, 'A');
+    }
+}
 
 void print_background_level_last() {
   level = 10;
@@ -89,15 +98,11 @@ void print_background_level_last() {
 
   for(idx=23; idx != 3; idx = idx - 4) {
 
-     for (idx_j=4; idx_j != 28; ++idx_j ) {
+     for (idx_j=4; idx_j != 28; ++idx_j) {
         random_value = rand();
-        if(frame == 4 || (random_value & 1) == 0 ) {
-            floor_holes[frame][idx_j - 4] = 1;
-            sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
-        } else {
-            floor_holes[frame][idx_j - 4] = 0;
-            sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN, 'A');
-        }
+        assign_holes();
+        ++idx_j;
+        assign_holes();
 
      }
      --frame;
@@ -152,7 +157,6 @@ void detect_fall_in_hearts() {
             get_out_of_level_generic(LEVELFINISHED); // yayyy
             return;
         }
-        zx_border(INK_BLACK);
         misifu.state = CAT_ON_HIGH;
         misifu.draw_additional = CAT_IN_ROPE;
         misifu.offset = BORED;
@@ -166,10 +170,9 @@ static inline uint8_t rand_cat_to_move() {
         return 1;
     } else if(random_value < 150) {
         return 2;
-    } else if(random_value < 200) {
+    } else  {
         return 3;
     }
-    return UNDEF;
 }
 
 static void print_heavencat(uint8_t to_print1, uint8_t to_print2) {
@@ -204,25 +207,25 @@ inline void heavencat_on_move() {
 void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
-    if (aux_object.x == 33 && random_value < 29 && (tick & 1) == 0) {
+    if (aux_object.x == 33 && random_value > 2 && random_value < 27 && (tick & 1) == 0) {
         aux_object.x = random_value;
         aux_object.y = 0;
 
         if(aux_object.x > 16) {
-            horizontal_direction = LEFT;
             aux_object.offset = AUX_ARROWLEFT;
         } else {
-            horizontal_direction = RIGHT;
             aux_object.offset = AUX_ARROWRIGHT;
         }
     }
 
     if (aux_object.y < 25) {
         ++aux_object.y;
-        if (horizontal_direction == RIGHT) {
-            ++aux_object.x;
-        } else {
-            --aux_object.x;
+        if((random_value & 1) == 0) {
+            if (aux_object.offset == AUX_ARROWRIGHT) {
+                ++aux_object.x;
+            } else {
+                --aux_object.x;
+            }
         }
 
         // hearts y are 23, 19, 15, 11, 7
@@ -238,6 +241,10 @@ void throw_cupid_arrow() {
         aux_object.x = 33;
     }
     sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+
+    if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+        misifu.state = FALLING;
+    }
 
     heavencat_on_move();
 }
