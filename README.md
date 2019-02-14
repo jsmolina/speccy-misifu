@@ -96,7 +96,7 @@ Third, because `misifu` is a very affectionate way of calling a cat in Spain, my
 
 # Appearances on media
 Indieretronews:
-http://www.indieretronews.com/2019/01/alley-cat-ataridos-cat-classic-as-128k.html?m=1&fbclid=IwAR0591Jd0-5rJiN0v3USjmDnAUsBFHzesYJykhCQXtcHl9yvnhG0GGagOb0
+http://www.indieretronews.com/2019/01/alley-cat-ataridos-cat-classic-as-128k.html
 
 Some youtube videos that game appeared:
 
