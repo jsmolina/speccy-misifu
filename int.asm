@@ -67,7 +67,7 @@ isr:
    inc a
    ld (_tick),a
    
-   
+
    
 isr_skip:
 
