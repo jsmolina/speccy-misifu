@@ -91,7 +91,6 @@ int main()
         detect_fall_in_hearts();
     }
 
-
     ++frame;
     if (frame >= 4) {
         frame = 0;
