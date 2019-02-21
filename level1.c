@@ -277,21 +277,13 @@ static void increase_indexes_clothes(uint8_t idx) {
 void move_clothes() {
 // now take decisions
     // move clothes to the right
-    if (random_value > 125 && row1_moving == NONE) {
-        row1_moving = 20;
-    } else if (row1_moving != NONE) {
-        //--row1_moving in int.c
-        // check if clothes should move
-        increase_indexes_clothes(0);
-        increase_indexes_clothes(1);
-        // now move cat
-        if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
-             ++misifu.x;
-        } else if(misifu.draw_additional == CAT_IN_ROPE2) {
-            --misifu.x;
-        }
-
-
+    increase_indexes_clothes(0);
+    increase_indexes_clothes(1);
+    // now move cat
+    if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+         ++misifu.x;
+    } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+        --misifu.x;
     }
 
 }

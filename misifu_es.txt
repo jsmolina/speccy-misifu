@@ -1,0 +1,15 @@
+Historia
+La pérrada ha raptado a Fred, y sólo lo liberará si destrozas las habitaciones del edificio del propietario del banco que ha deshauciado a sus amigos. ¿Cómo lo harás? Como ya sabes, ¡a lo gatuno, misifu!
+
+Controles: OPQA ESPACIO / Kempston (0 = pausa)
+
+- Alley. intenta saltar en una ventana, pero cuidado con el perro ya que intentará morderte y quitarte una vida!
+- Queso. Intenta comerte todos los ratones. Algunos agujeros están conectados si pulsas espacio, tendrás que descubrir cuáles.
+- Pecera. Entra en la pecera saltando sobre ella desde más arriba. Dentro de la pecera: cómete todos los peces, pero cuidado con las anguilas electricas y el oxígeno.
+- Estantería. Rompe los jarrones de la estanteria, pero cuidado con la araña... y como siempre, el perro!
+- Jaula/pajaro. Tira la jaula, cómete el pájaro y ojo con el perro.
+- Perros durmiendo. Presiona espacio en los bebederos, pero cuidado con tocar a los perros tres veces, o los levantarás... y ya sabemos que eso no acaba bien.
+- Corazones. Este es el último nivel, y el más dificil. Consigue llegar a lo más arriba y rescatarás a Fred, para ver el final.
+El juego empezará de nuevo en el callejón.
+
+aunque se abran distintas ventanas... hasta que no superes un nivel, no podrás acceder al siguiente.

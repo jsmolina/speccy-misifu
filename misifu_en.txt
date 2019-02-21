@@ -1,0 +1,14 @@
+The dogad has kidnapped Fred, and they will only free him if you destroy the rooms of a building. This building belongs to the bank that evicted 'dogad' friends. How do you do it? Just be a cat, misifu!!
+
+Controls: OPQA SPACE  / Kempston (0 = pause)
+
+- Alley. Try to jump inside a window, but be aware of the dog, he will try to bite you and take a live.
+- Cheese. Try to eat ALL the mousies. Some holes are connected if you press space, just discover them
+- Fishtank. Enter inside fishtank jumping inside it. Inside fishtank: eat all fishes but be aware of eels and oxygen.
+- Bookself. Destroy the vases in the bookself, but be aware of the spider, and the dog!
+- Bird. Throw the birdcage, eat the bird!
+- Sleeping dogs. Press space when on drinkers, be aware of touching them three times, or you'll awake them... and that's not ending so well.
+- Hearts. That's the last level and thus the most difficult. Reach the topmost without falling and you'll rescue Fred and see the ending.
+Game will restart from Alley after hearts.
+
+you won't be able to access next level until current one is completed, nevermind on which window was hit.
