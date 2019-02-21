@@ -493,7 +493,6 @@ void dog_checks() {
 
             get_out_of_level_generic(FIGHTING);
             idx = 1;
-            return;
         }
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
     }

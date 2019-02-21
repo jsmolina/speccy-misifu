@@ -281,17 +281,16 @@ void move_clothes() {
         row1_moving = 20;
     } else if (row1_moving != NONE) {
         //--row1_moving in int.c
-        if ((row1_moving & 1) == 0) {
-            // check if clothes should move
-            increase_indexes_clothes(0);
-            increase_indexes_clothes(1);
-            // now move cat
-            if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
-                 ++misifu.x;
-            } else if(misifu.draw_additional == CAT_IN_ROPE2) {
-                --misifu.x;
-            }
+        // check if clothes should move
+        increase_indexes_clothes(0);
+        increase_indexes_clothes(1);
+        // now move cat
+        if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+             ++misifu.x;
+        } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+            --misifu.x;
         }
+
 
     }
 
