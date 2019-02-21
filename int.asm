@@ -67,15 +67,7 @@ isr:
    inc a
    ld (_tick),a
    
-   ; moving
    
-   ld a,(_row1_moving)
-   
-   or a                        ; NONE = 0
-   jr z, isr_skip
-
-   dec a
-   ld (_row1_moving),a
    
 isr_skip:
 
