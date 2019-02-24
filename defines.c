@@ -299,7 +299,7 @@ void loose_a_live() {
 void reset_misifu_position() {
   misifu.in_bin = NONE;
   misifu.x = 0;
-  misifu.y = 18;
+  misifu.y = FLOOR_Y - 1;
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.state = FALLING_FLOOR;
