@@ -42,6 +42,7 @@ _setup_int:
 SECTION code_crt_common  ;; place very low in memory, out of top 16k
 
 PUBLIC isr
+PUBLIC isr_skip
 
 EXTERN _vt_play, _vt_play_isr_enabled
 EXTERN _tick, _row1_moving
@@ -72,19 +73,19 @@ isr:
 isr_skip:
 
    ; music
-   
+
    ld a,0x80
    ld i,a                      ; point I at uncontended bank
-   
+
    ld a,6
    call enable_bank_n          ; bank 6 in top 16k, stack moved
-   
+
    ld hl,(_vt_play_isr_enabled)
-   
+
    ld a,h
    or l
    call nz, _vt_play
-   
+
    call restore_bank_0         ; bank 0 in top 16k, stack restored
    
    ld a,0xd0
