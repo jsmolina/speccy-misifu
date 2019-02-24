@@ -221,7 +221,8 @@ void  print_background_lvl1() {
    opened_window = UNDEF;
 
    reset_misifu_position();
-   bincat_appears = NONE;
+   bincat_appears = 1;
+   bincat_in_bin = NONE;
 
    level_x_max = 28;
    level_x_min = 0;
