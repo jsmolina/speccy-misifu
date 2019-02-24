@@ -17,31 +17,8 @@
 #include "defines.h"
 
 
-extern uint8_t cartoon0[];
-
-void show_intro() {
-    __asm
-    extern enable_bank_n
-   di
-   ld a,0x80
-   ld i,a                      ; point I at uncontended bank
-
-   ld a,6
-   call enable_bank_n          ; bank 6 in top 16k, stack moved
-    __endasm;
-    memcpy(16384, cartoon0, 6900);
-    __asm
-    extern restore_bank_0
-    call restore_bank_0
-    ei
-    __endasm;
-
-}
-
 int main()
 {
-  show_intro();
-  in_wait_key();
 
   // interrupt mode 2
   setup_int();
