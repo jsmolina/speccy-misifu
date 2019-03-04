@@ -130,9 +130,9 @@ JOYFUNC joy;
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
 
+unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair";
 
 void all_lives_lost() {
-  uint16_t has_kempston = in_stick_kempston();
 
   print_background_lvl1();
 
@@ -140,22 +140,37 @@ void all_lives_lost() {
   intrinsic_ei();
 
   sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
+  idx_j = 3;
+  x = 10;
+  for(idx = 0; idx != 33; ++idx ) {
+    if(show_menu[idx] == '-') {
+        ++idx_j;
+        x = 10;
+        ++idx;
+    }
+    sp1_PrintAtInv(idx_j, ++x, INK_WHITE | PAPER_BLACK, show_menu[idx]);
+  }
+
   sp1_UpdateNow();
 
 
   // todo think on animating the cat a bit in 'demo mode'
   while(1) {
       // todo check joystick fire also so joystick is chosen
-      if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
+      if(in_key_pressed(IN_KEY_SCANCODE_1)) {
           joy = (JOYFUNC)in_stick_keyboard;
           break;
-      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_FIRE)) {
+      } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
           joy = (JOYFUNC)in_stick_kempston;
+          break;
+      } else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
+          joy = (JOYFUNC)in_stick_sinclair1;
           break;
       }
   }
   first_keypress = tick;
   srand(first_keypress);
+  print_background_lvl1();
 
   intrinsic_di();
   ay_vt_init(music_module);
@@ -411,6 +426,11 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
+    }
+
+    if(in_key_pressed(IN_KEY_SCANCODE_r)) {
+        lives = 0;
+        all_lives_lost();
     }
 }
 
