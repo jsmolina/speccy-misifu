@@ -41,15 +41,17 @@ ES
 El juego empezará de nuevo en el callejón.
 
 PT
-- Alley. Tenta pular em uma janela, mas cuidado com o cão já que tentará tirar-lhe uma vida!
-- Queijo. Tenta comer todos os ratos. Alguns buracos estão conectados si você aperta espaço, você terá que descobrir quais. 
-- Aquário. Entra no aquário pulando sobre ele um pouco mais de cima. Dentro do aquário: coma todos os peixes, mas cuidado com as enguias elétricas e com o oxigênio. 
-- Estante. Quebre os jarros da estante, mas cuidado com a aranha... e como sempre, com o cão!
-- Gaiola/Pássaro. Quebre a gaiola, coma o pássaro e cuidado com o cão. 
-- Cães dormindo. Pressione espaço nos bebedouros, mas cuidado para não tocar os cães três vezes ou você os acordará... e já sabemos que isso não termina bem. 
-- Corações. Este é o último nível e o mais difícil. Tente chegar o mais alto possível e resgate Fred para ver o final. O jogo começará novamente no beco. 
+Controles: OPQA / Kempston (0 = pausa)
 
-Apesar de que se abram diferentes janelas... até que você não termines este nível não poderá passar ao próximo. 
+- Ruela. Tenta pular por uma janela, mas cuidado com o cão que tentará tirar-te a vida!
+- Queijo. Tenta comer todos os ratos. Alguns buracos estão conectados entre si, terás que descobrir quais.
+- Aquário. Entra no aquário, saltando de cima. Dentro do aquário: come todos os peixes, mas cuidado com as enguias elétricas e com o oxigénio.
+- Estante. Quebra os jarros da estante, mas cuidado com a aranha... E como sempre, com o cão!
+- Gaiola/Pássaro. Quebra a gaiola, come o pássaro e cuidado com o cão.
+- Cães a dormir. Pressiona a tecla de “espaço” nos bebedouros, mas cuidado para não tocares os cães três vezes ou irás acordá-los... E já sabemos que isso não termina bem.
+- Corações. Este é o último nível e o mais difícil. Tenta chegar o mais alto possível e salvar Fred para ver o final. O jogo começa então novamente na ruela.
+
+Apesar de se abrirem diferentes janelas... Só após terminares este nível, poderás passar ao próximo. 
 
 
 # Building
