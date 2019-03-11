@@ -164,7 +164,7 @@ void all_lives_lost() {
           joy = (JOYFUNC)in_stick_kempston;
           break;
       } else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
-          joy = (JOYFUNC)in_stick_sinclair1;
+          joy = (JOYFUNC)in_stick_sinclair2;
           break;
       }
   }
