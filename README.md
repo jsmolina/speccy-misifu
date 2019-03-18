@@ -53,7 +53,9 @@ Controles: OPQA / Kempston (0 = pausa)
 
 Apesar de se abrirem diferentes janelas... Só após terminares este nível, poderás passar ao próximo. 
 
+
 RU
+
 Догад похитил Фреда, и они освободят его, только если вы уничтожите комнаты здания. Это здание принадлежит банку, который выселит друзей Догада. Как ты сделаешь это? Просто будь кошкой, Мисифу !!
 
 Управление: OPQA SPACE / Kempston (0 = пауза)
