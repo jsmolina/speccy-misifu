@@ -7,7 +7,7 @@ const uint8_t udg_fishtank2[] = {0xfc, 0xce, 0xff, 0xff, 0x93, 0xfe, 0xf8, 0xe0}
 void  print_background_level3() {
   level = 3;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_MAGENTA,
+                  INK_BLACK | PAPER_YELLOW,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
@@ -17,16 +17,16 @@ void  print_background_level3() {
   sp1_TileEntry('A', udg_fishtank1);
   sp1_TileEntry('B', udg_fishtank2);
 
-  print_room_walls(12, PAPER_MAGENTA, INK_CYAN);
+  print_room_walls(12, PAPER_YELLOW, INK_BLUE);
 
   // paint the chair
-  paint_chair(17, 10, PAPER_MAGENTA, INK_CYAN);
+  paint_chair(17, 10, PAPER_YELLOW, INK_BLUE);
 
   // 17,22
-  paint_table(17, 22, PAPER_MAGENTA, INK_CYAN);
+  paint_table(17, 22, PAPER_YELLOW, INK_BLUE);
   // fishtank
-  sp1_PrintAt( 17, 22,  INK_CYAN | PAPER_MAGENTA, 'A');
-  sp1_PrintAt( 17, 23,  INK_CYAN | PAPER_MAGENTA, 'B');
+  sp1_PrintAt( 17, 22,  INK_BLUE | PAPER_YELLOW, 'A');
+  sp1_PrintAt( 17, 23,  INK_BLUE | PAPER_YELLOW, 'B');
 
   reset_misifu_position();
 

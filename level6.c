@@ -8,7 +8,7 @@ const uint8_t udg_birdcage2[] = {0xf0, 0xf, 0x3, 0xff, 0x3, 0xf, 0xff, 0xf0};
 
 void  print_background_level6() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_GREEN | PAPER_RED,
+                  INK_BLUE | PAPER_GREEN,
                   ' ' );
   sp1_Invalidate(&full_screen);
   level = 6;
@@ -19,13 +19,13 @@ void  print_background_level6() {
   level_x_max = 27;
   level_x_min = 0;
 
-  print_room_walls(20, PAPER_RED, INK_GREEN);
+  print_room_walls(20, PAPER_GREEN, INK_BLUE);
   // paint the chair
-  paint_chair(17, 22, PAPER_RED, INK_GREEN);
-  paint_table(17, 26, PAPER_RED, INK_GREEN);
+  paint_chair(17, 22, PAPER_GREEN, INK_BLUE);
+  paint_table(17, 26, PAPER_GREEN, INK_BLUE);
   // 18, 27
-  sp1_PrintAt(17, 26, INK_GREEN | PAPER_RED, 'C');
-  sp1_PrintAt(17, 27, INK_GREEN | PAPER_RED, 'D');
+  sp1_PrintAt(17, 26, INK_BLUE | PAPER_GREEN, 'C');
+  sp1_PrintAt(17, 27, INK_BLUE | PAPER_GREEN, 'D');
   reset_misifu_position();
   // cage is in 25 position
   windows[0].x = 25;
@@ -38,11 +38,11 @@ static void check_cage_and_bird() {
     if(misifu.y == 16 && abs(misifu.x - windows[0].x) < 2 && windows[0].has_item == BIRD) {
         windows[0].has_item = RIGHT;
         misifu.state = FALLING;
-        sp1_PrintAtInv(17, 26, INK_GREEN | PAPER_RED, ' ');
-        sp1_PrintAtInv(17, 27, INK_GREEN | PAPER_RED, ' ');
+        sp1_PrintAtInv(17, 26, INK_BLUE | PAPER_GREEN, ' ');
+        sp1_PrintAtInv(17, 27, INK_BLUE | PAPER_GREEN, ' ');
         bit_beepfx_di_fastcall(BEEPFX_DROP_1);
-        sp1_PrintAt(FLOOR_Y, 26, INK_GREEN | PAPER_RED, 'C');
-        sp1_PrintAt(FLOOR_Y, 27, INK_GREEN | PAPER_RED, 'D');
+        sp1_PrintAt(FLOOR_Y, 26, INK_BLUE | PAPER_GREEN, 'C');
+        sp1_PrintAt(FLOOR_Y, 27, INK_BLUE | PAPER_GREEN, 'D');
     }
 
     if(windows[0].has_item != BIRD) {

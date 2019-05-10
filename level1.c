@@ -66,45 +66,45 @@ uint8_t is_in_bin(uint8_t x_pos) {
 // todo add udg for numbers (score, lives)
 
 void  print_cubo(uint8_t x) {
-  sp1_PrintAt(22, x, INK_BLACK | PAPER_MAGENTA, 'L');
-  sp1_PrintAt(22, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
-  sp1_PrintAt(22, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
+  sp1_PrintAt(22, x, INK_BLACK | PAPER_GREEN, 'L');
+  sp1_PrintAt(22, x + 1, INK_BLACK | PAPER_GREEN, 'D');
+  sp1_PrintAt(22, x + 2, INK_BLACK | PAPER_GREEN, 'E');
 
-  sp1_PrintAt(21, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(21, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(21, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+  sp1_PrintAt(21, x, INK_BLACK | PAPER_GREEN, 'F');
+  sp1_PrintAt(21, x + 1, INK_BLACK | PAPER_GREEN, 'G');
+  sp1_PrintAt(21, x + 2, INK_BLACK | PAPER_GREEN, 'H');
 
-  sp1_PrintAt(20, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(20, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(20, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+  sp1_PrintAt(20, x, INK_BLACK | PAPER_GREEN, 'F');
+  sp1_PrintAt(20, x + 1, INK_BLACK | PAPER_GREEN, 'G');
+  sp1_PrintAt(20, x + 2, INK_BLACK | PAPER_GREEN, 'H');
   idx_j = 20;
   // onlidx_j second bin is higher
   if(x == HIGHER_BIN_X) {
       --idx_j;
-      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_GREEN, 'F');
+      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_GREEN, 'G');
+      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_GREEN, 'H');
 
       --idx_j;
-      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_GREEN, 'F');
+      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_GREEN, 'G');
+      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_GREEN, 'H');
   }
 
   --idx_j;
-  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'I');
-  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'J');
-  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'K');
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_GREEN, 'I');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_GREEN, 'J');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_GREEN, 'K');
 
   --idx_j;
   for (idx_j = idx_j; idx_j != 15; --idx_j) {
-    sp1_PrintAt( idx_j, x, PAPER_CYAN, 'V');
-    sp1_PrintAt( idx_j, x + 1, PAPER_CYAN, 'V');
-    sp1_PrintAt( idx_j, x + 2, PAPER_CYAN, 'V');
+    sp1_PrintAt( idx_j, x, PAPER_GREEN, 'V');
+    sp1_PrintAt( idx_j, x + 1, PAPER_GREEN, 'V');
+    sp1_PrintAt( idx_j, x + 2, PAPER_GREEN, 'V');
   }
-  sp1_PrintAt(idx_j, x, PAPER_CYAN, 'W');
-  sp1_PrintAt(idx_j, x + 1, PAPER_CYAN, 'W');
-  sp1_PrintAt(idx_j, x + 2, PAPER_CYAN, 'X');
+  sp1_PrintAt(idx_j, x, PAPER_GREEN, 'W');
+  sp1_PrintAt(idx_j, x + 1, PAPER_GREEN, 'W');
+  sp1_PrintAt(idx_j, x + 2, PAPER_GREEN, 'X');
 }
 
 
@@ -127,7 +127,7 @@ void paint_window(uint16_t colour) {
 }
 
 void print_lives() {
-    sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK, 48 + lives);
+    sp1_PrintAtInv( 17, 27, INK_GREEN | PAPER_BLACK, 48 + lives);
     repaint_lives = 0;
 }
 
@@ -137,7 +137,7 @@ void  print_background_lvl1() {
   zx_border(INK_BLACK);
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_MAGENTA,
+                  INK_WHITE | PAPER_BLUE,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
@@ -174,16 +174,16 @@ void  print_background_lvl1() {
       frame = is_in_bin(x - 1);
       if (frame == NONE) {
           if (x % 2 == 0) {
-             sp1_PrintAt(15, x,  PAPER_CYAN, 'W');
+             sp1_PrintAt(15, x,  PAPER_GREEN, 'W');
           } else if (x % 3 == 0) {
-            sp1_PrintAt(15, x,  PAPER_CYAN, 'Y');
+            sp1_PrintAt(15, x,  PAPER_GREEN, 'Y');
           } else {
-             sp1_PrintAt(15, x,  PAPER_CYAN, 'X');
+             sp1_PrintAt(15, x,  PAPER_GREEN, 'X');
           }
 
           for (idx_j=16; idx_j!=21; ++idx_j)
           {
-              sp1_PrintAt( idx_j, x,  PAPER_CYAN, 'V');
+              sp1_PrintAt( idx_j, x,  PAPER_GREEN, 'V');
           }
       } else if(frame == x) {
           print_cubo(x);
@@ -192,15 +192,15 @@ void  print_background_lvl1() {
 
   print_lives();
 
-  sp1_PrintAt( 17, 29, INK_CYAN | PAPER_BLACK, 'C');
-  sp1_PrintAt( 18, 30,  INK_CYAN | PAPER_BLACK, 'A');
-  sp1_PrintAt( 19, 31,  INK_CYAN | PAPER_BLACK, 'T');
+  sp1_PrintAt( 17, 29, PAPER_GREEN | PAPER_BLACK, 'C');
+  sp1_PrintAt( 18, 30,  PAPER_GREEN | PAPER_BLACK, 'A');
+  sp1_PrintAt( 19, 31,  PAPER_GREEN | PAPER_BLACK, 'T');
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
-    sp1_PrintAt(9, idx, INK_BLACK | PAPER_MAGENTA, 'R');
-    sp1_PrintAt(5, idx, INK_BLACK | PAPER_MAGENTA, 'R');
-    sp1_PrintAt(1, idx, INK_BLACK | PAPER_MAGENTA, 'R');
+    sp1_PrintAt(9, idx, INK_BLACK | PAPER_BLUE, 'R');
+    sp1_PrintAt(5, idx, INK_BLACK | PAPER_BLUE, 'R');
+    sp1_PrintAt(1, idx, INK_BLACK | PAPER_BLUE, 'R');
   }
 
 
@@ -216,7 +216,7 @@ void  print_background_lvl1() {
         idx_j = idx_j + 4;
       }
 
-      paint_window(PAPER_CYAN);
+      paint_window(PAPER_GREEN);
    }
    opened_window = UNDEF;
 
@@ -239,21 +239,21 @@ void  print_background_lvl1() {
 
 static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
     if(clean == 1) {
-        sp1_PrintAtInv(row, col, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row, col + 1, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row + 1, col, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row + 1, col + 1, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row, col, PAPER_BLUE, ' ');
+        sp1_PrintAtInv(row, col + 1, PAPER_BLUE, ' ');
+        sp1_PrintAtInv(row + 1, col, PAPER_BLUE, ' ');
+        sp1_PrintAtInv(row + 1, col + 1, PAPER_BLUE, ' ');
 
-        sp1_PrintAtInv(row, col + 3, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row, col + 5, PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv(row, col + 3, PAPER_BLUE, ' ');
+        sp1_PrintAtInv(row, col + 5, PAPER_BLUE, ' ');
     } else {
-        sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, 'O');
-        sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, 'P');
-        sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, 'Q');
-        sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, 'S');
+        sp1_PrintAtInv(row, col, INK_WHITE | PAPER_BLUE, 'O');
+        sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_BLUE, 'P');
+        sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_BLUE, 'Q');
+        sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_BLUE, 'S');
 
-        sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, 'U');
-        sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, 'Z');
+        sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_BLUE, 'U');
+        sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_BLUE, 'Z');
     }
 }
 
@@ -356,7 +356,7 @@ void anim_windows() {
     }
     // end of windows
     if (opened_window_frames == 1) {
-        paint_window(PAPER_CYAN);
+        paint_window(PAPER_GREEN);
         opened_window = UNDEF;
         opened_window_frames = NONE;
         aux_object.offset = RIGHTC1;

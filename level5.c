@@ -12,20 +12,20 @@ const uint8_t udg_spiderbook[] = {0xff, 0x0, 0xfe, 0x86, 0xfe, 0xfc, 0x0, 0xff};
 
 static void paint_plant(uint8_t row, uint8_t col, uint8_t clean) {
     if(clean == CLEAN) {
-        sp1_PrintAtInv( row, col, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv( row, col + 1, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv( row + 1, col, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row, col, INK_BLACK | PAPER_RED, ' ');
+        sp1_PrintAtInv( row, col + 1, INK_BLACK | PAPER_RED, ' ');
+        sp1_PrintAtInv( row + 1, col, INK_BLACK | PAPER_RED, ' ');
     } else {
-        sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, 'W');
-        sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, 'W');
-        sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_MAGENTA, 'Y');
+        sp1_PrintAt( row, col, INK_BLACK | PAPER_RED, 'W');
+        sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_RED, 'W');
+        sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_RED, 'Y');
     }
 }
 
 void  print_background_level5() {
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_CYAN | PAPER_MAGENTA,
+                  INK_CYAN | PAPER_RED,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
@@ -40,28 +40,28 @@ void  print_background_level5() {
   sp1_TileEntry('W', udg_spiderplant11);
   sp1_TileEntry('Y', udg_spiderplant21);
 
-  print_room_walls(8, PAPER_MAGENTA, INK_CYAN);
+  print_room_walls(8, PAPER_RED, INK_CYAN);
 
   // paint the chair
-  paint_chair(17, 10, PAPER_MAGENTA, INK_CYAN);
+  paint_chair(17, 10, PAPER_RED, INK_CYAN);
 
   level_x_max = 28;
   level_x_min = 0;
 
   for(idx_j = 5; idx_j != 20; ++idx_j ) {
-     sp1_PrintAt(idx_j, 18,  INK_BLACK | PAPER_MAGENTA, 'L');
+     sp1_PrintAt(idx_j, 18,  INK_BLACK | PAPER_RED, 'L');
 
      for(idx = 19; idx != 29; ++idx) {
         random_value = rand();
         if (random_value > 150) {
-            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'B');
+            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_RED, 'B');
         } else {
-            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'E');
+            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_RED, 'E');
         }
 
      }
 
-     sp1_PrintAt(idx_j, 29,  INK_BLACK | PAPER_MAGENTA, 'M');
+     sp1_PrintAt(idx_j, 29,  INK_BLACK | PAPER_RED, 'M');
   }
 
   paint_plant(3, 20, 0);

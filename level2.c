@@ -57,7 +57,7 @@ void detect_fall_in_hole_or_curtain() {
             windows[idx].has_item = 'Z'; // mark as already eaten
             // print then the mouse in the up side
             repaint_lives = 1;
-            sp1_PrintAtInv(1, 1 + eaten_items, INK_BLACK | PAPER_GREEN, 'B');
+            sp1_PrintAtInv(1, 1 + eaten_items, INK_BLACK | PAPER_YELLOW, 'B');
             bit_beepfx_di_fastcall(BEEPFX_SCORE);
             --eaten_items;
         }
@@ -110,7 +110,7 @@ void level2_loop() {
 
         for(idx_j = 0; idx_j != 8; ++idx_j) {
             idx = udgxs[idx_j];
-            sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, windows[idx].has_item);
+            sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_YELLOW, windows[idx].has_item);
         }
     }
 
@@ -168,24 +168,24 @@ void  print_background_level2() {
   udgxs[6] = 12;
   udgxs[7] = 6;
 
-  print_room_walls(20, PAPER_RED, INK_GREEN);
+  print_room_walls(20, PAPER_RED, INK_YELLOW);
 
   define_cheese_holes_pos();
 
   for (idx = 3; idx != 20; ++idx) {
 
     for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
-        sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN, 'C');
+        sp1_PrintAt( idx_j - 1, idx, PAPER_YELLOW, 'C');
     }
   }
   // paint holes
   for (idx = 0; idx != 14; ++idx) {
-    sp1_PrintAt( windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, 'A');
+    sp1_PrintAt( windows[idx].y, windows[idx].x, INK_BLACK | PAPER_YELLOW, 'A');
   }
 
   // paint the chair
-  paint_chair(17, 22, PAPER_RED, INK_GREEN);
-  paint_table(17, 26, PAPER_RED, INK_GREEN);
+  paint_chair(17, 22, PAPER_RED, INK_YELLOW);
+  paint_table(17, 26, PAPER_RED, INK_YELLOW);
 
   eaten_items = 4;
 

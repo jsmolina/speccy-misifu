@@ -191,7 +191,7 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
   (void)count;    /* Suppress compiler warning about unused parameter */
 
   c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_BLUE;
+  c->attr      = INK_CYAN;
 }
 
 static void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
