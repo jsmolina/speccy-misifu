@@ -76,6 +76,9 @@ You'll need z88dk, so you could download it from here:
 http://nightly.z88dk.org/
 (tested on v13056-e8264f0-20181009)
 
+If you get a version error compiling it, please download 
+https://github.com/stefanbylund/vt_sound then compile it, and copy lib/sdci_iy/vt_sound.lib into ay folder.
+
 Just execute :
 `$ make` 
 
