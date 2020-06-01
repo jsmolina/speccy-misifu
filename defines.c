@@ -130,7 +130,7 @@ JOYFUNC joy;
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
 
-unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair";
+unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v2";
 
 void all_lives_lost() {
 
@@ -142,7 +142,7 @@ void all_lives_lost() {
   sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
   idx_j = 3;
   x = 10;
-  for(idx = 0; idx != 33; ++idx ) {
+  for(idx = 0; idx != 36; ++idx ) {
     if(show_menu[idx] == '-') {
         ++idx_j;
         x = 10;
