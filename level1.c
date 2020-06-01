@@ -372,7 +372,7 @@ void check_bincat() {
 
             if (bincat_in_bin == HIGHER_BIN_X) {
                 // reused as row and also number of frames appearing
-                bincat_appears = 15;
+                bincat_appears = 16;
             } else {
                 bincat_appears = 17;
             }
