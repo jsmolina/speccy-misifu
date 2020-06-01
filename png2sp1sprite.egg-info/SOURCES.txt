@@ -1,7 +1,0 @@
-README.md
-png2sp1sprite.egg-info/PKG-INFO
-png2sp1sprite.egg-info/SOURCES.txt
-png2sp1sprite.egg-info/dependency_links.txt
-png2sp1sprite.egg-info/entry_points.txt
-png2sp1sprite.egg-info/requires.txt
-png2sp1sprite.egg-info/top_level.txt
