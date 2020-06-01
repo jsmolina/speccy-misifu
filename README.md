@@ -96,6 +96,7 @@ Contributions/suggestions are more than welcome!
 
 
 # Collaborators
+* jarlaxe, for the newer version with pixel-perfection sprites.
 * alvin, first for being author of the GREAT z88dk, and second for helping me with moving AY to bank 6.
 * ER on the graphic material.
 * nq for ingame music.
