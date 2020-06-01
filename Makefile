@@ -28,7 +28,7 @@ develop:
 sprites: prota dogsprites bincat clothes auxiliar protaswim
 
 prota:
-	png2sp1sprite ./sprites/cat_sprites.png -i sprite_protar -f 32 > ./build/protar.asm
+	png2sp1sprite ./sprites/cat_sprites.png -m ./sprites/cat_sprites_mask.png -i sprite_protar -f 32 > ./build/protar.asm
 
 protaswim:
 	png2sp1sprite ./sprites/cat_swimsprites.png --bit -i sprite_swim -f 32 > ./build/protaswim.asm
