@@ -76,6 +76,9 @@ You'll need z88dk, so you could download it from here:
 http://nightly.z88dk.org/
 (tested on v13056-e8264f0-20181009)
 
+If you get a version error compiling it, please download 
+https://github.com/stefanbylund/vt_sound then compile it, and copy lib/sdci_iy/vt_sound.lib into ay folder.
+
 Just execute :
 `$ make` 
 
@@ -93,6 +96,7 @@ Contributions/suggestions are more than welcome!
 
 
 # Collaborators
+* jarlaxe, for the newer version with pixel-perfection sprites.
 * alvin, first for being author of the GREAT z88dk, and second for helping me with moving AY to bank 6.
 * ER on the graphic material.
 * nq for ingame music.

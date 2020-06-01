@@ -3,6 +3,7 @@ VT_SOUND_LIB_SDCC_IY := ./ay
 compile:
 	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o misifu -lay/vt_sound_6.lib
 	ls *.bin
+	zobjcopy ay/vt_sound.lib --section code_user=BANK_6 --section data_user=BANK_6 --global "VT_INIT" --global "VT_MUTE" --global "_vt_play" --global "_vt_play_isr_enabled" ay/vt_sound_6.lib
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
@@ -15,6 +16,7 @@ develop:
 # -DWFRAMES=3
 	sudo nice -n -20 su jordism -c "zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --opt-code-size -zopt @zproject.lst -pragma-include:zpragma.inc -o misifu -lay/vt_sound_6.lib"
 	ls *.bin
+	zobjcopy ay/vt_sound.lib --section code_user=BANK_6 --section data_user=BANK_6 --global "VT_INIT" --global "VT_MUTE" --global "_vt_play" --global "_vt_play_isr_enabled" ay/vt_sound_6.lib
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
