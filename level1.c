@@ -67,30 +67,23 @@ uint8_t is_in_bin(uint8_t x_pos) {
 // todo add udg for numbers (score, lives)
 
 void  print_cubo(uint8_t x) {
-  sp1_PrintAt(22, x, INK_BLACK | PAPER_MAGENTA, 'L');
-  sp1_PrintAt(22, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
-  sp1_PrintAt(22, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
-
-  sp1_PrintAt(21, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(21, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(21, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
-
-  sp1_PrintAt(20, x, INK_BLACK | PAPER_MAGENTA, 'F');
-  sp1_PrintAt(20, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-  sp1_PrintAt(20, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
-  idx_j = 20;
-  // onlidx_j second bin is higher
+  idx_j = 22;
   if(x == HIGHER_BIN_X) {
-      --idx_j;
-      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
-
-      --idx_j;
-      sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
-      sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
-      sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+     idx_j = 21;
   }
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'L');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'D');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'E');
+
+  --idx_j;
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
+
+  --idx_j;
+  sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'F');
+  sp1_PrintAt(idx_j, x + 1, INK_BLACK | PAPER_MAGENTA, 'G');
+  sp1_PrintAt(idx_j, x + 2, INK_BLACK | PAPER_MAGENTA, 'H');
 
   --idx_j;
   sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'I');
@@ -182,7 +175,7 @@ void  print_background_lvl1() {
              sp1_PrintAt(15, x,  PAPER_CYAN, 'X');
           }
 
-          for (idx_j=16; idx_j!=21; ++idx_j)
+          for (idx_j=16; idx_j!=20; ++idx_j)
           {
               sp1_PrintAt( idx_j, x,  PAPER_CYAN, 'V');
           }
