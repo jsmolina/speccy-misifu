@@ -589,6 +589,7 @@ void check_fsm() {
         if (level == 1) {
             if (misifu.y <= 1) {
                 misifu.y = 1;
+                misifu.offset = HANGING;
                 misifu.state = CAT_IN_ROPE;
                 misifu.draw_additional = CAT_IN_ROPE3;
             }
@@ -618,6 +619,8 @@ void check_fsm() {
             misifu.state = NONE;
         }
     } else if(misifu.state == CAT_IN_ROPE) {
+        misifu.offset = HANGING;
+
         if(misifu.x >= 28 || misifu.x == 0) {
             misifu.state = FALLING;
             misifu.draw_additional = NONE;
