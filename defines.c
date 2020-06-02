@@ -130,7 +130,7 @@ JOYFUNC joy;
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
 
-unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v2";
+unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v3";
 
 void all_lives_lost() {
 
