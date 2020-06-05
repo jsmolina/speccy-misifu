@@ -37,7 +37,7 @@ void define_cheese_holes_pos() {
 static inline uint8_t map_cat_pos_in_holes() {
 
     for(idx = 0; idx != 14; ++idx) {
-        if(misifu.y == windows[idx].y && misifu.x == (windows[idx].x - 2)) {
+        if(misifu.y == windows[idx].y && misifu.x == (windows[idx].x - 1)) {
             return idx;
         }
     }
@@ -74,7 +74,7 @@ void detect_fall_in_hole_or_curtain() {
 
 static void move_misifu(uint8_t index) {
     first_keypress = index;
-    misifu.x = windows[index].x - 2;
+    misifu.x = windows[index].x - 1;
     misifu.y = windows[index].y - 1;
     misifu.state = FALLING;
 }
