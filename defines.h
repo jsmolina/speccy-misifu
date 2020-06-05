@@ -42,15 +42,15 @@
 #define FLOOR_Y 21
 // OJO HEADS UP, si empieza en 1 acaba 'estropeado'
 #define RIGHTC1 0
-#define RIGHTC2 64
-#define LEFTC1 128
-#define LEFTC2 192
-#define JLEFTC1 256
-#define JRIGHTC1 320
-#define JUMPINGC1 384
-#define BORED 448
-#define HANGING 512
-#define JUMPINGC2 512
+#define RIGHTC2 48
+#define LEFTC1 96
+#define LEFTC2 144
+#define JLEFTC1 192
+#define JRIGHTC1 240
+#define JUMPINGC1 288
+#define BORED 336
+#define HANGING 384
+#define JUMPINGC2 432
 #define SPIDER 25 // 16 + 8 + 1
 #define BIRD_OFFSET 49
 
