@@ -36,7 +36,6 @@ const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
 extern uint8_t sprite_protar3[];
-extern uint8_t sprite_protar4[];
 
 extern uint8_t sprite_dog1[];
 extern uint8_t sprite_dog2[];
@@ -218,7 +217,6 @@ struct sp1_ss * add_sprite_protar1() {
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar4, 0);
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
