@@ -47,9 +47,9 @@
 #define LEFTC2 208
 #define JLEFTC1 272
 #define JRIGHTC1 336
-#define JUMPINGC1 392 // 400
+#define JUMPINGC1 390
 #define BORED 464
-#define HANGING 520
+#define HANGING 518
 #define SPIDER 25 // 16 + 8 + 1
 #define BIRD_OFFSET 49
 
