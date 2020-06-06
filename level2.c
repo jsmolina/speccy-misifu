@@ -155,6 +155,8 @@ void  print_background_level2() {
   sp1_TileEntry('B', hole_mouse);
   sp1_TileEntry('C', cheese2);
   sp1_TileEntry('Z', hole_empty);
+  sp1_TileEntry('D', queso_textura);
+  sp1_TileEntry('E', queso_diagonal);
 
   define_silla_udgs();
 
@@ -178,9 +180,19 @@ void  print_background_level2() {
         sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN, 'C');
     }
   }
+
+  // paint diagonal
+  idx = 3;
+  for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
+      sp1_PrintAt( idx_j - 1, idx, PAPER_RED | INK_GREEN, 'E');
+       ++idx;
+  }
+
+
   // paint holes
   for (idx = 0; idx != 14; ++idx) {
     sp1_PrintAt( windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, 'A');
+    sp1_PrintAt( windows[idx].y, windows[idx].x - 1, INK_BLACK | PAPER_GREEN, 'D');
   }
 
   // paint the chair

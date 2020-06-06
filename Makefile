@@ -84,6 +84,8 @@ mouse:
 cheese:
 	@png2udg ./background/curtain.png
 	@png2udg ./background/cheese2.png
+	@png2udg ./background/queso_textura.png
+	@png2udg ./background/queso_diagonal.png
 
 wall:
 	@png2udg ./background/wall1.png

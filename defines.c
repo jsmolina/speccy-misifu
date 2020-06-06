@@ -33,6 +33,9 @@ const uint8_t udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
 
+const uint8_t queso_textura[] = {0x0, 0x0, 0x80, 0x4, 0x0, 0x8, 0x40, 0x1};
+const uint8_t queso_diagonal[] = {0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff};
+
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
 extern uint8_t sprite_protar3[];
@@ -129,7 +132,7 @@ JOYFUNC joy;
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
 
-unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v3";
+unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v4";
 
 void all_lives_lost() {
 
@@ -192,25 +195,6 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
   c->attr_mask = SP1_AMASK_INK;
   c->attr      = INK_BLUE;
 }
-
-static void initialiseClothesColour(unsigned int count, struct sp1_cs *c)
-{
-  (void)count;    /* Suppress compiler warning about unused parameter */
-
-  c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_WHITE;
-}
-
-
-static void initialisePinkColour(unsigned int count, struct sp1_cs *c)
-{
-  (void)count;    /* Suppress compiler warning about unused parameter */
-
-  c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_MAGENTA;
-}
-
-
 
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;

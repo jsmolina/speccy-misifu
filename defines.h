@@ -105,6 +105,9 @@ extern struct sp1_ss  *bincatsp;
 extern struct row_clothes row1clothes[2];
 extern struct row_clothes row2clothes[2];
 
+extern const uint8_t queso_textura[];
+extern const uint8_t queso_diagonal[];
+
 extern struct sp1_Rect full_screen;
 
 extern uint8_t level_x_max;
