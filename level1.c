@@ -16,29 +16,29 @@
 #include "level_last.h"
 
 
-const uint8_t udg_valla1[] = {0xff, 0x9f, 0x8f, 0x87, 0x81, 0x81, 0x81, 0x81};
-const uint8_t udg_valla2[] = {0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81};
-const uint8_t udg_valla3[] = {0xff, 0xe1, 0xe1, 0x81, 0x81, 0x81, 0x81, 0x81};
-const uint8_t udg_valla4[] = {0xef, 0x8f, 0x83, 0x83, 0x83, 0x81, 0x81, 0x81};
+const uint8_t udg_valla1[] = {0xcf, 0xf, 0x7, 0xb, 0x7, 0xb, 0x5, 0xb};
+const uint8_t udg_valla2[] = {0x5, 0xb, 0x5, 0xb, 0x5, 0x3, 0x5, 0xb};
+const uint8_t udg_valla3[] = {0xff, 0xff, 0xcf, 0xc3, 0xc5, 0x3, 0x5, 0xb};
+const uint8_t udg_valla4[] = {0xff, 0xf3, 0x35, 0x23, 0x5, 0x3, 0x5, 0xb};
 
-const uint8_t cubo_down1[] = {0x81, 0x82, 0x81, 0x62, 0x9f, 0x61, 0x1e, 0x1};
-const uint8_t cubo_down2[] = {0xff, 0x2a, 0x15, 0x2a, 0x15, 0xff, 0x0, 0xff};
-const uint8_t cubo_down3[] = {0xfd, 0xbd, 0x7d, 0xbe, 0x79, 0x86, 0x78, 0x80};
+const uint8_t cubo_down1[] = {0xe9, 0x89, 0x87, 0x60, 0x9f, 0x60, 0x1f, 0x0};
+const uint8_t cubo_down2[] = {0x4a, 0x46, 0x4a, 0x3c, 0x0, 0xff, 0x0, 0xff};
+const uint8_t cubo_down3[] = {0xb7, 0xd1, 0xe1, 0x6, 0xf9, 0x6, 0xf8, 0x0};
 
-const uint8_t cubo_middle1[] = {0x81, 0x82, 0x81, 0x82, 0x61, 0x9e, 0xe1, 0x9e};
-const uint8_t cubo_middle2[] = {0xff, 0x15, 0x2a, 0x15, 0x2a, 0x15, 0xff, 0x0};
-const uint8_t cubo_middle3[] = {0xbd, 0x7d, 0xbd, 0x7d, 0xbe, 0x79, 0x87, 0x7d};
+const uint8_t cubo_middle1[] = {0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9};
+const uint8_t cubo_middle2[] = {0x4a, 0x46, 0x4a, 0x46, 0x4a, 0x46, 0x4a, 0x46};
+const uint8_t cubo_middle3[] = {0xb7, 0xd5, 0xb7, 0xd5, 0xb7, 0xd5, 0xb7, 0xd5};
 
 const uint8_t cubotop1[] = {0x1f, 0x62, 0x9e, 0x7f, 0x7f, 0x9f, 0xe1, 0x9e};
-const uint8_t cubotop2[] = {0x2, 0x5, 0x2, 0x80, 0xe0, 0xf8, 0xff, 0x0};
+const uint8_t cubotop2[] = {0x2, 0x5, 0x2, 0x0, 0xc0, 0xf8, 0xff, 0x0};
 const uint8_t cubotop3[] = {0x61, 0x99, 0x57, 0x91, 0x20, 0x0, 0x1, 0xff};
 
 const uint8_t udg_rope[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xd2};
 const uint8_t  udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with rope
 
-const uint8_t udg_c[] = {0x62, 0x42, 0x4e, 0x4e, 0x4e, 0x62, 0x72, 0x7e};
-const uint8_t udg_a[] = {0x72, 0x60, 0x4c, 0x40, 0x18, 0x12, 0x12, 0x7e};
-const uint8_t udg_t[] = {0x60, 0x2, 0x12, 0x72, 0x78, 0x78, 0x78, 0x7e};
+const uint8_t udg_c[] = {0x1, 0x39, 0x6d, 0x61, 0x61, 0x75, 0x3d, 0x19};
+const uint8_t udg_a[] = {0x1, 0x1b, 0x3d, 0x65, 0x7d, 0xcd, 0xd9, 0x1b};
+const uint8_t udg_t[] = {0x1, 0x7d, 0xf1, 0xb3, 0x31, 0x1b, 0x19, 0x1b};
 
 const uint8_t udg_clothes11[] = {0x0, 0x30, 0xf0, 0xf8, 0xfc, 0xcf, 0xcd, 0xd};
 const uint8_t udg_clothes12[] = {0x0, 0xc, 0x3e, 0x3f, 0xff, 0xf3, 0xf3, 0xf0};
@@ -68,7 +68,7 @@ uint8_t is_in_bin(uint8_t x_pos) {
 
 void  print_cubo(uint8_t x) {
   idx_j = 22;
-  if(x == HIGHER_BIN_X) {
+  if(x == HIGHER_BIN_X || x == HIGHER_BIN_X2) {
      idx_j = 21;
   }
   sp1_PrintAt(idx_j, x, INK_BLACK | PAPER_MAGENTA, 'L');
@@ -186,9 +186,9 @@ void  print_background_lvl1() {
 
   print_lives();
 
-  sp1_PrintAt( 17, 29, INK_CYAN | PAPER_BLACK, 'C');
-  sp1_PrintAt( 18, 30,  INK_CYAN | PAPER_BLACK, 'A');
-  sp1_PrintAt( 19, 31,  INK_CYAN | PAPER_BLACK, 'T');
+  sp1_PrintAt( 17, 29, INK_BLACK | PAPER_CYAN, 'C');
+  sp1_PrintAt( 17, 30,  INK_BLACK | PAPER_CYAN, 'A');
+  sp1_PrintAt( 17, 31,  INK_BLACK | PAPER_CYAN, 'T');
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
@@ -226,7 +226,7 @@ void  print_background_lvl1() {
    floor_holes[0][1] = 18; // row1clothes
    floor_holes[1][0] = 1;  // row2clothes
    floor_holes[1][1] = 18; // row2clothes
-   aux_object.offset = RIGHTC1;
+   aux_object.offset = AUX_PHONE;
    sp1_UpdateNow();
 }
 
@@ -353,7 +353,7 @@ void anim_windows() {
         paint_window(PAPER_CYAN);
         opened_window = UNDEF;
         opened_window_frames = NONE;
-        aux_object.offset = RIGHTC1;
+        aux_object.offset = AUX_PHONE;
         // move outside of screen
         sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, 33, 0, 0);
 
@@ -370,13 +370,13 @@ void check_bincat() {
         if(bincat_in_bin != NONE) {
             //anim_frames_bincat = 20;
 
-            if (bincat_in_bin == HIGHER_BIN_X) {
+            if (bincat_in_bin == HIGHER_BIN_X || bincat_in_bin == HIGHER_BIN_X2) {
                 // reused as row and also number of frames appearing
                 bincat_appears = 16;
             } else {
                 bincat_appears = 17;
             }
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, bincat_appears, bincat_in_bin, 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, bincat_appears, bincat_in_bin, 0, 0);
             bincat_appears = 40;
 
         } else {
@@ -396,7 +396,7 @@ void check_bincat() {
         }
 
         if (bincat_appears < 1) {
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)1, 16, 33, 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, 16, 33, 0, 0);
             bincat_appears = NONE;
             bincat_in_bin = 0;
         }
@@ -405,16 +405,16 @@ void check_bincat() {
 
 void detect_fall_in_bin() {
     // detect falling over bin
-    if(misifu.y == 16 || misifu.y == 18) {
+    if(misifu.y == 17 || misifu.y == 18) {
         misifu.in_bin = is_in_bin(misifu.x);
         // store that it is on first bin pos so collide will bincat is easier
         //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
         if (misifu.in_bin != NONE && misifu.in_bin != bincat_in_bin) {
-            if (misifu.in_bin == HIGHER_BIN_X && misifu.y == 16) {
+            if (misifu.y == 17 && (misifu.in_bin == HIGHER_BIN_X || misifu.in_bin == HIGHER_BIN_X2)) {
                 // stop falling
                 misifu.state = NONE;
                 misifu.draw_additional = CAT_IN_BIN;
-            } else if (misifu.in_bin != HIGHER_BIN_X && misifu.y == 18) {
+            } else if (misifu.y == 18 && misifu.in_bin != HIGHER_BIN_X && misifu.in_bin != HIGHER_BIN_X2) {
                 misifu.state = NONE;
                 misifu.draw_additional = CAT_IN_BIN;
 

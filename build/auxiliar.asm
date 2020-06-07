@@ -2,6 +2,7 @@ SECTION rodata_user
 
 ; Original: 160, 24 (=20 x 3 chars)
 ; Blocks: 4
+; mask, sprite
  defb @00000000
  defb @00000000
  defb @00000000

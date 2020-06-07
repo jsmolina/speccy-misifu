@@ -34,10 +34,10 @@ protaswim:
 	png2sp1sprite ./sprites/cat_swimsprites.png --bit -i sprite_swim -f 32 > ./build/protaswim.asm
 
 dogsprites:
-	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > ./build/dogr.asm
+	png2sp1sprite ./sprites/dog_sprites.png --bit -i sprite_dog -f 32 > ./build/dogr.asm
 
 bincat:
-	png2sp1sprite ./sprites/bincat_sprites.png --bit -i sprite_bincat -f 24 > ./build/bincat.asm
+	png2sp1sprite ./sprites/bincat_sprites.png -m ./sprites/bincat_sprites_mask.png -i sprite_bincat -f 16 > ./build/bincat.asm
 
 clothes:
 	@png2udg ./background/udg_clothes11.png

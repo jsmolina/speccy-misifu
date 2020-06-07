@@ -69,6 +69,7 @@ uint8_t x, y;
 uint8_t paws = 0;
 uint8_t eaten_items;
 uint8_t frame;
+uint8_t frame_big;
 uint8_t x_malo;
 uint8_t bincat_appears = NONE;
 uint8_t enemy_apears = NONE;
@@ -198,7 +199,7 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
-   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 0);
+   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 0);
 
@@ -225,12 +226,12 @@ struct sp1_ss * add_sprite_swim() {
 
 static struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_dog1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog4, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)sprite_dog1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_dog2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_dog3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_dog4, 0);
 
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseDogColour);
 
@@ -239,10 +240,9 @@ static struct sp1_ss * add_sprite_dogr1() {
 
 static struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_OR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_bincat1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_OR1,    SP1_TYPE_1BYTE, (int)sprite_bincat3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_OR1RB,  SP1_TYPE_1BYTE, 0, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_bincat1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
 
@@ -252,7 +252,7 @@ static struct sp1_ss * add_sprite_bincat() {
 
 static struct sp1_ss * add_sprite_auxiliar() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)auxiliar1, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 4, (int)auxiliar1, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)auxiliar2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)auxiliar3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)auxiliar4, 0);
@@ -273,7 +273,7 @@ void add_sprites_for_all_levels() {
   aux_object.sp = add_sprite_auxiliar();
   aux_object.x = 0;
   aux_object.y = 0;
-  aux_object.offset = RIGHTC1;
+  aux_object.offset = AUX_PHONE;
 }
 
 void loose_a_live() {
@@ -419,7 +419,7 @@ void check_keys()
 void check_swim() {
     if((in & IN_STICK_LEFT) && misifu.x > 0) {
         --misifu.x;
-        if (frame < 2) {
+        if (frame_big < FRAME_CHANGE) {
             misifu.offset = SWIM_LC1;
         } else {
             misifu.offset = SWIM_LC2;
@@ -432,7 +432,7 @@ void check_swim() {
         }
     } else if((in & IN_STICK_RIGHT) && misifu.x < 31) {
         ++misifu.x;
-        if (frame < 2) {
+        if (frame_big < FRAME_CHANGE) {
             misifu.offset = SWIM_RC1;
         } else {
             misifu.offset = SWIM_RC2;
@@ -460,7 +460,7 @@ void dog_checks() {
 
         --x_malo;
 
-        if (frame < 2) {
+        if (frame_big < FRAME_CHANGE) {
             dog_offset = DOG1;
         } else  {
             dog_offset = DOG2;
@@ -483,7 +483,7 @@ void dog_checks() {
     }
     idx = 0;
     if (misifu.state == FIGHTING) {
-        if (frame < 2) {
+        if (frame_big < FRAME_CHANGE) {
             dog_offset = DOGFIGHTING1;
         } else {
             dog_offset = DOGFIGHTING2;
@@ -519,14 +519,14 @@ void check_fsm() {
     if (misifu.state == NONE && frame == 3 && level != 7) {
         misifu.offset = BORED;
     } else if (misifu.state == WALKING_RIGHT) {
-        if (frame < 2) {
+        if (frame_big < FRAME_CHANGE) {
             misifu.offset = RIGHTC1;
         } else  {
             misifu.offset = RIGHTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == WALKING_LEFT) {
-        if (frame < 2) {
+        if (frame_big < FRAME_CHANGE) {
             misifu.offset = LEFTC1;
         } else {
             misifu.offset = LEFTC2;

@@ -39,7 +39,10 @@
 #define CAT_IN_BIN 3
 #define CAT_IN_FENCE 4
 #define HIGHER_BIN_X 5
+#define HIGHER_BIN_X2 20
 #define FLOOR_Y 21
+
+#define AUX_BINCAT 0
 // OJO HEADS UP, si empieza en 1 acaba 'estropeado'
 #define RIGHTC1 16
 #define RIGHTC2 80
@@ -53,6 +56,7 @@
 #define SPIDER 25 // 16 + 8 + 1
 #define BIRD_OFFSET 49
 
+#define AUX_PHONE 1
 #define AUX_ZAP 33  // 24 + 8 + 1
 #define AUX_ARROWRIGHT 65
 #define AUX_ARROWLEFT  97
@@ -87,10 +91,12 @@
 
 #define BIRD 244
 
+#define FRAME_CHANGE 5
+#define FRAME_MOST 10
 #define DOG1 1
-#define DOG2 49
-#define DOGFIGHTING1 97
-#define DOGFIGHTING2 145
+#define DOG2 24
+#define DOGFIGHTING1 48
+#define DOGFIGHTING2 72
 
 #define MAX_X 32
 
@@ -125,6 +131,7 @@ extern char left;
 extern char right;
 extern uint8_t eaten_items;
 extern uint8_t frame;
+extern uint8_t frame_big;
 extern uint8_t x_malo;
 extern uint8_t bincat_appears;
 extern uint8_t enemy_apears;
