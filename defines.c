@@ -755,6 +755,12 @@ void move_broom() {
  if(misifu.state == FIGHTING) {
     return;
  }
+ if (frame_big < FRAME_CHANGE) {
+     aux_object.offset = AUX_BROOM;
+ } else {
+     aux_object.offset = AUX_BROOM2;
+ }
+
 
  // BROOM MOVE
     if((random_value & 1) == 0) {

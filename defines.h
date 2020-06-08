@@ -61,6 +61,7 @@
 #define AUX_ARROWRIGHT 100
 #define AUX_ARROWLEFT  148
 #define AUX_BROOM 196
+#define AUX_BROOM2 244
 
 #define SWIM_RC1 1
 #define SWIM_RC2 33  // 24 + 8 + 1
