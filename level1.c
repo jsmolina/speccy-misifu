@@ -405,16 +405,16 @@ void check_bincat() {
 
 void detect_fall_in_bin() {
     // detect falling over bin
-    if(misifu.y == 17 || misifu.y == 18) {
+    if(misifu.y == 16 || misifu.y == 17) {
         misifu.in_bin = is_in_bin(misifu.x);
         // store that it is on first bin pos so collide will bincat is easier
         //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
         if (misifu.in_bin != NONE && misifu.in_bin != bincat_in_bin) {
-            if (misifu.y == 17 && (misifu.in_bin == HIGHER_BIN_X || misifu.in_bin == HIGHER_BIN_X2)) {
+            if (misifu.y == 16 && (misifu.in_bin == HIGHER_BIN_X || misifu.in_bin == HIGHER_BIN_X2)) {
                 // stop falling
                 misifu.state = NONE;
                 misifu.draw_additional = CAT_IN_BIN;
-            } else if (misifu.y == 18 && misifu.in_bin != HIGHER_BIN_X && misifu.in_bin != HIGHER_BIN_X2) {
+            } else if (misifu.y == 17 && misifu.in_bin != HIGHER_BIN_X && misifu.in_bin != HIGHER_BIN_X2) {
                 misifu.state = NONE;
                 misifu.draw_additional = CAT_IN_BIN;
 
