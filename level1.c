@@ -302,7 +302,7 @@ void anim_windows() {
         if(opened_window < 12) {
             // makes the window to be opened for about 20 frames
             opened_window_frames = 50;
-            paint_window(PAPER_BLACK);
+            paint_window(PAPER_BLACK | INK_WHITE);
             aux_object.y = windows[opened_window].y;
             aux_object.x = windows[opened_window].x;
             horizontal_direction = NONE;
