@@ -48,7 +48,7 @@ clothes:
 	@png2udg ./background/udg_boot2.png
 
 auxiliar:
-	png2sp1sprite ./sprites/auxiliar.png --bit -i auxiliar -f 32 > ./build/auxiliar.asm
+	png2sp1sprite ./sprites/auxiliar.png -m ./sprites/auxiliar_mask.png -i auxiliar -f 16 > ./build/auxiliar.asm
 
 fence:
 	@png2udg ./background/udg_valla1.png

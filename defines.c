@@ -49,12 +49,8 @@ extern uint8_t sprite_bincat1[];
 extern uint8_t sprite_bincat2[];
 extern uint8_t sprite_bincat3[];
 
-
-
 extern uint8_t auxiliar1[];
 extern uint8_t auxiliar2[];
-extern uint8_t auxiliar3[];
-extern uint8_t auxiliar4[];
 
 extern uint8_t sprite_swim1[];
 extern uint8_t sprite_swim2[];
@@ -199,7 +195,7 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
-   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
+   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 0);
 
@@ -252,12 +248,10 @@ static struct sp1_ss * add_sprite_bincat() {
 
 static struct sp1_ss * add_sprite_auxiliar() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 4, (int)auxiliar1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)auxiliar2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)auxiliar3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)auxiliar4, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)auxiliar1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)auxiliar2, 0);
 
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
   sp1_IterateSprChar(sp, initialiseColour);
 

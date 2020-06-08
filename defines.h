@@ -56,11 +56,11 @@
 #define SPIDER 25 // 16 + 8 + 1
 #define BIRD_OFFSET 49
 
-#define AUX_PHONE 1
-#define AUX_ZAP 33  // 24 + 8 + 1
-#define AUX_ARROWRIGHT 65
-#define AUX_ARROWLEFT  97
-#define AUX_BROOM 129
+#define AUX_PHONE 4
+#define AUX_ZAP 52  // + 16x2 + 8x2
+#define AUX_ARROWRIGHT 100
+#define AUX_ARROWLEFT  148
+#define AUX_BROOM 196
 
 #define SWIM_RC1 1
 #define SWIM_RC2 33  // 24 + 8 + 1
