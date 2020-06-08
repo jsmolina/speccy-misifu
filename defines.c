@@ -184,6 +184,13 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
   c->attr      = INK_BLACK;
 }
 
+static void initialiseColourOther(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;    /* Suppress compiler warning about unused parameter */
+  c->attr_mask = 0xf8;
+  c->attr      = INK_BLACK;
+}
+
 
 static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 {
@@ -253,7 +260,7 @@ static struct sp1_ss * add_sprite_auxiliar() {
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  sp1_IterateSprChar(sp, initialiseColourOther);
 
   return sp;
 }

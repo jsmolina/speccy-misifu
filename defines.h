@@ -56,7 +56,7 @@
 #define SPIDER 25 // 16 + 8 + 1
 #define BIRD_OFFSET 49
 
-#define AUX_PHONE 4
+#define AUX_PHONE 2
 #define AUX_ZAP 52  // + 16x2 + 8x2
 #define AUX_ARROWRIGHT 100
 #define AUX_ARROWLEFT  148
@@ -109,8 +109,6 @@ extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 
-extern struct row_clothes row1clothes[2];
-extern struct row_clothes row2clothes[2];
 
 extern const uint8_t queso_textura[];
 extern const uint8_t queso_diagonal[];
