@@ -180,14 +180,14 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
-  c->attr_mask = SP1_AMASK_INK;
+  c->attr_mask = SP1_AMASK_TRANS;
   c->attr      = INK_BLACK;
 }
 
 static void initialiseColourOther(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
-  c->attr_mask = 0xf8;
+  c->attr_mask = SP1_AMASK_INK;
   c->attr      = INK_BLACK;
 }
 
@@ -409,6 +409,7 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
+        print_background_level5();
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {

@@ -34,7 +34,7 @@ const uint8_t cubotop2[] = {0x2, 0x5, 0x2, 0x0, 0xc0, 0xf8, 0xff, 0x0};
 const uint8_t cubotop3[] = {0x61, 0x99, 0x57, 0x91, 0x20, 0x0, 0x1, 0xff};
 
 const uint8_t udg_rope[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xd2};
-const uint8_t  udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with rope
+const uint8_t udg_win1[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2d}; // with rope
 
 const uint8_t udg_c[] = {0x1, 0x39, 0x6d, 0x61, 0x61, 0x75, 0x3d, 0x19};
 const uint8_t udg_a[] = {0x1, 0x1b, 0x3d, 0x65, 0x7d, 0xcd, 0xd9, 0x1b};
@@ -407,7 +407,7 @@ void check_bincat() {
 
 void detect_fall_in_bin() {
     // detect falling over bin
-    if(misifu.y == 16 || misifu.y == 17) {
+    if(misifu.y == 16 || misifu.y == 18) {
         misifu.in_bin = is_in_bin(misifu.x);
         // store that it is on first bin pos so collide will bincat is easier
         //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
@@ -416,10 +416,9 @@ void detect_fall_in_bin() {
                 // stop falling
                 misifu.state = NONE;
                 misifu.draw_additional = CAT_IN_BIN;
-            } else if (misifu.y == 17 && misifu.in_bin != HIGHER_BIN_X && misifu.in_bin != HIGHER_BIN_X2) {
+            } else if (misifu.y == 18 && misifu.in_bin != HIGHER_BIN_X && misifu.in_bin != HIGHER_BIN_X2) {
                 misifu.state = NONE;
                 misifu.draw_additional = CAT_IN_BIN;
-
             }
         }
     } else if(misifu.y == 13) {
@@ -442,7 +441,7 @@ void detect_fall_in_window() {
     }
     idx = misifu.x - 1;
     if(opened_window < 12 && (abs(misifu.y - windows[opened_window].y) < 2)
-        && ((idx >= (windows[opened_window].x - 1) && idx < windows[opened_window].x + 5)) ) {
+        && ((idx >= (windows[opened_window].x - 2) && idx < windows[opened_window].x + 4)) ) {
         if(last_success_level == 0) {
             print_background_level2();
         } else if(last_success_level == 2) {

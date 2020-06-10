@@ -24,6 +24,7 @@ static void assign_eels_pos(uint8_t y, uint8_t x) {
 void  print_background_level4() {
   level = 4;
   eaten_items = 8;
+  misifu.offset = SWIM_RC1;
   // todo cat should not take too much or get out of breath... level timer
   // swimming state always here
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
