@@ -387,9 +387,9 @@ void check_keys()
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
 
-        if((in & IN_STICK_RIGHT) && misifu.x < level_x_max && misifu.draw_additional != CAT_IN_SHELVE) {
+        if((in & IN_STICK_RIGHT) && misifu.x < level_x_max ) {
             misifu.draw_additional = JUMP_RIGHT;
-        } else if((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.draw_additional != CAT_IN_SHELVE) {
+        } else if((in & IN_STICK_LEFT) && misifu.x > level_x_min ) {
             misifu.draw_additional = JUMP_LEFT;
         } else {
             misifu.draw_additional = JUMP_UP;
@@ -502,7 +502,7 @@ void dog_checks() {
     }
     // check if dog should appear
     if (enemy_apears != YES) {
-        if(random_value < 10) {
+        if(random_value > 250) {
             enemy_apears = YES;
         }
     }

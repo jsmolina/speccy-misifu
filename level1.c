@@ -397,7 +397,7 @@ void check_bincat() {
             bit_beepfx_di_fastcall(BEEPFX_HIT_1);
         }
 
-        if (bincat_appears < 1) {
+        if (bincat_appears <= 1) {
             sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, 16, 33, 0, 0);
             bincat_appears = NONE;
             bincat_in_bin = 0;

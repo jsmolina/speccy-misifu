@@ -42,7 +42,10 @@
 #define HIGHER_BIN_X2 20
 #define FLOOR_Y 21
 
-#define AUX_BINCAT 0
+#define AUX_BINCAT 2
+#define SPIDER 48 // 16 + 8 + 1
+#define BIRD_OFFSET 96
+#define BIRD_OFFSET2 144
 // OJO HEADS UP, si empieza en 1 acaba 'estropeado'
 #define RIGHTC1 16
 #define RIGHTC2 80
@@ -53,8 +56,7 @@
 #define JUMPINGC1 390
 #define BORED 464
 #define HANGING 518
-#define SPIDER 25 // 16 + 8 + 1
-#define BIRD_OFFSET 49
+
 
 #define AUX_PHONE 2
 #define AUX_ZAP 52  // + 16x2 + 8x2

@@ -8,7 +8,7 @@ const uint8_t udg_birdcage2[] = {0xf0, 0xf, 0x3, 0xff, 0x3, 0xf, 0xff, 0xf0};
 
 void  print_background_level6() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_GREEN | PAPER_RED,
+                  PAPER_RED,
                   ' ' );
   sp1_Invalidate(&full_screen);
   level = 6;

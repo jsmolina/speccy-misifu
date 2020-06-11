@@ -25,7 +25,7 @@ static void paint_plant(uint8_t row, uint8_t col, uint8_t clean) {
 void  print_background_level5() {
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_CYAN | PAPER_MAGENTA,
+                  INK_BLACK | PAPER_MAGENTA,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
@@ -88,7 +88,7 @@ static void anim_spider() {
     if(random_value < 18 && bincat_appears == NONE) {
         windows[0].x = random_value;
 
-        if(random_value < 6) {
+        if(random_value < 3) {
             windows[0].x = misifu.x;
         }
 
@@ -104,7 +104,7 @@ static void anim_spider() {
 }
 
 static inline void detect_spider_bite() {
-    if(abs(windows[0].y - misifu.y) < 2 && abs(windows[0].x - misifu.x) <2) {
+    if(abs(windows[0].y - misifu.y) < 1 && abs(windows[0].x - misifu.x) < 1) {
         // SPIDER BITE
         get_out_of_level_generic(BITE);
     }
