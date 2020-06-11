@@ -397,7 +397,7 @@ void check_keys()
     } else if ((in & IN_STICK_RIGHT)  && misifu.x < level_x_max && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_RIGHT;
         ++misifu.x;
-    } else if((in & IN_STICK_LEFT)  && misifu.x > level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
+    } else if((in & IN_STICK_LEFT)  && misifu.x >= level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
     } else if ((in & IN_STICK_DOWN) && misifu.y < FLOOR_Y) {
@@ -409,7 +409,7 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
-        print_background_level5();
+        print_background_level_last();
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
@@ -658,7 +658,7 @@ void detect_fall_in_chair(uint8_t x_chair) {
 
 void get_out_of_level_generic(uint8_t fall) {
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_WHITE | PAPER_WHITE,
+                  INK_BLACK | PAPER_WHITE,
                   ' ' );
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);

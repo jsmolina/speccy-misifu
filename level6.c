@@ -60,7 +60,13 @@ static void check_cage_and_bird() {
             get_out_of_level_generic(WON_LEVEL); // yayy
             return;
         }
-        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)BIRD_OFFSET, windows[0].y, windows[0].x, 0, 0);
+        if (frame_big < FRAME_CHANGE) {
+            windows[1].x = BIRD_OFFSET;
+        } else {
+            windows[1].x = BIRD_OFFSET2;
+        }
+
+        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)windows[1].x, windows[0].y, windows[0].x, 0, 0);
     }
 }
 
