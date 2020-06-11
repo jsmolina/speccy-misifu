@@ -39,25 +39,31 @@
 #define CAT_IN_BIN 3
 #define CAT_IN_FENCE 4
 #define HIGHER_BIN_X 5
+#define HIGHER_BIN_X2 20
 #define FLOOR_Y 21
-// OJO HEADS UP, si empieza en 1 acaba 'estropeado'
-#define RIGHTC1 0
-#define RIGHTC2 64
-#define LEFTC1 128
-#define LEFTC2 192
-#define JLEFTC1 256
-#define JRIGHTC1 320
-#define JUMPINGC1 384
-#define BORED 448
-#define HANGING 512
-#define JUMPINGC2 576
-#define SPIDER 25 // 16 + 8 + 1
-#define BIRD_OFFSET 49
 
-#define AUX_ZAP 33  // 24 + 8 + 1
-#define AUX_ARROWRIGHT 65
-#define AUX_ARROWLEFT  97
-#define AUX_BROOM 129
+#define AUX_BINCAT 2
+#define SPIDER 48 // 16 + 8 + 1
+#define BIRD_OFFSET 96
+#define BIRD_OFFSET2 144
+// OJO HEADS UP, si empieza en 1 acaba 'estropeado'
+#define RIGHTC1 16
+#define RIGHTC2 80
+#define LEFTC1 144
+#define LEFTC2 208
+#define JLEFTC1 272
+#define JRIGHTC1 336
+#define JUMPINGC1 390
+#define BORED 464
+#define HANGING 518
+
+
+#define AUX_PHONE 2
+#define AUX_ZAP 52  // + 16x2 + 8x2
+#define AUX_ARROWRIGHT 100
+#define AUX_ARROWLEFT  148
+#define AUX_BROOM 192
+#define AUX_BROOM2 240
 
 #define SWIM_RC1 1
 #define SWIM_RC2 33  // 24 + 8 + 1
@@ -88,10 +94,12 @@
 
 #define BIRD 244
 
+#define FRAME_CHANGE 5
+#define FRAME_MOST 10
 #define DOG1 1
-#define DOG2 49
-#define DOGFIGHTING1 97
-#define DOGFIGHTING2 145
+#define DOG2 24
+#define DOGFIGHTING1 48
+#define DOGFIGHTING2 72
 
 #define MAX_X 32
 
@@ -103,8 +111,9 @@ extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 
-extern struct row_clothes row1clothes[2];
-extern struct row_clothes row2clothes[2];
+
+extern const uint8_t queso_textura[];
+extern const uint8_t queso_diagonal[];
 
 extern struct sp1_Rect full_screen;
 
@@ -123,6 +132,7 @@ extern char left;
 extern char right;
 extern uint8_t eaten_items;
 extern uint8_t frame;
+extern uint8_t frame_big;
 extern uint8_t x_malo;
 extern uint8_t bincat_appears;
 extern uint8_t enemy_apears;

@@ -34,10 +34,10 @@ protaswim:
 	png2sp1sprite ./sprites/cat_swimsprites.png --bit -i sprite_swim -f 32 > ./build/protaswim.asm
 
 dogsprites:
-	png2sp1sprite ./sprites/dog_sprites.png -i sprite_dog -f 32 > ./build/dogr.asm
+	png2sp1sprite ./sprites/dog_sprites.png --bit -i sprite_dog -f 32 > ./build/dogr.asm
 
 bincat:
-	png2sp1sprite ./sprites/bincat_sprites.png --bit -i sprite_bincat -f 24 > ./build/bincat.asm
+	png2sp1sprite ./sprites/bincat_sprites.png -m ./sprites/bincat_sprites_mask.png -i sprite_bincat -f 16 > ./build/bincat.asm
 
 clothes:
 	@png2udg ./background/udg_clothes11.png
@@ -48,7 +48,7 @@ clothes:
 	@png2udg ./background/udg_boot2.png
 
 auxiliar:
-	png2sp1sprite ./sprites/auxiliar.png --bit -i auxiliar -f 32 > ./build/auxiliar.asm
+	png2sp1sprite ./sprites/auxiliar.png -m ./sprites/auxiliar_mask.png -i auxiliar -f 16 > ./build/auxiliar.asm
 
 fence:
 	@png2udg ./background/udg_valla1.png
@@ -84,6 +84,8 @@ mouse:
 cheese:
 	@png2udg ./background/curtain.png
 	@png2udg ./background/cheese2.png
+	@png2udg ./background/queso_textura.png
+	@png2udg ./background/queso_diagonal.png
 
 wall:
 	@png2udg ./background/wall1.png

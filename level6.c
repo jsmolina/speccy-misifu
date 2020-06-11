@@ -8,7 +8,7 @@ const uint8_t udg_birdcage2[] = {0xf0, 0xf, 0x3, 0xff, 0x3, 0xf, 0xff, 0xf0};
 
 void  print_background_level6() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_GREEN | PAPER_RED,
+                  PAPER_RED,
                   ' ' );
   sp1_Invalidate(&full_screen);
   level = 6;
@@ -17,7 +17,7 @@ void  print_background_level6() {
   sp1_TileEntry('D', udg_birdcage2);
 
   level_x_max = 27;
-  level_x_min = 0;
+  level_x_min = 1;
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
   // paint the chair
@@ -60,7 +60,13 @@ static void check_cage_and_bird() {
             get_out_of_level_generic(WON_LEVEL); // yayy
             return;
         }
-        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)BIRD_OFFSET, windows[0].y, windows[0].x, 0, 0);
+        if (frame_big < FRAME_CHANGE) {
+            windows[1].x = BIRD_OFFSET;
+        } else {
+            windows[1].x = BIRD_OFFSET2;
+        }
+
+        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)windows[1].x, windows[0].y, windows[0].x, 0, 0);
     }
 }
 

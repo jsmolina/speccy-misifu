@@ -37,7 +37,7 @@ void define_cheese_holes_pos() {
 static inline uint8_t map_cat_pos_in_holes() {
 
     for(idx = 0; idx != 14; ++idx) {
-        if(misifu.y == windows[idx].y && misifu.x == (windows[idx].x - 2)) {
+        if(misifu.y == windows[idx].y && misifu.x == (windows[idx].x - 1)) {
             return idx;
         }
     }
@@ -74,7 +74,7 @@ void detect_fall_in_hole_or_curtain() {
 
 static void move_misifu(uint8_t index) {
     first_keypress = index;
-    misifu.x = windows[index].x - 2;
+    misifu.x = windows[index].x - 1;
     misifu.y = windows[index].y - 1;
     misifu.state = FALLING;
 }
@@ -155,6 +155,8 @@ void  print_background_level2() {
   sp1_TileEntry('B', hole_mouse);
   sp1_TileEntry('C', cheese2);
   sp1_TileEntry('Z', hole_empty);
+  sp1_TileEntry('D', queso_textura);
+  sp1_TileEntry('E', queso_diagonal);
 
   define_silla_udgs();
 
@@ -178,9 +180,19 @@ void  print_background_level2() {
         sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN, 'C');
     }
   }
+
+  // paint diagonal
+  idx = 3;
+  for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
+      sp1_PrintAt( idx_j - 1, idx, PAPER_RED | INK_GREEN, 'E');
+       ++idx;
+  }
+
+
   // paint holes
   for (idx = 0; idx != 14; ++idx) {
     sp1_PrintAt( windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, 'A');
+    sp1_PrintAt( windows[idx].y, windows[idx].x - 1, INK_BLACK | PAPER_GREEN, 'D');
   }
 
   // paint the chair
@@ -193,7 +205,7 @@ void  print_background_level2() {
   aux_object.x = 5;
   repaint_lives = 1;
   level_x_max = 28;
-  level_x_min = 0;
+  level_x_min = 1;
   reset_misifu_position();
 }
 

@@ -40,6 +40,7 @@ static void paint_cupid(uint8_t row, uint8_t col) {
 
 static void assign_holes() {
     if(frame == 4 || (random_value & 1) == 0 ) {
+        // as it has 24 X positions
         floor_holes[frame][idx_j - 4] = 1;
         sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
     } else {
@@ -51,7 +52,7 @@ static void assign_holes() {
 void print_background_level_last() {
   level = 10;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_RED | PAPER_GREEN,
+                  PAPER_GREEN,
                   ' ' );
   zx_border(INK_BLACK);
 
@@ -111,7 +112,7 @@ void print_background_level_last() {
   misifu.x = 4;
   misifu.y = FLOOR_Y;
   level_x_max = 25;
-  level_x_min = 3;
+  level_x_min = 4;
   aux_object.offset = AUX_ARROWLEFT;
   sp1_UpdateNow();
 }
@@ -143,10 +144,13 @@ void detect_fall_in_hearts() {
     if (idx_j == UNDEF) {
         return;
     }
-
-    idx = misifu.x - 2;
-    // todo this is not always working, maybe related to painting?
-    if (floor_holes[idx_j][idx] == 0 && floor_holes[idx_j][idx + 1] == 0) {
+    /***
+    floor holes start at 0 to save memory, thus position -4 is position zero really (fck memory)
+    012345678
+    ----xxxff
+    ***/
+    idx = misifu.x - 3;
+    if (floor_holes[idx_j][idx] == 0) {
         misifu.state = FALLING;
         if (misifu.y >= FLOOR_Y) {
             get_out_of_level_generic(FALLING);
@@ -197,7 +201,7 @@ inline void heavencat_on_move() {
     // detect collision with misifu
     idx_j = lvl3_y_to_idj(misifu.y);
     if(idx_j < 4 && abs(misifu.x - windows[idx_j].x) < 2) {
-        misifu.state = FALLING;
+        //misifu.state = FALLING;
         bit_beepfx_di_fastcall(BEEPFX_HIT_1);
     }
 
@@ -233,8 +237,8 @@ void throw_cupid_arrow() {
 
         if(idx_j < 5 && aux_object.x > 3 && aux_object.x < 27) {
             // broke the heart :(
-            sp1_PrintAtInv( aux_object.y, aux_object.x + 1, INK_BLUE | PAPER_GREEN, 'A');
-            floor_holes[idx_j][aux_object.x - 3] = 0;
+            //sp1_PrintAtInv( aux_object.y, aux_object.x + 1, INK_BLUE | PAPER_GREEN, 'A');
+            //floor_holes[idx_j][aux_object.x - 1] = 0;
         }
     } else {
         // out of screen

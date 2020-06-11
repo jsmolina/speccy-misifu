@@ -35,7 +35,7 @@ void  print_background_level3() {
   repaint_lives = 1;
 
   level_x_max = 28;
-  level_x_min = 0;
+  level_x_min = 1;
 }
 
 
@@ -54,7 +54,7 @@ inline static void check_chair_and_fishtank_level3() {
             misifu.in_bin = 2;
         }
 
-        if(misifu.y == 16 && misifu.x == 21) {
+        if(misifu.y == 16 && (misifu.x == 21 || misifu.x == 22)) {
             // get inside fishtank and outside of this level
             level = 4;
             print_background_level4();
