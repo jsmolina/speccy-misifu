@@ -17,7 +17,7 @@ void  print_background_level6() {
   sp1_TileEntry('D', udg_birdcage2);
 
   level_x_max = 27;
-  level_x_min = 0;
+  level_x_min = 1;
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
   // paint the chair

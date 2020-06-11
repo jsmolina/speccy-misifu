@@ -205,7 +205,7 @@ void  print_background_level2() {
   aux_object.x = 5;
   repaint_lives = 1;
   level_x_max = 28;
-  level_x_min = 0;
+  level_x_min = 1;
   reset_misifu_position();
 }
 

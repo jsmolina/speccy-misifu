@@ -219,7 +219,7 @@ void  print_background_lvl1() {
    bincat_in_bin = NONE;
 
    level_x_max = 28;
-   level_x_min = 0;
+   level_x_min = 1;
 
    // floor holes initialize, save memory ftw
    floor_holes[0][0] = 1;  // row1clothes

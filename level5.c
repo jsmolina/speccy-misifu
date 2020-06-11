@@ -46,7 +46,7 @@ void  print_background_level5() {
   paint_chair(17, 10, PAPER_MAGENTA, INK_CYAN);
 
   level_x_max = 28;
-  level_x_min = 0;
+  level_x_min = 1;
 
   for(idx_j = 5; idx_j != 20; ++idx_j ) {
      sp1_PrintAt(idx_j, 18,  INK_BLACK | PAPER_MAGENTA, 'L');
