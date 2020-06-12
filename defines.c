@@ -409,6 +409,7 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
+        print_background_level_last();
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
@@ -458,8 +459,9 @@ void check_swim() {
 void dog_checks() {
 // time for doggy checks
     if (misifu.state != FIGHTING && enemy_apears == YES) {
-
-        --x_malo;
+        if((frame_big & 1) == 0) {
+            --x_malo;
+        }
 
         if (frame_big < FRAME_CHANGE) {
             dog_offset = DOG1;
