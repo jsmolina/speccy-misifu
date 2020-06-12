@@ -201,7 +201,7 @@ inline void heavencat_on_move() {
     // detect collision with misifu
     idx_j = lvl3_y_to_idj(misifu.y);
     if(idx_j < 4 && abs(misifu.x - windows[idx_j].x) < 2) {
-        //misifu.state = FALLING;
+        misifu.state = FALLING;
         bit_beepfx_di_fastcall(BEEPFX_HIT_1);
     }
 
@@ -237,8 +237,9 @@ void throw_cupid_arrow() {
 
         if(idx_j < 5 && aux_object.x > 3 && aux_object.x < 27) {
             // broke the heart :(
-            //sp1_PrintAtInv( aux_object.y, aux_object.x + 1, INK_BLUE | PAPER_GREEN, 'A');
-            //floor_holes[idx_j][aux_object.x - 1] = 0;
+            idx = aux_object.x;
+            floor_holes[idx_j][idx - 4] = 0;
+            sp1_PrintAtInv( aux_object.y, idx, INK_BLACK | PAPER_GREEN, 'A');
         }
     } else {
         // out of screen

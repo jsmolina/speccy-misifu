@@ -161,7 +161,7 @@ void detect_fish_collission() {
         }
     } else {
         for(idx = 0; idx != 5; ++idx) {
-            if((floor_holes[idx][Y_POS] == misifu.y && abs(floor_holes[idx][X_POS] - misifu.x) < 2))
+            if((floor_holes[idx][Y_POS] == misifu.y && abs(floor_holes[idx][X_POS] - misifu.x) < 1))
             {
                 // loose a life and out of level
                 get_out_of_level4(ELECTRIFIED);
