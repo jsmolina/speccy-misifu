@@ -163,3 +163,8 @@ dog:
 	@png2udg ./background/udg_dog1m.png
 	@png2udg ./background/udg_dog2.png
 	@png2udg ./background/udg_dogmilk.png
+
+extras:
+	@png2udg ./background/j_ladrillos.png
+	@png2udg ./background/j_piedras.png
+	@png2udg ./background/j_valla_rota.png

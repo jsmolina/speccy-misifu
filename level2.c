@@ -109,7 +109,7 @@ void level2_loop() {
         }
 
         for(idx_j = 0; idx_j != 8; ++idx_j) {
-            idx = udgxs[idx_j];
+            idx = floor_holes[0][idx_j];
             sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, windows[idx].has_item);
         }
     }
@@ -161,14 +161,14 @@ void  print_background_level2() {
   define_silla_udgs();
 
   // in this level it is used to define holes with mouse
-  udgxs[0] = 5;
-  udgxs[1] = 8;
-  udgxs[2] = 10;
-  udgxs[3] = 4;
-  udgxs[4] = 13;
-  udgxs[5] = 9;
-  udgxs[6] = 12;
-  udgxs[7] = 6;
+  floor_holes[0][0] = 5;
+  floor_holes[0][1] = 8;
+  floor_holes[0][2] = 10;
+  floor_holes[0][3] = 4;
+  floor_holes[0][4] = 13;
+  floor_holes[0][5] = 9;
+  floor_holes[0][6] = 12;
+  floor_holes[0][7] = 6;
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
 

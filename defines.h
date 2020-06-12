@@ -141,8 +141,7 @@ extern uint8_t bincat_in_bin;
 extern uint8_t dog_offset;
 // keeps animation frames when something takes longer
 extern uint8_t anim_frames;
-extern uint8_t udgxs[];
-extern uint8_t udgys[];
+//extern uint8_t udgxs[];
 
 extern uint8_t first_keypress;
 
