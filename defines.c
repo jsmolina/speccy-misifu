@@ -195,7 +195,7 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
-  c->attr_mask = SP1_AMASK_INK;
+  c->attr_mask = SP1_AMASK_TRANS;
   c->attr      = INK_BLUE;
 }
 
@@ -232,8 +232,6 @@ static struct sp1_ss * add_sprite_dogr1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
-
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseDogColour);
 
@@ -408,7 +406,6 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
-        print_background_level_last();
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
