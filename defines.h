@@ -96,10 +96,10 @@
 
 #define FRAME_CHANGE 5
 #define FRAME_MOST 10
-#define DOG1 1
-#define DOG2 24
-#define DOGFIGHTING1 48
-#define DOGFIGHTING2 72
+#define DOG1 2
+#define DOG2 48
+#define DOGFIGHTING1 96
+#define DOGFIGHTING2 144
 
 #define MAX_X 32
 
@@ -141,8 +141,7 @@ extern uint8_t bincat_in_bin;
 extern uint8_t dog_offset;
 // keeps animation frames when something takes longer
 extern uint8_t anim_frames;
-extern uint8_t udgxs[];
-extern uint8_t udgys[];
+//extern uint8_t udgxs[];
 
 extern uint8_t first_keypress;
 

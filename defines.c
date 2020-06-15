@@ -43,7 +43,6 @@ extern uint8_t sprite_protar3[];
 extern uint8_t sprite_dog1[];
 extern uint8_t sprite_dog2[];
 extern uint8_t sprite_dog3[];
-extern uint8_t sprite_dog4[];
 
 extern uint8_t sprite_bincat1[];
 extern uint8_t sprite_bincat2[];
@@ -76,7 +75,7 @@ uint8_t dog_offset;
 uint8_t anim_frames = 0;
 
 // used for udg animations (e.g. heaven cats, eel, ...)
-uint8_t udgxs[] = {0, 0, 0, 0, 0, 0, 0, 0};
+//uint8_t udgxs[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 uint8_t first_keypress = NONE;
 
@@ -183,13 +182,13 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
   c->attr_mask = SP1_AMASK_TRANS;
   c->attr      = INK_BLACK;
 }
-
+/*
 static void initialiseColourOther(unsigned int count, struct sp1_cs *c)
 {
-  (void)count;    /* Suppress compiler warning about unused parameter */
+  (void)count;   // Suppress compiler warning about unused parameter
   c->attr_mask = SP1_AMASK_INK;
   c->attr      = INK_BLACK;
-}
+}*/
 
 
 static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
@@ -229,10 +228,10 @@ struct sp1_ss * add_sprite_swim() {
 
 static struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)sprite_dog1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_dog2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_dog3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_dog4, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_dog1, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog3, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
 
@@ -247,7 +246,7 @@ static struct sp1_ss * add_sprite_bincat() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat2, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
-  sp1_IterateSprChar(sp, initialiseColourOther);
+  sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }
@@ -260,7 +259,7 @@ static struct sp1_ss * add_sprite_auxiliar() {
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
-  sp1_IterateSprChar(sp, initialiseColourOther);
+  sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }

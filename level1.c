@@ -47,6 +47,8 @@ const uint8_t udg_clothes22[] = {0xf0, 0xf0, 0xf8, 0xf8, 0xfc, 0x3c, 0xc, 0x0};
 const uint8_t udg_boot[] = {0xe, 0xe, 0xe, 0xe, 0x1e, 0x3e, 0x7c, 0x70};
 const uint8_t udg_boot2[] = {0x81, 0xe3, 0xff, 0x7e, 0x3c, 0x18, 0x0, 0x0};
 
+const uint8_t j_ladrillos[] = {0x0, 0x1, 0x1, 0x7e, 0x0, 0x10, 0x10, 0xe7};
+const uint8_t j_piedras[] = {0x0, 0x0, 0x0, 0x26, 0xb, 0x87, 0x10, 0x0};
 
 uint8_t is_in_bin(uint8_t x_pos) {
     if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
@@ -126,15 +128,17 @@ void print_lives() {
 }
 
 void  print_background_lvl1() {
+  uint16_t color = INK_BLACK | PAPER_MAGENTA;
+
   level = 1;
   opened_window = NONE;
   zx_border(INK_BLACK);
 
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_MAGENTA,
-                  ' ' );
-  sp1_Invalidate(&full_screen);
+  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE, color, ' ' );
 
+  sp1_Invalidate(&full_screen);
+  sp1_TileEntry('$', j_ladrillos);
+  sp1_TileEntry('%', j_piedras);
   sp1_TileEntry('V', udg_valla2);  // middle of fence
   sp1_TileEntry('W', udg_valla1);  // top of fence
   sp1_TileEntry('X', udg_valla3); // another top of fence
@@ -192,11 +196,41 @@ void  print_background_lvl1() {
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
-    sp1_PrintAt(9, idx, INK_BLACK | PAPER_MAGENTA, 'R');
-    sp1_PrintAt(5, idx, INK_BLACK | PAPER_MAGENTA, 'R');
-    sp1_PrintAt(1, idx, INK_BLACK | PAPER_MAGENTA, 'R');
+    sp1_PrintAt(9, idx, color, 'R');
+    sp1_PrintAt(5, idx, color, 'R');
+    sp1_PrintAt(1, idx, color, 'R');
   }
 
+  floor_holes[0][0] = '$';
+  floor_holes[0][1] = '$';
+  floor_holes[0][11] = '$';
+  floor_holes[0][16] = '$';
+  floor_holes[0][17] = '$';
+  floor_holes[1][1] = '$';
+  floor_holes[1][17] = '$';
+  floor_holes[2][17] = '$';
+  floor_holes[2][8] = '$';
+
+  floor_holes[3][8] = '$';
+  floor_holes[3][1] = '$';
+  floor_holes[3][2] = '$';
+  floor_holes[4][5] = '%';
+  floor_holes[4][13] = '%';
+  floor_holes[4][22] = '%';
+
+  frame = 0;
+  for(idx = 0; idx != 6; ++idx) {
+    for(idx_j = 0; idx_j != 24; ++idx_j) {
+        if(floor_holes[idx][idx_j] == '$' || floor_holes[idx][idx_j] == '%') {
+            if (idx == 4) {
+                frame = 22;
+                sp1_PrintAt( frame + 1, idx_j + 5, color, floor_holes[idx][idx_j]);
+            }
+            sp1_PrintAt( frame, idx_j, color, floor_holes[idx][idx_j]);
+        }
+    }
+    frame += 4;
+  }
 
    idx_j = 4;
    idx = 2;

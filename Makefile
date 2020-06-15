@@ -34,7 +34,7 @@ protaswim:
 	png2sp1sprite ./sprites/cat_swimsprites.png --bit -i sprite_swim -f 32 > ./build/protaswim.asm
 
 dogsprites:
-	png2sp1sprite ./sprites/dog_sprites.png --bit -i sprite_dog -f 32 > ./build/dogr.asm
+	png2sp1sprite ./sprites/dog_sprites.png -m ./sprites/dog_sprites_mask.png -i sprite_dog -f 24 > ./build/dogr.asm
 
 bincat:
 	png2sp1sprite ./sprites/bincat_sprites.png -m ./sprites/bincat_sprites_mask.png -i sprite_bincat -f 16 > ./build/bincat.asm
@@ -163,3 +163,8 @@ dog:
 	@png2udg ./background/udg_dog1m.png
 	@png2udg ./background/udg_dog2.png
 	@png2udg ./background/udg_dogmilk.png
+
+extras:
+	@png2udg ./background/j_ladrillos.png
+	@png2udg ./background/j_piedras.png
+	@png2udg ./background/j_valla_rota.png
