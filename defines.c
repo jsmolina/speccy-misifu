@@ -233,7 +233,7 @@ static struct sp1_ss * add_sprite_dogr1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
-  sp1_IterateSprChar(sp, initialiseDogColour);
+  sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }
@@ -469,7 +469,7 @@ void dog_checks() {
         if (x_malo <= 0) {
             enemy_apears = NONE;
             x_malo = 33;
-        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 19) {
+        } else if( abs(misifu.x - x_malo) == 0 && misifu.y > 19) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
@@ -826,7 +826,7 @@ void check_chair_and_table() {
         misifu.in_bin = NONE;
     }
 
-    detect_fall_in_chair(21);
+    detect_fall_in_chair(22);
 }
 
 void assign_window_pos(uint8_t y, uint8_t x) {
