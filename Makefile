@@ -132,6 +132,7 @@ table:
 	@png2udg ./background/mesatop.png
 	@png2udg ./background/mesapata.png
 	@png2udg ./background/mesaside.png
+	@png2udg ./background/q_mesabase.png
 
 fish:
 	@png2udg ./background/udg_fishtank1.png

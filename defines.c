@@ -109,12 +109,13 @@ const uint8_t wall4[] = {0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80};
 
 const uint8_t udg_sillaL[] = {0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70};
 const uint8_t udg_sillaR[] = {0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7};
-const uint8_t udg_sillaLM[] = {0x7f, 0x7f, 0x7f, 0x70, 0x70, 0x70, 0x70, 0x70};
-const uint8_t udg_sillaRM[] = {0xff, 0xff, 0xff, 0x7, 0x7, 0x7, 0x7, 0x7};
+const uint8_t udg_sillaLM[] = {0x77, 0x57, 0x77, 0x70, 0x70, 0x70, 0x70, 0x70};
+const uint8_t udg_sillaRM[] = {0xfe, 0xff, 0xff, 0x0, 0x7, 0x7, 0x7, 0x7};
 
 const uint8_t mesatop[] = {0xff, 0xff, 0xff, 0x0, 0x18, 0x18, 0x18, 0x18};
 const uint8_t mesapata[] = {0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18};
 const uint8_t mesaside[] = {0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0, 0x0};
+const uint8_t q_mesabase[] = {0x18, 0x18, 0x18, 0x18, 0x0, 0x3c, 0x7e, 0xff};
 
 // level 1
 struct udgstruct windows[14];
@@ -195,7 +196,7 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
-  c->attr_mask = SP1_AMASK_INK;
+  c->attr_mask = SP1_AMASK_TRANS;
   c->attr      = INK_BLUE;
 }
 
@@ -233,9 +234,7 @@ static struct sp1_ss * add_sprite_dogr1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog3, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
-
-  sp1_IterateSprChar(sp, initialiseDogColour);
+  sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }
@@ -408,7 +407,6 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
-        print_background_level_last();
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
@@ -472,7 +470,7 @@ void dog_checks() {
         if (x_malo <= 0) {
             enemy_apears = NONE;
             x_malo = 33;
-        } else if( abs(misifu.x - x_malo) < 3 && misifu.y > 19) {
+        } else if( abs(misifu.x - x_malo) == 0 && misifu.y > 19) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
@@ -621,6 +619,7 @@ void define_silla_udgs() {
   sp1_TileEntry('U', mesatop);
   sp1_TileEntry('V', mesapata);
   sp1_TileEntry('W', mesaside);
+  sp1_TileEntry('?', q_mesabase);
 }
 
 void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
@@ -629,7 +628,7 @@ void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_colo
     sp1_PrintAt(row + 1, col + 2,  ink_color |paper_color, 'W');
 
     sp1_PrintAt(row + 2, col + 1,  ink_color |paper_color, 'V');
-    sp1_PrintAt(row + 3, col + 1,  ink_color |paper_color, 'V');
+    sp1_PrintAt(row + 3, col + 1,  ink_color |paper_color, '?');
 }
 
 void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
@@ -817,19 +816,19 @@ void move_broom() {
 void check_chair_and_table() {
 
     if(misifu.state == FALLING) {
-        if(misifu.y == 16 && (misifu.x == 25 || misifu.x == 26)) {
+        if(misifu.y == 16 && misifu.x >= 25 && misifu.x <= 27) {
             misifu.state = CAT_ON_HIGH;
             misifu.offset = BORED;
             misifu.in_bin = 2;
         }
     }
 
-    if(misifu.in_bin == 2 && misifu.x != 25 && misifu.x != 26) {
+    if(misifu.in_bin == 2 && !(misifu.x >= 25 && misifu.x <= 27)) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
 
-    detect_fall_in_chair(21);
+    detect_fall_in_chair(22);
 }
 
 void assign_window_pos(uint8_t y, uint8_t x) {
