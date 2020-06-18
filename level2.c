@@ -11,7 +11,6 @@
 // level 2 cheese
 const uint8_t hole_empty[] = {0x3c, 0x46, 0x9f, 0xbf, 0xbf, 0xbf, 0x5e, 0x3c};
 const uint8_t hole_mouse[] = {0x3c, 0x7e, 0x99, 0x81, 0xd5, 0xc3, 0x66, 0x3c};
-const uint8_t cheese2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 
 void define_cheese_holes_pos() {
@@ -153,7 +152,6 @@ void  print_background_level2() {
 
   sp1_TileEntry('A', hole_empty);
   sp1_TileEntry('B', hole_mouse);
-  sp1_TileEntry('C', cheese2);
   sp1_TileEntry('Z', hole_empty);
   sp1_TileEntry('D', queso_textura);
   sp1_TileEntry('E', queso_diagonal);
@@ -177,7 +175,7 @@ void  print_background_level2() {
   for (idx = 3; idx != 20; ++idx) {
 
     for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
-        sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN, 'C');
+        sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN, 'N');
     }
   }
 

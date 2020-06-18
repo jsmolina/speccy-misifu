@@ -138,6 +138,7 @@ void  print_background_lvl1() {
 
   sp1_Invalidate(&full_screen);
   sp1_TileEntry('$', j_ladrillos);
+  sp1_TileEntry(144, queso_textura);
   sp1_TileEntry('%', j_piedras);
   sp1_TileEntry('V', udg_valla2);  // middle of fence
   sp1_TileEntry('W', udg_valla1);  // top of fence
@@ -231,6 +232,12 @@ void  print_background_lvl1() {
     }
     frame += 4;
   }
+  sp1_PrintAt(21,12,color, 144);
+  sp1_PrintAt(21,27,color, 144);
+  sp1_PrintAt(22,0,color, 144);
+  sp1_PrintAt(23,2,color, 144);
+  sp1_PrintAt(23,7,color, 144);
+  sp1_PrintAt(23,15,color, 144);
 
    idx_j = 4;
    idx = 2;
