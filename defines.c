@@ -35,6 +35,7 @@ const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
 const uint8_t queso_textura[] = {0x0, 0x0, 0x80, 0x4, 0x0, 0x8, 0x40, 0x1};
 const uint8_t queso_diagonal[] = {0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff};
+const uint8_t q_barra_cortina[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0xc};
 
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
@@ -313,6 +314,7 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
   sp1_TileEntry('J', curtain);
   sp1_TileEntry('N', udg_win2); // full square
+  sp1_TileEntry(144, q_barra_cortina);
 
   for(idx = 0; idx != 3; ++idx) {
     // upper left
@@ -335,6 +337,10 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
   for (idx = 3; idx != 29; ++idx) {
     sp1_PrintAt( 5, idx, INK_BLACK | paper_color, 'G');
     sp1_PrintAt( 17, idx, INK_BLACK | paper_color, 'G');
+  }
+
+  for (idx = initial_window; idx != initial_window + 8; ++idx) {
+     sp1_PrintAt( 7, idx, PAPER_RED | INK_GREEN, 144);
   }
 
   for (idx = 8; idx != 11; ++idx) {
