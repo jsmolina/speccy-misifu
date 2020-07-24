@@ -184,30 +184,6 @@ static void print_heavencat(uint8_t to_print1, uint8_t to_print2) {
     sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + 1, PAPER_GREEN, to_print2);
 }
 
-
-inline void heavencat_on_move() {
-    // clean
-    idx_j = rand_cat_to_move();
-    if(idx_j != UNDEF) {
-        print_heavencat(' ', ' ');
-        ++windows[idx_j].x;
-        if(windows[idx_j].x > 25) {
-            // if reaching right, return left
-            windows[idx_j].x = 5;
-        }
-        print_heavencat('L', 'M');
-    }
-
-    // detect collision with misifu
-    idx_j = lvl3_y_to_idj(misifu.y);
-    if(idx_j < 4 && abs(misifu.x - windows[idx_j].x) < 2) {
-        misifu.state = FALLING;
-        bit_beepfx_di_fastcall(BEEPFX_HIT_1);
-    }
-
-    // saves lot of memory to use udg in this animation
-}
-
 void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
@@ -251,5 +227,22 @@ void throw_cupid_arrow() {
         misifu.state = FALLING;
     }
 
-    heavencat_on_move();
+    //heavencat_on_move()
+    idx_j = rand_cat_to_move();
+    if(idx_j != UNDEF) {
+        print_heavencat(' ', ' ');
+        ++windows[idx_j].x;
+        if(windows[idx_j].x > 25) {
+            // if reaching right, return left
+            windows[idx_j].x = 5;
+        }
+        print_heavencat('L', 'M');
+    }
+
+    // detect collision with misifu
+    idx_j = lvl3_y_to_idj(misifu.y);
+    if(idx_j < 4 && abs(misifu.x - windows[idx_j].x) < 2) {
+        misifu.state = FALLING;
+        bit_beepfx_di_fastcall(BEEPFX_HIT_1);
+    }
 }

@@ -84,31 +84,6 @@ void  print_background_level5() {
   sp1_UpdateNow();
 }
 
-static void anim_spider() {
-    if(random_value < 18 && bincat_appears == NONE) {
-        windows[0].x = random_value;
-
-        if(random_value < 3) {
-            windows[0].x = misifu.x;
-        }
-
-        windows[0].y = 3;
-        bincat_appears = 15;
-    }
-    // if already animating
-    if (bincat_appears != NONE) {
-        --bincat_appears;
-        ++windows[0].y;
-
-    }
-}
-
-static inline void detect_spider_bite() {
-    if(abs(windows[0].y - misifu.y) < 1 && abs(windows[0].x - misifu.x) < 1) {
-        // SPIDER BITE
-        get_out_of_level_generic(BITE);
-    }
-}
 
 static void vase_falls(uint8_t i) {
     if (windows[i].has_item == 'Z') {
@@ -154,13 +129,32 @@ void level5_loop() {
 
     move_broom();
     // SPIDER, row (5-12), col (17-28)
-    anim_spider();
+    //anim_spider();
+    if(random_value < 18 && bincat_appears == NONE) {
+        windows[0].x = random_value;
+
+        if(random_value < 3) {
+            windows[0].x = misifu.x;
+        }
+
+        windows[0].y = 3;
+        bincat_appears = 15;
+    }
+    // if already animating
+    if (bincat_appears != NONE) {
+        --bincat_appears;
+        ++windows[0].y;
+
+    }
+
     dog_checks();
-
     detect_fall_in_chair(9);
-
     detect_vase_falling();
-
     detect_cat_in_window(12);
-    detect_spider_bite();
+
+    //detect_spider_bite();
+    if(abs(windows[0].y - misifu.y) < 1 && abs(windows[0].x - misifu.x) < 1) {
+        // SPIDER BITE
+        get_out_of_level_generic(BITE);
+    }
 }

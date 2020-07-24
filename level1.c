@@ -312,19 +312,6 @@ static void increase_indexes_clothes(uint8_t idx) {
     repaint_clothes(6, floor_holes[1][idx], 0);
 }
 
-void move_clothes() {
-// now take decisions
-    // move clothes to the right
-    increase_indexes_clothes(0);
-    increase_indexes_clothes(1);
-    // now move cat
-    if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
-         ++misifu.x;
-    } else if(misifu.draw_additional == CAT_IN_ROPE2) {
-        --misifu.x;
-    }
-
-}
 
 void anim_windows() {
     if(repaint_lives == 1) {
@@ -501,14 +488,24 @@ void detect_fall_in_window() {
 }
 
 void level1_loop() {
-    move_clothes();
+    //move_clothes();
+    // move clothes to the right
+    increase_indexes_clothes(0);
+    increase_indexes_clothes(1);
+    // now move cat
+    if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+         ++misifu.x;
+    } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+        --misifu.x;
+    }
+
     anim_windows();
     check_bincat();
     dog_checks();
-    detect_fall_in_window();
     if (misifu.state == FALLING) {
         detect_fall_in_bin();
     }
+    detect_fall_in_window();
 }
 
 #endif

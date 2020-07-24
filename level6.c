@@ -33,7 +33,12 @@ void  print_background_level6() {
   windows[0].has_item = BIRD; // bird is inside cage
 }
 
-static void check_cage_and_bird() {
+void level6_loop() {
+    move_broom();
+
+    check_chair_and_table();
+    // bincat_appears, bincat_in_bin
+    //check_cage_and_bird();
     // todo think on moving cage
     if(misifu.y == 16 && abs(misifu.x - windows[0].x) < 2 && windows[0].has_item == BIRD) {
         windows[0].has_item = RIGHT;
@@ -68,14 +73,7 @@ static void check_cage_and_bird() {
 
         sp1_MoveSprAbs(bincatsp, &full_screen, (void*)windows[1].x, windows[0].y, windows[0].x, 0, 0);
     }
-}
 
-void level6_loop() {
-    move_broom();
-
-    check_chair_and_table();
-    // bincat_appears, bincat_in_bin
-    check_cage_and_bird();
     detect_cat_in_window(0);
     dog_checks();
 }
