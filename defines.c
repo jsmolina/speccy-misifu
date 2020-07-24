@@ -588,12 +588,6 @@ void check_fsm() {
         ++misifu.y;
         misifu.offset = JUMPINGC1;
 
-        if (level == 1) {
-            detect_fall_in_bin();
-        } else if (level == 2) {
-            detect_fall_in_hole_or_curtain();
-        }
-
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
             misifu.state = NONE;

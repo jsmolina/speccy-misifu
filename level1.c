@@ -507,6 +507,9 @@ void level1_loop() {
     check_bincat();
     dog_checks();
     detect_fall_in_window();
+    if (misifu.state == FALLING) {
+        detect_fall_in_bin();
+    }
 }
 
 #endif

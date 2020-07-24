@@ -46,7 +46,6 @@ static inline uint8_t map_cat_pos_in_holes() {
 
 
 void detect_fall_in_hole_or_curtain() {
-    idx = map_cat_pos_in_holes();
 
     if(idx != UNDEF) {
         misifu.state = CAT_IN_ROPE;
@@ -113,8 +112,13 @@ void level2_loop() {
         }
     }
 
+    idx = map_cat_pos_in_holes();
+
+    if (misifu.state == FALLING) {
+        detect_fall_in_hole_or_curtain();
+    }
+
     if ((in & IN_STICK_FIRE) && first_keypress == 0) {
-        idx = map_cat_pos_in_holes();
         if(idx == 5) {
             move_misifu(8);
         } else if(idx == 8) {
