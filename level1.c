@@ -347,7 +347,6 @@ void anim_windows() {
             aux_object.y = windows[opened_window].y;
             aux_object.x = windows[opened_window].x;
             horizontal_direction = NONE;
-            vertical_direction = NONE;
 
             if (misifu.y < 14 && random_value < 200) {
                 // detect where to go and randomly throw an object
@@ -358,9 +357,9 @@ void anim_windows() {
                 }
 
                 if(misifu.y < aux_object.y && (aux_object.y - misifu.y) > 2) {
-                    vertical_direction = UP;
+                    horizontal_direction |= UP;
                 } else if(misifu.y > aux_object.y && (misifu.y - aux_object.y) > 2) {
-                    vertical_direction = DOWN;
+                    horizontal_direction |= DOWN;
                 }
             }
 
@@ -368,22 +367,22 @@ void anim_windows() {
     } else {
         --opened_window_frames;
 
-        if (vertical_direction != NONE || horizontal_direction != NONE) {
+        if (horizontal_direction != NONE) {
             if(misifu.state != FALLING_FLOOR && misifu.y < 14 && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 bit_beepfx_di_fastcall(BEEPFX_HIT_2);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING_FLOOR;
             } else {
                 // now move accordingly
-                if (horizontal_direction == LEFT) {
+                if ((horizontal_direction & LEFT) != 0) {
                     --aux_object.x;
-                } else if (horizontal_direction == RIGHT){
+                } else if ((horizontal_direction & RIGHT) != 0){
                     ++aux_object.x;
                 }
 
-                if (vertical_direction == UP) {
+                if ((horizontal_direction & UP) != 0) {
                     --aux_object.y;
-                } else if (vertical_direction == DOWN) {
+                } else if ((horizontal_direction & DOWN) != 0) {
                     ++aux_object.y;
                 }
             }
