@@ -4,6 +4,9 @@ Misifu la gatita (WIP) - zxspectrum
 Development in progress
 http://zx-dev-mia-remakes.proboards.com/thread/12/misifu-gatita-alley-cat-demake
 
+Download (from releases):
+https://github.com/jsmolina/speccy-misifu/releases/
+
 # Story
 ```
 La pérrada ha raptado a Fred, y sólo lo liberará si destrozas las habitaciones del edificio del 
