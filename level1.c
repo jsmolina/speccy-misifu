@@ -313,7 +313,7 @@ static void increase_indexes_clothes(uint8_t idx) {
 }
 
 
-void anim_windows() {
+inline void anim_windows() {
     if(repaint_lives == 1) {
         print_lives();
     }
@@ -391,7 +391,7 @@ void anim_windows() {
 
 
 
-void check_bincat() {
+inline void check_bincat() {
     // checks if bincat should appear and where
     if (bincat_appears == NONE && misifu.in_bin != NONE) {
         bincat_in_bin = bin_places2[random_value % 6];
@@ -432,14 +432,15 @@ void check_bincat() {
     }
 }
 
-void detect_fall_in_bin() {
+inline void detect_fall_in_bin() {
     // detect falling over bin
-    if(misifu.y == 16 || misifu.y == 18) {
+    if(misifu.y == 15 || misifu.y == 18) {
         misifu.in_bin = is_in_bin(misifu.x);
         // store that it is on first bin pos so collide will bincat is easier
         //misifu.in_bin = misifu.x - (bin_places[misifu.x] - 1);
         if (misifu.in_bin != NONE && misifu.in_bin != bincat_in_bin) {
-            if (misifu.y == 16 && (misifu.in_bin == HIGHER_BIN_X || misifu.in_bin == HIGHER_BIN_X2)) {
+            if (misifu.y == 15 && (misifu.in_bin == HIGHER_BIN_X || misifu.in_bin == HIGHER_BIN_X2)) {
+                misifu.y = 16;
                 // stop falling
                 misifu.state = NONE;
                 misifu.draw_additional = CAT_IN_BIN;
@@ -448,7 +449,8 @@ void detect_fall_in_bin() {
                 misifu.draw_additional = CAT_IN_BIN;
             }
         }
-    } else if(misifu.y == 13) {
+    } else if(misifu.y == 12) {
+        misifu.y = 13;
         misifu.state = NONE;
         misifu.draw_additional = CAT_IN_FENCE;
     // now check ropes TODO check ropes clothes are not colliding
