@@ -120,7 +120,7 @@ const uint8_t q_mesabase[] = {0x18, 0x18, 0x18, 0x18, 0x0, 0x3c, 0x7e, 0xff};
 
 // level 1
 struct udgstruct windows[14];
-const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
+//const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;

@@ -7,7 +7,6 @@
 #include "defines.h"
 
 
-
 extern uint8_t is_in_bin(uint8_t x_pos);
 
 

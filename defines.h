@@ -38,8 +38,8 @@
 #define JUMP_LEFT 2
 #define CAT_IN_BIN 3
 #define CAT_IN_FENCE 4
-#define HIGHER_BIN_X 5
-#define HIGHER_BIN_X2 20
+#define HIGHER_BIN_X 2   // bins are from 1 - 5
+#define HIGHER_BIN_X2 4
 #define FLOOR_Y 21
 
 #define AUX_BINCAT 2
@@ -174,7 +174,7 @@ extern const uint8_t wall4[];
 
 // level 1
 extern struct udgstruct windows[14];
-extern const uint8_t bin_places2[];
+//extern const uint8_t bin_places2[];
 
 
 // variable used for free objects (e.g. kitchen object thrown from window)
