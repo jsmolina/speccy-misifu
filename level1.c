@@ -99,7 +99,7 @@ uint8_t is_in_bin(uint8_t x_pos) {
     return NONE;
 }
 
-uint8_t  get_cubo_offset() {
+inline uint8_t  get_cubo_offset() {
     if(x == 1 || x == 5 || x == 9 || x == 20 || x == 24) {
         return 0;
     }
