@@ -185,7 +185,12 @@ void  print_background_lvl1() {
           sp1_PrintAtInv(idx_j - 2, x, INK_BLACK | PAPER_MAGENTA, UDG_CUBOMIDDLE1 + frame);
           sp1_PrintAtInv(idx_j - 3, x, INK_BLACK | PAPER_MAGENTA, UDG_CUBOTOP1 + frame);
       }
+
   }
+  sp1_PrintAtInv(17, 3, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(18, 13, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(20, 18, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(16, 23, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
 
   print_lives();
 
