@@ -17,7 +17,7 @@
 #include "level_last.h"
 
 #define TILES_BASE 128
-#define TILES_LEN 28
+#define TILES_LEN 29
 
 
 #define UDG_JLADRILLOS 128
@@ -47,7 +47,8 @@
 #define UDG_CLOTHES21 152
 #define UDG_CLOTHES22 153
 #define UDG_BOOT 154
-#define UDG_BOOT2 155
+#define UDG_PANTIES 155
+#define UDG_VALLAROTA 156
 
 uint8_t tiles[] = {
 0x00, 0x01, 0x01, 0x7e, 0x00, 0x10, 0x10, 0xe7, // y:0, x:0 (128)
@@ -78,6 +79,7 @@ uint8_t tiles[] = {
 0x0f, 0x0f, 0x07, 0x07, 0x03, 0xc3, 0xf3, 0xff, // y:0, x:25 (153)
 0x0e, 0x0e, 0x0e, 0x0e, 0x1e, 0x3e, 0x7c, 0x70, // y:0, x:26 (154)
 0x7e, 0x1c, 0x00, 0x81, 0xc3, 0xe7, 0xff, 0xff, // y:0, x:27 (155)
+0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
 };
 
 
@@ -282,11 +284,11 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
         sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES11);
         sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES12);
         sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES21);
-        sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES22);
+        sp1_PrintAtInv(row + 1, col + 1, INK_MAGENTA | PAPER_WHITE, UDG_CLOTHES22);
 
         sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, UDG_BOOT);
         sp1_PrintAtInv(row, col + 4, INK_WHITE | PAPER_MAGENTA, UDG_BOOT);
-        sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, UDG_BOOT2);
+        sp1_PrintAtInv(row, col + 5, INK_MAGENTA | PAPER_WHITE, UDG_PANTIES);
     }
 }
 
@@ -401,7 +403,7 @@ inline void check_bincat() {
             } else {
                 bincat_appears = 17;
             }
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, bincat_appears, bincat_in_bin, 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, bincat_appears, bin_places2[bincat_in_bin], 0, 0);
             bincat_appears = 40;
 
         } else {

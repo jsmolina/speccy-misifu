@@ -174,7 +174,7 @@ extern const uint8_t wall4[];
 
 // level 1
 extern struct udgstruct windows[14];
-//extern const uint8_t bin_places2[];
+extern const uint8_t bin_places2[];
 
 
 // variable used for free objects (e.g. kitchen object thrown from window)
