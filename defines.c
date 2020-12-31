@@ -473,16 +473,17 @@ void dog_checks() {
         }
 
         // detects collission malo->misifu
-        if (x_malo <= 0) {
-            enemy_apears = NONE;
-            x_malo = 33;
-        } else if( abs(misifu.x - x_malo) == 0 && misifu.y > 19) {
+        if( abs(misifu.x - x_malo) == 0 && misifu.y > 19) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
             anim_frames = 20;
             // hide cat
             misifu.x = 33;
+        }
+        if (x_malo == 0 && misifu.state != FIGHTING) {
+            enemy_apears = NONE;
+            x_malo = 33;
         }
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
