@@ -49,6 +49,8 @@
 #define UDG_BOOT 154
 #define UDG_PANTIES 155
 #define UDG_VALLAROTA 156
+#define MAX_COORDS_LADRILLOS 45
+#define TOTAL_COORDS_SUELO 15
 
 uint8_t tiles[] = {
 0x00, 0x01, 0x01, 0x7e, 0x00, 0x10, 0x10, 0xe7, // y:0, x:0 (128)
@@ -82,9 +84,12 @@ uint8_t tiles[] = {
 0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
 };
 
-const uint8_t coords [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31, 0x3c,
-0x31, 0x3d, 0x31, 0x41, 0x4f, 0x41, 0x88, 0x89, 0x87, 0x81, 0xb0, 0xbc, 0xb1, 0xc0, 0xc1, 0xc7, 0xcf, 0xc2, 0xd1, 0xd5,
-0xd2, 0xd7, 0xd1, 0xd6, 0xd1, 0xd6};
+const uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
+    0x3c, 0x31, 0x3d, 0x31, 0x41, 0x4f, 0x41, 0x7f, 0x71, 0x79, 0x71, 0x88, 0x89, 0x87, 0x81, 0xb0, 0xbd, 0xb1,
+    0xc0, 0xc1, 0xc7, 0xcf, 0xc2, 0xd1, 0xd6, 0xd2, 0xd7, 0xd1, 0xd6, 0xd1, 0xd7};
+
+const uint8_t coords_suelo [] = {0x0c, 0x05, 0x0b, 0x10, 0x15, 0x18, 0x16, 0x14, 0x17, 0x22, 0x25, 0x24, 0x24, 0x23, 0x29};
+const uint16_t suelo_flags = 0x69b2;
 
 uint8_t is_in_bin(uint8_t x_pos) {
     if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
@@ -208,44 +213,40 @@ void  print_background_lvl1() {
     sp1_PrintAt(1, idx, color, UDG_ROPE);
   }
 
-  floor_holes[0][0] = UDG_JLADRILLOS;
-  floor_holes[0][1] = UDG_JLADRILLOS;
-  floor_holes[0][11] = UDG_JLADRILLOS;
-  floor_holes[0][16] = UDG_JLADRILLOS;
-  floor_holes[0][17] = UDG_JLADRILLOS;
-  floor_holes[1][1] = UDG_JLADRILLOS;
-  floor_holes[1][17] = UDG_JLADRILLOS;
-  floor_holes[2][17] = UDG_JLADRILLOS;
-  floor_holes[2][8] = UDG_JLADRILLOS;
-
-  floor_holes[3][8] = UDG_JLADRILLOS;
-  floor_holes[3][1] = UDG_JLADRILLOS;
-  floor_holes[3][2] = UDG_JLADRILLOS;
-  floor_holes[4][5] = UDG_PIEDRAS;
-  floor_holes[4][13] = UDG_PIEDRAS;
-  floor_holes[4][22] = UDG_PIEDRAS;
-
-  frame = 0;
-  for(idx = 0; idx != 6; ++idx) {
-    for(idx_j = 0; idx_j != 24; ++idx_j) {
-        if(floor_holes[idx][idx_j] == UDG_JLADRILLOS || floor_holes[idx][idx_j] == UDG_PIEDRAS) {
-            if (idx == 4) {
-                frame = 22;
-                sp1_PrintAt( frame + 1, idx_j + 5, color, floor_holes[idx][idx_j]);
-            }
-            sp1_PrintAt( frame, idx_j, color, floor_holes[idx][idx_j]);
-        }
+  // paint bricks (decompressing!)
+  idx_j = 255; // idx_j is y, idx is x
+  for(x=0; x != MAX_COORDS_LADRILLOS; ++x) {
+    // y
+    // if y changes, x returns to zero
+    if (((coords_lad[x] & 0xF0) >> 4) != idx_j) {
+        idx = 0;
     }
-    frame += 4;
+
+    idx_j = (coords_lad[x] & 0xF0) >> 4;
+
+    // x has relative coordinates jump with previous
+    idx += (coords_lad[x] & 0x0F);
+    // 15 is used as 'larger jump, no paint'
+    if((coords_lad[x] & 0x0F) == 15) {
+        continue;
+    }
+    sp1_PrintAt(idx_j, idx, color, UDG_JLADRILLOS);
   }
-  sp1_PrintAt( 0, 31, color, UDG_JLADRILLOS);
-  sp1_PrintAt( 0, 32, color, UDG_JLADRILLOS);
-  sp1_PrintAt(21,12,color, UDG_QUESO);
-  sp1_PrintAt(21,27,color, UDG_QUESO);
-  sp1_PrintAt(22,0,color, UDG_QUESO);
-  sp1_PrintAt(23,2,color, UDG_QUESO);
-  sp1_PrintAt(23,7,color, UDG_QUESO);
-  sp1_PrintAt(23,15,color, UDG_QUESO);
+
+  idx_j = 255;
+  for(x=0; x != TOTAL_COORDS_SUELO; ++x) {
+      // frame will be zero or one (thus queso or piedras)
+      frame = ((suelo_flags >> x) & 1);
+      // coords_suelo
+      if (((coords_suelo[x] & 0xF0) >> 4) != idx_j) {
+         idx = 0;
+      }
+      idx_j = ((coords_suelo[x] & 0xF0) >> 4);
+
+      idx += (coords_suelo[x] & 0x0F);
+      sp1_PrintAt(idx_j + 21, idx, color, UDG_QUESO + frame);
+  }
+
 
    idx_j = 4;
    idx = 2;
