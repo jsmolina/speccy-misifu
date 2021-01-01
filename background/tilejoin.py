@@ -28,7 +28,8 @@ imgs = [
     'udg_clothes21',
     'udg_clothes22',
     'udg_boot',
-    'udg_boot2'
+    'udg_boot2',
+    'j_valla_rota'
 ]
 
 imgs = [i + '.png' for i in imgs]
