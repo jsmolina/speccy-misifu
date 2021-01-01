@@ -29,7 +29,7 @@ void show_intro() {
    ld a,6
    call enable_bank_n          ; bank 6 in top 16k, stack moved
     __endasm;
-    memcpy(16384, cartoon0, 6900);
+    memcpy(16384, cartoon0, 6912);
     __asm
     extern restore_bank_0
     call restore_bank_0

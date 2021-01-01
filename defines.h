@@ -38,8 +38,8 @@
 #define JUMP_LEFT 2
 #define CAT_IN_BIN 3
 #define CAT_IN_FENCE 4
-#define HIGHER_BIN_X 5
-#define HIGHER_BIN_X2 20
+#define HIGHER_BIN_X 2   // bins are from 1 - 5
+#define HIGHER_BIN_X2 4
 #define FLOOR_Y 21
 
 #define AUX_BINCAT 2
@@ -84,10 +84,10 @@
 
 #define LEVELFINISHED 100
 
-#define UP 1
-#define DOWN 2
-#define LEFT 3
-#define RIGHT 4
+#define UP 64
+#define DOWN 128
+#define LEFT 1
+#define RIGHT 2
 
 #define FISH_LEFT 'B'
 #define FISH_RIGHT 'A'
@@ -178,7 +178,6 @@ extern const uint8_t bin_places2[];
 
 
 // variable used for free objects (e.g. kitchen object thrown from window)
-extern uint8_t vertical_direction;
 extern uint8_t horizontal_direction;
 
 extern void add_sprites_for_all_levels();

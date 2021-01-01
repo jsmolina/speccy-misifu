@@ -93,21 +93,19 @@ static void print_fish(uint8_t idx, uint8_t to_print) {
     sp1_PrintAtInv( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, to_print);
 }
 
-inline void eels_on_move() {
-    if(random_value < 40) {
-        for(idx = 0; idx != 5; ++idx) {
-            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
-            if(floor_holes[idx][X_POS] > 30) {
-                floor_holes[idx][X_POS] = 0;
-            }
-            ++floor_holes[idx][X_POS];
-            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], 'E');
 
+static inline uint8_t map_to_fish_index() {
+    for(idx = 0; idx != 8; ++idx) {
+        if(abs(misifu.y - windows[idx].y) < 2) {
+            return idx;
         }
     }
+
+    return UNDEF;
 }
 
-inline void fishes_on_move() {
+void level4_loop() {
+    //fishes_on_move();
     if(frame == 1) { // 1/4 of times
         for(idx = 0; idx != 8; ++idx) {
             // move to the right until reached limits
@@ -128,21 +126,19 @@ inline void fishes_on_move() {
         }
     }
 
-
-}
-
-static inline uint8_t map_to_fish_index() {
-    for(idx = 0; idx != 8; ++idx) {
-        if(abs(misifu.y - windows[idx].y) < 2) {
-            return idx;
+    //eels_on_move();
+    if(random_value < 40) {
+        for(idx = 0; idx != 5; ++idx) {
+            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
+            if(floor_holes[idx][X_POS] > 30) {
+                floor_holes[idx][X_POS] = 0;
+            }
+            ++floor_holes[idx][X_POS];
+            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], 'E');
         }
     }
 
-    return UNDEF;
-}
-
-
-void detect_fish_collission() {
+    //detect_fish_collission();
     idx = map_to_fish_index();
 
     if(abs(windows[idx].x - misifu.x) < 2 && windows[idx].has_item != 'Z') {
@@ -169,13 +165,8 @@ void detect_fish_collission() {
             }
         }
     }
-}
 
-void level4_loop() {
-    fishes_on_move();
-    eels_on_move();
-    detect_fish_collission();
-
+    // cat checks
     if(frame == 1 && misifu.y >= 1) {
         --misifu.draw_additional;
 

@@ -33,7 +33,7 @@ const uint8_t udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
 
-const uint8_t queso_textura[] = {0x0, 0x0, 0x80, 0x4, 0x0, 0x8, 0x40, 0x1};
+const uint8_t queso_textura[] = {0x0, 0x80, 0x4, 0x0, 0x8, 0x40, 0x1, 0x0};
 const uint8_t queso_diagonal[] = {0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff};
 const uint8_t q_barra_cortina[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0xc};
 
@@ -340,7 +340,7 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
   }
 
   for (idx = initial_window; idx != initial_window + 8; ++idx) {
-     sp1_PrintAt( 7, idx, PAPER_RED | INK_GREEN, 144);
+     sp1_PrintAt( 7, idx, ink_color | paper_color, 144);
   }
 
   for (idx = 8; idx != 11; ++idx) {
@@ -473,16 +473,17 @@ void dog_checks() {
         }
 
         // detects collission malo->misifu
-        if (x_malo <= 0) {
-            enemy_apears = NONE;
-            x_malo = 33;
-        } else if( abs(misifu.x - x_malo) == 0 && misifu.y > 19) {
+        if( abs(misifu.x - x_malo) == 0 && misifu.y > 19) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
             anim_frames = 20;
             // hide cat
             misifu.x = 33;
+        }
+        if (x_malo == 0 && misifu.state != FIGHTING) {
+            enemy_apears = NONE;
+            x_malo = 33;
         }
         sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
 
@@ -587,12 +588,6 @@ void check_fsm() {
     } else if (misifu.state == FALLING) {
         ++misifu.y;
         misifu.offset = JUMPINGC1;
-
-        if (level == 1) {
-            detect_fall_in_bin();
-        } else if (level == 2) {
-            detect_fall_in_hole_or_curtain();
-        }
 
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;

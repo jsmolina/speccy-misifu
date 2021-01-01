@@ -13,25 +13,6 @@ const uint8_t hole_empty[] = {0x3c, 0x46, 0x9f, 0xbf, 0xbf, 0xbf, 0x5e, 0x3c};
 const uint8_t hole_mouse[] = {0x3c, 0x7e, 0x99, 0x81, 0xd5, 0xc3, 0x66, 0x3c};
 
 
-void define_cheese_holes_pos() {
-    // init to zero
-    idx = 0;
-    assign_window_pos(19, 4);
-    assign_window_pos(19, 18);
-    assign_window_pos(19, 14);
-    assign_window_pos(18, 8);
-    assign_window_pos(18, 5);
-    assign_window_pos(17, 9);
-    assign_window_pos(17, 13);
-    assign_window_pos(15, 4);
-    assign_window_pos(13, 4);
-    assign_window_pos(13, 9);
-    assign_window_pos(13, 12);
-    assign_window_pos(11, 6);
-    assign_window_pos(9, 4);
-    assign_window_pos(7, 4);
-}
-
 
 static inline uint8_t map_cat_pos_in_holes() {
 
@@ -46,7 +27,6 @@ static inline uint8_t map_cat_pos_in_holes() {
 
 
 void detect_fall_in_hole_or_curtain() {
-    idx = map_cat_pos_in_holes();
 
     if(idx != UNDEF) {
         misifu.state = CAT_IN_ROPE;
@@ -113,8 +93,13 @@ void level2_loop() {
         }
     }
 
+    idx = map_cat_pos_in_holes();
+
+    if (misifu.state == FALLING) {
+        detect_fall_in_hole_or_curtain();
+    }
+
     if ((in & IN_STICK_FIRE) && first_keypress == 0) {
-        idx = map_cat_pos_in_holes();
         if(idx == 5) {
             move_misifu(8);
         } else if(idx == 8) {
@@ -170,8 +155,24 @@ void  print_background_level2() {
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
 
-  define_cheese_holes_pos();
+  //define_cheese_holes_pos();
+  idx = 0;
+    assign_window_pos(19, 4);
+    assign_window_pos(19, 18);
+    assign_window_pos(19, 14);
+    assign_window_pos(18, 8);
+    assign_window_pos(18, 5);
+    assign_window_pos(17, 9);
+    assign_window_pos(17, 13);
+    assign_window_pos(15, 4);
+    assign_window_pos(13, 4);
+    assign_window_pos(13, 9);
+    assign_window_pos(13, 12);
+    assign_window_pos(11, 6);
+    assign_window_pos(9, 4);
+    assign_window_pos(7, 4);
 
+  // paint the rest
   for (idx = 3; idx != 20; ++idx) {
 
     for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
