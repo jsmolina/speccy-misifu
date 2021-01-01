@@ -146,6 +146,32 @@ void print_lives() {
     repaint_lives = 0;
 }
 
+void paint_bricks(uint8_t clean) {
+  // paint bricks (decompressing!)
+  idx_j = 255; // idx_j is y, idx is x
+  for(x=0; x != MAX_COORDS_LADRILLOS; ++x) {
+    // y
+    // if y changes, x returns to zero
+    if (((coords_lad[x] & 0xF0) >> 4) != idx_j) {
+        idx = 0;
+    }
+
+    idx_j = (coords_lad[x] & 0xF0) >> 4;
+    // special case for reloading just clothes row
+    if(clean == 1 && (idx_j != 6 && idx_j != 7 && idx_j != 10 && idx_j != 11)) {
+        continue;
+    }
+
+    // x has relative coordinates jump with previous
+    idx += (coords_lad[x] & 0x0F);
+    // 15 is used as 'larger jump, no paint'
+    if((coords_lad[x] & 0x0F) == 15) {
+        continue;
+    }
+    sp1_PrintAtInv(idx_j, idx, INK_BLACK | PAPER_MAGENTA, UDG_JLADRILLOS);
+  }
+}
+
 void  print_background_lvl1() {
   uint16_t color = INK_BLACK | PAPER_MAGENTA;
   uint8_t *pt = tiles;
@@ -214,24 +240,7 @@ void  print_background_lvl1() {
   }
 
   // paint bricks (decompressing!)
-  idx_j = 255; // idx_j is y, idx is x
-  for(x=0; x != MAX_COORDS_LADRILLOS; ++x) {
-    // y
-    // if y changes, x returns to zero
-    if (((coords_lad[x] & 0xF0) >> 4) != idx_j) {
-        idx = 0;
-    }
-
-    idx_j = (coords_lad[x] & 0xF0) >> 4;
-
-    // x has relative coordinates jump with previous
-    idx += (coords_lad[x] & 0x0F);
-    // 15 is used as 'larger jump, no paint'
-    if((coords_lad[x] & 0x0F) == 15) {
-        continue;
-    }
-    sp1_PrintAt(idx_j, idx, color, UDG_JLADRILLOS);
-  }
+  paint_bricks(0);
 
   idx_j = 255;
   for(x=0; x != TOTAL_COORDS_SUELO; ++x) {
@@ -306,6 +315,7 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
 static void increase_indexes_clothes(uint8_t idx) {
     repaint_clothes(10, floor_holes[0][idx], 1);
     repaint_clothes(6, floor_holes[1][idx], 1);
+    paint_bricks(1);
     // row1
     --floor_holes[1][idx];
     // row2
