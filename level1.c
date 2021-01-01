@@ -291,31 +291,29 @@ void  print_background_lvl1() {
 
 
 static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
-    if(clean == 1) {
-        sp1_PrintAtInv(row, col, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row, col + 1, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row + 1, col, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row + 1, col + 1, PAPER_MAGENTA, ' ');
-
-        sp1_PrintAtInv(row, col + 3, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row, col + 4, PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv(row, col + 5, PAPER_MAGENTA, ' ');
+    if(clean != ' ') {
+        x = 1;
     } else {
-        sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES11);
-        sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES12);
-        sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES21);
-        sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, UDG_CLOTHES22);
-
-        sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, UDG_BOOT);
-        sp1_PrintAtInv(row, col + 4, INK_WHITE | PAPER_MAGENTA, UDG_BOOT);
-        sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, UDG_PANTIES);
+        x = 0;
     }
+    sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, clean);
+    clean += x;
+    sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, clean);
+    clean += x;
+    sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, clean);
+    clean += x;
+    sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, clean);
+
+    clean += x;
+    sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col + 4, INK_WHITE | PAPER_MAGENTA, clean);
+    clean += x;
+    sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, clean);
 }
 
 static void increase_indexes_clothes(uint8_t idx) {
-    repaint_clothes(10, floor_holes[0][idx], 1);
-    repaint_clothes(6, floor_holes[1][idx], 1);
-    paint_bricks(1);
+    repaint_clothes(10, floor_holes[0][idx], ' ');
+    repaint_clothes(6, floor_holes[1][idx], ' ');
     // row1
     --floor_holes[1][idx];
     // row2
@@ -327,8 +325,8 @@ static void increase_indexes_clothes(uint8_t idx) {
     if (floor_holes[1][idx] < 2) {
         floor_holes[1][idx] = 28;
     }
-    repaint_clothes(10, floor_holes[0][idx], 0);
-    repaint_clothes(6, floor_holes[1][idx], 0);
+    repaint_clothes(10, floor_holes[0][idx], UDG_CLOTHES11);
+    repaint_clothes(6, floor_holes[1][idx], UDG_CLOTHES11);
 }
 
 
@@ -511,13 +509,16 @@ void detect_fall_in_window() {
 void level1_loop() {
     //move_clothes();
     // move clothes to the right
-    increase_indexes_clothes(0);
-    increase_indexes_clothes(1);
-    // now move cat
-    if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
-         ++misifu.x;
-    } else if(misifu.draw_additional == CAT_IN_ROPE2) {
-        --misifu.x;
+    if((random_value & 1) == 0) {
+        paint_bricks(1);
+        increase_indexes_clothes(0);
+        increase_indexes_clothes(1);
+        // now move cat
+        if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+             ++misifu.x;
+        } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+            --misifu.x;
+        }
     }
 
     anim_windows();
