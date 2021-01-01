@@ -212,7 +212,6 @@ extern uint16_t in;
 
 extern void all_lives_lost();
 
-extern void loose_a_live();
 
 extern void reset_misifu_position();
 

@@ -276,22 +276,6 @@ void add_sprites_for_all_levels() {
   aux_object.offset = AUX_PHONE;
 }
 
-void loose_a_live() {
-    // todo make sound
-
-    if(lives > 0) {
-        --lives;
-        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
-    } else {
-        // reached zero on lives
-        lives = 5;
-        last_success_level = 0;
-        bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
-
-        all_lives_lost();
-    }
-    repaint_lives = 1;
-}
 
 void reset_misifu_position() {
   misifu.in_bin = NONE;
@@ -480,6 +464,8 @@ void dog_checks() {
             anim_frames = 20;
             // hide cat
             misifu.x = 33;
+            // do sound
+            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
         }
         if (x_malo == 0 && misifu.state != FIGHTING) {
             enemy_apears = NONE;
@@ -713,20 +699,32 @@ void get_out_of_level_generic(uint8_t fall) {
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else if(fall == FALLING) {
         bit_beepfx_di_fastcall(BEEPFX_UH_HUH);
-    } else {
-        loose_a_live();
-    }
-
-    if (fall == ELECTRIFIED) {
+    } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
             bit_beepfx_di_fastcall(BEEPFX_HIT_4);
             zx_border(INK_WHITE);
             wait();
             zx_border(INK_BLUE);
         }
-    } else {
+    } else if(fall === OXYGEN) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
+    } else {
+        if(fall != FIGHTING) {
+            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+        }
+        if(lives > 0) {
+            --lives;
+        } else {
+            // reached zero on lives
+            lives = 5;
+            last_success_level = 0;
+            bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
+
+            all_lives_lost();
+        }
+        repaint_lives = 1;
     }
+
     opened_window_frames = 2;
     print_background_lvl1();
 }
