@@ -274,7 +274,7 @@ void  print_background_lvl1() {
    opened_window = UNDEF;
 
    reset_misifu_position();
-   bincat_appears = 1;
+   bincat_appears = NONE;
    bincat_in_bin = NONE;
 
    level_x_max = 28;
@@ -509,15 +509,32 @@ void detect_fall_in_window() {
 void level1_loop() {
     //move_clothes();
     // move clothes to the right
-    if((random_value & 1) == 0) {
+    if((frame & 1) == 0) {
         paint_bricks(1);
         increase_indexes_clothes(0);
         increase_indexes_clothes(1);
         // now move cat
-        if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
-             ++misifu.x;
-        } else if(misifu.draw_additional == CAT_IN_ROPE2) {
-            --misifu.x;
+        if(misifu.state == CAT_IN_ROPE) {
+            if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+                 ++misifu.x;
+                 if(misifu.x >= 28) {
+                    misifu.state = FALLING;
+                    misifu.draw_additional = NONE;
+                    ++misifu.y;
+                }
+            } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+                --misifu.x;
+                if(misifu.x == 0) {
+                    misifu.state = FALLING;
+                    misifu.draw_additional = NONE;
+                    ++misifu.y;
+                }
+            }
+            if(misifu.x >= 28 || misifu.x == 0) {
+                misifu.state = FALLING;
+                misifu.draw_additional = NONE;
+                ++misifu.y;
+            }
         }
     }
 

@@ -457,7 +457,7 @@ void dog_checks() {
         }
 
         // detects collission malo->misifu
-        if( abs(misifu.x - x_malo) == 0 && misifu.y > 19) {
+        if( abs(misifu.x - x_malo) <=1 && misifu.y > 19) {
             enemy_apears = NONE;
             misifu.state = FIGHTING;
             misifu.y = FLOOR_Y;
@@ -466,6 +466,7 @@ void dog_checks() {
             misifu.x = 33;
             // do sound
             bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+            bit_beepfx_di_fastcall(BEEPFX_HIT_1);
         }
         if (x_malo == 0 && misifu.state != FIGHTING) {
             enemy_apears = NONE;
@@ -590,10 +591,6 @@ void check_fsm() {
     } else if(misifu.state == CAT_IN_ROPE) {
         misifu.offset = HANGING;
 
-        if(misifu.x >= 28 || misifu.x == 0) {
-            misifu.state = FALLING;
-            misifu.draw_additional = NONE;
-        }
     }
 }
 
@@ -706,7 +703,7 @@ void get_out_of_level_generic(uint8_t fall) {
             wait();
             zx_border(INK_BLUE);
         }
-    } else if(fall === OXYGEN) {
+    } else if(fall == OXYGEN) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     } else {
         if(fall != FIGHTING) {
