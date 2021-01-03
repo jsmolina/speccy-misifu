@@ -163,7 +163,7 @@ void detect_fall_in_hearts() {
         }
         misifu.state = CAT_ON_HIGH;
         misifu.draw_additional = CAT_IN_ROPE;
-        misifu.offset = BORED;
+        misifu.offset = (int)sprite_protar1+BORED;
     }
 }
 

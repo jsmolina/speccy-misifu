@@ -37,26 +37,6 @@ const uint8_t queso_textura[] = {0x0, 0x80, 0x4, 0x0, 0x8, 0x40, 0x1, 0x0};
 const uint8_t queso_diagonal[] = {0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff};
 const uint8_t q_barra_cortina[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0xc};
 
-extern uint8_t sprite_protar1[];
-extern uint8_t sprite_protar2[];
-extern uint8_t sprite_protar3[];
-
-extern uint8_t sprite_dog1[];
-extern uint8_t sprite_dog2[];
-extern uint8_t sprite_dog3[];
-
-extern uint8_t sprite_bincat1[];
-extern uint8_t sprite_bincat2[];
-extern uint8_t sprite_bincat3[];
-
-extern uint8_t auxiliar1[];
-extern uint8_t auxiliar2[];
-
-extern uint8_t sprite_swim1[];
-extern uint8_t sprite_swim2[];
-extern uint8_t sprite_swim3[];
-extern uint8_t sprite_swim4[];
-
 // shared vars
 uint8_t x, y;
 
@@ -139,7 +119,7 @@ void all_lives_lost() {
   ay_vt_init(pcspeaker_module);
   intrinsic_ei();
 
-  sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) BORED, 13, 22, 0, 0);
+  sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1 + BORED, 12, 22, 0, 0);
   idx_j = 3;
   x = 10;
   for(idx = 0; idx != 36; ++idx ) {
@@ -203,11 +183,10 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
-   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, (int)sprite_protar1, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 0);
-
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, 0, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 64*9, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 128*9, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 1);
 
   sp1_IterateSprChar(sp, initialiseColour);
 
@@ -216,12 +195,12 @@ struct sp1_ss * add_sprite_protar1() {
 
 struct sp1_ss * add_sprite_swim() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_swim1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim3, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_swim4, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, 0, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 32 * 6, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 64 * 6, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 96 * 6, 1);
 
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 2);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 1);
 
   sp1_IterateSprChar(sp, initialiseColour);
 
@@ -242,8 +221,8 @@ static struct sp1_ss * add_sprite_dogr1() {
 
 static struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_bincat1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_bincat2, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 48 * 4, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
@@ -511,19 +490,19 @@ static void stop_jump_if_needed(uint8_t max_jump) {
 void check_fsm() {
 // decide new FSM draw status
     if (misifu.state == NONE && frame == 3 && level != 7) {
-        misifu.offset = BORED;
+        misifu.offset = (int)BORED;
     } else if (misifu.state == WALKING_RIGHT) {
         if (frame_big < FRAME_CHANGE) {
-            misifu.offset = RIGHTC1;
+            misifu.offset = (int)RIGHTC1;
         } else  {
-            misifu.offset = RIGHTC2;
+            misifu.offset = (int)RIGHTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == WALKING_LEFT) {
         if (frame_big < FRAME_CHANGE) {
-            misifu.offset = LEFTC1;
+            misifu.offset = (int)LEFTC1;
         } else {
-            misifu.offset = LEFTC2;
+            misifu.offset = (int)LEFTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == JUMPING_PUSHED){
@@ -547,25 +526,25 @@ void check_fsm() {
 
         if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
             ++misifu.x;
-            misifu.offset = JRIGHTC1;
+            misifu.offset = (int)JRIGHTC1;
             if((in & IN_STICK_LEFT)) {
                 misifu.state = FALLING;
             }
         }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min) {
             --misifu.x;
-            misifu.offset = JLEFTC1;
+            misifu.offset =(int) JLEFTC1;
 
             if((in & IN_STICK_RIGHT)) {
                 misifu.state = FALLING;
             }
         } else {
-            misifu.offset = JUMPINGC1;
+            misifu.offset = (int)JUMPINGC1;
         }
 
         if (level == 1) {
             if (misifu.y <= 1) {
                 misifu.y = 1;
-                misifu.offset = HANGING;
+                misifu.offset = (int)HANGING;
                 misifu.state = CAT_IN_ROPE;
                 misifu.draw_additional = CAT_IN_ROPE3;
             }
@@ -574,12 +553,12 @@ void check_fsm() {
         stop_jump_if_needed(5);
     } else if (misifu.state == FALLING) {
         ++misifu.y;
-        misifu.offset = JUMPINGC1;
+        misifu.offset = (int)JUMPINGC1;
 
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
             misifu.state = NONE;
-            misifu.offset = BORED;
+            misifu.offset = (int)BORED;
         }
     } else if (misifu.state == FALLING_FLOOR) {
         ++misifu.y;
@@ -589,7 +568,7 @@ void check_fsm() {
             misifu.state = NONE;
         }
     } else if(misifu.state == CAT_IN_ROPE) {
-        misifu.offset = HANGING;
+        misifu.offset = (int)HANGING;
 
     }
 }
@@ -630,7 +609,7 @@ void detect_fall_in_chair(uint8_t x_chair) {
     if(misifu.state == FALLING && misifu.x == x_chair && misifu.y == 17) {
         misifu.state = CAT_ON_HIGH;
         misifu.in_bin = 1;
-        misifu.offset = BORED;
+        misifu.offset = (int)BORED;
     }
 
     if(misifu.in_bin == 1 && misifu.x != x_chair) {
@@ -660,10 +639,10 @@ void get_out_of_level_generic(uint8_t fall) {
         for (idx = 0; idx != 13; ++idx) {
 
             if((idx & 1) == 0) {
-                misifu.offset = RIGHTC1;
+                misifu.offset = (int)RIGHTC1;
                 idx_j = LEFTC1;
             } else {
-                misifu.offset = RIGHTC2;
+                misifu.offset = (int)RIGHTC2;
                 idx_j = LEFTC2;
             }
             sp1_MoveSprAbs(misifu.sp, &full_screen,(void*) misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
@@ -814,7 +793,7 @@ void check_chair_and_table() {
     if(misifu.state == FALLING) {
         if(misifu.y == 16 && misifu.x >= 25 && misifu.x <= 27) {
             misifu.state = CAT_ON_HIGH;
-            misifu.offset = BORED;
+            misifu.offset = (int)BORED;
             misifu.in_bin = 2;
         }
     }

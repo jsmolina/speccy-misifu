@@ -40,6 +40,7 @@ void show_intro() {
 
 int main()
 {
+  uint16_t misifu_sum_offset;
   show_intro();
   in_wait_key();
 
@@ -134,7 +135,13 @@ int main()
     }
 
     // paint 'prota here'
-    sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
+    if (level == 4) {
+        misifu_sum_offset = (int) sprite_swim1 + misifu.offset;
+
+    } else {
+        misifu_sum_offset = (int) sprite_protar1 + misifu.offset;
+    }
+    sp1_MoveSprAbs(misifu.sp, &full_screen, (int) misifu_sum_offset, misifu.y -1, misifu.x, 0, 0);
 
 
     wait();

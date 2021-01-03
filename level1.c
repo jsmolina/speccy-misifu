@@ -291,10 +291,13 @@ void  print_background_lvl1() {
 
 
 static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
+    uint8_t color;
     if(clean != ' ') {
         x = 1;
+        color = INK_BLACK | PAPER_MAGENTA;
     } else {
         x = 0;
+        color = INK_WHITE | PAPER_MAGENTA;
     }
     sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, clean);
     clean += x;
@@ -422,7 +425,7 @@ inline void check_bincat() {
             } else {
                 bincat_appears = 17;
             }
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, bincat_appears, bin_places2[bincat_in_bin], 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)sprite_bincat1 + AUX_BINCAT, bincat_appears, bin_places2[bincat_in_bin], 0, 0);
             bincat_appears = 40;
 
         } else {
@@ -442,7 +445,7 @@ inline void check_bincat() {
         }
 
         if (bincat_appears <= 1) {
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, 16, 33, 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)sprite_bincat1 +AUX_BINCAT, 16, 33, 0, 0);
             bincat_appears = NONE;
             bincat_in_bin = 0;
         }

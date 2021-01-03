@@ -42,20 +42,20 @@
 #define HIGHER_BIN_X2 4
 #define FLOOR_Y 21
 
-#define AUX_BINCAT 2
-#define SPIDER 48 // 16 + 8 + 1
+#define AUX_BINCAT 0
+#define SPIDER 48 // (16 * 2) + 16
 #define BIRD_OFFSET 96
 #define BIRD_OFFSET2 144
-// OJO HEADS UP, si empieza en 1 acaba 'estropeado'
-#define RIGHTC1 16
-#define RIGHTC2 80
-#define LEFTC1 144
-#define LEFTC2 208
-#define JLEFTC1 272
-#define JRIGHTC1 336
-#define JUMPINGC1 390
-#define BORED 464
-#define HANGING 518
+
+#define RIGHTC1 0
+#define RIGHTC2 64
+#define LEFTC1 128
+#define LEFTC2 192
+#define JLEFTC1 256
+#define JRIGHTC1 320
+#define JUMPINGC1 384
+#define BORED 448
+#define HANGING 512
 
 
 #define AUX_PHONE 2
@@ -65,12 +65,12 @@
 #define AUX_BROOM 192
 #define AUX_BROOM2 240
 
-#define SWIM_RC1 1
-#define SWIM_RC2 33  // 24 + 8 + 1
-#define SWIM_LC1 65
-#define SWIM_LC2  97
-#define SWIM_UP1 129
-#define SWIM_DOWN1 161
+#define SWIM_RC1 0
+#define SWIM_RC2 32  // 24 + 8
+#define SWIM_LC1 64
+#define SWIM_LC2  96
+#define SWIM_UP1 128
+#define SWIM_DOWN1 160
 
 #define MISIOFFSET 33
 #define OUCHOFFSET 65
@@ -171,6 +171,26 @@ extern const uint8_t wall1[];
 extern const uint8_t wall2[];
 extern const uint8_t wall3[];
 extern const uint8_t wall4[];
+
+extern uint8_t sprite_protar1[];
+extern uint8_t sprite_protar2[];
+extern uint8_t sprite_protar3[];
+
+extern uint8_t sprite_dog1[];
+extern uint8_t sprite_dog2[];
+extern uint8_t sprite_dog3[];
+
+extern uint8_t sprite_bincat1[];
+extern uint8_t sprite_bincat2[];
+extern uint8_t sprite_bincat3[];
+
+extern uint8_t auxiliar1[];
+extern uint8_t auxiliar2[];
+
+extern uint8_t sprite_swim1[];
+extern uint8_t sprite_swim2[];
+extern uint8_t sprite_swim3[];
+extern uint8_t sprite_swim4[];
 
 // level 1
 extern struct udgstruct windows[14];

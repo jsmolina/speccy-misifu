@@ -116,7 +116,7 @@ static inline void detect_vase_falling() {
 
 void level5_loop() {
     // bincat_appears, bincat_in_bin
-    sp1_MoveSprAbs(bincatsp, &full_screen, (void*)SPIDER, windows[0].y, windows[0].x, 0, 0);
+    sp1_MoveSprAbs(bincatsp, &full_screen, (void*)sprite_bincat1 +SPIDER, windows[0].y, windows[0].x, 0, 0);
 
     // misifu.state = CAT_IN_ROPE;
     if(misifu.state == FALLING) {
