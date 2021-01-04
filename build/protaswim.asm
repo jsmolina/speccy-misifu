@@ -9,6 +9,7 @@ SECTION rodata_user
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
 
 PUBLIC _sprite_swim1
 ._sprite_swim1

@@ -96,7 +96,7 @@
 
 #define FRAME_CHANGE 2
 #define FRAME_MOST 5
-#define DOG1 2
+#define DOG1 0
 #define DOG2 48
 #define DOGFIGHTING1 96
 #define DOGFIGHTING2 144

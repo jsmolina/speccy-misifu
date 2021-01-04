@@ -16,6 +16,9 @@
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
+// remove!
+#include <string.h>
+
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
@@ -184,8 +187,8 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, 0, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 64*9, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 128*9, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 576, 1); // 64*9
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 1152, 1); // 128 * 9
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 1);
 
   sp1_IterateSprChar(sp, initialiseColour);
@@ -196,9 +199,9 @@ struct sp1_ss * add_sprite_protar1() {
 struct sp1_ss * add_sprite_swim() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, 0, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 32 * 6, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 64 * 6, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 96 * 6, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 192, 1);  // 32*6
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 384, 1); // 64 * 6
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 576, 1); // 96 * 6
 
   sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 1);
 
@@ -209,9 +212,9 @@ struct sp1_ss * add_sprite_swim() {
 
 static struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_dog1, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog2, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_dog3, 0);
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 192, 0); // 192 = 48 * 4
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 384, 0); // 96 * 4
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
@@ -219,10 +222,10 @@ static struct sp1_ss * add_sprite_dogr1() {
   return sp;
 }
 
-static struct sp1_ss * add_sprite_bincat() {
+inline struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 48 * 4, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 192, 0); // 48 * 4
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
@@ -451,7 +454,7 @@ void dog_checks() {
             enemy_apears = NONE;
             x_malo = 33;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 5, 5);
 
     }
     idx = 0;
@@ -461,6 +464,7 @@ void dog_checks() {
         } else {
             dog_offset = DOGFIGHTING2;
         }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
 
         --anim_frames;
         if (anim_frames == 0) {
@@ -469,7 +473,6 @@ void dog_checks() {
             get_out_of_level_generic(FIGHTING);
             idx = 1;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (void*) dog_offset, FLOOR_Y, x_malo, 0, 0);
     }
     // check if dog should appear
     if (enemy_apears != YES) {
@@ -647,14 +650,14 @@ void get_out_of_level_generic(uint8_t fall) {
             }
             sp1_MoveSprAbs(misifu.sp, &full_screen,(void*) misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
 
-            sp1_MoveSprAbs(dogr1sp, &full_screen,(void*) idx_j, FLOOR_Y, 30 - idx, 0, 0);
+            sp1_MoveSprAbs(dogr1sp, &full_screen,(void*) sprite_dog1, FLOOR_Y, 30 - idx, 0, 0);
             sp1_UpdateNow();
             for(idx_j = 0; idx_j != 15; ++idx_j) {
                 wait();
             }
         }
-        sp1_DeleteSpr_fastcall(dogr1sp);
-        dogr1sp = add_sprite_dogr1();
+        //sp1_DeleteSpr_fastcall(dogr1sp);
+        //dogr1sp = add_sprite_dogr1();
         ay_vt_init(music_module);
 
     } else if(fall == WON_LEVEL) {
