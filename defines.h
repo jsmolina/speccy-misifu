@@ -58,10 +58,10 @@
 #define HANGING 512
 
 
-#define AUX_PHONE 2
-#define AUX_ZAP 52  // + 16x2 + 8x2
-#define AUX_ARROWRIGHT 100
-#define AUX_ARROWLEFT  148
+#define AUX_PHONE 0
+#define AUX_ZAP 48  // + 16x2 + 8x2
+#define AUX_ARROWRIGHT 96
+#define AUX_ARROWLEFT  144
 #define AUX_BROOM 192
 #define AUX_BROOM2 240
 

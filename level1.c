@@ -393,7 +393,7 @@ inline void anim_windows() {
                     ++aux_object.y;
                 }
             }
-            sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+            sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
         }
 
     }
@@ -404,7 +404,7 @@ inline void anim_windows() {
         opened_window_frames = NONE;
         aux_object.offset = AUX_PHONE;
         // move outside of screen
-        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, 33, 0, 0);
+        sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, 33, 0, 0);
 
     }
 }
