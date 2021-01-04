@@ -95,7 +95,7 @@ See the Makefile as it contains udg and sprites lines.
 
 Contributions/suggestions are more than welcome!
 
-![Image of Misifu](https://user-images.githubusercontent.com/447481/50655530-c5d09800-0f90-11e9-8c1a-0f209cd2cd70.png)
+![Image of Misifu](https://user-images.githubusercontent.com/447481/103533224-04a1cd00-4e8d-11eb-81fc-812f884ae8ab.jpg)
 
 
 # Collaborators
