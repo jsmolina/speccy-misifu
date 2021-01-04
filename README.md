@@ -107,6 +107,7 @@ Contributions/suggestions are more than welcome!
 * Marcelo Nunes for the portuguese translation of instructions.
 
 # Special Thanks to
+* Timmy, helping with Splib offsets.
 * Matthew Logue helping with some testing.
 * Ivan Sánchez, motivation.
 * Alexey, helping on very good ideas.
