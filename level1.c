@@ -294,24 +294,24 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
     uint8_t color;
     if(clean != ' ') {
         x = 1;
-        color = INK_BLACK | PAPER_MAGENTA;
+        color = INK_WHITE | PAPER_MAGENTA;
     } else {
         x = 0;
-        color = INK_WHITE | PAPER_MAGENTA;
+        color = INK_BLACK | PAPER_MAGENTA;
     }
-    sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col, color, clean);
     clean += x;
-    sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col + 1, color, clean);
     clean += x;
-    sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row + 1, col, color, clean);
     clean += x;
-    sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row + 1, col + 1, color, clean);
 
     clean += x;
-    sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, clean);
-    sp1_PrintAtInv(row, col + 4, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col + 3, color, clean);
+    sp1_PrintAtInv(row, col + 4, color, clean);
     clean += x;
-    sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col + 5, color, clean);
 }
 
 static void increase_indexes_clothes(uint8_t idx) {
