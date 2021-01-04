@@ -211,6 +211,7 @@ struct prota {
     unsigned int  offset;
     uint8_t in_bin;
     uint8_t state;
+    uint8_t last_key;
 };
 
 struct freesprite {

@@ -113,7 +113,7 @@ JOYFUNC joy;
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
 
-unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v4";
+unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v5";
 
 void all_lives_lost() {
 
@@ -352,10 +352,14 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if ((in & IN_STICK_UP) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
+    if(!(in & IN_STICK_UP)) {
+        misifu.last_key = NONE;
+    }
+    if ((misifu.last_key != IN_STICK_UP) && (in & IN_STICK_UP) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
         misifu.state = JUMPING;
         misifu.in_bin = NONE;
         misifu.initial_jump_y = misifu.y;
+        misifu.last_key = IN_STICK_UP;
 
         if((in & IN_STICK_RIGHT) && misifu.x < level_x_max ) {
             misifu.draw_additional = JUMP_RIGHT;
@@ -528,17 +532,16 @@ void check_fsm() {
         --misifu.y;
 
         if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
-            ++misifu.x;
+
             misifu.offset = (int)JRIGHTC1;
-            if((in & IN_STICK_LEFT)) {
-                misifu.state = FALLING;
+            if((in & IN_STICK_RIGHT)) {
+                ++misifu.x;
             }
         }  else if(misifu.draw_additional == JUMP_LEFT && misifu.x > level_x_min) {
-            --misifu.x;
             misifu.offset =(int) JLEFTC1;
 
-            if((in & IN_STICK_RIGHT)) {
-                misifu.state = FALLING;
+            if((in & IN_STICK_LEFT)) {
+                --misifu.x;
             }
         } else {
             misifu.offset = (int)JUMPINGC1;
