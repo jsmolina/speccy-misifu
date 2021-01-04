@@ -118,7 +118,7 @@ Clàudia :)
 
 # Why it is not Fred again?
 First, the original, GREAT AND ORIGINAL game Alley Cat is what it is, and I have to give it a respect. 
-Second, nowadays my daughter asks me why most of the game heroes are 'males'.
+Second, nowadays my daughter asks me for a female hero.
 Third, because `misifu` is a very affectionate way of calling a cat in Spain, my grandma did it so often.
 
 # Appearances on media
@@ -128,14 +128,14 @@ http://www.indieretronews.com/2019/01/alley-cat-ataridos-cat-classic-as-128k.htm
 Some youtube videos that game appeared:
 
 Modern ZX-Retro Gaming (first walkthrough!)
-www.youtube.com/watch?v=2TCfAb7khP4&app=desktop
+https://www.youtube.com/watch?v=2TCfAb7khP4&app=desktop
 
 Arnau Jess
-www.youtube.com/watch?v=JFjiWd7ziHM
+https://www.youtube.com/watch?v=JFjiWd7ziHM
 
 Javi Ortiz
-youtu.be/iBZ9AfL0jOo?t=161
+https://youtu.be/iBZ9AfL0jOo?t=161
 
 Game running on a real +2A (mine)
-www.youtube.com/watch?v=v-mvxf3EnuI
+https://www.youtube.com/watch?v=v-mvxf3EnuI
 
