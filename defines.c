@@ -352,7 +352,7 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if(!(in & IN_STICK_UP)) {
+    if((!(in & IN_STICK_UP) && !(in & IN_STICK_DOWN)) || level == 7) {
         misifu.last_key = NONE;
     }
     if ((misifu.last_key != IN_STICK_UP) && (in & IN_STICK_UP) && (misifu.y > 0) && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT || misifu.state == CAT_IN_ROPE || misifu.state ==CAT_ON_HIGH) ) {
@@ -374,7 +374,8 @@ void check_keys()
     } else if((in & IN_STICK_LEFT)  && misifu.x >= level_x_min && (misifu.state == NONE || misifu.state == WALKING_LEFT || misifu.state == WALKING_RIGHT|| misifu.state == CAT_ON_HIGH)) {
         misifu.state = WALKING_LEFT;
         --misifu.x;
-    } else if ((in & IN_STICK_DOWN) && misifu.y < FLOOR_Y) {
+    } else if ((misifu.last_key != IN_STICK_DOWN) && (in & IN_STICK_DOWN) && misifu.y < FLOOR_Y) {
+        misifu.last_key = IN_STICK_DOWN;
         misifu.state = FALLING;
         misifu.in_bin = NONE;
         ++misifu.y;
