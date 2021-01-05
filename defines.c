@@ -198,11 +198,9 @@ struct sp1_ss * add_sprite_protar1() {
 
 struct sp1_ss * add_sprite_swim() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, 0, 1);
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 4, 0, 1);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 192, 1);  // 32*6
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 384, 1); // 64 * 6
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 576, 1); // 96 * 6
-
   sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 1);
 
   sp1_IterateSprChar(sp, initialiseColour);
@@ -384,6 +382,7 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
+        print_background_level4();
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
@@ -459,7 +458,7 @@ void dog_checks() {
             enemy_apears = NONE;
             x_malo = 33;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 5, 5);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
 
     }
     idx = 0;
