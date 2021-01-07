@@ -382,7 +382,6 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
-        print_background_level4();
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
@@ -392,6 +391,10 @@ void check_keys()
 }
 
 void check_swim() {
+    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+        in_wait_nokey();
+        paws = 1;
+    }
     if((in & IN_STICK_LEFT) && misifu.x > 0) {
         --misifu.x;
         if (frame_big < FRAME_CHANGE) {
@@ -549,7 +552,7 @@ void check_fsm() {
 
         if (level == 1) {
             if (misifu.y <= 1) {
-                misifu.y = 1;
+                misifu.y = 2;
                 misifu.offset = (int)HANGING;
                 misifu.state = CAT_IN_ROPE;
                 misifu.draw_additional = CAT_IN_ROPE3;

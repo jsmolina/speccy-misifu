@@ -20,6 +20,21 @@ static void assign_eels_pos(uint8_t y, uint8_t x) {
     ++idx;
 }
 
+uint8_t check_udg_collision(uint8_t udgy, uint8_t udgx) {
+    if ((misifu.x <= udgx) && (misifu.x >= (udgx - 2))) {
+        if(abs(misifu.y - udgy) < 2) {
+            // consider not in same y
+            if(misifu.offset == SWIM_UP1 && (misifu.x == (udgx - 2) || (misifu.x == udgx))) {
+                // nothing
+            } else if(misifu.y == udgy || (misifu.y == (udgy - 1))) {
+                return 1;
+            } else if(misifu.y == (udgy + 1 ) && (misifu.offset > SWIM_LC2)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 void  print_background_level4() {
   level = 4;
@@ -95,9 +110,9 @@ static void print_fish(uint8_t idx, uint8_t to_print) {
 
 void level4_loop() {
 
-
+    // fish collision
     for(idx = 0; idx != 8; ++idx) {
-        if(abs(windows[idx].x - misifu.x) < 1 && abs(windows[idx].y - misifu.y) < 2 && windows[idx].has_item != 'Z') {
+        if(windows[idx].has_item != 'Z' && check_udg_collision(windows[idx].y, windows[idx].x) == 1) {
             windows[idx].has_item = 'Z';  // eaten fish
             repaint_lives = 1;
             // delete collided fish
@@ -113,9 +128,10 @@ void level4_loop() {
             }
         }
     }
-    // eel check
+    // eel collision
     for(idx = 0; idx != 5; ++idx) {
-        if((abs(floor_holes[idx][Y_POS] - misifu.y) < 1 && abs(floor_holes[idx][X_POS] - misifu.x) < 1))
+
+        if(check_udg_collision(floor_holes[idx][Y_POS], floor_holes[idx][X_POS]) == 1)
         {
             // loose a life and out of level
             get_out_of_level4(ELECTRIFIED);
@@ -141,15 +157,17 @@ void level4_loop() {
                 windows[idx].has_item = FISH_RIGHT;
             }
 
-            if (idx <= 5 && random_value < 128) {
-                print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
-                if(floor_holes[idx][X_POS] > 30) {
-                    floor_holes[idx][X_POS] = 0;
-                }
-                ++floor_holes[idx][X_POS];
-                print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], 'E');
+        }
+    }
+    // eels on move
+    if(random_value < 40) {
+        for(idx = 0; idx != 5; ++idx) {
+            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
+            if(floor_holes[idx][X_POS] > 30) {
+                floor_holes[idx][X_POS] = 0;
             }
-
+            ++floor_holes[idx][X_POS];
+            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], 'E');
         }
     }
 

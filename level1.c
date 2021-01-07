@@ -286,6 +286,9 @@ void  print_background_lvl1() {
    floor_holes[1][0] = 1;  // row2clothes
    floor_holes[1][1] = 18; // row2clothes
    aux_object.offset = AUX_PHONE;
+   // make disapear for sure
+   sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1, 16, 33, 0, 0);
+
    sp1_UpdateNow();
 }
 
@@ -425,7 +428,7 @@ inline void check_bincat() {
             } else {
                 bincat_appears = 17;
             }
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)sprite_bincat1 + AUX_BINCAT, bincat_appears, bin_places2[bincat_in_bin], 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1+ AUX_BINCAT, bincat_appears, bin_places2[bincat_in_bin], 0, 0);
             bincat_appears = 40;
 
         } else {
@@ -445,7 +448,7 @@ inline void check_bincat() {
         }
 
         if (bincat_appears <= 1) {
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)sprite_bincat1 +AUX_BINCAT, 16, 33, 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1, 16, 33, 0, 0);
             bincat_appears = NONE;
             bincat_in_bin = 0;
         }
@@ -474,10 +477,10 @@ inline void detect_fall_in_bin() {
         misifu.state = NONE;
         misifu.draw_additional = CAT_IN_FENCE;
     // now check ropes TODO check ropes clothes are not colliding
-    } else if(misifu.y == 9) {
+    } else if(misifu.y == 10) {
         misifu.state = CAT_IN_ROPE;
         misifu.draw_additional = CAT_IN_ROPE1;
-    } else if(misifu.y == 5) {
+    } else if(misifu.y == 6) {
         misifu.state = CAT_IN_ROPE;
         misifu.draw_additional = CAT_IN_ROPE2;
     }

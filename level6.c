@@ -71,7 +71,7 @@ void level6_loop() {
             windows[1].x = BIRD_OFFSET2;
         }
 
-        sp1_MoveSprAbs(bincatsp, &full_screen, (void*)sprite_bincat1 +windows[1].x, windows[0].y, windows[0].x, 0, 0);
+        sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1 +windows[1].x, windows[0].y, windows[0].x, 0, 0);
     }
 
     detect_cat_in_window(0);
