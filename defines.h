@@ -56,7 +56,7 @@
 #define JUMPINGC1 384
 #define BORED 448
 #define HANGING 512
-
+#define FALL_OFFSET 576
 
 #define AUX_PHONE 0
 #define AUX_ZAP 48  // + 16x2 + 8x2

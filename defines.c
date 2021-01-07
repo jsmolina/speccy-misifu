@@ -187,8 +187,8 @@ static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, 0, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 576, 1); // 64*9
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 1152, 1); // 128 * 9
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 640, 1); // 64*10
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 1280, 1); // 128 * 10
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 1);
 
   sp1_IterateSprChar(sp, initialiseColour);
@@ -562,7 +562,7 @@ void check_fsm() {
         stop_jump_if_needed(5);
     } else if (misifu.state == FALLING) {
         ++misifu.y;
-        misifu.offset = (int)JUMPINGC1;
+        misifu.offset = FALL_OFFSET;
 
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
@@ -571,6 +571,7 @@ void check_fsm() {
         }
     } else if (misifu.state == FALLING_FLOOR) {
         ++misifu.y;
+        misifu.offset = FALL_OFFSET;
         misifu.draw_additional = NONE;
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
