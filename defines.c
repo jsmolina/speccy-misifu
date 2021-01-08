@@ -160,13 +160,6 @@ void all_lives_lost() {
   intrinsic_ei();
 }
 
-static void initialiseColour(unsigned int count, struct sp1_cs *c)
-{
-  (void)count;    /* Suppress compiler warning about unused parameter */
-
-  c->attr_mask = SP1_AMASK_TRANS;
-  c->attr      = INK_BLACK;
-}
 /*
 static void initialiseColourOther(unsigned int count, struct sp1_cs *c)
 {
@@ -176,13 +169,6 @@ static void initialiseColourOther(unsigned int count, struct sp1_cs *c)
 }*/
 
 
-static void initialiseDogColour(unsigned int count, struct sp1_cs *c)
-{
-  (void)count;    /* Suppress compiler warning about unused parameter */
-
-  c->attr_mask = SP1_AMASK_TRANS;
-  c->attr      = INK_BLUE;
-}
 
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
@@ -191,7 +177,7 @@ struct sp1_ss * add_sprite_protar1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 1280, 1); // 128 * 10
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 1);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  //sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }
@@ -203,7 +189,7 @@ struct sp1_ss * add_sprite_swim() {
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 384, 1); // 64 * 6
   sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 1);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  //sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }
@@ -215,7 +201,7 @@ static struct sp1_ss * add_sprite_dogr1() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 384, 0); // 96 * 4
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  //sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }
@@ -226,7 +212,7 @@ inline struct sp1_ss * add_sprite_bincat() {
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 192, 0); // 48 * 4
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  //sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }
@@ -239,7 +225,7 @@ static struct sp1_ss * add_sprite_auxiliar() {
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 2);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  //sp1_IterateSprChar(sp, initialiseColour);
 
   return sp;
 }

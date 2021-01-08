@@ -74,7 +74,7 @@ uint8_t tiles[] = {
 0x01, 0x7d, 0xf1, 0xb3, 0x31, 0x1b, 0x19, 0x1b, // y:0, x:18 (146)
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd2, // y:0, x:19 (147)
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2d, // y:0, x:20 (148)
-0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:21 (149)
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, // y:0, x:21 (149)
 0x10, 0x30, 0x38, 0x7c, 0x6f, 0x6d, 0x6f, 0x0d, // y:0, x:22 (150)
 0x18, 0x1c, 0x3e, 0x7e, 0xee, 0xee, 0xee, 0xf0, // y:0, x:23 (151)
 0x0f, 0x0d, 0x0f, 0x0d, 0x1f, 0x1e, 0x18, 0x00, // y:0, x:24 (152)
@@ -123,7 +123,8 @@ inline uint8_t  get_cubo_offset() {
 }
 
 
-void paint_window(uint16_t colour) {
+void paint_window(uint16_t colour, uint8_t udg_id) {
+  uint8_t second_udg;
 
   if(opened_window > 11) {
     return;
@@ -131,13 +132,13 @@ void paint_window(uint16_t colour) {
 
   for (x = windows[opened_window].x; x != windows[opened_window].x + 5; ++x) {
     // top is equal
-    sp1_PrintAtInv(windows[opened_window].y, x, colour, UDG_WIN2);
-    if (opened_window > 7) {
-        // bottom varies
-        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, UDG_WIN2);
+    sp1_PrintAtInv(windows[opened_window].y, x, colour, udg_id);
+    if(udg_id == ' ') {
+        second_udg = UDG_WIN1;
     } else {
-        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, UDG_WIN1);
+        second_udg = udg_id;
     }
+    sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, second_udg);
   }
 }
 
@@ -269,7 +270,7 @@ void  print_background_lvl1() {
         idx_j = idx_j + 4;
       }
 
-      paint_window(PAPER_CYAN);
+      paint_window(PAPER_CYAN, ' ');
    }
    opened_window = UNDEF;
 
@@ -353,7 +354,7 @@ inline void anim_windows() {
         if(opened_window < 12) {
             // makes the window to be opened for about 20 frames
             opened_window_frames = 50;
-            paint_window(PAPER_BLACK | INK_WHITE);
+            paint_window(INK_BLACK | PAPER_WHITE, UDG_WIN2);
             aux_object.y = windows[opened_window].y;
             aux_object.x = windows[opened_window].x;
             horizontal_direction = NONE;
@@ -402,7 +403,7 @@ inline void anim_windows() {
     }
     // end of windows
     if (opened_window_frames == 1) {
-        paint_window(PAPER_CYAN);
+        paint_window(PAPER_CYAN, ' ');
         opened_window = UNDEF;
         opened_window_frames = NONE;
         aux_object.offset = AUX_PHONE;
