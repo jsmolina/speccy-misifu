@@ -17,7 +17,7 @@
 #include "level_last.h"
 
 #define TILES_BASE 128
-#define TILES_LEN 29
+#define TILES_LEN 30
 
 
 #define UDG_JLADRILLOS 128
@@ -49,6 +49,8 @@
 #define UDG_BOOT 154
 #define UDG_PANTIES 155
 #define UDG_VALLAROTA 156
+#define UDG_VOLUMEN 157
+
 #define MAX_COORDS_LADRILLOS 45
 #define TOTAL_COORDS_SUELO 15
 
@@ -82,6 +84,7 @@ uint8_t tiles[] = {
 0x0e, 0x0e, 0x0e, 0x0e, 0x1e, 0x3e, 0x7c, 0x70, // y:0, x:26 (154)
 0x81, 0xe3, 0xff, 0x7e, 0x3c, 0x18, 0x00, 0x00, // y:0, x:27 (155)
 0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
+0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, // y:0, x:29 (157)
 };
 
 const uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
@@ -129,8 +132,15 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
   if(opened_window > 11) {
     return;
   }
+  
+  for (x = 0; x != 2; ++x) {
+      sp1_PrintAtInv(windows[opened_window].y + x,
+                     windows[opened_window].x,
+                     PAPER_MAGENTA,
+                     UDG_VOLUMEN);
+  }
 
-  for (x = windows[opened_window].x; x != windows[opened_window].x + 5; ++x) {
+  for (x = windows[opened_window].x + 1; x != windows[opened_window].x + 5; ++x) {
     // top is equal
     sp1_PrintAtInv(windows[opened_window].y, x, colour, udg_id);
     if(udg_id == ' ') {
@@ -193,12 +203,13 @@ void  print_background_lvl1() {
   for (x = 0; x!=MAX_X; ++x) {
 
       if (x % 2 == 0) {
-        sp1_PrintAt(15, x, PAPER_CYAN, UDG_VALLA1);
+        idx_j = UDG_VALLA1;
       } else if (x % 3 == 0) {
-        sp1_PrintAt(15, x,  PAPER_CYAN, UDG_VALLA4);
+        idx_j = UDG_VALLA4;
       } else {
-         sp1_PrintAt(15, x,  PAPER_CYAN, UDG_VALLA3);
+        idx_j = UDG_VALLA3;
       }
+      sp1_PrintAt(15, x,  PAPER_CYAN, idx_j);
 
       for (idx_j=16; idx_j!=21; ++idx_j)
       {
@@ -211,7 +222,7 @@ void  print_background_lvl1() {
       if(frame != UNDEF) {
           // cubo
           idx_j = 22;
-          if((x>=5 && x<=7)  ||  (x>=20 && x<=22)) {
+          if((x >= 5 && x<=7)  ||  (x >= 20 && x<=22)) {
              idx_j = 21;
           }
           //
