@@ -101,6 +101,8 @@
 #define DOGFIGHTING1 96
 #define DOGFIGHTING2 144
 
+#define SONG_RESTART 250
+
 #define MAX_X 32
 
 extern struct sp1_Rect;

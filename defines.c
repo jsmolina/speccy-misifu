@@ -72,7 +72,7 @@ uint8_t random_value = 0;
 uint8_t opened_window = UNDEF;
 uint8_t opened_window_frames = NONE;
 uint8_t level = 1;
-uint8_t lives = 5;
+uint8_t lives = 0;
 uint8_t last_success_level = 0;
 uint8_t repaint_lives = 0;
 uint8_t points = 0;
@@ -117,10 +117,13 @@ unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v5";
 
 void all_lives_lost() {
 
-  print_background_lvl1();
+  if(lives != SONG_RESTART) {
+    ay_vt_init(pcspeaker_module);
+    intrinsic_ei();
+  }
 
-  ay_vt_init(pcspeaker_module);
-  intrinsic_ei();
+  lives = 5;
+  print_background_lvl1();
 
   sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1 + BORED, 12, 22, 0, 0);
   idx_j = 3;
@@ -136,10 +139,8 @@ void all_lives_lost() {
 
   sp1_UpdateNow();
 
-
   // todo think on animating the cat a bit in 'demo mode'
   while(1) {
-      // todo check joystick fire also so joystick is chosen
       if(in_key_pressed(IN_KEY_SCANCODE_1)) {
           joy = (JOYFUNC)in_stick_keyboard;
           break;
@@ -688,7 +689,6 @@ void get_out_of_level_generic(uint8_t fall) {
             --lives;
         } else {
             // reached zero on lives
-            lives = 5;
             last_success_level = 0;
             bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
 

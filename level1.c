@@ -132,7 +132,7 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
   if(opened_window > 11) {
     return;
   }
-  
+
   for (x = 0; x != 2; ++x) {
       sp1_PrintAtInv(windows[opened_window].y + x,
                      windows[opened_window].x,
@@ -505,7 +505,7 @@ void detect_fall_in_window() {
     }
     idx = misifu.x - 1;
     if(opened_window < 12 && (abs(misifu.y - windows[opened_window].y) < 2)
-        && ((idx >= (windows[opened_window].x - 2) && idx < windows[opened_window].x + 4)) ) {
+        && ((idx > (windows[opened_window].x - 2) && idx < windows[opened_window].x + 4)) ) {
         if(last_success_level == 0) {
             print_background_level2();
         } else if(last_success_level == 2) {
