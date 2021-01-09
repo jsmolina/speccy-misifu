@@ -15,6 +15,7 @@
 #include "level6.h"
 #include "level7.h"
 #include "defines.h"
+#include "ay/ay_music.h"
 
 
 extern uint8_t cartoon0[];
@@ -40,14 +41,18 @@ void show_intro() {
 
 int main()
 {
-  show_intro();
-  in_wait_key();
-
+  uint16_t misifu_sum_offset;
   // interrupt mode 2
   setup_int();
-
-
   add_sprites_for_all_levels();
+  show_intro();
+
+  ay_vt_init(pcspeaker_module);
+  intrinsic_ei();
+
+  while(!in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
+    // do nothing
+  }
 
   reset_misifu_position();
 
@@ -59,9 +64,10 @@ int main()
 
   print_background_lvl1();
 
-
   // bit_beep
+  lives = SONG_RESTART;
   all_lives_lost();
+  lives = 5;
 
   while(1)
   {
@@ -134,7 +140,12 @@ int main()
     }
 
     // paint 'prota here'
-    sp1_MoveSprAbs(misifu.sp, &full_screen, (void*) misifu.offset, misifu.y, misifu.x, 0, 0);
+    if (misifu.state == SWIMMING) {
+        misifu_sum_offset = (int) sprite_swim1 + misifu.offset;
+    } else {
+        misifu_sum_offset = (int) sprite_protar1 + misifu.offset;
+    }
+    sp1_MoveSprAbs(misifu.sp, &full_screen, (int) misifu_sum_offset, misifu.y - 1, misifu.x, 0, 0);
 
 
     wait();

@@ -10,6 +10,7 @@ SECTION rodata_user
  defb @11111111, @00000000
  defb @11111111, @00000000
  defb @11111111, @00000000
+ defb @11111111, @00000000
 
 PUBLIC _auxiliar1
 ._auxiliar1

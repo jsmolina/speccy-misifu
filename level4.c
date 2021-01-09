@@ -20,6 +20,21 @@ static void assign_eels_pos(uint8_t y, uint8_t x) {
     ++idx;
 }
 
+uint8_t check_udg_collision(uint8_t udgy, uint8_t udgx) {
+    if ((misifu.x <= udgx) && (misifu.x >= (udgx - 2))) {
+        if(abs(misifu.y - udgy) < 2) {
+            // consider not in same y
+            if(misifu.offset == SWIM_UP1 && (misifu.x == (udgx - 2) || (misifu.x == udgx))) {
+                // nothing
+            } else if(misifu.y == udgy || (misifu.y == (udgy - 1))) {
+                return 1;
+            } else if(misifu.y == (udgy + 1 ) && (misifu.offset > SWIM_LC2)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 void  print_background_level4() {
   level = 4;
@@ -93,20 +108,39 @@ static void print_fish(uint8_t idx, uint8_t to_print) {
     sp1_PrintAtInv( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, to_print);
 }
 
+void level4_loop() {
 
-static inline uint8_t map_to_fish_index() {
+    // fish collision
     for(idx = 0; idx != 8; ++idx) {
-        if(abs(misifu.y - windows[idx].y) < 2) {
-            return idx;
+        if(windows[idx].has_item != 'Z' && check_udg_collision(windows[idx].y, windows[idx].x) == 1) {
+            windows[idx].has_item = 'Z';  // eaten fish
+            repaint_lives = 1;
+            // delete collided fish
+            sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_CYAN, ' ');
+            windows[idx].x = 1;
+            windows[idx].y = 23;
+            sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'A');
+            bit_beepfx_di_fastcall(BEEPFX_SCORE);
+            --eaten_items;
+
+            if(eaten_items == 0) {
+                get_out_of_level4(WON_LEVEL);
+            }
+        }
+    }
+    // eel collision
+    for(idx = 0; idx != 5; ++idx) {
+
+        if(check_udg_collision(floor_holes[idx][Y_POS], floor_holes[idx][X_POS]) == 1)
+        {
+            // loose a life and out of level
+            get_out_of_level4(ELECTRIFIED);
+            return;
         }
     }
 
-    return UNDEF;
-}
-
-void level4_loop() {
     //fishes_on_move();
-    if(frame == 1) { // 1/4 of times
+    if(frame_big == 1) { // 1/4 of times
         for(idx = 0; idx != 8; ++idx) {
             // move to the right until reached limits
             print_fish(idx, ' ');
@@ -125,8 +159,7 @@ void level4_loop() {
 
         }
     }
-
-    //eels_on_move();
+    // eels on move
     if(random_value < 40) {
         for(idx = 0; idx != 5; ++idx) {
             print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
@@ -138,36 +171,8 @@ void level4_loop() {
         }
     }
 
-    //detect_fish_collission();
-    idx = map_to_fish_index();
-
-    if(abs(windows[idx].x - misifu.x) < 2 && windows[idx].has_item != 'Z') {
-        windows[idx].has_item = 'Z';  // eaten fish
-        repaint_lives = 1;
-        // delete collided fish
-        sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_CYAN, ' ');
-        windows[idx].x = 1;
-        windows[idx].y = 23;
-        sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'A');
-        bit_beepfx_di_fastcall(BEEPFX_SCORE);
-        --eaten_items;
-
-        if(eaten_items == 0) {
-            get_out_of_level4(WON_LEVEL);
-        }
-    } else {
-        for(idx = 0; idx != 5; ++idx) {
-            if((floor_holes[idx][Y_POS] == misifu.y && abs(floor_holes[idx][X_POS] - misifu.x) < 1))
-            {
-                // loose a life and out of level
-                get_out_of_level4(ELECTRIFIED);
-                return;
-            }
-        }
-    }
-
     // cat checks
-    if(frame == 1 && misifu.y >= 1) {
+    if(frame_big == 1 && misifu.y >= 1) {
         --misifu.draw_additional;
 
         if(misifu.draw_additional == 20) {

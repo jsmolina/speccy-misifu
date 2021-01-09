@@ -42,35 +42,35 @@
 #define HIGHER_BIN_X2 4
 #define FLOOR_Y 21
 
-#define AUX_BINCAT 2
-#define SPIDER 48 // 16 + 8 + 1
+#define AUX_BINCAT 0
+#define SPIDER 48 // (16 * 2) + 16
 #define BIRD_OFFSET 96
 #define BIRD_OFFSET2 144
-// OJO HEADS UP, si empieza en 1 acaba 'estropeado'
-#define RIGHTC1 16
-#define RIGHTC2 80
-#define LEFTC1 144
-#define LEFTC2 208
-#define JLEFTC1 272
-#define JRIGHTC1 336
-#define JUMPINGC1 390
-#define BORED 464
-#define HANGING 518
 
+#define RIGHTC1 0
+#define RIGHTC2 64
+#define LEFTC1 128
+#define LEFTC2 192
+#define JLEFTC1 256
+#define JRIGHTC1 320
+#define JUMPINGC1 384
+#define BORED 448
+#define HANGING 512
+#define FALL_OFFSET 576
 
-#define AUX_PHONE 2
-#define AUX_ZAP 52  // + 16x2 + 8x2
-#define AUX_ARROWRIGHT 100
-#define AUX_ARROWLEFT  148
+#define AUX_PHONE 0
+#define AUX_ZAP 48  // + 16x2 + 8x2
+#define AUX_ARROWRIGHT 96
+#define AUX_ARROWLEFT  144
 #define AUX_BROOM 192
 #define AUX_BROOM2 240
 
-#define SWIM_RC1 1
-#define SWIM_RC2 33  // 24 + 8 + 1
-#define SWIM_LC1 65
-#define SWIM_LC2  97
-#define SWIM_UP1 129
-#define SWIM_DOWN1 161
+#define SWIM_RC1 0
+#define SWIM_RC2 32  // 24 + 8
+#define SWIM_LC1 64
+#define SWIM_LC2  96
+#define SWIM_UP1 128
+#define SWIM_DOWN1 160
 
 #define MISIOFFSET 33
 #define OUCHOFFSET 65
@@ -96,10 +96,12 @@
 
 #define FRAME_CHANGE 2
 #define FRAME_MOST 5
-#define DOG1 2
+#define DOG1 0
 #define DOG2 48
 #define DOGFIGHTING1 96
 #define DOGFIGHTING2 144
+
+#define SONG_RESTART 250
 
 #define MAX_X 32
 
@@ -172,6 +174,26 @@ extern const uint8_t wall2[];
 extern const uint8_t wall3[];
 extern const uint8_t wall4[];
 
+extern uint8_t sprite_protar1[];
+extern uint8_t sprite_protar2[];
+extern uint8_t sprite_protar3[];
+
+extern uint8_t sprite_dog1[];
+extern uint8_t sprite_dog2[];
+extern uint8_t sprite_dog3[];
+
+extern uint8_t sprite_bincat1[];
+extern uint8_t sprite_bincat2[];
+extern uint8_t sprite_bincat3[];
+
+extern uint8_t auxiliar1[];
+extern uint8_t auxiliar2[];
+
+extern uint8_t sprite_swim1[];
+extern uint8_t sprite_swim2[];
+extern uint8_t sprite_swim3[];
+extern uint8_t sprite_swim4[];
+
 // level 1
 extern struct udgstruct windows[14];
 extern const uint8_t bin_places2[];
@@ -191,6 +213,7 @@ struct prota {
     unsigned int  offset;
     uint8_t in_bin;
     uint8_t state;
+    uint8_t last_key;
 };
 
 struct freesprite {
@@ -212,7 +235,6 @@ extern uint16_t in;
 
 extern void all_lives_lost();
 
-extern void loose_a_live();
 
 extern void reset_misifu_position();
 

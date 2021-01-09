@@ -1,7 +1,9 @@
 SECTION rodata_user
 
-; Original: 192, 24 (=24 x 3 chars)
-; Blocks: 4
+; Original: 144, 24 (=18 x 3 chars)
+; Blocks: 3
+; sprite
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -13,22 +15,8 @@ SECTION rodata_user
 PUBLIC _sprite_swim1
 ._sprite_swim1
 
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000010
- defb @00000100
- defb @00000100
- defb @00000010
- defb @00000001
- defb @00000000
- defb @00000001
- defb @00000011
- defb @00000011
- defb @00000001
- defb @00000011
- defb @00000011
- defb @00000001
+PUBLIC _sprite_swim1_f1
+._sprite_swim1_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -37,6 +25,22 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00100000
+ defb @01000000
+ defb @01000000
+ defb @00100000
+ defb @00011111
+ defb @00001111
+ defb @00011111
+ defb @00111111
+ defb @00111111
+ defb @00011110
+ defb @00111100
+ defb @00110000
+ defb @00011000
 
  defb @00000000
  defb @00000000
@@ -47,6 +51,7 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim1_f2
 ._sprite_swim1_f2
  defb @00000000
  defb @00000000
@@ -54,23 +59,23 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00111100
- defb @00000011
  defb @00000000
- defb @00000001
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @11110000
+ defb @00001111
  defb @00000011
  defb @00000111
+ defb @00001111
  defb @00011111
- defb @00111000
- defb @00100000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @01111110
+ defb @11100000
+ defb @10000000
  defb @00000000
 
  defb @00000000
@@ -82,29 +87,30 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim1_f3
 ._sprite_swim1_f3
  defb @00000000
- defb @00000001
- defb @00000001
- defb @00000011
- defb @00000011
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
  defb @00000101
- defb @00001111
  defb @00000111
+ defb @00001111
+ defb @00001111
+ defb @00010111
+ defb @00111111
+ defb @00011111
+ defb @00001111
  defb @00000011
- defb @00000000
- defb @00000000
- defb @00000000
  defb @00000001
- defb @00000001
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @00000011
+ defb @00000111
+ defb @00000100
  defb @00000000
  defb @00000000
 
@@ -117,13 +123,25 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim1_f4
 ._sprite_swim1_f4
  defb @00000000
- defb @00000001
- defb @00000001
- defb @00000011
- defb @00000011
- defb @00000101
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00010100
+ defb @00011100
+ defb @00111110
+ defb @00111111
+ defb @01011111
+ defb @11111111
+ defb @01111111
+ defb @00111111
  defb @00001111
  defb @00000111
  defb @00000011
@@ -131,17 +149,6 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -152,6 +159,7 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim1_f5
 ._sprite_swim1_f5
  defb @00000000
  defb @00000000
@@ -159,6 +167,10 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000011
+ defb @00000011
+ defb @00000001
+ defb @00000001
  defb @00000000
  defb @00000000
  defb @00000000
@@ -166,9 +178,14 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00001001
+ defb @00000110
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
+ defb @00000000
+
  defb @00000000
  defb @00000000
  defb @00000000
@@ -178,15 +195,7 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
 
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
+PUBLIC _sprite_swim1_f6
 ._sprite_swim1_f6
  defb @00000000
  defb @00000000
@@ -194,6 +203,8 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000110
+ defb @00001001
  defb @00000000
  defb @00000000
  defb @00000000
@@ -201,12 +212,10 @@ PUBLIC _sprite_swim1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @00000001
+ defb @00000001
+ defb @00000011
+ defb @00000011
  defb @00000000
  defb @00000000
  defb @00000000
@@ -225,6 +234,8 @@ PUBLIC _sprite_swim1
 PUBLIC _sprite_swim2
 ._sprite_swim2
 
+PUBLIC _sprite_swim2_f1
+._sprite_swim2_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -232,20 +243,20 @@ PUBLIC _sprite_swim2
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000001
+ defb @00000011
+ defb @00000111
+ defb @00000011
  defb @11111111
  defb @11111111
  defb @11111111
  defb @11111111
  defb @11111111
- defb @11100000
- defb @11000000
- defb @00000000
- defb @10000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @00000001
  defb @00000000
  defb @00000000
  defb @00000000
@@ -259,6 +270,7 @@ PUBLIC _sprite_swim2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim2_f2
 ._sprite_swim2_f2
  defb @00000000
  defb @00000000
@@ -267,21 +279,21 @@ PUBLIC _sprite_swim2
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000001
+ defb @00000000
  defb @11111111
  defb @11111111
  defb @11111111
  defb @11111111
  defb @11111111
- defb @10000011
- defb @00001111
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @00001110
+ defb @00111100
  defb @00000000
  defb @00000000
 
@@ -294,28 +306,29 @@ PUBLIC _sprite_swim2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim2_f3
 ._sprite_swim2_f3
  defb @00000000
- defb @01000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @10000000
  defb @11000000
  defb @11100000
- defb @11110000
- defb @11111000
- defb @11110000
+ defb @11000000
  defb @11111111
  defb @11111111
  defb @11111111
- defb @01111111
  defb @11111111
- defb @11100000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11111111
+ defb @10000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -329,29 +342,30 @@ PUBLIC _sprite_swim2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim2_f4
 ._sprite_swim2_f4
  defb @00000000
- defb @01000000
- defb @11000000
- defb @11100000
- defb @11110000
- defb @11111000
- defb @11110000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @10000000
+ defb @00000000
  defb @11111111
  defb @11111111
  defb @11111111
- defb @01111111
- defb @00111111
- defb @00000111
- defb @00000011
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11111111
+ defb @11111111
+ defb @01110000
+ defb @00111100
  defb @00000000
  defb @00000000
 
@@ -364,25 +378,35 @@ PUBLIC _sprite_swim2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim2_f5
 ._sprite_swim2_f5
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00001101
- defb @00001101
- defb @00000101
- defb @00000110
- defb @00000011
- defb @00000001
+ defb @00100001
+ defb @00110011
+ defb @00111111
+ defb @01111111
+ defb @01101101
+ defb @01111111
+ defb @10111111
+ defb @11111111
+ defb @01111111
+ defb @00111111
+ defb @00111111
+ defb @00111111
+ defb @01111111
+ defb @11111111
+ defb @01111111
+ defb @01100011
+ defb @11000110
+ defb @11000110
+ defb @11000110
  defb @00000000
  defb @00000000
- defb @00000001
- defb @00000011
- defb @00100101
- defb @00011001
- defb @00000011
- defb @00000011
- defb @00000011
+
+ defb @00000000
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -390,38 +414,30 @@ PUBLIC _sprite_swim2
  defb @00000000
  defb @00000000
 
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
+PUBLIC _sprite_swim2_f6
 ._sprite_swim2_f6
- defb @00001100
- defb @00001100
- defb @00001100
- defb @01100110
- defb @10010111
- defb @00001111
- defb @00000111
- defb @00000011
- defb @00000011
- defb @00000111
- defb @00001111
- defb @00011011
- defb @00010111
- defb @00110111
- defb @00110111
- defb @00000011
- defb @00000011
- defb @00000010
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
+ defb @11000110
+ defb @11000110
+ defb @11000110
+ defb @01100011
+ defb @01111111
+ defb @11111111
+ defb @01111111
+ defb @00111111
+ defb @00111111
+ defb @00111111
+ defb @01111111
+ defb @11111111
+ defb @10111111
+ defb @01111111
+ defb @01111111
+ defb @01111111
+ defb @00111111
+ defb @00110011
+ defb @00100001
  defb @00000000
  defb @00000000
 
@@ -437,20 +453,8 @@ PUBLIC _sprite_swim2
 PUBLIC _sprite_swim3
 ._sprite_swim3
 
- defb @00000000
- defb @00001010
- defb @00001110
- defb @00011111
- defb @00111111
- defb @01111110
- defb @00111111
- defb @11111111
- defb @11111111
- defb @11111100
- defb @11111000
- defb @11111100
- defb @00011110
- defb @00000010
+PUBLIC _sprite_swim3_f1
+._sprite_swim3_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -460,31 +464,22 @@ PUBLIC _sprite_swim3
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-._sprite_swim3_f2
- defb @00000000
- defb @00001010
- defb @00001110
- defb @00011111
- defb @00111111
- defb @01111110
- defb @00111111
- defb @11111111
- defb @11111111
+ defb @10100000
+ defb @11100000
+ defb @11110000
+ defb @11110000
+ defb @11101000
  defb @11111100
  defb @11111000
  defb @11110000
+ defb @11000000
  defb @10000000
+ defb @11000000
+ defb @11100000
+ defb @00100000
+ defb @00000000
+ defb @00000000
+
  defb @00000000
  defb @00000000
  defb @00000000
@@ -492,6 +487,30 @@ PUBLIC _sprite_swim3
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
+
+PUBLIC _sprite_swim3_f2
+._sprite_swim3_f2
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00101000
+ defb @00111000
+ defb @01111100
+ defb @11111100
+ defb @11111010
+ defb @11111111
+ defb @11111110
+ defb @11111100
+ defb @11110000
+ defb @11100000
+ defb @11000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -506,31 +525,32 @@ PUBLIC _sprite_swim3
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim3_f3
 ._sprite_swim3_f3
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000001
  defb @00000000
  defb @00000000
- defb @00000001
- defb @11111110
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000100
+ defb @00000010
+ defb @00000010
+ defb @00000100
+ defb @11111000
+ defb @11110000
+ defb @11111000
  defb @11111100
- defb @11111110
- defb @11111111
- defb @11111111
- defb @00011110
- defb @00001111
- defb @00000011
- defb @00000110
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11111100
+ defb @01111000
+ defb @00111100
+ defb @00001100
+ defb @00011000
 
  defb @00000000
  defb @00000000
@@ -541,6 +561,7 @@ PUBLIC _sprite_swim3
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_swim3_f4
 ._sprite_swim3_f4
  defb @00000000
  defb @00000000
@@ -549,234 +570,22 @@ PUBLIC _sprite_swim3
  defb @00000000
  defb @00000000
  defb @00000000
- defb @11111111
- defb @11111100
- defb @11111110
- defb @11111111
- defb @11111111
- defb @00000111
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00001111
+ defb @11110000
  defb @11000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-._sprite_swim3_f5
- defb @10000100
- defb @11001100
- defb @11111100
- defb @11111110
- defb @10110110
- defb @11111110
- defb @11111101
- defb @11111111
- defb @11111110
- defb @11111110
- defb @11111100
- defb @11111100
- defb @11111100
- defb @11111100
- defb @10001100
- defb @00011000
- defb @00011000
- defb @00011000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-._sprite_swim3_f6
- defb @01100000
- defb @01100000
- defb @01100000
- defb @00110000
- defb @11110000
- defb @11110000
- defb @11110000
- defb @11110000
- defb @11111000
- defb @11111000
- defb @11111100
- defb @11110110
- defb @11111010
- defb @11111011
- defb @11111011
- defb @11110000
- defb @00110000
- defb @00010000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-PUBLIC _sprite_swim4
-._sprite_swim4
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @10000000
- defb @11000000
- defb @10000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-._sprite_swim4_f2
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @10000000
- defb @11000000
- defb @10000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-._sprite_swim4_f3
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @10000000
- defb @10000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-._sprite_swim4_f4
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @11110000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @10000000
  defb @11100000
- defb @01110000
- defb @00010000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11110000
+ defb @11111000
+ defb @01111110
+ defb @00000111
+ defb @00000001
  defb @00000000
 
  defb @00000000
@@ -788,61 +597,63 @@ PUBLIC _sprite_swim4
  defb @00000000
  defb @00000000
 
-._sprite_swim4_f5
+PUBLIC _sprite_swim3_f5
+._sprite_swim3_f5
  defb @00000000
  defb @00000000
  defb @00000000
- defb @11000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @10110000
+ defb @10110000
+ defb @10100000
+ defb @01100000
  defb @11000000
  defb @10000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+PUBLIC _sprite_swim3_f6
+._sprite_swim3_f6
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
  defb @10000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
-
-._sprite_swim4_f6
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11000000
+ defb @01100000
+ defb @10100000
+ defb @10110000
+ defb @10110000
  defb @00000000
  defb @00000000
  defb @00000000

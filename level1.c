@@ -17,7 +17,7 @@
 #include "level_last.h"
 
 #define TILES_BASE 128
-#define TILES_LEN 29
+#define TILES_LEN 30
 
 
 #define UDG_JLADRILLOS 128
@@ -49,6 +49,8 @@
 #define UDG_BOOT 154
 #define UDG_PANTIES 155
 #define UDG_VALLAROTA 156
+#define UDG_VOLUMEN 157
+
 #define MAX_COORDS_LADRILLOS 45
 #define TOTAL_COORDS_SUELO 15
 
@@ -74,7 +76,7 @@ uint8_t tiles[] = {
 0x01, 0x7d, 0xf1, 0xb3, 0x31, 0x1b, 0x19, 0x1b, // y:0, x:18 (146)
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd2, // y:0, x:19 (147)
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2d, // y:0, x:20 (148)
-0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:21 (149)
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, // y:0, x:21 (149)
 0x10, 0x30, 0x38, 0x7c, 0x6f, 0x6d, 0x6f, 0x0d, // y:0, x:22 (150)
 0x18, 0x1c, 0x3e, 0x7e, 0xee, 0xee, 0xee, 0xf0, // y:0, x:23 (151)
 0x0f, 0x0d, 0x0f, 0x0d, 0x1f, 0x1e, 0x18, 0x00, // y:0, x:24 (152)
@@ -82,6 +84,7 @@ uint8_t tiles[] = {
 0x0e, 0x0e, 0x0e, 0x0e, 0x1e, 0x3e, 0x7c, 0x70, // y:0, x:26 (154)
 0x81, 0xe3, 0xff, 0x7e, 0x3c, 0x18, 0x00, 0x00, // y:0, x:27 (155)
 0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
+0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, // y:0, x:29 (157)
 };
 
 const uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
@@ -123,21 +126,29 @@ inline uint8_t  get_cubo_offset() {
 }
 
 
-void paint_window(uint16_t colour) {
+void paint_window(uint16_t colour, uint8_t udg_id) {
+  uint8_t second_udg;
 
   if(opened_window > 11) {
     return;
   }
 
-  for (x = windows[opened_window].x; x != windows[opened_window].x + 5; ++x) {
+  for (x = 0; x != 2; ++x) {
+      sp1_PrintAtInv(windows[opened_window].y + x,
+                     windows[opened_window].x,
+                     PAPER_MAGENTA,
+                     UDG_VOLUMEN);
+  }
+
+  for (x = windows[opened_window].x + 1; x != windows[opened_window].x + 5; ++x) {
     // top is equal
-    sp1_PrintAtInv(windows[opened_window].y, x, colour, UDG_WIN2);
-    if (opened_window > 7) {
-        // bottom varies
-        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, UDG_WIN2);
+    sp1_PrintAtInv(windows[opened_window].y, x, colour, udg_id);
+    if(udg_id == ' ') {
+        second_udg = UDG_WIN1;
     } else {
-        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, UDG_WIN1);
+        second_udg = udg_id;
     }
+    sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, second_udg);
   }
 }
 
@@ -192,12 +203,13 @@ void  print_background_lvl1() {
   for (x = 0; x!=MAX_X; ++x) {
 
       if (x % 2 == 0) {
-        sp1_PrintAt(15, x, PAPER_CYAN, UDG_VALLA1);
+        idx_j = UDG_VALLA1;
       } else if (x % 3 == 0) {
-        sp1_PrintAt(15, x,  PAPER_CYAN, UDG_VALLA4);
+        idx_j = UDG_VALLA4;
       } else {
-         sp1_PrintAt(15, x,  PAPER_CYAN, UDG_VALLA3);
+        idx_j = UDG_VALLA3;
       }
+      sp1_PrintAt(15, x,  PAPER_CYAN, idx_j);
 
       for (idx_j=16; idx_j!=21; ++idx_j)
       {
@@ -210,7 +222,7 @@ void  print_background_lvl1() {
       if(frame != UNDEF) {
           // cubo
           idx_j = 22;
-          if((x>=5 && x<=7)  ||  (x>=20 && x<=22)) {
+          if((x >= 5 && x<=7)  ||  (x >= 20 && x<=22)) {
              idx_j = 21;
           }
           //
@@ -269,12 +281,12 @@ void  print_background_lvl1() {
         idx_j = idx_j + 4;
       }
 
-      paint_window(PAPER_CYAN);
+      paint_window(PAPER_CYAN, ' ');
    }
    opened_window = UNDEF;
 
    reset_misifu_position();
-   bincat_appears = 1;
+   bincat_appears = NONE;
    bincat_in_bin = NONE;
 
    level_x_max = 28;
@@ -286,29 +298,35 @@ void  print_background_lvl1() {
    floor_holes[1][0] = 1;  // row2clothes
    floor_holes[1][1] = 18; // row2clothes
    aux_object.offset = AUX_PHONE;
+   // make disapear for sure
+   sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1, 16, 33, 0, 0);
+
    sp1_UpdateNow();
 }
 
 
 static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
+    uint8_t color;
     if(clean != ' ') {
         x = 1;
+        color = INK_WHITE | PAPER_MAGENTA;
     } else {
         x = 0;
+        color = INK_BLACK | PAPER_MAGENTA;
     }
-    sp1_PrintAtInv(row, col, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col, color, clean);
     clean += x;
-    sp1_PrintAtInv(row, col + 1, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col + 1, color, clean);
     clean += x;
-    sp1_PrintAtInv(row + 1, col, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row + 1, col, color, clean);
     clean += x;
-    sp1_PrintAtInv(row + 1, col + 1, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row + 1, col + 1, color, clean);
 
     clean += x;
-    sp1_PrintAtInv(row, col + 3, INK_WHITE | PAPER_MAGENTA, clean);
-    sp1_PrintAtInv(row, col + 4, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col + 3, color, clean);
+    sp1_PrintAtInv(row, col + 4, color, clean);
     clean += x;
-    sp1_PrintAtInv(row, col + 5, INK_WHITE | PAPER_MAGENTA, clean);
+    sp1_PrintAtInv(row, col + 5, color, clean);
 }
 
 static void increase_indexes_clothes(uint8_t idx) {
@@ -347,7 +365,7 @@ inline void anim_windows() {
         if(opened_window < 12) {
             // makes the window to be opened for about 20 frames
             opened_window_frames = 50;
-            paint_window(PAPER_BLACK | INK_WHITE);
+            paint_window(INK_BLACK | PAPER_WHITE, UDG_WIN2);
             aux_object.y = windows[opened_window].y;
             aux_object.x = windows[opened_window].x;
             horizontal_direction = NONE;
@@ -390,18 +408,18 @@ inline void anim_windows() {
                     ++aux_object.y;
                 }
             }
-            sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+            sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
         }
 
     }
     // end of windows
     if (opened_window_frames == 1) {
-        paint_window(PAPER_CYAN);
+        paint_window(PAPER_CYAN, ' ');
         opened_window = UNDEF;
         opened_window_frames = NONE;
         aux_object.offset = AUX_PHONE;
         // move outside of screen
-        sp1_MoveSprAbs(aux_object.sp, &full_screen,(void*) aux_object.offset, aux_object.y, 33, 0, 0);
+        sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, 33, 0, 0);
 
     }
 }
@@ -422,7 +440,7 @@ inline void check_bincat() {
             } else {
                 bincat_appears = 17;
             }
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, bincat_appears, bin_places2[bincat_in_bin], 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1+ AUX_BINCAT, bincat_appears, bin_places2[bincat_in_bin], 0, 0);
             bincat_appears = 40;
 
         } else {
@@ -442,7 +460,7 @@ inline void check_bincat() {
         }
 
         if (bincat_appears <= 1) {
-            sp1_MoveSprAbs(bincatsp, &full_screen, (void*)AUX_BINCAT, 16, 33, 0, 0);
+            sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1, 16, 33, 0, 0);
             bincat_appears = NONE;
             bincat_in_bin = 0;
         }
@@ -471,10 +489,10 @@ inline void detect_fall_in_bin() {
         misifu.state = NONE;
         misifu.draw_additional = CAT_IN_FENCE;
     // now check ropes TODO check ropes clothes are not colliding
-    } else if(misifu.y == 9) {
+    } else if(misifu.y == 10) {
         misifu.state = CAT_IN_ROPE;
         misifu.draw_additional = CAT_IN_ROPE1;
-    } else if(misifu.y == 5) {
+    } else if(misifu.y == 6) {
         misifu.state = CAT_IN_ROPE;
         misifu.draw_additional = CAT_IN_ROPE2;
     }
@@ -487,7 +505,7 @@ void detect_fall_in_window() {
     }
     idx = misifu.x - 1;
     if(opened_window < 12 && (abs(misifu.y - windows[opened_window].y) < 2)
-        && ((idx >= (windows[opened_window].x - 2) && idx < windows[opened_window].x + 4)) ) {
+        && ((idx > (windows[opened_window].x - 2) && idx < windows[opened_window].x + 4)) ) {
         if(last_success_level == 0) {
             print_background_level2();
         } else if(last_success_level == 2) {
@@ -509,15 +527,32 @@ void detect_fall_in_window() {
 void level1_loop() {
     //move_clothes();
     // move clothes to the right
-    if((random_value & 1) == 0) {
+    if((frame & 1) == 0) {
         paint_bricks(1);
         increase_indexes_clothes(0);
         increase_indexes_clothes(1);
         // now move cat
-        if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
-             ++misifu.x;
-        } else if(misifu.draw_additional == CAT_IN_ROPE2) {
-            --misifu.x;
+        if(misifu.state == CAT_IN_ROPE) {
+            if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+                 ++misifu.x;
+                 if(misifu.x >= 28) {
+                    misifu.state = FALLING;
+                    misifu.draw_additional = NONE;
+                    ++misifu.y;
+                }
+            } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+                --misifu.x;
+                if(misifu.x == 0) {
+                    misifu.state = FALLING;
+                    misifu.draw_additional = NONE;
+                    ++misifu.y;
+                }
+            }
+            if(misifu.x >= 28 || misifu.x == 0) {
+                misifu.state = FALLING;
+                misifu.draw_additional = NONE;
+                ++misifu.y;
+            }
         }
     }
 
