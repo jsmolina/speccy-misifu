@@ -172,3 +172,6 @@ extras:
 	@png2udg ./background/j_ladrillos.png
 	@png2udg ./background/j_piedras.png
 	@png2udg ./background/j_valla_rota.png
+
+loader:
+	bas2tap -a loader.bas
