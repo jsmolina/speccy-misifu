@@ -1,4 +1,5 @@
 #include <z80.h>
+#include <intrinsic.h>
 #include <stdlib.h>
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
@@ -24,8 +25,9 @@ void show_intro() {
     __asm
     extern enable_bank_n
    di
-   ld a,0x80
-   ld i,a                      ; point I at uncontended bank
+   ; no need of pointing it if no interrupt
+   ;ld a,0x80
+   ;ld i,a                      ; point I at uncontended bank
 
    ld a,6
    call enable_bank_n          ; bank 6 in top 16k, stack moved

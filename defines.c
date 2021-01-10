@@ -113,31 +113,44 @@ JOYFUNC joy;
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
 
-unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v5";
+//unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v5";
+
+extern uint8_t cartoon1[];
+
+void show_menu() {
+    __asm
+    extern enable_bank_n
+   di
+   ;ld a,0x80
+   ;ld i,a                      ; point I at uncontended bank
+
+   ld a,4
+   call enable_bank_n          ; bank 4 in top 16k, stack moved
+    __endasm;
+    memcpy(16384, cartoon1, 6912);
+    __asm
+    extern restore_bank_0
+    call restore_bank_0
+
+    ;ld a,0xd0
+    ;ld i,a                      ; restore I
+
+    ei
+    __endasm;
+
+}
 
 void all_lives_lost() {
+  show_menu();
 
+  // ay_vt_init(pcspeaker_module);
   if(lives != SONG_RESTART) {
     ay_vt_init(pcspeaker_module);
     intrinsic_ei();
   }
 
   lives = 5;
-  print_background_lvl1();
 
-  sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1 + BORED, 12, 22, 0, 0);
-  idx_j = 3;
-  x = 10;
-  for(idx = 0; idx != 36; ++idx ) {
-    if(show_menu[idx] == '-') {
-        ++idx_j;
-        x = 10;
-        ++idx;
-    }
-    sp1_PrintAtInv(idx_j, ++x, INK_WHITE | PAPER_BLACK, show_menu[idx]);
-  }
-
-  sp1_UpdateNow();
 
   // todo think on animating the cat a bit in 'demo mode'
   while(1) {
