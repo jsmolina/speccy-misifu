@@ -19,6 +19,20 @@
 // remove!
 #include <string.h>
 
+#define UDG_WALL1 128
+#define UDG_WALL2 129
+#define UDG_WALL3 130
+#define UDG_WALL4 131
+#define UDG_CURTAIN 132
+#define UDG_Q_BARRA_CORTINA 133
+#define UDG_SILLAL 134
+#define UDG_SILLALM 135
+#define UDG_SILLARM 136
+#define UDG_SILLAR 137
+#define UDG_MESATOP 138
+#define UDG_MESAPATA 139
+#define UDG_MESASIDE 140
+#define UDG_Q_MESABASE 141
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
@@ -32,13 +46,30 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 
-const uint8_t udg_win2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
+#define ROOMS_TILES_LEN 14
+#define ROOMS_TILES_BASE 128
+
+const uint8_t rooms[] = {
+    0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, // y:0, x:0 (128)
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, // y:0, x:1 (129)
+    0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01, // y:0, x:2 (130)
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, // y:0, x:3 (131)
+    0xc3, 0xff, 0xff, 0x3c, 0xc3, 0xff, 0xff, 0x3c, // y:0, x:4 (132)
+    0xff, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:5 (133)
+    0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70, // y:0, x:6 (134)
+    0x77, 0x57, 0x77, 0x70, 0x70, 0x70, 0x70, 0x70, // y:0, x:7 (135)
+    0xfe, 0xff, 0xff, 0x00, 0x07, 0x07, 0x07, 0x07, // y:0, x:8 (136)
+    0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, // y:0, x:9 (137)
+    0xff, 0xff, 0xff, 0x00, 0x18, 0x18, 0x18, 0x18, // y:0, x:10 (138)
+    0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, // y:0, x:11 (139)
+    0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:12 (140)
+    0x18, 0x18, 0x18, 0x18, 0x00, 0x3c, 0x7e, 0xff, // y:0, x:13 (141)
+};
 
 const uint8_t queso_textura[] = {0x0, 0x80, 0x4, 0x0, 0x8, 0x40, 0x1, 0x0};
 const uint8_t queso_diagonal[] = {0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff};
-const uint8_t q_barra_cortina[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0xc};
 
 // shared vars
 uint8_t x, y;
@@ -82,25 +113,6 @@ uint8_t points = 0;
 uint8_t floor_holes[5][24];
 
 
-const uint8_t curtain[] = {0xc3, 0xff, 0xff, 0x3c, 0xc3, 0xff, 0xff, 0x3c};
-
-const uint8_t wall1[] = {0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80};
-const uint8_t wall2[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff};
-const uint8_t wall3[] = {0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1};
-const uint8_t wall4[] = {0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80};
-
-
-
-const uint8_t udg_sillaL[] = {0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70};
-const uint8_t udg_sillaR[] = {0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7};
-const uint8_t udg_sillaLM[] = {0x77, 0x57, 0x77, 0x70, 0x70, 0x70, 0x70, 0x70};
-const uint8_t udg_sillaRM[] = {0xfe, 0xff, 0xff, 0x0, 0x7, 0x7, 0x7, 0x7};
-
-const uint8_t mesatop[] = {0xff, 0xff, 0xff, 0x0, 0x18, 0x18, 0x18, 0x18};
-const uint8_t mesapata[] = {0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18};
-const uint8_t mesaside[] = {0xff, 0xff, 0xff, 0x0, 0x0, 0x0, 0x0, 0x0};
-const uint8_t q_mesabase[] = {0x18, 0x18, 0x18, 0x18, 0x0, 0x3c, 0x7e, 0xff};
-
 // level 1
 struct udgstruct windows[14];
 const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
@@ -121,8 +133,8 @@ void show_menu() {
     __asm
     extern enable_bank_n
    di
-   ;ld a,0x80
-   ;ld i,a                      ; point I at uncontended bank
+   ld a,0x80
+   ld i,a                      ; point I at uncontended bank
 
    ld a,4
    call enable_bank_n          ; bank 4 in top 16k, stack moved
@@ -132,8 +144,8 @@ void show_menu() {
     extern restore_bank_0
     call restore_bank_0
 
-    ;ld a,0xd0
-    ;ld i,a                      ; restore I
+    ld a,0xd0
+    ld i,a                      ; restore I
 
     ei
     __endasm;
@@ -271,56 +283,55 @@ void reset_misifu_position() {
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
-  sp1_TileEntry('F', wall1);
-  sp1_TileEntry('G', wall2);
-  sp1_TileEntry('H', wall3);
-  sp1_TileEntry('I', wall4);
+  uint8_t *pt = rooms;
+  uint8_t bright_black_paper = 0x40 | paper_color;
 
-  sp1_TileEntry('J', curtain);
-  sp1_TileEntry('N', udg_win2); // full square
-  sp1_TileEntry(144, q_barra_cortina);
+  for (idx = 0; idx < ROOMS_TILES_LEN; idx++, pt += 8) {
+      sp1_TileEntry(ROOMS_TILES_BASE + idx, pt);
+  }
 
   for(idx = 0; idx != 3; ++idx) {
     // upper left
-    sp1_PrintAt( 3 + idx, idx,  INK_BLACK | paper_color, 'H');
+    sp1_PrintAt( 3 + idx, idx,  bright_black_paper, UDG_WALL3);
     // down left diagonal
-    sp1_PrintAt( 20 - idx, idx, INK_BLACK | paper_color, 'I');
+    sp1_PrintAt( 20 - idx, idx, bright_black_paper, UDG_WALL4);
     // upper right
-    sp1_PrintAt( 5 - idx, 29 + idx,  INK_BLACK | paper_color, 'I');
+    sp1_PrintAt( 5 - idx, 29 + idx,  bright_black_paper, UDG_WALL4);
     // down right
-    sp1_PrintAt( 18 + idx, 29 + idx,  INK_BLACK | paper_color, 'H');
+    sp1_PrintAt( 18 + idx, 29 + idx,  bright_black_paper, UDG_WALL3);
   }
 
   // draw vertical wall
   for (idx = 6; idx != 18; ++idx) {
-    sp1_PrintAt( idx, 3, INK_BLACK | paper_color, 'F');
-    sp1_PrintAt( idx, 29,  INK_BLACK | paper_color, 'F');
+    sp1_PrintAt( idx, 3, bright_black_paper, UDG_WALL1);
+    sp1_PrintAt( idx, 29,  bright_black_paper, UDG_WALL1);
   }
 
   // draw horizontal wall
   for (idx = 3; idx != 29; ++idx) {
-    sp1_PrintAt( 5, idx, INK_BLACK | paper_color, 'G');
-    sp1_PrintAt( 17, idx, INK_BLACK | paper_color, 'G');
+    sp1_PrintAt( 5, idx, bright_black_paper, UDG_WALL2);
+    sp1_PrintAt( 17, idx, bright_black_paper, UDG_WALL2);
   }
 
   for (idx = initial_window; idx != initial_window + 8; ++idx) {
-     sp1_PrintAt( 7, idx, ink_color | paper_color, 144);
+     sp1_PrintAt( 7, idx, ink_color | paper_color, UDG_Q_BARRA_CORTINA);
   }
 
   for (idx = 8; idx != 11; ++idx) {
-    sp1_PrintAt( idx, initial_window, ink_color | paper_color, 'J');
-    sp1_PrintAt( idx, initial_window + 1, ink_color | paper_color, 'J');
+
+    for (idx_j = 0; idx_j != 2; ++idx_j) {
+        sp1_PrintAt( idx, initial_window + idx_j, ink_color | paper_color, UDG_CURTAIN);
+    }
 
     // x=8, 9 and y=22-25
     if (idx != 10) {
-        sp1_PrintAt( idx, initial_window + 2,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, initial_window + 3,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, initial_window + 4,  PAPER_BLACK, 'N');
-        sp1_PrintAt( idx, initial_window + 5,  PAPER_BLACK, 'N');
+        for (idx_j = 2; idx_j != 6; ++idx_j) {
+            sp1_PrintAt( idx, initial_window + idx_j,  PAPER_BLACK, ' ');
+        }
     }
 
-    sp1_PrintAt( idx, initial_window + 6, ink_color | paper_color, 'J');
-    sp1_PrintAt( idx, initial_window + 7, ink_color | paper_color, 'J');
+    sp1_PrintAt( idx, initial_window + 6, ink_color | paper_color, UDG_CURTAIN);
+    sp1_PrintAt( idx, initial_window + 7, ink_color | paper_color, UDG_CURTAIN);
   }
 
 }
@@ -583,34 +594,23 @@ void check_fsm() {
     }
 }
 
-void define_silla_udgs() {
-  sp1_TileEntry('Q', udg_sillaL);
-  sp1_TileEntry('R', udg_sillaLM);
-  sp1_TileEntry('S', udg_sillaRM);
-  sp1_TileEntry('T', udg_sillaR);
-
-  sp1_TileEntry('U', mesatop);
-  sp1_TileEntry('V', mesapata);
-  sp1_TileEntry('W', mesaside);
-  sp1_TileEntry('?', q_mesabase);
-}
 
 void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
-    sp1_PrintAt(row + 1, col, ink_color |paper_color, 'W');
-    sp1_PrintAt(row + 1, col + 1, ink_color |paper_color, 'U');
-    sp1_PrintAt(row + 1, col + 2,  ink_color |paper_color, 'W');
+    sp1_PrintAt(row + 1, col, ink_color |paper_color, UDG_MESASIDE);
+    sp1_PrintAt(row + 1, col + 1, ink_color |paper_color, UDG_MESATOP);
+    sp1_PrintAt(row + 1, col + 2,  ink_color |paper_color, UDG_MESASIDE);
 
-    sp1_PrintAt(row + 2, col + 1,  ink_color |paper_color, 'V');
-    sp1_PrintAt(row + 3, col + 1,  ink_color |paper_color, '?');
+    sp1_PrintAt(row + 2, col + 1,  ink_color |paper_color, UDG_MESAPATA);
+    sp1_PrintAt(row + 3, col + 1,  ink_color |paper_color, UDG_Q_MESABASE);
 }
 
 void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
-    sp1_PrintAt( row, col,  ink_color | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 1, col,  ink_color | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 2, col,  ink_color | paper_color, 'R'); // LM
-    sp1_PrintAt( row + 2, col + 1,  ink_color | paper_color, 'S'); // RM
-    sp1_PrintAt( row + 3, col,  ink_color | paper_color, 'Q'); // L
-    sp1_PrintAt( row + 3, col + 1,  ink_color | paper_color, 'T'); // R
+    sp1_PrintAt( row, col,  ink_color | paper_color, UDG_SILLAL); // L
+    sp1_PrintAt( row + 1, col,  ink_color | paper_color, UDG_SILLAL); // L
+    sp1_PrintAt( row + 2, col,  ink_color | paper_color, UDG_SILLALM); // LM
+    sp1_PrintAt( row + 2, col + 1,  ink_color | paper_color, UDG_SILLARM); // RM
+    sp1_PrintAt( row + 3, col,  ink_color | paper_color, UDG_SILLAL); // L
+    sp1_PrintAt( row + 3, col + 1,  ink_color | paper_color, UDG_SILLAR); // R
 
 
 }

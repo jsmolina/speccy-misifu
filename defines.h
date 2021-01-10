@@ -6,6 +6,8 @@
 #include <arch/zx/sp1.h>
 #include <input.h>
 
+#define BACKGROUND_GREEN 0x60
+
 #define Y_POS 0
 #define X_POS 1
 #define UNDEF 250
@@ -128,7 +130,6 @@ extern uint8_t x;
 extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
-extern const uint8_t udg_win2[];
 extern const uint8_t heart2[];
 extern char left;
 extern char right;
@@ -169,10 +170,6 @@ extern const uint8_t hole_mouse[];
 extern const uint8_t cheese2[];
 extern const uint8_t curtain[];
 
-extern const uint8_t wall1[];
-extern const uint8_t wall2[];
-extern const uint8_t wall3[];
-extern const uint8_t wall4[];
 
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
@@ -251,7 +248,6 @@ extern void check_swim();
 extern void check_fsm();
 
 extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color);
-extern void define_silla_udgs();
 
 extern void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color);
 

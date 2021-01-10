@@ -12,7 +12,6 @@ void  print_background_level6() {
                   ' ' );
   sp1_Invalidate(&full_screen);
   level = 6;
-  define_silla_udgs();
   sp1_TileEntry('C', udg_birdcage1);
   sp1_TileEntry('D', udg_birdcage2);
 

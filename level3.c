@@ -11,9 +11,6 @@ void  print_background_level3() {
                   ' ' );
   sp1_Invalidate(&full_screen);
 
-  // O R S T U V
-  define_silla_udgs();
-
   sp1_TileEntry('A', udg_fishtank1);
   sp1_TileEntry('B', udg_fishtank2);
 

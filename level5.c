@@ -29,8 +29,6 @@ void  print_background_level5() {
                   ' ' );
   sp1_Invalidate(&full_screen);
 
-  define_silla_udgs();
-
   sp1_TileEntry('L', udg_spidershelfleft);
   sp1_TileEntry('M', udg_spidershelfright);
 
