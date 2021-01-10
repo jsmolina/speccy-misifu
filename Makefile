@@ -174,4 +174,4 @@ extras:
 	@png2udg ./background/j_valla_rota.png
 
 loader:
-	bas2tap -a loader.bas
+	./bas2tap -a loader.bas
