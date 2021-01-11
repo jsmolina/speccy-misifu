@@ -96,8 +96,7 @@
 
 #define BIRD 244
 
-#define FRAME_CHANGE 3
-#define FRAME_MOST 4
+#define FRAME_CHANGE 2
 #define DOG1 0
 #define DOG2 48
 #define DOGFIGHTING1 96
@@ -135,7 +134,6 @@ extern char left;
 extern char right;
 extern uint8_t eaten_items;
 extern uint8_t frame;
-extern uint8_t frame_big;
 extern uint8_t x_malo;
 extern uint8_t bincat_appears;
 extern uint8_t enemy_apears;

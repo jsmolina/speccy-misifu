@@ -141,7 +141,7 @@ void level4_loop() {
     }
 
     //fishes_on_move();
-    if(frame_big == 1) { // 1/4 of times
+    if(frame == 2) { // 1/4 of times
         for(idx = 0; idx != 8; ++idx) {
             // move to the right until reached limits
             print_fish(idx, ' ');
@@ -173,7 +173,7 @@ void level4_loop() {
     }
 
     // cat checks
-    if(frame_big == 1 && misifu.y >= 1) {
+    if(frame == 2 && misifu.y >= 1) {
         --misifu.draw_additional;
 
         if(misifu.draw_additional == 20) {

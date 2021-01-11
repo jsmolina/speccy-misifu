@@ -334,7 +334,7 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
 static void increase_indexes_clothes(uint8_t idx) {
     repaint_clothes(10, floor_holes[0][idx], ' ');
     repaint_clothes(6, floor_holes[1][idx], ' ');
-    
+
     if (floor_holes[1][idx] == 0) {
         floor_holes[1][idx] = 28;
     }

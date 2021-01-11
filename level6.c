@@ -65,7 +65,7 @@ void level6_loop() {
             get_out_of_level_generic(WON_LEVEL); // yayy
             return;
         }
-        if (frame_big < FRAME_CHANGE) {
+        if (frame < FRAME_CHANGE) {
             windows[1].x = BIRD_OFFSET;
         } else {
             windows[1].x = BIRD_OFFSET2;

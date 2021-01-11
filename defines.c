@@ -79,7 +79,6 @@ uint8_t x, y;
 uint8_t paws = 0;
 uint8_t eaten_items;
 uint8_t frame;
-uint8_t frame_big;
 uint8_t x_malo;
 uint8_t bincat_appears = NONE;
 uint8_t enemy_apears = NONE;
@@ -410,7 +409,7 @@ void check_swim() {
     }
     if((in & IN_STICK_LEFT) && misifu.x > 0) {
         --misifu.x;
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = SWIM_LC1;
         } else {
             misifu.offset = SWIM_LC2;
@@ -423,7 +422,7 @@ void check_swim() {
         }
     } else if((in & IN_STICK_RIGHT) && misifu.x < 31) {
         ++misifu.x;
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = SWIM_RC1;
         } else {
             misifu.offset = SWIM_RC2;
@@ -448,11 +447,11 @@ void check_swim() {
 void dog_checks() {
 // time for doggy checks
     if (misifu.state != FIGHTING && enemy_apears == YES) {
-        if((frame_big & 1) == 0) {
+        if((frame & 1) == 0) {
             --x_malo;
         }
 
-        if (frame_big < FRAME_CHANGE) {
+        if ((x_malo & 1) == 0) {
             dog_offset = DOG1;
         } else  {
             dog_offset = DOG2;
@@ -479,7 +478,7 @@ void dog_checks() {
     }
     idx = 0;
     if (misifu.state == FIGHTING) {
-        if (frame_big < FRAME_CHANGE) {
+        if (frame < FRAME_CHANGE) {
             dog_offset = DOGFIGHTING1;
         } else {
             dog_offset = DOGFIGHTING2;
@@ -515,14 +514,14 @@ void check_fsm() {
     if (misifu.state == NONE && frame == 3 && level != 7) {
         misifu.offset = (int)BORED;
     } else if (misifu.state == WALKING_RIGHT) {
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = (int)RIGHTC1;
         } else  {
             misifu.offset = (int)RIGHTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == WALKING_LEFT) {
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = (int)LEFTC1;
         } else {
             misifu.offset = (int)LEFTC2;
@@ -749,7 +748,7 @@ void move_broom() {
  if(misifu.state == FIGHTING) {
     return;
  }
- if (frame_big < FRAME_CHANGE) {
+ if (frame < FRAME_CHANGE) {
      aux_object.offset = AUX_BROOM;
  } else {
      aux_object.offset = AUX_BROOM2;
