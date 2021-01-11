@@ -334,17 +334,21 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
 static void increase_indexes_clothes(uint8_t idx) {
     repaint_clothes(10, floor_holes[0][idx], ' ');
     repaint_clothes(6, floor_holes[1][idx], ' ');
+    
+    if (floor_holes[1][idx] == 0) {
+        floor_holes[1][idx] = 28;
+    }
+
+    if(floor_holes[0][idx] == 28) {
+        floor_holes[0][idx] = 0;
+    }
+
     // row1
     --floor_holes[1][idx];
     // row2
     ++floor_holes[0][idx];
-    if(floor_holes[0][idx] > 26) {
-        floor_holes[0][idx] = 0;
-    }
 
-    if (floor_holes[1][idx] < 2) {
-        floor_holes[1][idx] = 28;
-    }
+
     repaint_clothes(10, floor_holes[0][idx], UDG_CLOTHES11);
     repaint_clothes(6, floor_holes[1][idx], UDG_CLOTHES11);
 }

@@ -96,8 +96,8 @@
 
 #define BIRD 244
 
-#define FRAME_CHANGE 2
-#define FRAME_MOST 5
+#define FRAME_CHANGE 3
+#define FRAME_MOST 4
 #define DOG1 0
 #define DOG2 48
 #define DOGFIGHTING1 96
