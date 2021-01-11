@@ -5,77 +5,83 @@
 #include <stdlib.h>
 #include <sound.h> // for bit_beepfx()
 
-// level 3 hearts
-const uint8_t heart1[] = {0x0, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x0, 0x0};
-const uint8_t cupid11[] = {0x0, 0x0, 0x0, 0xe, 0xf, 0x1f, 0x3f, 0x7f};
-const uint8_t cupid12[] = {0x0, 0x0, 0x0, 0x7, 0x1f, 0xdf, 0xff, 0xff};
-const uint8_t cupid13[] = {0x0, 0x0, 0x0, 0x0, 0x80, 0xc0, 0x80, 0xd0};
-const uint8_t cupid21[] = {0x7f, 0x7f, 0x7e, 0x38, 0x1, 0x1, 0x1, 0x33};
-const uint8_t cupid22[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfc, 0xfc};
-const uint8_t cupid23[] = {0xd8, 0x9c, 0x8e, 0xee, 0xfe, 0xe6, 0x76, 0x1e};
-const uint8_t cupid31[] = {0x3f, 0x6e, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-const uint8_t cupid32[] = {0x78, 0x60, 0x60, 0xe0, 0xe0, 0x0, 0x0, 0x0};
-const uint8_t cupid33[] = {0x7e, 0xf8, 0xc0, 0x0, 0x0, 0x0, 0x0, 0x0};
+#define RED_GREEN_BRIGHT INK_RED | PAPER_GREEN | BRIGHT
 
 
-// use tiles
-const uint8_t catheaven1[] = {0x60, 0xc3, 0xc7, 0xef, 0x7e, 0x1e, 0x18, 0x1c};
-const uint8_t catheaven2[] = {0x4, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0xc, 0xe};
+#define UDG_HEART1 128
+#define UDG_HEART2 129
+#define UDG_CUPID11 130
+#define UDG_CUPID12 131
+#define UDG_CUPID13 132
+#define UDG_CUPID21 133
+#define UDG_CUPID22 134
+#define UDG_CUPID23 135
+#define UDG_CUPID31 136
+#define UDG_CUPID32 137
+#define UDG_CUPID33 138
+#define UDG_CATHEAVEN1 139
+#define UDG_CATHEAVEN2 140
 
+#define LAST_TILES_LEN  13
+#define LAST_TILES_BASE  128
+
+const uint8_t last[] = {
+    0x00, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x00, 0x00, // y:0, x:0 (128)
+    0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x00, // y:0, x:1 (129)
+    0x00, 0x00, 0x00, 0x0e, 0x0f, 0x1f, 0x3f, 0x7f, // y:0, x:2 (130)
+    0x00, 0x00, 0x00, 0x07, 0x1f, 0xdf, 0xff, 0xff, // y:0, x:3 (131)
+    0x00, 0x00, 0x00, 0x00, 0x80, 0xc0, 0x80, 0xd0, // y:0, x:4 (132)
+    0x7f, 0x7f, 0x7e, 0x38, 0x01, 0x01, 0x01, 0x33, // y:0, x:5 (133)
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfc, 0xfc, // y:0, x:6 (134)
+    0xd8, 0x9c, 0x8e, 0xee, 0xfe, 0xe6, 0x76, 0x1e, // y:0, x:7 (135)
+    0x3f, 0x6e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:8 (136)
+    0x78, 0x60, 0x60, 0xe0, 0xe0, 0x00, 0x00, 0x00, // y:0, x:9 (137)
+    0x7e, 0xf8, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:10 (138)
+    0x60, 0xc3, 0xc7, 0xef, 0x7e, 0x1e, 0x18, 0x1c, // y:0, x:11 (139)
+    0x04, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0x0c, 0x0e, // y:0, x:12 (140)
+};
 
 
 static void paint_cupid(uint8_t row, uint8_t col) {
-    sp1_PrintAt( row, col, INK_RED | PAPER_GREEN, 'C');
-    sp1_PrintAt( row, col + 1, INK_RED | PAPER_GREEN, 'D');
-    sp1_PrintAt( row, col + 2, INK_RED | PAPER_GREEN, 'E');
+    sp1_PrintAt( row, col, RED_GREEN_BRIGHT, UDG_CUPID11);
+    sp1_PrintAt( row, col + 1, RED_GREEN_BRIGHT, UDG_CUPID12);
+    sp1_PrintAt( row, col + 2, RED_GREEN_BRIGHT, UDG_CUPID13);
 
-    sp1_PrintAt( row + 1, col, INK_RED | PAPER_GREEN, 'F');
-    sp1_PrintAt( row + 1, col + 1, INK_RED | PAPER_GREEN, 'G');
-    sp1_PrintAt( row + 1, col + 2, INK_RED | PAPER_GREEN, 'H');
+    sp1_PrintAt( row + 1, col, RED_GREEN_BRIGHT, UDG_CUPID21);
+    sp1_PrintAt( row + 1, col + 1, RED_GREEN_BRIGHT, UDG_CUPID22);
+    sp1_PrintAt( row + 1, col + 2, RED_GREEN_BRIGHT, UDG_CUPID23);
 
-    sp1_PrintAt( row + 2, col, INK_RED | PAPER_GREEN, 'I');
-    sp1_PrintAt( row + 2, col + 1, INK_RED | PAPER_GREEN, 'J');
-    sp1_PrintAt( row + 2, col + 2, INK_RED | PAPER_GREEN, 'K');
+    sp1_PrintAt( row + 2, col, RED_GREEN_BRIGHT, UDG_CUPID31);
+    sp1_PrintAt( row + 2, col + 1, RED_GREEN_BRIGHT, UDG_CUPID32);
+    sp1_PrintAt( row + 2, col + 2, RED_GREEN_BRIGHT, UDG_CUPID33);
 }
 
 static void assign_holes() {
     if(frame == 4 || (random_value & 1) == 0 ) {
         // as it has 24 X positions
         floor_holes[frame][idx_j - 4] = 1;
-        sp1_PrintAt( idx, idx_j, INK_RED | PAPER_GREEN, 'B');
+        sp1_PrintAt( idx, idx_j, RED_GREEN_BRIGHT, UDG_HEART2);
     } else {
         floor_holes[frame][idx_j - 4] = 0;
-        sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN, 'A');
+        sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN | BRIGHT, UDG_HEART1);
     }
 }
 
 void print_background_level_last() {
   level = 10;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  PAPER_GREEN,
+                  PAPER_GREEN | BRIGHT,
                   ' ' );
   zx_border(INK_BLACK);
 
   sp1_Invalidate(&full_screen);
 
-  sp1_TileEntry('A', heart1);
-  sp1_TileEntry('B', heart2);
+  uint8_t *pt = last;
 
-  sp1_TileEntry('C', cupid11);
-  sp1_TileEntry('D', cupid12);
-  sp1_TileEntry('E', cupid13);
-
-  sp1_TileEntry('F', cupid21);
-  sp1_TileEntry('G', cupid22);
-  sp1_TileEntry('H', cupid23);
-
-  sp1_TileEntry('I', cupid31);
-  sp1_TileEntry('J', cupid32);
-  sp1_TileEntry('K', cupid33);
-
-  sp1_TileEntry('L', catheaven1);
-  sp1_TileEntry('M', catheaven2);
-
+  for (idx = 0; idx < LAST_TILES_LEN; idx++, pt += 8) {
+      sp1_TileEntry(LAST_TILES_BASE + idx, pt);
+  }
+  
   // vertical cupids
   for(idx=0; idx < 23; idx=idx+3) {
      paint_cupid(idx, 0);
@@ -93,7 +99,7 @@ void print_background_level_last() {
       frame += 4;
   }
 
-    sp1_PrintAt( 23, 6, INK_RED | PAPER_GREEN, 'B');
+    sp1_PrintAt( 23, 6, RED_GREEN_BRIGHT, UDG_HEART2);
   // frame = floor
   frame = 4;
 
@@ -163,7 +169,7 @@ void detect_fall_in_hearts() {
         }
         misifu.state = CAT_ON_HIGH;
         misifu.draw_additional = CAT_IN_ROPE;
-        misifu.offset = (int)sprite_protar1+BORED;
+        misifu.offset = BORED;
     }
 }
 
@@ -180,8 +186,8 @@ static inline uint8_t rand_cat_to_move() {
 }
 
 static void print_heavencat(uint8_t to_print1, uint8_t to_print2) {
-    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x, PAPER_GREEN, to_print1);
-    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + 1, PAPER_GREEN, to_print2);
+    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x, PAPER_GREEN | BRIGHT, to_print1);
+    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + 1, PAPER_GREEN | BRIGHT, to_print2);
 }
 
 void throw_cupid_arrow() {
@@ -215,7 +221,7 @@ void throw_cupid_arrow() {
             // broke the heart :(
             idx = aux_object.x;
             floor_holes[idx_j][idx - 4] = 0;
-            sp1_PrintAtInv( aux_object.y, idx, INK_BLACK | PAPER_GREEN, 'A');
+            sp1_PrintAtInv( aux_object.y, idx, INK_BLACK | PAPER_GREEN | BRIGHT, UDG_HEART1);
         }
     } else {
         // out of screen
@@ -236,7 +242,7 @@ void throw_cupid_arrow() {
             // if reaching right, return left
             windows[idx_j].x = 5;
         }
-        print_heavencat('L', 'M');
+        print_heavencat(UDG_CATHEAVEN1, UDG_CATHEAVEN2);
     }
 
     // detect collision with misifu

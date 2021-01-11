@@ -57,7 +57,7 @@ const uint8_t rooms[] = {
     0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01, // y:0, x:2 (130)
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, // y:0, x:3 (131)
     0xc3, 0xff, 0xff, 0x3c, 0xc3, 0xff, 0xff, 0x3c, // y:0, x:4 (132)
-    0xff, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:5 (133)
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x0c, // y:0, x:5 (133)
     0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70, 0x70, // y:0, x:6 (134)
     0x77, 0x57, 0x77, 0x70, 0x70, 0x70, 0x70, 0x70, // y:0, x:7 (135)
     0xfe, 0xff, 0xff, 0x00, 0x07, 0x07, 0x07, 0x07, // y:0, x:8 (136)
@@ -301,26 +301,28 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
     sp1_PrintAt( 18 + idx, 29 + idx,  bright_black_paper, UDG_WALL3);
   }
 
-  // draw vertical wall
-  for (idx = 6; idx != 18; ++idx) {
-    sp1_PrintAt( idx, 3, bright_black_paper, UDG_WALL1);
-    sp1_PrintAt( idx, 29,  bright_black_paper, UDG_WALL1);
-  }
-
   // draw horizontal wall
   for (idx = 3; idx != 29; ++idx) {
     sp1_PrintAt( 5, idx, bright_black_paper, UDG_WALL2);
     sp1_PrintAt( 17, idx, bright_black_paper, UDG_WALL2);
   }
 
+  // draw vertical wall
+  for (idx = 6; idx != 18; ++idx) {
+    sp1_PrintAtInv( idx, 3, bright_black_paper, UDG_WALL1);
+    sp1_PrintAt( idx, 29,  bright_black_paper, UDG_WALL1);
+  }
+
+  bright_black_paper = ink_color | paper_color | BRIGHT;
+
   for (idx = initial_window; idx != initial_window + 8; ++idx) {
-     sp1_PrintAt( 7, idx, ink_color | paper_color, UDG_Q_BARRA_CORTINA);
+     sp1_PrintAt( 7, idx, bright_black_paper, UDG_Q_BARRA_CORTINA);
   }
 
   for (idx = 8; idx != 11; ++idx) {
 
     for (idx_j = 0; idx_j != 2; ++idx_j) {
-        sp1_PrintAt( idx, initial_window + idx_j, ink_color | paper_color, UDG_CURTAIN);
+        sp1_PrintAt( idx, initial_window + idx_j, bright_black_paper, UDG_CURTAIN);
     }
 
     // x=8, 9 and y=22-25
@@ -330,8 +332,8 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
         }
     }
 
-    sp1_PrintAt( idx, initial_window + 6, ink_color | paper_color, UDG_CURTAIN);
-    sp1_PrintAt( idx, initial_window + 7, ink_color | paper_color, UDG_CURTAIN);
+    sp1_PrintAt( idx, initial_window + 6, bright_black_paper, UDG_CURTAIN);
+    sp1_PrintAt( idx, initial_window + 7, bright_black_paper, UDG_CURTAIN);
   }
 
 }
@@ -391,6 +393,7 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+        print_background_level_last();
         in_wait_nokey();
         paws = 1;
     }
@@ -596,23 +599,24 @@ void check_fsm() {
 
 
 void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
-    sp1_PrintAt(row + 1, col, ink_color |paper_color, UDG_MESASIDE);
-    sp1_PrintAt(row + 1, col + 1, ink_color |paper_color, UDG_MESATOP);
-    sp1_PrintAt(row + 1, col + 2,  ink_color |paper_color, UDG_MESASIDE);
+    ink_color = ink_color | paper_color | BRIGHT;
+    sp1_PrintAt(row + 1, col, ink_color, UDG_MESASIDE);
+    sp1_PrintAt(row + 1, col + 1, ink_color, UDG_MESATOP);
+    sp1_PrintAt(row + 1, col + 2,  ink_color, UDG_MESASIDE);
 
-    sp1_PrintAt(row + 2, col + 1,  ink_color |paper_color, UDG_MESAPATA);
-    sp1_PrintAt(row + 3, col + 1,  ink_color |paper_color, UDG_Q_MESABASE);
+    sp1_PrintAt(row + 2, col + 1,  ink_color, UDG_MESAPATA);
+    sp1_PrintAt(row + 3, col + 1,  ink_color, UDG_Q_MESABASE);
 }
 
 void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
-    sp1_PrintAt( row, col,  ink_color | paper_color, UDG_SILLAL); // L
-    sp1_PrintAt( row + 1, col,  ink_color | paper_color, UDG_SILLAL); // L
-    sp1_PrintAt( row + 2, col,  ink_color | paper_color, UDG_SILLALM); // LM
-    sp1_PrintAt( row + 2, col + 1,  ink_color | paper_color, UDG_SILLARM); // RM
-    sp1_PrintAt( row + 3, col,  ink_color | paper_color, UDG_SILLAL); // L
-    sp1_PrintAt( row + 3, col + 1,  ink_color | paper_color, UDG_SILLAR); // R
+    ink_color = ink_color | paper_color | BRIGHT;
 
-
+    sp1_PrintAt( row, col,  ink_color, UDG_SILLAL); // L
+    sp1_PrintAt( row + 1, col,  ink_color, UDG_SILLAL); // L
+    sp1_PrintAt( row + 2, col,  ink_color, UDG_SILLALM); // LM
+    sp1_PrintAt( row + 2, col + 1,  ink_color, UDG_SILLARM); // RM
+    sp1_PrintAt( row + 3, col,  ink_color, UDG_SILLAL); // L
+    sp1_PrintAt( row + 3, col + 1,  ink_color, UDG_SILLAR); // R
 }
 
 void detect_fall_in_chair(uint8_t x_chair) {

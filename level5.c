@@ -3,6 +3,8 @@
 #include "defines.h"
 #include "level1.h"
 
+#define BLACK_MAGENTA_BRIGHT 0x58
+
 const uint8_t udg_spiderplant11[] = {0x3, 0x33, 0xfe, 0x3c, 0xce, 0xfc, 0xce, 0x3d};
 const uint8_t udg_spiderplant21[] = {0x3, 0x7, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3};
 const uint8_t udg_spidershelfleft[] = {0xff, 0xfc, 0xf0, 0xc0, 0xc0, 0xf0, 0xfc, 0xff};
@@ -12,21 +14,21 @@ const uint8_t udg_spiderbook[] = {0xff, 0x0, 0xfe, 0x86, 0xfe, 0xfc, 0x0, 0xff};
 
 static void paint_plant(uint8_t row, uint8_t col, uint8_t clean) {
     if(clean == CLEAN) {
-        sp1_PrintAtInv( row, col, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv( row, col + 1, INK_BLACK | PAPER_MAGENTA, ' ');
-        sp1_PrintAtInv( row + 1, col, INK_BLACK | PAPER_MAGENTA, ' ');
+        sp1_PrintAtInv( row, col, BLACK_MAGENTA_BRIGHT, ' ');
+        sp1_PrintAtInv( row, col + 1, BLACK_MAGENTA_BRIGHT, ' ');
+        sp1_PrintAtInv( row + 1, col, BLACK_MAGENTA_BRIGHT, ' ');
     } else {
-        sp1_PrintAt( row, col, INK_BLACK | PAPER_MAGENTA, 'W');
-        sp1_PrintAt( row, col + 1, INK_BLACK | PAPER_MAGENTA, 'W');
-        sp1_PrintAt( row + 1, col, INK_BLACK | PAPER_MAGENTA, 'Y');
+        sp1_PrintAt( row, col, BLACK_MAGENTA_BRIGHT, 'W');
+        sp1_PrintAt( row, col + 1, BLACK_MAGENTA_BRIGHT, 'W');
+        sp1_PrintAt( row + 1, col, BLACK_MAGENTA_BRIGHT, 'Y');
     }
 }
 
 void  print_background_level5() {
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_MAGENTA,
-                  ' ' );
+                  BLACK_MAGENTA_BRIGHT,
+                  ' ');
   sp1_Invalidate(&full_screen);
 
   sp1_TileEntry('L', udg_spidershelfleft);
@@ -47,19 +49,19 @@ void  print_background_level5() {
   level_x_min = 1;
 
   for(idx_j = 5; idx_j != 20; ++idx_j ) {
-     sp1_PrintAt(idx_j, 18,  INK_BLACK | PAPER_MAGENTA, 'L');
+     sp1_PrintAt(idx_j, 18,  BLACK_MAGENTA_BRIGHT, 'L');
 
      for(idx = 19; idx != 29; ++idx) {
         random_value = rand();
         if (random_value > 150) {
-            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'B');
+            sp1_PrintAt(idx_j, idx,  BLACK_MAGENTA_BRIGHT, 'B');
         } else {
-            sp1_PrintAt(idx_j, idx,  INK_BLACK | PAPER_MAGENTA, 'E');
+            sp1_PrintAt(idx_j, idx,  BLACK_MAGENTA_BRIGHT, 'E');
         }
 
      }
 
-     sp1_PrintAt(idx_j, 29,  INK_BLACK | PAPER_MAGENTA, 'M');
+     sp1_PrintAt(idx_j, 29,  BLACK_MAGENTA_BRIGHT, 'M');
   }
 
   paint_plant(3, 20, 0);

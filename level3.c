@@ -7,7 +7,7 @@ const uint8_t udg_fishtank2[] = {0xfc, 0xce, 0xff, 0xff, 0x93, 0xfe, 0xf8, 0xe0}
 void  print_background_level3() {
   level = 3;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_MAGENTA,
+                  INK_BLACK | PAPER_MAGENTA | BRIGHT,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
@@ -22,8 +22,8 @@ void  print_background_level3() {
   // 17,22
   paint_table(17, 22, PAPER_MAGENTA, INK_CYAN);
   // fishtank
-  sp1_PrintAt( 17, 22,  INK_CYAN | PAPER_MAGENTA, 'A');
-  sp1_PrintAt( 17, 23,  INK_CYAN | PAPER_MAGENTA, 'B');
+  sp1_PrintAt( 17, 22,  INK_CYAN | PAPER_MAGENTA | BRIGHT, 'A');
+  sp1_PrintAt( 17, 23,  INK_CYAN | PAPER_MAGENTA | BRIGHT, 'B');
 
   reset_misifu_position();
 
@@ -39,13 +39,12 @@ void  print_background_level3() {
 inline static void check_chair_and_fishtank_level3() {
 
     if(misifu.state == FALLING) {
-        if(misifu.x == 9 && misifu.y == 17) {
+        if(misifu.x == 10 && misifu.y == 17) {
             // chair
             misifu.state = CAT_ON_HIGH;
             misifu.in_bin = 1;
             misifu.offset = BORED;
         } else if(misifu.y == 16 && (misifu.x == 21 || misifu.x == 22)) {
-            // table todo fishtank!
             misifu.state = CAT_ON_HIGH;
             misifu.offset = BORED;
             misifu.in_bin = 2;
@@ -58,7 +57,7 @@ inline static void check_chair_and_fishtank_level3() {
         }
     }
 
-    if(misifu.in_bin != NONE && misifu.x != 9  && misifu.x != 21 && misifu.x != 22) {
+    if(misifu.in_bin != NONE && misifu.x != 10  && misifu.x != 21 && misifu.x != 22) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
