@@ -53,6 +53,8 @@
 
 #define MAX_COORDS_LADRILLOS 45
 #define TOTAL_COORDS_SUELO 15
+#define BACKGROUND_LVL1_DEFAULT 0x58   // INK BLACK, PAPER MAGENTA, BRIGHT
+#define BACKGROUND_LVL1_CYAN 0x68
 
 uint8_t tiles[] = {
 0x00, 0x01, 0x01, 0x7e, 0x00, 0x10, 0x10, 0xe7, // y:0, x:0 (128)
@@ -136,7 +138,7 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
   for (x = 0; x != 2; ++x) {
       sp1_PrintAtInv(windows[opened_window].y + x,
                      windows[opened_window].x,
-                     PAPER_MAGENTA,
+                     BACKGROUND_LVL1_DEFAULT,
                      UDG_VOLUMEN);
   }
 
@@ -153,7 +155,7 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
 }
 
 void print_lives() {
-    sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK, 48 + lives);
+    sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + lives);
     repaint_lives = 0;
 }
 
@@ -179,19 +181,19 @@ void paint_bricks(uint8_t clean) {
     if((coords_lad[x] & 0x0F) == 15) {
         continue;
     }
-    sp1_PrintAtInv(idx_j, idx, INK_BLACK | PAPER_MAGENTA, UDG_JLADRILLOS);
+    sp1_PrintAtInv(idx_j, idx, BACKGROUND_LVL1_DEFAULT, UDG_JLADRILLOS);
   }
 }
 
 void  print_background_lvl1() {
-  uint16_t color = INK_BLACK | PAPER_MAGENTA;
   uint8_t *pt = tiles;
 
   level = 1;
   opened_window = NONE;
   zx_border(INK_BLACK);
 
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE, color, ' ' );
+  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  BACKGROUND_LVL1_DEFAULT, ' ' );
 
   sp1_Invalidate(&full_screen);
 
@@ -209,11 +211,11 @@ void  print_background_lvl1() {
       } else {
         idx_j = UDG_VALLA3;
       }
-      sp1_PrintAt(15, x,  PAPER_CYAN, idx_j);
+      sp1_PrintAt(15, x,  PAPER_CYAN | BRIGHT, idx_j);
 
       for (idx_j=16; idx_j!=21; ++idx_j)
       {
-          sp1_PrintAt( idx_j, x,  PAPER_CYAN, UDG_VALLA2);
+          sp1_PrintAt( idx_j, x,  PAPER_CYAN | BRIGHT, UDG_VALLA2);
       }
 
       // this func uses x and modifies frame (ugly thing, saving memory...)
@@ -226,29 +228,29 @@ void  print_background_lvl1() {
              idx_j = 21;
           }
           //
-          sp1_PrintAtInv(idx_j, x, INK_BLACK | PAPER_MAGENTA, UDG_CUBODOWN1 + frame);
-          sp1_PrintAtInv(idx_j - 1, x, INK_BLACK | PAPER_MAGENTA, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 2, x, INK_BLACK | PAPER_MAGENTA, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 3, x, INK_BLACK | PAPER_MAGENTA, UDG_CUBOTOP1 + frame);
+          sp1_PrintAtInv(idx_j, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBODOWN1 + frame);
+          sp1_PrintAtInv(idx_j - 1, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 2, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 3, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOTOP1 + frame);
       }
 
   }
-  sp1_PrintAtInv(17, 3, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(18, 13, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(20, 18, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(16, 23, INK_BLACK | PAPER_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(17, 3, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(18, 13, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(20, 18, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(16, 23, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
 
   print_lives();
 
-  sp1_PrintAt( 17, 29, INK_BLACK | PAPER_CYAN, UDG_C);
-  sp1_PrintAt( 17, 30,  INK_BLACK | PAPER_CYAN, UDG_A);
-  sp1_PrintAt( 17, 31,  INK_BLACK | PAPER_CYAN, UDG_T);
+  sp1_PrintAt( 17, 29, BACKGROUND_LVL1_CYAN, UDG_C);
+  sp1_PrintAt( 17, 30,  BACKGROUND_LVL1_CYAN, UDG_A);
+  sp1_PrintAt( 17, 31,  BACKGROUND_LVL1_CYAN, UDG_T);
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
-    sp1_PrintAt(9, idx, color, UDG_ROPE);
-    sp1_PrintAt(5, idx, color, UDG_ROPE);
-    sp1_PrintAt(1, idx, color, UDG_ROPE);
+    sp1_PrintAt(9, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    sp1_PrintAt(5, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    sp1_PrintAt(1, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
   }
 
   // paint bricks (decompressing!)
@@ -265,7 +267,7 @@ void  print_background_lvl1() {
       idx_j = ((coords_suelo[x] & 0xF0) >> 4);
 
       idx += (coords_suelo[x] & 0x0F);
-      sp1_PrintAt(idx_j + 21, idx, color, UDG_QUESO + frame);
+      sp1_PrintAt(idx_j + 21, idx,  BACKGROUND_LVL1_DEFAULT, UDG_QUESO + frame);
   }
 
 
@@ -281,7 +283,7 @@ void  print_background_lvl1() {
         idx_j = idx_j + 4;
       }
 
-      paint_window(PAPER_CYAN, ' ');
+      paint_window(PAPER_CYAN | BRIGHT, ' ');
    }
    opened_window = UNDEF;
 
@@ -309,10 +311,10 @@ static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
     uint8_t color;
     if(clean != ' ') {
         x = 1;
-        color = INK_WHITE | PAPER_MAGENTA;
+        color = INK_WHITE | PAPER_MAGENTA | BRIGHT;
     } else {
         x = 0;
-        color = INK_BLACK | PAPER_MAGENTA;
+        color = BACKGROUND_LVL1_DEFAULT;
     }
     sp1_PrintAtInv(row, col, color, clean);
     clean += x;
@@ -414,7 +416,7 @@ inline void anim_windows() {
     }
     // end of windows
     if (opened_window_frames == 1) {
-        paint_window(PAPER_CYAN, ' ');
+        paint_window(PAPER_CYAN | BRIGHT, ' ');
         opened_window = UNDEF;
         opened_window_frames = NONE;
         aux_object.offset = AUX_PHONE;

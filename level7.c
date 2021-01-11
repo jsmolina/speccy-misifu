@@ -3,6 +3,7 @@
 #include <input.h>
 #include "defines.h"
 #include "level1.h"
+#define WHITE_MAGENTA_BRIGHT INK_WHITE | PAPER_MAGENTA | BRIGHT
 
 const uint8_t udg_dog1[] = {0x0, 0xf, 0x1f, 0x3f, 0x7f, 0x8f, 0x3e, 0x60};
 const uint8_t udg_dog1m[] = {0x0, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0, 0x0};
@@ -13,10 +14,10 @@ const uint8_t udg_dogmilk[] = {0x3c, 0x66, 0xc3, 0x81, 0xc3, 0xff, 0x7e, 0x3c};
 
 void print_a_dog(uint8_t row, uint8_t col) {
     // sp1_PrintAt(uint16_t row,uint16_t col
-    sp1_PrintAt(row, col, INK_WHITE | PAPER_MAGENTA, 'C');
-    sp1_PrintAt(row, col + 1, INK_WHITE | PAPER_MAGENTA, 'D');
-    sp1_PrintAt(row, col + 2, INK_WHITE | PAPER_MAGENTA, 'E');
-    sp1_PrintAt(row, col + 4, INK_BLUE | PAPER_MAGENTA, 'O');
+    sp1_PrintAt(row, col, WHITE_MAGENTA_BRIGHT, 'C');
+    sp1_PrintAt(row, col + 1, WHITE_MAGENTA_BRIGHT, 'D');
+    sp1_PrintAt(row, col + 2, WHITE_MAGENTA_BRIGHT, 'E');
+    sp1_PrintAt(row, col + 4, INK_BLUE | PAPER_MAGENTA | BRIGHT, 'O');
 }
 
 void assign_dogs(uint8_t y, uint8_t x) {
@@ -26,7 +27,7 @@ void assign_dogs(uint8_t y, uint8_t x) {
 
 void  print_background_level7() {
      sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                      PAPER_MAGENTA,
+                      PAPER_MAGENTA | BRIGHT,
                       ' ' );
      level = 7;
 
@@ -58,7 +59,7 @@ void  print_background_level7() {
 static inline void drink_milk_or_got_awaken(uint8_t index) {
     if(misifu.x > (windows[index].x + 1)) {
         if(windows[index].has_item != 'Z' && (in & IN_STICK_FIRE)) {
-            sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA, 'O');
+            sp1_PrintAtInv(windows[index].y, windows[index].x + 4, INK_GREEN | PAPER_MAGENTA | BRIGHT, 'O');
             windows[index].has_item = 'Z';
             --eaten_items;
             bit_beepfx_di_fastcall(BEEPFX_EAT);

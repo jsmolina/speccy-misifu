@@ -4,13 +4,14 @@
 #include "level1.h"
 #include "int.h"
 
+#define BLACK_CYAN_BRIGHT 0x68
 const uint8_t udg_watertop[] = {0xff, 0xef, 0xc5, 0x80, 0x0, 0x0, 0x0, 0x0};
 const uint8_t udg_fish[] = {0x0, 0x9c, 0xbe, 0xfd, 0xff, 0xbf, 0x9e, 0x0};
 const uint8_t udg_fishL[] = {0x0, 0x39, 0x7d, 0xbf, 0xff, 0xfd, 0x79, 0x0};
 const uint8_t udg_eel[] = {0x0, 0x0, 0x0, 0x48, 0x36, 0x1, 0x0, 0x0};
 
 static void print_eel(uint8_t y, uint8_t x, uint8_t toprint) {
-    sp1_PrintAtInv(y, x,  INK_BLACK | PAPER_CYAN, toprint);
+    sp1_PrintAtInv(y, x,  BLACK_CYAN_BRIGHT, toprint);
 }
 
 static void assign_eels_pos(uint8_t y, uint8_t x) {
@@ -43,7 +44,7 @@ void  print_background_level4() {
   // todo cat should not take too much or get out of breath... level timer
   // swimming state always here
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  PAPER_CYAN,
+                  BLACK_CYAN_BRIGHT,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
@@ -55,7 +56,7 @@ void  print_background_level4() {
 
   // paint watertop (once)
   for(idx = 0; idx != 32; ++idx) {
-    sp1_PrintAt( 0, idx,  INK_BLACK | PAPER_CYAN, 'W');
+    sp1_PrintAt( 0, idx,  BLACK_CYAN_BRIGHT, 'W');
   }
 
   // udgxs, udgys are fishes. Mod is slow, but helps reduce code and paint might be slow.
@@ -66,7 +67,7 @@ void  print_background_level4() {
         windows[idx].has_item = FISH_RIGHT;
 
          // row, col
-        sp1_PrintAt( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, 'A');
+        sp1_PrintAt( windows[idx].y, windows[idx].x,  BLACK_CYAN_BRIGHT, 'A');
         idx_j += 2; // fishes are 3, 5, 7, 9, 11, 13, 15, 17
   }
 
@@ -105,7 +106,7 @@ static void print_fish(uint8_t idx, uint8_t to_print) {
     if(to_print == 'Z') {
         return;
     }
-    sp1_PrintAtInv( windows[idx].y, windows[idx].x,  INK_BLACK | PAPER_CYAN, to_print);
+    sp1_PrintAtInv( windows[idx].y, windows[idx].x,  BLACK_CYAN_BRIGHT, to_print);
 }
 
 void level4_loop() {
@@ -116,7 +117,7 @@ void level4_loop() {
             windows[idx].has_item = 'Z';  // eaten fish
             repaint_lives = 1;
             // delete collided fish
-            sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_CYAN, ' ');
+            sp1_PrintAtInv(windows[idx].y, windows[idx].x, BLACK_CYAN_BRIGHT, ' ');
             windows[idx].x = 1;
             windows[idx].y = 23;
             sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'A');

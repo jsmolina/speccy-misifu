@@ -7,9 +7,10 @@ compile:
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
+	appmake +zx -b misifu_BANK_4.bin --org 49152 --noloader --blockname bank4 -o bank4.tap
 	touch misifu.tap
 	rm misifu.tap
-	cat loader.tap screen.tap code.tap bank6.tap > misifu.tap
+	cat loader.tap screen.tap code.tap bank6.tap bank4.tap > misifu.tap
 	echo "Done!"
 
 develop:
@@ -20,9 +21,10 @@ develop:
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
+	appmake +zx -b misifu_BANK_4.bin --org 49152 --noloader --blockname bank4 -o bank4.tap
 	touch misifu.tap
 	rm misifu.tap
-	cat loader.tap screen.tap code.tap bank6.tap > misifu.tap
+	cat loader.tap screen.tap code.tap bank6.tap bank4.tap > misifu.tap
 	echo "Done"
 
 sprites: prota dogsprites bincat clothes auxiliar protaswim
@@ -170,3 +172,6 @@ extras:
 	@png2udg ./background/j_ladrillos.png
 	@png2udg ./background/j_piedras.png
 	@png2udg ./background/j_valla_rota.png
+
+loader:
+	./bas2tap -a loader.bas

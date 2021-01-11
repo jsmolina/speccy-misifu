@@ -2,17 +2,17 @@
 #include <sound.h>
 #include "defines.h"
 #include "level1.h"
+#define GREEN_RED_BRIGHT INK_GREEN | PAPER_RED | BRIGHT
 
 const uint8_t udg_birdcage1[] = {0xf, 0xf0, 0xc0, 0xff, 0xc0, 0xf0, 0xff, 0xf};
 const uint8_t udg_birdcage2[] = {0xf0, 0xf, 0x3, 0xff, 0x3, 0xf, 0xff, 0xf0};
 
 void  print_background_level6() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  PAPER_RED,
+                  PAPER_RED | BRIGHT,
                   ' ' );
   sp1_Invalidate(&full_screen);
   level = 6;
-  define_silla_udgs();
   sp1_TileEntry('C', udg_birdcage1);
   sp1_TileEntry('D', udg_birdcage2);
 
@@ -24,8 +24,8 @@ void  print_background_level6() {
   paint_chair(17, 22, PAPER_RED, INK_GREEN);
   paint_table(17, 26, PAPER_RED, INK_GREEN);
   // 18, 27
-  sp1_PrintAt(17, 26, INK_GREEN | PAPER_RED, 'C');
-  sp1_PrintAt(17, 27, INK_GREEN | PAPER_RED, 'D');
+  sp1_PrintAt(17, 26, GREEN_RED_BRIGHT, 'C');
+  sp1_PrintAt(17, 27, GREEN_RED_BRIGHT, 'D');
   reset_misifu_position();
   // cage is in 25 position
   windows[0].x = 25;
@@ -43,11 +43,11 @@ void level6_loop() {
     if(misifu.y == 16 && abs(misifu.x - windows[0].x) < 2 && windows[0].has_item == BIRD) {
         windows[0].has_item = RIGHT;
         misifu.state = FALLING;
-        sp1_PrintAtInv(17, 26, INK_GREEN | PAPER_RED, ' ');
-        sp1_PrintAtInv(17, 27, INK_GREEN | PAPER_RED, ' ');
+        sp1_PrintAtInv(17, 26, GREEN_RED_BRIGHT, ' ');
+        sp1_PrintAtInv(17, 27, GREEN_RED_BRIGHT, ' ');
         bit_beepfx_di_fastcall(BEEPFX_DROP_1);
-        sp1_PrintAt(FLOOR_Y, 26, INK_GREEN | PAPER_RED, 'C');
-        sp1_PrintAt(FLOOR_Y, 27, INK_GREEN | PAPER_RED, 'D');
+        sp1_PrintAt(FLOOR_Y, 26, GREEN_RED_BRIGHT, 'C');
+        sp1_PrintAt(FLOOR_Y, 27, GREEN_RED_BRIGHT, 'D');
     }
 
     if(windows[0].has_item != BIRD) {

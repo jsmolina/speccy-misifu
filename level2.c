@@ -36,7 +36,7 @@ void detect_fall_in_hole_or_curtain() {
             windows[idx].has_item = 'Z'; // mark as already eaten
             // print then the mouse in the up side
             repaint_lives = 1;
-            sp1_PrintAtInv(1, 1 + eaten_items, INK_BLACK | PAPER_GREEN, 'B');
+            sp1_PrintAtInv(1, 1 + eaten_items, BACKGROUND_GREEN, 'B');
             bit_beepfx_di_fastcall(BEEPFX_SCORE);
             --eaten_items;
         }
@@ -89,7 +89,7 @@ void level2_loop() {
 
         for(idx_j = 0; idx_j != 8; ++idx_j) {
             idx = floor_holes[0][idx_j];
-            sp1_PrintAtInv(windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, windows[idx].has_item);
+            sp1_PrintAtInv(windows[idx].y, windows[idx].x, BACKGROUND_GREEN, windows[idx].has_item);
         }
     }
 
@@ -131,7 +131,7 @@ void  print_background_level2() {
   level = 2;
   first_keypress = 0;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_RED,
+                  INK_BLACK | PAPER_RED | BRIGHT,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
@@ -140,8 +140,6 @@ void  print_background_level2() {
   sp1_TileEntry('Z', hole_empty);
   sp1_TileEntry('D', queso_textura);
   sp1_TileEntry('E', queso_diagonal);
-
-  define_silla_udgs();
 
   // in this level it is used to define holes with mouse
   floor_holes[0][0] = 5;
@@ -176,27 +174,27 @@ void  print_background_level2() {
   for (idx = 3; idx != 20; ++idx) {
 
     for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
-        sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN, 'N');
+        sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN | BRIGHT, ' ');
     }
   }
 
   // paint diagonal
   idx = 3;
   for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
-      sp1_PrintAt( idx_j - 1, idx, PAPER_RED | INK_GREEN, 'E');
+      sp1_PrintAt( idx_j - 1, idx, PAPER_RED | INK_GREEN | BRIGHT, 'E');
        ++idx;
   }
 
 
   // paint holes
   for (idx = 0; idx != 14; ++idx) {
-    sp1_PrintAt( windows[idx].y, windows[idx].x, INK_BLACK | PAPER_GREEN, 'A');
-    sp1_PrintAt( windows[idx].y, windows[idx].x - 1, INK_BLACK | PAPER_GREEN, 'D');
+    sp1_PrintAt( windows[idx].y, windows[idx].x, BACKGROUND_GREEN, 'A');
+    sp1_PrintAt( windows[idx].y, windows[idx].x - 1, BACKGROUND_GREEN, 'D');
   }
 
   // paint the chair
-  paint_chair(17, 22, PAPER_RED, INK_GREEN);
-  paint_table(17, 26, PAPER_RED, INK_GREEN);
+  paint_chair(17, 22, PAPER_RED, INK_GREEN | BRIGHT);
+  paint_table(17, 26, PAPER_RED, INK_GREEN | BRIGHT);
 
   eaten_items = 4;
 
