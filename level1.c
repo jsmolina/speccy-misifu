@@ -294,11 +294,19 @@ void  print_background_lvl1() {
    level_x_max = 28;
    level_x_min = 1;
 
-   // floor holes initialize, save memory ftw
-   floor_holes[0][0] = 1;  // row1clothes
-   floor_holes[0][1] = 18; // row1clothes
-   floor_holes[1][0] = 1;  // row2clothes
-   floor_holes[1][1] = 18; // row2clothes
+   // row 1 and row 2 of clothes
+   for(idx_j = 0; idx_j != 2; ++idx_j) {
+       for(idx = 0; idx != 5; ++idx) { // vest, boots, panties
+           floor_holes[idx_j][idx] = idx + 1; // 0,1,2,3
+           floor_holes[idx_j][idx + 5] = idx + 18; // 4,5,6,7
+       }
+   }
+   floor_holes[2][0] = UDG_CLOTHES11;
+   floor_holes[2][1] = UDG_CLOTHES12;
+   floor_holes[2][2] = UDG_BOOT;
+   floor_holes[2][3] = UDG_BOOT;
+   floor_holes[2][4] = UDG_PANTIES;
+
    aux_object.offset = AUX_PHONE;
    // make disapear for sure
    sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1, 16, 33, 0, 0);
@@ -306,51 +314,60 @@ void  print_background_lvl1() {
    sp1_UpdateNow();
 }
 
-
-static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
+void paint_clothes(uint8_t clean) {
+    uint8_t udg_topaint = ' ';
     uint8_t color;
-    if(clean != ' ') {
-        x = 1;
-        color = INK_WHITE | PAPER_MAGENTA | BRIGHT;
-    } else {
-        x = 0;
+    idx_j = 0;
+    if(clean == 1) {
         color = BACKGROUND_LVL1_DEFAULT;
+    } else {
+        color = INK_WHITE | PAPER_MAGENTA | BRIGHT;
     }
-    sp1_PrintAtInv(row, col, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row, col + 1, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row + 1, col, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row + 1, col + 1, color, clean);
+    for(idx = 0; idx!= 10; ++idx) { // indexes go from 0 to 9
+        if (clean == 0) {
+            if (floor_holes[0][idx] == 0) {
+                floor_holes[0][idx] = 30;
+            }
 
-    clean += x;
-    sp1_PrintAtInv(row, col + 3, color, clean);
-    sp1_PrintAtInv(row, col + 4, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row, col + 5, color, clean);
+            if (floor_holes[1][idx] > 29) {
+                floor_holes[1][idx] = 0;
+            }
+
+            // row1
+            --floor_holes[0][idx];
+            ++floor_holes[1][idx];
+        }
+
+        points = 0;
+        for (x = 6; x != 14; x += 4, ++points) {
+            if(clean == 0) {
+                udg_topaint = floor_holes[2][idx_j];
+            }
+            sp1_PrintAtInv(x, floor_holes[points][idx], color, udg_topaint);
+
+            if(floor_holes[2][idx_j] == UDG_CLOTHES11) {
+                if(clean == 0) {
+                    udg_topaint = UDG_CLOTHES21;
+                }
+                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+            } else if(floor_holes[2][idx_j] == UDG_CLOTHES12) {
+                if(clean == 0) {
+                    udg_topaint = UDG_CLOTHES22;
+                }
+                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+            }
+        }
+
+        ++idx_j;
+        if(idx_j == 5) { // while udgs go from 0 to 4
+           idx_j = 0;
+        }
+    }
 }
 
-static void increase_indexes_clothes(uint8_t idx) {
-    repaint_clothes(10, floor_holes[0][idx], ' ');
-    repaint_clothes(6, floor_holes[1][idx], ' ');
-
-    if (floor_holes[1][idx] == 0) {
-        floor_holes[1][idx] = 28;
-    }
-
-    if(floor_holes[0][idx] == 28) {
-        floor_holes[0][idx] = 0;
-    }
-
-    // row1
-    --floor_holes[1][idx];
-    // row2
-    ++floor_holes[0][idx];
-
-
-    repaint_clothes(10, floor_holes[0][idx], UDG_CLOTHES11);
-    repaint_clothes(6, floor_holes[1][idx], UDG_CLOTHES11);
+void increase_indexes_clothes() {
+    paint_clothes(1);
+    paint_clothes(0);
 }
 
 
@@ -535,8 +552,7 @@ void level1_loop() {
     // move clothes to the right
     if((frame & 1) == 0) {
         paint_bricks(1);
-        increase_indexes_clothes(0);
-        increase_indexes_clothes(1);
+        increase_indexes_clothes();
         // now move cat
         if(misifu.state == CAT_IN_ROPE) {
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
