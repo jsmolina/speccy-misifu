@@ -365,12 +365,6 @@ void paint_clothes(uint8_t clean) {
     }
 }
 
-void increase_indexes_clothes() {
-    paint_clothes(1);
-    paint_clothes(0);
-}
-
-
 inline void anim_windows() {
     if(repaint_lives == 1) {
         print_lives();
@@ -552,7 +546,8 @@ void level1_loop() {
     // move clothes to the right
     if((frame & 1) == 0) {
         paint_bricks(1);
-        increase_indexes_clothes();
+        paint_clothes(1);
+        paint_clothes(0);
         // now move cat
         if(misifu.state == CAT_IN_ROPE) {
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
