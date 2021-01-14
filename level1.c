@@ -311,7 +311,7 @@ void  print_background_lvl1() {
    // make disapear for sure
    sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1, 16, 33, 0, 0);
 
-   sp1_UpdateNow();
+   //sp1_UpdateNow();
 }
 
 void paint_clothes(uint8_t clean) {
@@ -326,16 +326,16 @@ void paint_clothes(uint8_t clean) {
     for(idx = 0; idx!= 10; ++idx) { // indexes go from 0 to 9
         if (clean == 0) {
             if (floor_holes[0][idx] == 0) {
-                floor_holes[0][idx] = 30;
-            }
-
-            if (floor_holes[1][idx] > 29) {
-                floor_holes[1][idx] = 0;
+                floor_holes[0][idx] = 32;
             }
 
             // row1
             --floor_holes[0][idx];
             ++floor_holes[1][idx];
+
+            if (floor_holes[1][idx] > 31) {
+                floor_holes[1][idx] = 0;
+            }
         }
 
         points = 0;

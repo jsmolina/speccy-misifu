@@ -271,7 +271,7 @@ void add_sprites_for_all_levels() {
 void reset_misifu_position() {
   misifu.in_bin = NONE;
   misifu.x = 0;
-  misifu.y = FLOOR_Y - 1;
+  misifu.y = FLOOR_Y - 2;
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.state = FALLING_FLOOR;
@@ -464,7 +464,8 @@ void dog_checks() {
             misifu.y = FLOOR_Y;
             anim_frames = 20;
             // hide cat
-            misifu.x = 33;
+            //misifu.x = 33;
+            x_malo = misifu.x;
             // do sound
             bit_beepfx_di_fastcall(BEEPFX_DROP_1);
             bit_beepfx_di_fastcall(BEEPFX_HIT_1);
@@ -483,15 +484,15 @@ void dog_checks() {
         } else {
             dog_offset = DOGFIGHTING2;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
 
         --anim_frames;
         if (anim_frames == 0) {
             enemy_apears = NONE;
-
+            x_malo = 33;
             get_out_of_level_generic(FIGHTING);
             idx = 1;
         }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
     }
     // check if dog should appear
     if (enemy_apears != YES) {
