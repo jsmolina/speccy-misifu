@@ -5,9 +5,11 @@
 #include "level1.h"
 #include <input.h>
 // AKA RATS ROOM
-
 #include "defines.h"
 
+const uint8_t coords_queso [] = {0x2f, 0x4f, 0xff, 0x14, 0x42, 0xff,
+                                0x25, 0x63, 0x4f, 0x5f, 0x84, 0x33,
+                                0x27, 0xdf, 0x53};
 // level 2 cheese
 const uint8_t hole_empty[] = {0x3c, 0x46, 0x9f, 0xbf, 0xbf, 0xbf, 0x5e, 0x3c};
 const uint8_t hole_mouse[] = {0x3c, 0x7e, 0x99, 0x81, 0xd5, 0xc3, 0x66, 0x3c};
@@ -50,13 +52,6 @@ void detect_fall_in_hole_or_curtain() {
     }
 }
 
-
-static void move_misifu(uint8_t index) {
-    first_keypress = index;
-    misifu.x = windows[index].x - 1;
-    misifu.y = windows[index].y - 1;
-    misifu.state = FALLING;
-}
 
 void level2_loop() {
     // dance mousies, dance!
@@ -101,21 +96,26 @@ void level2_loop() {
 
     if ((in & IN_STICK_FIRE) && first_keypress == 0) {
         if(idx == 5) {
-            move_misifu(8);
+            first_keypress = 8;
         } else if(idx == 8) {
-            move_misifu(5);
+            first_keypress = 5;
         } else if(idx == 10) {
-            move_misifu(4);
+            first_keypress = 4;
         } else if(idx == 4) {
-            move_misifu(10);
+            first_keypress = 10;
         } else if(idx == 13) {
-            move_misifu(9);
+            first_keypress = 9;
         } else if(idx == 9) {
-            move_misifu(13);
+            first_keypress = 13;
         } else if(idx == 12) {
-            move_misifu(6);
+            first_keypress = 6;
         } else if(idx == 6) {
-            move_misifu(12);
+            first_keypress = 12;
+        }
+        if(first_keypress != 0) {
+            misifu.x = windows[first_keypress].x - 1;
+            misifu.y = windows[first_keypress].y - 1;
+            misifu.state = FALLING;
         }
     }
 
@@ -155,20 +155,20 @@ void  print_background_level2() {
 
   //define_cheese_holes_pos();
   idx = 0;
-    assign_window_pos(19, 4);
-    assign_window_pos(19, 18);
-    assign_window_pos(19, 14);
-    assign_window_pos(18, 8);
-    assign_window_pos(18, 5);
-    assign_window_pos(17, 9);
-    assign_window_pos(17, 13);
-    assign_window_pos(15, 4);
-    assign_window_pos(13, 4);
-    assign_window_pos(13, 9);
-    assign_window_pos(13, 12);
-    assign_window_pos(11, 6);
-    assign_window_pos(9, 4);
-    assign_window_pos(7, 4);
+  assign_window_pos(19, 4);
+  assign_window_pos(19, 18);
+  assign_window_pos(19, 14);
+  assign_window_pos(18, 8);
+  assign_window_pos(18, 5);
+  assign_window_pos(17, 9);
+  assign_window_pos(17, 13);
+  assign_window_pos(15, 4);
+  assign_window_pos(13, 4);
+  assign_window_pos(13, 9);
+  assign_window_pos(13, 12);
+  assign_window_pos(11, 6);
+  assign_window_pos(9, 4);
+  assign_window_pos(7, 4);
 
   // paint the rest
   for (idx = 3; idx != 20; ++idx) {
@@ -180,16 +180,28 @@ void  print_background_level2() {
 
   // paint diagonal
   idx = 3;
-  for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
-      sp1_PrintAt( idx_j - 1, idx, PAPER_RED | INK_GREEN | BRIGHT, 'E');
+  for (idx_j = 2; idx_j != 20; ++idx_j) {
+      sp1_PrintAt( idx_j, idx, PAPER_RED | INK_GREEN | BRIGHT, 'E');
        ++idx;
   }
 
-
   // paint holes
-  for (idx = 0; idx != 14; ++idx) {
-    sp1_PrintAt( windows[idx].y, windows[idx].x, BACKGROUND_GREEN, 'A');
-    sp1_PrintAt( windows[idx].y, windows[idx].x - 1, BACKGROUND_GREEN, 'D');
+  idx_j = 5;
+  for (idx = 0; idx != 15; ++idx) {
+    if(idx != 14) {
+        sp1_PrintAt( windows[idx].y, windows[idx].x, BACKGROUND_GREEN, 'A');
+    }
+    // texture
+    x = 2 + ((coords_queso[idx] & 0xF0) >> 4);
+    if(x != 17) { // 15 + 2
+        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, 'D');
+    }
+    if((coords_queso[idx] & 0x0F) != 15) {
+        x += (coords_queso[idx] & 0x0F);
+        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, 'D');
+    }
+    ++idx_j;
+    //
   }
 
   // paint the chair

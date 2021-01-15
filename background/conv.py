@@ -66,3 +66,14 @@ print("const uint8_t coords_suelo [] = {" + ", ".join(coords_suelo) + "};")
 print("#define TOTAL_COORDS_SUELO {}".format(len(coords_suelo)))
 print("const uint16_t suelo_flags = " + suelo_flags + ";")
 print("// ((suelo_flags >> i) & 1)")
+
+queso = ((2, 15), (4, 15), (15, 15), (1, 4), (4, 2), (15, 15), (2, 5),
+         (6, 3), (4, 15), (5, 15), (8, 4), (3, 3), (2, 7), (13, 15),
+         (5, 3))
+
+queso_coords = []
+for i in queso:
+    queso_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
+
+print("const uint8_t coords_queso [] = {" + ", ".join(queso_coords) + "};")
+print("#define TOTAL_COORDS_QUESO {}".format(len(queso_coords)))
