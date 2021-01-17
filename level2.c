@@ -6,10 +6,17 @@
 #include <input.h>
 // AKA RATS ROOM
 #include "defines.h"
+#define TOTAL_COORDS_HOLES 12
+
 
 const uint8_t coords_queso [] = {0x2f, 0x4f, 0xff, 0x14, 0x42, 0xff,
                                 0x25, 0x63, 0x4f, 0x5f, 0x84, 0x33,
                                 0x27, 0xdf, 0x53};
+const uint8_t coords_holes [] = {0x01, 0xaa,
+                                0x21, 0x61,
+                                0x81, 0xb2,
+                                0x66, 0xa6,
+                                0x43, 0x69, 0xb2, 0xb5};
 // level 2 cheese
 const uint8_t hole_empty[] = {0x3c, 0x46, 0x9f, 0xbf, 0xbf, 0xbf, 0x5e, 0x3c};
 const uint8_t hole_mouse[] = {0x3c, 0x7e, 0x99, 0x81, 0xd5, 0xc3, 0x66, 0x3c};
@@ -135,10 +142,12 @@ void  print_background_level2() {
                   ' ' );
   sp1_Invalidate(&full_screen);
 
+  uint8_t *queso_text = tiles_lvl1 + 8; // cheese text is at second row of level 1 tiles
+
   sp1_TileEntry('A', hole_empty);
   sp1_TileEntry('B', hole_mouse);
   sp1_TileEntry('Z', hole_empty);
-  sp1_TileEntry('D', queso_textura);
+  sp1_TileEntry('D', queso_text);
   sp1_TileEntry('E', queso_diagonal);
 
   // in this level it is used to define holes with mouse
@@ -155,19 +164,33 @@ void  print_background_level2() {
 
   //define_cheese_holes_pos();
   idx = 0;
+  // 0
   assign_window_pos(19, 4);
+  // 1
   assign_window_pos(19, 18);
+  // 2
   assign_window_pos(19, 14);
+  // 3
   assign_window_pos(18, 8);
+  // 4
   assign_window_pos(18, 5);
+  // 5
   assign_window_pos(17, 9);
+  // 6
   assign_window_pos(17, 13);
+  //7
   assign_window_pos(15, 4);
+  //8
   assign_window_pos(13, 4);
+  //9
   assign_window_pos(13, 9);
+  //10
   assign_window_pos(13, 12);
+  //11
   assign_window_pos(11, 6);
+  //12
   assign_window_pos(9, 4);
+  //13
   assign_window_pos(7, 4);
 
   // paint the rest

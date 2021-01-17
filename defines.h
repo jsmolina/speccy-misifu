@@ -115,7 +115,6 @@ extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 
 
-extern const uint8_t queso_textura[];
 extern const uint8_t queso_diagonal[];
 
 extern struct sp1_Rect full_screen;
@@ -160,6 +159,7 @@ extern uint8_t last_success_level; // to see user progress
 extern uint8_t repaint_lives;
 extern uint8_t points;
 
+extern uint8_t tiles_lvl1[];
 extern uint8_t floor_holes[][24];
 
 // level 2 cheese

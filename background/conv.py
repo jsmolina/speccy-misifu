@@ -77,3 +77,16 @@ for i in queso:
 
 print("const uint8_t coords_queso [] = {" + ", ".join(queso_coords) + "};")
 print("#define TOTAL_COORDS_QUESO {}".format(len(queso_coords)))
+
+
+
+# para los 4 ratones
+# pos0, pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9
+holes = (0, 1), (10, 10),  (2, 1), (6, 1),  (8, 1), (11, 2),   (6, 6), (10, 6),\
+        (4, 3), (6, 9), (11, 2), (11, 5)
+
+holes_coords = []
+for i in holes:
+    holes_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
+print("const uint8_t coords_holes [] = {" + ", ".join(holes_coords) + "};")
+print("#define TOTAL_COORDS_HOLES {}".format(len(holes_coords)))
