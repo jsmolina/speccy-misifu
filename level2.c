@@ -7,17 +7,21 @@
 // AKA RATS ROOM
 #include "defines.h"
 
-#define UDG_HOLE_MOUSE 'B'
-#define UDG_HOLE_EMPTY 'Z'
-#define UDG_QUESO_TEXT 'D'
-#define UDG_QUESO_DIAG 'E'
-#define UDG_SCORE 'F'
+#define UDG_HOLE_MOUSE 65
+#define UDG_HOLE_EMPTY 66
+#define UDG_SCORE 67
+#define UDG_QUESO_DIAG 68
+#define UDG_QUESO_TEXT 'T'
+
 #define TOTAL_COORDS_HOLES 11
 #define TOTAL_COORDS_QUESO 25
 #define DESFASE_Y 6
+#define TOTAL_MOUSES 4
 
 #define EATEN_MOUSE 25
 
+#define LEVEL2_TILES_LEN 4
+#define LEVEL2_TILES_BASE 65
 
 const uint8_t coords_queso [] = {0x0f, 0x2f, 0xf2, 0xf0, 0x31, 0xff, 0x12, 0x31, 0xff, 0x31, 0x32, 0xff, 0x14, 0x15,
                                 0xf0, 0x25, 0x5f, 0x31, 0x25, 0xff, 0x25, 0x35, 0xf1, 0x35, 0x50};
@@ -25,10 +29,12 @@ const uint8_t coords_queso [] = {0x0f, 0x2f, 0xf2, 0xf0, 0x31, 0xff, 0x12, 0x31,
 const uint8_t coords_holes [] =  {0x35, 0xb1, 0x01, 0x66, 0x83, 0xcd, 0x32, 0xb8, 0x61, 0x89, 0xc5};
 
 // level 2 cheese
-const uint8_t hole_empty[] = {0x3c, 0x46, 0x9f, 0xbf, 0xbf, 0xbf, 0x5e, 0x3c};
-const uint8_t hole_mouse[] = {0x3c, 0x7e, 0x99, 0x81, 0xd5, 0xc3, 0x66, 0x3c};
-const uint8_t mouse_score[] = {0x9c, 0x80, 0xd5, 0xc1, 0x63, 0x41, 0x41, 0x81};
-
+const uint8_t level2[] = {
+    0x3c, 0x7e, 0x99, 0x81, 0xd5, 0xc3, 0x66, 0x3c, // y:0, x:0 (65)
+    0x3c, 0x46, 0x9f, 0xbf, 0xbf, 0xbf, 0x5e, 0x3c, // y:0, x:1 (66)
+    0x9c, 0x80, 0xd5, 0xc1, 0x63, 0x41, 0x41, 0x81, // y:0, x:2 (67)
+    0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff, // y:0, x:3 (68)
+};
 
 
 static inline uint8_t map_cat_pos_in_holes() {
@@ -59,9 +65,9 @@ void detect_fall_in_hole_or_curtain() {
                     BACKGROUND_GREEN, UDG_HOLE_EMPTY);
                 repaint_lives = 1;
                 floor_holes[0][idx_j] = EATEN_MOUSE;
-                sp1_PrintAtInv(1, (eaten_items + eaten_items), BACKGROUND_GREEN, UDG_SCORE);
+                sp1_PrintAtInv(1, 3 + (eaten_items + eaten_items), INK_RED | PAPER_GREEN | BRIGHT, UDG_SCORE);
                 bit_beepfx_di_fastcall(BEEPFX_SCORE);
-                --eaten_items;
+                ++eaten_items;
             }
         }
 
@@ -69,7 +75,7 @@ void detect_fall_in_hole_or_curtain() {
 
     detect_cat_in_window(0);
 
-    if (eaten_items == 0) {
+    if (eaten_items == TOTAL_MOUSES) {
         get_out_of_level_generic(WON_LEVEL);
     }
 }
@@ -136,13 +142,12 @@ void  print_background_level2() {
   sp1_Invalidate(&full_screen);
 
   uint8_t *queso_text = tiles_lvl1 + 8; // cheese text is at second row of level 1 tiles
-
-  sp1_TileEntry(UDG_HOLE_MOUSE, hole_mouse);
-  sp1_TileEntry(UDG_HOLE_EMPTY, hole_empty);
   sp1_TileEntry(UDG_QUESO_TEXT, queso_text);
-  sp1_TileEntry(UDG_QUESO_DIAG, queso_diagonal);
-  sp1_TileEntry(UDG_SCORE, mouse_score);
 
+  uint8_t *pt = level2;
+  for (idx = 0; idx < LEVEL2_TILES_LEN; idx++, pt += 8) {
+      sp1_TileEntry(LEVEL2_TILES_BASE + idx, pt);
+  }
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
 
@@ -163,6 +168,7 @@ void  print_background_level2() {
   idx_j = 1;
   for(idx = 0; idx != 4; ++idx) { // 4 mouses
     floor_holes[0][idx] = idx_j; // indexes of coords_holes
+    sp1_PrintAtInv(1, 2 + idx_j, INK_RED | PAPER_BLACK | BRIGHT, UDG_SCORE);
     idx_j += 2;
   }
 
@@ -213,7 +219,7 @@ void  print_background_level2() {
   paint_chair(17, 22, PAPER_RED, INK_GREEN | BRIGHT);
   paint_table(17, 26, PAPER_RED, INK_GREEN | BRIGHT);
 
-  eaten_items = 4;
+  eaten_items = 0;
 
   aux_object.y = 5;
   aux_object.x = 5;

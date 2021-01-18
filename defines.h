@@ -114,9 +114,6 @@ extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 
-
-extern const uint8_t queso_diagonal[];
-
 extern struct sp1_Rect full_screen;
 
 extern uint8_t level_x_max;

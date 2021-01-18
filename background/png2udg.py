@@ -80,7 +80,7 @@ def main():
 
     args = parser.parse_args()
 
-    base = args.base
+    base = int(args.base)
 
     if not args.image:
         parser.error("required parameter: image")
