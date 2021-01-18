@@ -66,3 +66,37 @@ print("const uint8_t coords_suelo [] = {" + ", ".join(coords_suelo) + "};")
 print("#define TOTAL_COORDS_SUELO {}".format(len(coords_suelo)))
 print("const uint16_t suelo_flags = " + suelo_flags + ";")
 print("// ((suelo_flags >> i) & 1)")
+
+queso = ((0, 15),
+         (2, 15),
+         (15, 2),
+         (15, 0), (3, 1),
+         (15, 15),
+         (1, 2), (3, 1),
+         (15, 15),
+         (3, 1), (3, 2),
+         (15, 15),
+         (1, 4), (1, 5),
+         (15, 0), (2, 5), (5, 15),
+         (3, 1), (2, 5), (15, 15),
+         (2, 5), (3, 5), (15, 1), (3, 5), (5, 0))
+
+queso_coords = []
+for i in queso:
+    queso_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
+
+print("const uint8_t coords_queso [] = {" + ", ".join(queso_coords) + "};")
+print("#define TOTAL_COORDS_QUESO {}".format(len(queso_coords)))
+
+
+
+# para los 4 ratones
+# pos0, pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9
+holes = (3, 5), (11, 1),  (0, 1), (6, 6),  (8, 3), (12, 13),   (3, 2), (11, 8),\
+        (6, 1), (8, 9), (12, 5)
+
+holes_coords = []
+for i in holes:
+    holes_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
+print("const uint8_t coords_holes [] = {" + ", ".join(holes_coords) + "};")
+print("#define TOTAL_COORDS_HOLES {}".format(len(holes_coords)))

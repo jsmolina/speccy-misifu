@@ -68,7 +68,39 @@ const uint8_t rooms[] = {
     0x18, 0x18, 0x18, 0x18, 0x00, 0x3c, 0x7e, 0xff, // y:0, x:13 (141)
 };
 
-const uint8_t queso_textura[] = {0x0, 0x80, 0x4, 0x0, 0x8, 0x40, 0x1, 0x0};
+uint8_t tiles_lvl1[] = {
+    0x00, 0x01, 0x01, 0x7e, 0x00, 0x10, 0x10, 0xe7, // y:0, x:0 (128)
+    0x00, 0x80, 0x04, 0x00, 0x08, 0x40, 0x01, 0x00, // y:0, x:1 (129)
+    0x00, 0x00, 0x00, 0x26, 0x0b, 0x87, 0x10, 0x00, // y:0, x:2 (130)
+    0x05, 0x0b, 0x05, 0x0b, 0x05, 0x03, 0x05, 0x0b, // y:0, x:3 (131)
+    0xcf, 0x0f, 0x07, 0x0b, 0x07, 0x0b, 0x05, 0x0b, // y:0, x:4 (132)
+    0xff, 0xff, 0xcf, 0xc3, 0xc5, 0x03, 0x05, 0x0b, // y:0, x:5 (133)
+    0xff, 0xf3, 0x35, 0x23, 0x05, 0x03, 0x05, 0x0b, // y:0, x:6 (134)
+    0xc9, 0x89, 0x86, 0xe0, 0x9f, 0x60, 0x1f, 0x00, // y:0, x:7 (135)
+    0x4a, 0x46, 0x4a, 0x3c, 0x00, 0xff, 0x00, 0xff, // y:0, x:8 (136)
+    0xb3, 0xd1, 0x61, 0x07, 0xf9, 0x06, 0xf8, 0x00, // y:0, x:9 (137)
+    0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, // y:0, x:10 (138)
+    0x4a, 0x46, 0x4a, 0x46, 0x4a, 0x46, 0x4a, 0x46, // y:0, x:11 (139)
+    0xb7, 0xd5, 0xb7, 0xd5, 0xb7, 0xd5, 0xb7, 0xd5, // y:0, x:12 (140)
+    0x3f, 0xe2, 0x9e, 0x7f, 0x3f, 0xc3, 0xbc, 0xaf, // y:0, x:13 (141)
+    0x02, 0x05, 0x02, 0x00, 0xc0, 0xf8, 0x0f, 0xff, // y:0, x:14 (142)
+    0x35, 0x9b, 0x57, 0x51, 0x00, 0x00, 0x01, 0xff, // y:0, x:15 (143)
+    0x01, 0x39, 0x6d, 0x61, 0x61, 0x75, 0x3d, 0x19, // y:0, x:16 (144)
+    0x01, 0x1b, 0x3d, 0x65, 0x7d, 0xcd, 0xd9, 0x1b, // y:0, x:17 (145)
+    0x01, 0x7d, 0xf1, 0xb3, 0x31, 0x1b, 0x19, 0x1b, // y:0, x:18 (146)
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd2, // y:0, x:19 (147)
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2d, // y:0, x:20 (148)
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, // y:0, x:21 (149)
+    0x10, 0x30, 0x38, 0x7c, 0x6f, 0x6d, 0x6f, 0x0d, // y:0, x:22 (150)
+    0x18, 0x1c, 0x3e, 0x7e, 0xee, 0xee, 0xee, 0xf0, // y:0, x:23 (151)
+    0x0f, 0x0d, 0x0f, 0x0d, 0x1f, 0x1e, 0x18, 0x00, // y:0, x:24 (152)
+    0xf0, 0xf0, 0xf8, 0xf8, 0xfc, 0x3c, 0x0c, 0x00, // y:0, x:25 (153)
+    0x0e, 0x0e, 0x0e, 0x0e, 0x1e, 0x3e, 0x7c, 0x70, // y:0, x:26 (154)
+    0x81, 0xe3, 0xff, 0x7e, 0x3c, 0x18, 0x00, 0x00, // y:0, x:27 (155)
+    0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
+    0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, // y:0, x:29 (157)
+};
+
 const uint8_t queso_diagonal[] = {0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff};
 
 // shared vars
@@ -79,7 +111,6 @@ uint8_t x, y;
 uint8_t paws = 0;
 uint8_t eaten_items;
 uint8_t frame;
-uint8_t frame_big;
 uint8_t x_malo;
 uint8_t bincat_appears = NONE;
 uint8_t enemy_apears = NONE;
@@ -272,7 +303,7 @@ void add_sprites_for_all_levels() {
 void reset_misifu_position() {
   misifu.in_bin = NONE;
   misifu.x = 0;
-  misifu.y = FLOOR_Y - 1;
+  misifu.y = FLOOR_Y - 2;
   misifu.initial_jump_y = 0;
   misifu.draw_additional = NONE;
   misifu.state = FALLING_FLOOR;
@@ -285,10 +316,14 @@ void reset_misifu_position() {
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
   uint8_t *pt = rooms;
   uint8_t bright_black_paper = 0x40 | paper_color;
+  uint8_t *black_window = tiles_lvl1 + 168;
+
 
   for (idx = 0; idx < ROOMS_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(ROOMS_TILES_BASE + idx, pt);
   }
+  sp1_TileEntry(ROOMS_TILES_BASE + ROOMS_TILES_LEN, black_window);
+
 
   for(idx = 0; idx != 3; ++idx) {
     // upper left
@@ -328,7 +363,7 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
     // x=8, 9 and y=22-25
     if (idx != 10) {
         for (idx_j = 2; idx_j != 6; ++idx_j) {
-            sp1_PrintAt( idx, initial_window + idx_j,  PAPER_BLACK, ' ');
+            sp1_PrintAt( idx, initial_window + idx_j,  INK_BLACK | PAPER_WHITE, ROOMS_TILES_BASE + ROOMS_TILES_LEN);
         }
     }
 
@@ -393,7 +428,6 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
-        print_background_level_last();
         in_wait_nokey();
         paws = 1;
     }
@@ -411,7 +445,7 @@ void check_swim() {
     }
     if((in & IN_STICK_LEFT) && misifu.x > 0) {
         --misifu.x;
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = SWIM_LC1;
         } else {
             misifu.offset = SWIM_LC2;
@@ -424,7 +458,7 @@ void check_swim() {
         }
     } else if((in & IN_STICK_RIGHT) && misifu.x < 31) {
         ++misifu.x;
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = SWIM_RC1;
         } else {
             misifu.offset = SWIM_RC2;
@@ -449,11 +483,11 @@ void check_swim() {
 void dog_checks() {
 // time for doggy checks
     if (misifu.state != FIGHTING && enemy_apears == YES) {
-        if((frame_big & 1) == 0) {
+        if((frame & 1) == 0) {
             --x_malo;
         }
 
-        if (frame_big < FRAME_CHANGE) {
+        if ((x_malo & 1) == 0) {
             dog_offset = DOG1;
         } else  {
             dog_offset = DOG2;
@@ -466,7 +500,8 @@ void dog_checks() {
             misifu.y = FLOOR_Y;
             anim_frames = 20;
             // hide cat
-            misifu.x = 33;
+            //misifu.x = 33;
+            x_malo = misifu.x;
             // do sound
             bit_beepfx_di_fastcall(BEEPFX_DROP_1);
             bit_beepfx_di_fastcall(BEEPFX_HIT_1);
@@ -480,20 +515,20 @@ void dog_checks() {
     }
     idx = 0;
     if (misifu.state == FIGHTING) {
-        if (frame_big < FRAME_CHANGE) {
+        if (frame < FRAME_CHANGE) {
             dog_offset = DOGFIGHTING1;
         } else {
             dog_offset = DOGFIGHTING2;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
 
         --anim_frames;
         if (anim_frames == 0) {
             enemy_apears = NONE;
-
+            x_malo = 33;
             get_out_of_level_generic(FIGHTING);
             idx = 1;
         }
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
     }
     // check if dog should appear
     if (enemy_apears != YES) {
@@ -516,14 +551,14 @@ void check_fsm() {
     if (misifu.state == NONE && frame == 3 && level != 7) {
         misifu.offset = (int)BORED;
     } else if (misifu.state == WALKING_RIGHT) {
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = (int)RIGHTC1;
         } else  {
             misifu.offset = (int)RIGHTC2;
         }
         misifu.state = NONE;
     } else if (misifu.state == WALKING_LEFT) {
-        if (frame_big < FRAME_CHANGE) {
+        if ((misifu.x & 1) == 0) {
             misifu.offset = (int)LEFTC1;
         } else {
             misifu.offset = (int)LEFTC2;
@@ -750,7 +785,7 @@ void move_broom() {
  if(misifu.state == FIGHTING) {
     return;
  }
- if (frame_big < FRAME_CHANGE) {
+ if (frame < FRAME_CHANGE) {
      aux_object.offset = AUX_BROOM;
  } else {
      aux_object.offset = AUX_BROOM2;

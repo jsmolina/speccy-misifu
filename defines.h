@@ -97,7 +97,6 @@
 #define BIRD 244
 
 #define FRAME_CHANGE 2
-#define FRAME_MOST 5
 #define DOG1 0
 #define DOG2 48
 #define DOGFIGHTING1 96
@@ -116,7 +115,6 @@ extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 
 
-extern const uint8_t queso_textura[];
 extern const uint8_t queso_diagonal[];
 
 extern struct sp1_Rect full_screen;
@@ -135,7 +133,6 @@ extern char left;
 extern char right;
 extern uint8_t eaten_items;
 extern uint8_t frame;
-extern uint8_t frame_big;
 extern uint8_t x_malo;
 extern uint8_t bincat_appears;
 extern uint8_t enemy_apears;
@@ -162,6 +159,7 @@ extern uint8_t last_success_level; // to see user progress
 extern uint8_t repaint_lives;
 extern uint8_t points;
 
+extern uint8_t tiles_lvl1[];
 extern uint8_t floor_holes[][24];
 
 // level 2 cheese

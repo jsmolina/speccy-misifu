@@ -56,38 +56,6 @@
 #define BACKGROUND_LVL1_DEFAULT 0x58   // INK BLACK, PAPER MAGENTA, BRIGHT
 #define BACKGROUND_LVL1_CYAN 0x68
 
-uint8_t tiles[] = {
-0x00, 0x01, 0x01, 0x7e, 0x00, 0x10, 0x10, 0xe7, // y:0, x:0 (128)
-0x00, 0x80, 0x04, 0x00, 0x08, 0x40, 0x01, 0x00, // y:0, x:1 (129)
-0x00, 0x00, 0x00, 0x26, 0x0b, 0x87, 0x10, 0x00, // y:0, x:2 (130)
-0x05, 0x0b, 0x05, 0x0b, 0x05, 0x03, 0x05, 0x0b, // y:0, x:3 (131)
-0xcf, 0x0f, 0x07, 0x0b, 0x07, 0x0b, 0x05, 0x0b, // y:0, x:4 (132)
-0xff, 0xff, 0xcf, 0xc3, 0xc5, 0x03, 0x05, 0x0b, // y:0, x:5 (133)
-0xff, 0xf3, 0x35, 0x23, 0x05, 0x03, 0x05, 0x0b, // y:0, x:6 (134)
-0xc9, 0x89, 0x86, 0xe0, 0x9f, 0x60, 0x1f, 0x00, // y:0, x:7 (135)
-0x4a, 0x46, 0x4a, 0x3c, 0x00, 0xff, 0x00, 0xff, // y:0, x:8 (136)
-0xb3, 0xd1, 0x61, 0x07, 0xf9, 0x06, 0xf8, 0x00, // y:0, x:9 (137)
-0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, 0xa9, // y:0, x:10 (138)
-0x4a, 0x46, 0x4a, 0x46, 0x4a, 0x46, 0x4a, 0x46, // y:0, x:11 (139)
-0xb7, 0xd5, 0xb7, 0xd5, 0xb7, 0xd5, 0xb7, 0xd5, // y:0, x:12 (140)
-0x3f, 0xe2, 0x9e, 0x7f, 0x3f, 0xc3, 0xbc, 0xaf, // y:0, x:13 (141)
-0x02, 0x05, 0x02, 0x00, 0xc0, 0xf8, 0x0f, 0xff, // y:0, x:14 (142)
-0x35, 0x9b, 0x57, 0x51, 0x00, 0x00, 0x01, 0xff, // y:0, x:15 (143)
-0x01, 0x39, 0x6d, 0x61, 0x61, 0x75, 0x3d, 0x19, // y:0, x:16 (144)
-0x01, 0x1b, 0x3d, 0x65, 0x7d, 0xcd, 0xd9, 0x1b, // y:0, x:17 (145)
-0x01, 0x7d, 0xf1, 0xb3, 0x31, 0x1b, 0x19, 0x1b, // y:0, x:18 (146)
-0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd2, // y:0, x:19 (147)
-0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2d, // y:0, x:20 (148)
-0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, // y:0, x:21 (149)
-0x10, 0x30, 0x38, 0x7c, 0x6f, 0x6d, 0x6f, 0x0d, // y:0, x:22 (150)
-0x18, 0x1c, 0x3e, 0x7e, 0xee, 0xee, 0xee, 0xf0, // y:0, x:23 (151)
-0x0f, 0x0d, 0x0f, 0x0d, 0x1f, 0x1e, 0x18, 0x00, // y:0, x:24 (152)
-0xf0, 0xf0, 0xf8, 0xf8, 0xfc, 0x3c, 0x0c, 0x00, // y:0, x:25 (153)
-0x0e, 0x0e, 0x0e, 0x0e, 0x1e, 0x3e, 0x7c, 0x70, // y:0, x:26 (154)
-0x81, 0xe3, 0xff, 0x7e, 0x3c, 0x18, 0x00, 0x00, // y:0, x:27 (155)
-0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
-0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, // y:0, x:29 (157)
-};
 
 const uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
     0x3c, 0x31, 0x3d, 0x31, 0x41, 0x4f, 0x41, 0x7f, 0x71, 0x79, 0x71, 0x88, 0x89, 0x87, 0x81, 0xb0, 0xbd, 0xb1,
@@ -186,7 +154,7 @@ void paint_bricks(uint8_t clean) {
 }
 
 void  print_background_lvl1() {
-  uint8_t *pt = tiles;
+  uint8_t *pt = tiles_lvl1;
 
   level = 1;
   opened_window = NONE;
@@ -294,61 +262,76 @@ void  print_background_lvl1() {
    level_x_max = 28;
    level_x_min = 1;
 
-   // floor holes initialize, save memory ftw
-   floor_holes[0][0] = 1;  // row1clothes
-   floor_holes[0][1] = 18; // row1clothes
-   floor_holes[1][0] = 1;  // row2clothes
-   floor_holes[1][1] = 18; // row2clothes
+   // row 1 and row 2 of clothes
+   for(idx_j = 0; idx_j != 2; ++idx_j) {
+       for(idx = 0; idx != 5; ++idx) { // vest, boots, panties
+           floor_holes[idx_j][idx] = idx + 1; // 0,1,2,3
+           floor_holes[idx_j][idx + 5] = idx + 18; // 4,5,6,7
+       }
+   }
+   floor_holes[2][0] = UDG_CLOTHES11;
+   floor_holes[2][1] = UDG_CLOTHES12;
+   floor_holes[2][2] = UDG_BOOT;
+   floor_holes[2][3] = UDG_BOOT;
+   floor_holes[2][4] = UDG_PANTIES;
+
    aux_object.offset = AUX_PHONE;
    // make disapear for sure
    sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1, 16, 33, 0, 0);
 
-   sp1_UpdateNow();
+   //sp1_UpdateNow();
 }
 
-
-static void repaint_clothes(uint8_t row, uint8_t col, uint8_t clean) {
+void paint_clothes(uint8_t clean) {
+    uint8_t udg_topaint = ' ';
     uint8_t color;
-    if(clean != ' ') {
-        x = 1;
-        color = INK_WHITE | PAPER_MAGENTA | BRIGHT;
-    } else {
-        x = 0;
+    idx_j = 0;
+    if(clean == 1) {
         color = BACKGROUND_LVL1_DEFAULT;
+    } else {
+        color = INK_WHITE | PAPER_MAGENTA | BRIGHT;
     }
-    sp1_PrintAtInv(row, col, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row, col + 1, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row + 1, col, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row + 1, col + 1, color, clean);
+    for(idx = 0; idx!= 10; ++idx) { // indexes go from 0 to 9
+        if (clean == 0) {
+            if (floor_holes[0][idx] == 0) {
+                floor_holes[0][idx] = 32;
+            }
 
-    clean += x;
-    sp1_PrintAtInv(row, col + 3, color, clean);
-    sp1_PrintAtInv(row, col + 4, color, clean);
-    clean += x;
-    sp1_PrintAtInv(row, col + 5, color, clean);
+            // row1
+            --floor_holes[0][idx];
+            ++floor_holes[1][idx];
+
+            if (floor_holes[1][idx] > 31) {
+                floor_holes[1][idx] = 0;
+            }
+        }
+
+        points = 0;
+        for (x = 6; x != 14; x += 4, ++points) {
+            if(clean == 0) {
+                udg_topaint = floor_holes[2][idx_j];
+            }
+            sp1_PrintAtInv(x, floor_holes[points][idx], color, udg_topaint);
+
+            if(floor_holes[2][idx_j] == UDG_CLOTHES11) {
+                if(clean == 0) {
+                    udg_topaint = UDG_CLOTHES21;
+                }
+                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+            } else if(floor_holes[2][idx_j] == UDG_CLOTHES12) {
+                if(clean == 0) {
+                    udg_topaint = UDG_CLOTHES22;
+                }
+                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+            }
+        }
+
+        ++idx_j;
+        if(idx_j == 5) { // while udgs go from 0 to 4
+           idx_j = 0;
+        }
+    }
 }
-
-static void increase_indexes_clothes(uint8_t idx) {
-    repaint_clothes(10, floor_holes[0][idx], ' ');
-    repaint_clothes(6, floor_holes[1][idx], ' ');
-    // row1
-    --floor_holes[1][idx];
-    // row2
-    ++floor_holes[0][idx];
-    if(floor_holes[0][idx] > 26) {
-        floor_holes[0][idx] = 0;
-    }
-
-    if (floor_holes[1][idx] < 2) {
-        floor_holes[1][idx] = 28;
-    }
-    repaint_clothes(10, floor_holes[0][idx], UDG_CLOTHES11);
-    repaint_clothes(6, floor_holes[1][idx], UDG_CLOTHES11);
-}
-
 
 inline void anim_windows() {
     if(repaint_lives == 1) {
@@ -531,8 +514,8 @@ void level1_loop() {
     // move clothes to the right
     if((frame & 1) == 0) {
         paint_bricks(1);
-        increase_indexes_clothes(0);
-        increase_indexes_clothes(1);
+        paint_clothes(1);
+        paint_clothes(0);
         // now move cat
         if(misifu.state == CAT_IN_ROPE) {
             if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
