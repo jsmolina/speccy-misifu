@@ -6,27 +6,36 @@
 #include <input.h>
 // AKA RATS ROOM
 #include "defines.h"
-#define TOTAL_COORDS_HOLES 12
+
+#define UDG_HOLE_MOUSE 'B'
+#define UDG_HOLE_EMPTY 'Z'
+#define UDG_QUESO_TEXT 'D'
+#define UDG_QUESO_DIAG 'E'
+#define UDG_SCORE 'F'
+#define TOTAL_COORDS_HOLES 11
+#define TOTAL_COORDS_QUESO 25
+#define DESFASE_Y 6
+
+#define EATEN_MOUSE 25
 
 
-const uint8_t coords_queso [] = {0x2f, 0x4f, 0xff, 0x14, 0x42, 0xff,
-                                0x25, 0x63, 0x4f, 0x5f, 0x84, 0x33,
-                                0x27, 0xdf, 0x53};
-const uint8_t coords_holes [] = {0x01, 0xaa,
-                                0x21, 0x61,
-                                0x81, 0xb2,
-                                0x66, 0xa6,
-                                0x43, 0x69, 0xb2, 0xb5};
+const uint8_t coords_queso [] = {0x0f, 0x2f, 0xf2, 0xf0, 0x31, 0xff, 0x12, 0x31, 0xff, 0x31, 0x32, 0xff, 0x14, 0x15,
+                                0xf0, 0x25, 0x5f, 0x31, 0x25, 0xff, 0x25, 0x35, 0xf1, 0x35, 0x50};
+
+const uint8_t coords_holes [] =  {0x35, 0xb1, 0x01, 0x66, 0x83, 0xcd, 0x32, 0xb8, 0x61, 0x89, 0xc5};
+
 // level 2 cheese
 const uint8_t hole_empty[] = {0x3c, 0x46, 0x9f, 0xbf, 0xbf, 0xbf, 0x5e, 0x3c};
 const uint8_t hole_mouse[] = {0x3c, 0x7e, 0x99, 0x81, 0xd5, 0xc3, 0x66, 0x3c};
+const uint8_t mouse_score[] = {0x9c, 0x80, 0xd5, 0xc1, 0x63, 0x41, 0x41, 0x81};
 
 
 
 static inline uint8_t map_cat_pos_in_holes() {
 
-    for(idx = 0; idx != 14; ++idx) {
-        if(misifu.y == windows[idx].y && misifu.x == (windows[idx].x - 1)) {
+    for(idx = 0; idx != TOTAL_COORDS_HOLES; ++idx) { // 4 mouses
+        idx_j = coords_holes[idx];
+        if(misifu.y == (DESFASE_Y + ((idx_j & 0xF0) >> 4)) && misifu.x == (2 + (idx_j & 0x0F))) {
             return idx;
         }
     }
@@ -41,13 +50,19 @@ void detect_fall_in_hole_or_curtain() {
         misifu.state = CAT_IN_ROPE;
 
         // if window has mouse
-        if(windows[idx].has_item == 'B') {
-            windows[idx].has_item = 'Z'; // mark as already eaten
-            // print then the mouse in the up side
-            repaint_lives = 1;
-            sp1_PrintAtInv(1, 1 + eaten_items, BACKGROUND_GREEN, 'B');
-            bit_beepfx_di_fastcall(BEEPFX_SCORE);
-            --eaten_items;
+        for(idx_j = 0; idx_j != 4; ++idx_j) {
+            // if a mouse is active in one of the holes
+            if(floor_holes[0][idx_j] == idx && floor_holes[0][idx_j] != EATEN_MOUSE) {
+                sp1_PrintAtInv(
+                    DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
+                    3 + (coords_holes[idx] & 0x0F),
+                    BACKGROUND_GREEN, UDG_HOLE_EMPTY);
+                repaint_lives = 1;
+                floor_holes[0][idx_j] = EATEN_MOUSE;
+                sp1_PrintAtInv(1, (eaten_items + eaten_items), BACKGROUND_GREEN, UDG_SCORE);
+                bit_beepfx_di_fastcall(BEEPFX_SCORE);
+                --eaten_items;
+            }
         }
 
     }
@@ -64,34 +79,29 @@ void level2_loop() {
     // dance mousies, dance!
     if (random_value < 4 || repaint_lives == 1) {
         repaint_lives = 0;
-        // mousie holes are connected, let's keep switching
-        if (random_value > 2) {
-            idx = 'A';
-            idx_j = 'B';
-        } else {
-            idx = 'B';
-            idx_j = 'A';
-        }
-        // only switch now if not eaten
-        if(windows[5].has_item != 'Z' && windows[8].has_item != 'Z') {
-            windows[5].has_item = idx; windows[8].has_item = idx_j;
-        }
-
-        if(windows[10].has_item != 'Z' && windows[4].has_item != 'Z') {
-            windows[10].has_item = idx; windows[4].has_item = idx_j;
-        }
-
-        if(windows[13].has_item != 'Z' && windows[9].has_item != 'Z') {
-            windows[13].has_item = idx; windows[9].has_item = idx_j;
-        }
-
-        if(windows[12].has_item != 'Z' && windows[6].has_item != 'Z') {
-            windows[12].has_item = idx; windows[6].has_item = idx_j;
-        }
-
-        for(idx_j = 0; idx_j != 8; ++idx_j) {
+        // switch mouses
+        for(idx_j = 0; idx_j != 4; ++idx_j) {
             idx = floor_holes[0][idx_j];
-            sp1_PrintAtInv(windows[idx].y, windows[idx].x, BACKGROUND_GREEN, windows[idx].has_item);
+            if (idx == EATEN_MOUSE) {
+                continue;
+            }
+            // quitar cera, digoo raton
+            sp1_PrintAtInv(
+                DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
+                3 + (coords_holes[idx] & 0x0F),
+                BACKGROUND_GREEN, UDG_HOLE_EMPTY);
+
+            if((idx & 1) == 0) { // par: siguiente impar (0 -> 1, 2 -> 3, 4 -> 5, 6 -> 7)
+                ++floor_holes[0][idx_j];
+            } else { // impar: anterior par (1 -> 0, 3 -> 2, 5 -> 4, 7 -> 6)
+                --floor_holes[0][idx_j];
+            }
+            idx = floor_holes[0][idx_j];
+            // poner raton
+            sp1_PrintAtInv(
+                DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
+                3 + (coords_holes[idx] & 0x0F),
+                BACKGROUND_GREEN, UDG_HOLE_MOUSE);
         }
     }
 
@@ -100,35 +110,19 @@ void level2_loop() {
     if (misifu.state == FALLING) {
         detect_fall_in_hole_or_curtain();
     }
-
+    /*
     if ((in & IN_STICK_FIRE) && first_keypress == 0) {
-        if(idx == 5) {
-            first_keypress = 8;
-        } else if(idx == 8) {
-            first_keypress = 5;
-        } else if(idx == 10) {
-            first_keypress = 4;
-        } else if(idx == 4) {
-            first_keypress = 10;
-        } else if(idx == 13) {
-            first_keypress = 9;
-        } else if(idx == 9) {
-            first_keypress = 13;
-        } else if(idx == 12) {
-            first_keypress = 6;
-        } else if(idx == 6) {
-            first_keypress = 12;
-        }
+
         if(first_keypress != 0) {
-            misifu.x = windows[first_keypress].x - 1;
-            misifu.y = windows[first_keypress].y - 1;
-            misifu.state = FALLING;
+            //misifu.x = windows[first_keypress].x - 1;
+            //misifu.y = windows[first_keypress].y - 1;
+            //misifu.state = FALLING;
         }
     }
 
     if(!(in & IN_STICK_FIRE)) {
         first_keypress = 0;
-    }
+    }*/
 
     move_broom();
     dog_checks();
@@ -136,7 +130,6 @@ void level2_loop() {
 
 void  print_background_level2() {
   level = 2;
-  first_keypress = 0;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_RED | BRIGHT,
                   ' ' );
@@ -144,58 +137,17 @@ void  print_background_level2() {
 
   uint8_t *queso_text = tiles_lvl1 + 8; // cheese text is at second row of level 1 tiles
 
-  sp1_TileEntry('A', hole_empty);
-  sp1_TileEntry('B', hole_mouse);
-  sp1_TileEntry('Z', hole_empty);
-  sp1_TileEntry('D', queso_text);
-  sp1_TileEntry('E', queso_diagonal);
+  sp1_TileEntry(UDG_HOLE_MOUSE, hole_mouse);
+  sp1_TileEntry(UDG_HOLE_EMPTY, hole_empty);
+  sp1_TileEntry(UDG_QUESO_TEXT, queso_text);
+  sp1_TileEntry(UDG_QUESO_DIAG, queso_diagonal);
+  sp1_TileEntry(UDG_SCORE, mouse_score);
 
-  // in this level it is used to define holes with mouse
-  floor_holes[0][0] = 5;
-  floor_holes[0][1] = 8;
-  floor_holes[0][2] = 10;
-  floor_holes[0][3] = 4;
-  floor_holes[0][4] = 13;
-  floor_holes[0][5] = 9;
-  floor_holes[0][6] = 12;
-  floor_holes[0][7] = 6;
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
 
-  //define_cheese_holes_pos();
-  idx = 0;
-  // 0
-  assign_window_pos(19, 4);
-  // 1
-  assign_window_pos(19, 18);
-  // 2
-  assign_window_pos(19, 14);
-  // 3
-  assign_window_pos(18, 8);
-  // 4
-  assign_window_pos(18, 5);
-  // 5
-  assign_window_pos(17, 9);
-  // 6
-  assign_window_pos(17, 13);
-  //7
-  assign_window_pos(15, 4);
-  //8
-  assign_window_pos(13, 4);
-  //9
-  assign_window_pos(13, 9);
-  //10
-  assign_window_pos(13, 12);
-  //11
-  assign_window_pos(11, 6);
-  //12
-  assign_window_pos(9, 4);
-  //13
-  assign_window_pos(7, 4);
-
-  // paint the rest
+  // paint the main cheese
   for (idx = 3; idx != 20; ++idx) {
-
     for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
         sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN | BRIGHT, ' ');
     }
@@ -204,28 +156,58 @@ void  print_background_level2() {
   // paint diagonal
   idx = 3;
   for (idx_j = 2; idx_j != 20; ++idx_j) {
-      sp1_PrintAt( idx_j, idx, PAPER_RED | INK_GREEN | BRIGHT, 'E');
+      sp1_PrintAt( idx_j, idx, PAPER_RED | INK_GREEN | BRIGHT, UDG_QUESO_DIAG);
        ++idx;
+  }
+  // in this level it is used to define holes have a mouse
+  idx_j = 1;
+  for(idx = 0; idx != 4; ++idx) { // 4 mouses
+    floor_holes[0][idx] = idx_j; // indexes of coords_holes
+    idx_j += 2;
   }
 
   // paint holes
-  idx_j = 5;
-  for (idx = 0; idx != 15; ++idx) {
-    if(idx != 14) {
-        sp1_PrintAt( windows[idx].y, windows[idx].x, BACKGROUND_GREEN, 'A');
-    }
-    // texture
-    x = 2 + ((coords_queso[idx] & 0xF0) >> 4);
-    if(x != 17) { // 15 + 2
-        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, 'D');
-    }
-    if((coords_queso[idx] & 0x0F) != 15) {
-        x += (coords_queso[idx] & 0x0F);
-        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, 'D');
-    }
-    ++idx_j;
-    //
+  for (idx = 0; idx != TOTAL_COORDS_HOLES; ++idx) {
+        if(idx < 8 && (idx & 1) == 1) { // mouses start on even holes
+            // variable reusage -memory savings-, sorry!
+            first_keypress = UDG_HOLE_MOUSE;
+        } else {
+            first_keypress = UDG_HOLE_EMPTY;
+        }
+        sp1_PrintAt(
+            DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
+            3 + (coords_holes[idx] & 0x0F),
+            BACKGROUND_GREEN, first_keypress);
   }
+
+  // paint textures
+  idx_j = 4;
+  x = 3;
+  for(idx = 0; idx!= TOTAL_COORDS_QUESO; ++idx) {
+    // texture
+    first_keypress = ((coords_queso[idx] & 0xF0) >> 4);
+
+    if(first_keypress != 15) {
+        x += first_keypress;
+        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, UDG_QUESO_TEXT);
+    } else {
+        // line jump
+        ++idx_j;
+        x = 3;
+    }
+    first_keypress = (coords_queso[idx] & 0x0F);
+
+    if(first_keypress != 15) {
+        x += first_keypress;
+        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, UDG_QUESO_TEXT);
+    } else {
+        // line jump
+        ++idx_j;
+        x = 3;
+    }
+  }
+  first_keypress = 0;
+
 
   // paint the chair
   paint_chair(17, 22, PAPER_RED, INK_GREEN | BRIGHT);
