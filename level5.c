@@ -43,7 +43,7 @@ void  print_background_level5() {
   print_room_walls(8, PAPER_MAGENTA, INK_CYAN);
 
   // paint the chair
-  paint_chair(17, 10, PAPER_MAGENTA, INK_CYAN);
+  paint_chair(10, PAPER_MAGENTA | INK_CYAN | BRIGHT);
 
   level_x_max = 28;
   level_x_min = 1;

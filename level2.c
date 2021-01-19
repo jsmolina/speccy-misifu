@@ -216,8 +216,8 @@ void  print_background_level2() {
 
 
   // paint the chair
-  paint_chair(17, 22, PAPER_RED, INK_GREEN | BRIGHT);
-  paint_table(17, 26, PAPER_RED, INK_GREEN | BRIGHT);
+  paint_chair(22, PAPER_RED | INK_GREEN | BRIGHT);
+  paint_table(26, PAPER_RED | INK_GREEN | BRIGHT);
 
   eaten_items = 0;
 

@@ -23,6 +23,9 @@
 #define UDG_WALL2 129
 #define UDG_WALL3 130
 #define UDG_WALL4 131
+#define UDG_WALL5 142
+#define UDG_LAMP1 143
+#define UDG_LAMP2 144
 #define UDG_CURTAIN 132
 #define UDG_Q_BARRA_CORTINA 133
 #define UDG_SILLAL 134
@@ -48,8 +51,9 @@ struct sp1_ss  *bincatsp = NULL;
 
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
-#define ROOMS_TILES_LEN 14
+#define ROOMS_TILES_LEN 17
 #define ROOMS_TILES_BASE 128
+#define UDG_WINDOWHOLE ROOMS_TILES_BASE + ROOMS_TILES_LEN
 
 const uint8_t rooms[] = {
     0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, // y:0, x:0 (128)
@@ -66,6 +70,9 @@ const uint8_t rooms[] = {
     0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, // y:0, x:11 (139)
     0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:12 (140)
     0x18, 0x18, 0x18, 0x18, 0x00, 0x3c, 0x7e, 0xff, // y:0, x:13 (141)
+    0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0xff, // y:0, x:14 (142)
+    0xe7, 0x3c, 0xdb, 0x42, 0xdb, 0x3c, 0xe7, 0x18, // y:0, x:15 (143)
+    0x00, 0x10, 0x10, 0x10, 0x10, 0x38, 0x38, 0x38, // y:0, x:16 (144)
 };
 
 uint8_t tiles_lvl1[] = {
@@ -321,7 +328,7 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
   for (idx = 0; idx < ROOMS_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(ROOMS_TILES_BASE + idx, pt);
   }
-  sp1_TileEntry(ROOMS_TILES_BASE + ROOMS_TILES_LEN, black_window);
+  sp1_TileEntry(UDG_WINDOWHOLE, black_window);
 
 
   for(idx = 0; idx != 3; ++idx) {
@@ -337,15 +344,18 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
   // draw horizontal wall
   for (idx = 3; idx != 29; ++idx) {
-    sp1_PrintAt( 5, idx, bright_black_paper, UDG_WALL2);
-    sp1_PrintAt( 17, idx, bright_black_paper, UDG_WALL2);
+    for(idx_j = 5; idx_j != 29; idx_j += 12) {
+        sp1_PrintAtInv( idx_j, idx, bright_black_paper, UDG_WALL2);
+    }
   }
 
   // draw vertical wall
   for (idx = 6; idx != 18; ++idx) {
-    sp1_PrintAtInv( idx, 3, bright_black_paper, UDG_WALL1);
-    sp1_PrintAt( idx, 29,  bright_black_paper, UDG_WALL1);
+    for(idx_j = 3; idx_j != 55; idx_j += 26) {
+        sp1_PrintAtInv( idx, idx_j, bright_black_paper, UDG_WALL1);
+    }
   }
+  sp1_PrintAtInv( 17, 3, bright_black_paper, UDG_WALL5);
 
   bright_black_paper = ink_color | paper_color | BRIGHT;
 
@@ -355,19 +365,18 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
   for (idx = 8; idx != 11; ++idx) {
 
-    for (idx_j = 0; idx_j != 2; ++idx_j) {
+    for (idx_j = 0; idx_j != 8; ++idx_j) {
+       if(idx_j < 2 || idx_j > 5) {
         sp1_PrintAt( idx, initial_window + idx_j, bright_black_paper, UDG_CURTAIN);
+       }
     }
 
     // x=8, 9 and y=22-25
     if (idx != 10) {
         for (idx_j = 2; idx_j != 6; ++idx_j) {
-            sp1_PrintAt( idx, initial_window + idx_j,  INK_BLACK | PAPER_WHITE, ROOMS_TILES_BASE + ROOMS_TILES_LEN);
+            sp1_PrintAtInv( idx, initial_window + idx_j,  INK_BLACK | PAPER_WHITE, UDG_WINDOWHOLE);
         }
     }
-
-    sp1_PrintAt( idx, initial_window + 6, bright_black_paper, UDG_CURTAIN);
-    sp1_PrintAt( idx, initial_window + 7, bright_black_paper, UDG_CURTAIN);
   }
 
 }
@@ -434,6 +443,28 @@ void check_keys()
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
         lives = 0;
         all_lives_lost();
+    }
+
+    if (in_key_pressed(IN_KEY_SCANCODE_1)) {
+        print_background_level2();
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_2)) {
+        print_background_level3();
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_3)) {
+        print_background_level4();
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_4)) {
+        print_background_level5();
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_5)) {
+        print_background_level6();
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_6)) {
+        print_background_level7();
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_7)) {
+        print_background_level_last();
     }
 }
 
@@ -631,26 +662,36 @@ void check_fsm() {
     }
 }
 
+void paint_lamp(uint8_t col, uint8_t color) {
+    sp1_PrintAtInv(19, col, color, UDG_Q_MESABASE);
+    for(idx = 15; idx != 19; ++idx) {
+       sp1_PrintAtInv(idx, col, color, UDG_MESAPATA);
+    }
 
-void paint_table(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
-    ink_color = ink_color | paper_color | BRIGHT;
-    sp1_PrintAt(row + 1, col, ink_color, UDG_MESASIDE);
-    sp1_PrintAt(row + 1, col + 1, ink_color, UDG_MESATOP);
-    sp1_PrintAt(row + 1, col + 2,  ink_color, UDG_MESASIDE);
-
-    sp1_PrintAt(row + 2, col + 1,  ink_color, UDG_MESAPATA);
-    sp1_PrintAt(row + 3, col + 1,  ink_color, UDG_Q_MESABASE);
+    for(idx = 13; idx != 15; ++idx) {
+        for(idx_j = col - 1; idx_j != col + 2; ++idx_j) {
+            sp1_PrintAtInv(idx, idx_j, color, UDG_LAMP1);
+        }
+    }
+    sp1_PrintAtInv(15, col + 1, color, UDG_LAMP2);
 }
 
-void paint_chair(uint8_t row, uint8_t col, uint8_t paper_color, uint8_t ink_color) {
-    ink_color = ink_color | paper_color | BRIGHT;
+void paint_table(uint8_t col, uint8_t color) {
+    sp1_PrintAt(18, col, color, UDG_MESASIDE);
+    sp1_PrintAt(18, col + 1, color, UDG_MESATOP);
+    sp1_PrintAt(18, col + 2,  color, UDG_MESASIDE);
 
-    sp1_PrintAt( row, col,  ink_color, UDG_SILLAL); // L
-    sp1_PrintAt( row + 1, col,  ink_color, UDG_SILLAL); // L
-    sp1_PrintAt( row + 2, col,  ink_color, UDG_SILLALM); // LM
-    sp1_PrintAt( row + 2, col + 1,  ink_color, UDG_SILLARM); // RM
-    sp1_PrintAt( row + 3, col,  ink_color, UDG_SILLAL); // L
-    sp1_PrintAt( row + 3, col + 1,  ink_color, UDG_SILLAR); // R
+    sp1_PrintAt(19, col + 1,  color, UDG_MESAPATA);
+    sp1_PrintAt(20, col + 1,  color, UDG_Q_MESABASE);
+}
+
+void paint_chair(uint8_t col, uint8_t color) {
+    sp1_PrintAt( 17, col,  color, UDG_SILLAL); // L
+    sp1_PrintAt( 18, col,  color, UDG_SILLAL); // L
+    sp1_PrintAt( 19, col,  color, UDG_SILLALM); // LM
+    sp1_PrintAt( 19, col + 1,  color, UDG_SILLARM); // RM
+    sp1_PrintAt( 20, col,  color, UDG_SILLAL); // L
+    sp1_PrintAt( 20, col + 1,  color, UDG_SILLAR); // R
 }
 
 void detect_fall_in_chair(uint8_t x_chair) {
