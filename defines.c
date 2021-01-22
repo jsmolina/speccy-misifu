@@ -55,7 +55,7 @@ const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 #define ROOMS_TILES_BASE 128
 #define UDG_WINDOWHOLE ROOMS_TILES_BASE + ROOMS_TILES_LEN
 
-const uint8_t rooms[] = {
+uint8_t rooms[] = {
     0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, // y:0, x:0 (128)
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, // y:0, x:1 (129)
     0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01, // y:0, x:2 (130)
@@ -473,9 +473,10 @@ void check_swim() {
         in_wait_nokey();
         paws = 1;
     }
-    if((in & IN_STICK_LEFT) && misifu.x > 0) {
+    // TODO quiza hacer halts en este nivel extras
+    if((in & IN_STICK_LEFT) && misifu.x > 0 ) {
         --misifu.x;
-        if ((misifu.x & 1) == 0) {
+        if (frame == 2) {
             misifu.offset = SWIM_LC1;
         } else {
             misifu.offset = SWIM_LC2;
@@ -486,9 +487,9 @@ void check_swim() {
         } else if((in & IN_STICK_DOWN)) {
             ++misifu.y;
         }
-    } else if((in & IN_STICK_RIGHT) && misifu.x < 31) {
+    } else if((in & IN_STICK_RIGHT) && misifu.x < 31 ) {
         ++misifu.x;
-        if ((misifu.x & 1) == 0) {
+        if (frame == 2) {
             misifu.offset = SWIM_RC1;
         } else {
             misifu.offset = SWIM_RC2;
@@ -499,11 +500,11 @@ void check_swim() {
             ++misifu.y;
         }
 
-    } else if((in & IN_STICK_DOWN) && misifu.y < 29) {
+    } else if((in & IN_STICK_DOWN) && misifu.y < 29 ) {
         ++misifu.y;
         misifu.offset = SWIM_DOWN1;
 
-    } else if((in & IN_STICK_UP) && misifu.y > 0) {
+    } else if((in & IN_STICK_UP) && misifu.y > 0 ) {
         --misifu.y;
         misifu.offset = SWIM_UP1;
 
