@@ -72,7 +72,8 @@ uint8_t check_udg_collision(uint8_t udgy, uint8_t udgx) {
 
 void  print_background_level4() {
   level = 4;
-  eaten_items = 8;
+  eaten_items = 0;
+  bincat_in_bin = 5; // number of halts
   misifu.offset = SWIM_RC1;
   // todo cat should not take too much or get out of breath... level timer
   // swimming state always here
@@ -139,8 +140,15 @@ void level4_loop() {
             if (check_udg_collision(idx_j, floor_holes[0][idx])) {
                 floor_holes[1][idx] = EATEN_FISH;
                 bit_beepfx_di_fastcall(BEEPFX_SCORE);
-                --eaten_items;
-                 sp1_PrintAtInv(23, 1 + eaten_items, INK_GREEN | PAPER_BLACK | BRIGHT, UDG_FISH);
+                ++eaten_items;
+                if(eaten_items == 4) {
+                    --bincat_in_bin;
+                } else if(eaten_items == 6) {
+                    --bincat_in_bin;
+                } else if(eaten_items == 7) {
+                    --bincat_in_bin;
+                }
+                sp1_PrintAtInv(23, 1 + eaten_items, INK_WHITE | PAPER_CYAN | BRIGHT, UDG_FISH);
             } else {
 
                 if(floor_holes[1][idx] == FISH_TO_RIGHT) {
@@ -159,26 +167,23 @@ void level4_loop() {
 
                 sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_MAGENTA | PAPER_CYAN | BRIGHT, x);
             }
-            intrinsic_halt();
         }
         idx_j += 2;
-        // lower down this level speed
+  }
+
+  // lower down
+  for(idx = 0; idx <= bincat_in_bin; ++idx) {
+      intrinsic_halt();
   }
 
   idx_j = 4;
   for(idx = 0; idx != TOTAL_EELS; ++idx) {
-     // y  = 4, 8, 12, 16
-     sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
-     sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
-     idx_j += 4;
-  }
-
-  idx_j = 4;
-  for(idx = 0; idx != TOTAL_EELS; ++idx) {
-        if (check_udg_collision(idx_j, floor_holes[2][idx]) || check_udg_collision(idx_j, floor_holes[2][idx] + 1)) {
+       if (check_udg_collision(idx_j, floor_holes[2][idx]) || check_udg_collision(idx_j, floor_holes[2][idx] + 1)) {
             get_out_of_level4(ELECTRIFIED);
             return;
-        }
+       }
+       sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+       sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
 
         opened_window = (frame >= 2); // if frame should move +1 (HEAD, HEAD FRAME2)
         if(floor_holes[3][idx] == EEL_TO_RIGHT) {
@@ -209,7 +214,7 @@ void level4_loop() {
         sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1, x, bincat_appears);  // +1 if frame 2, +2 if frame 1
 
     idx_j += 4;
-}
+  }
 
   // cat checks
   if(frame == 2 && misifu.y >= 1) {
@@ -229,7 +234,7 @@ void level4_loop() {
       zx_border(INK_BLACK);
   }
 
-  if(eaten_items == 0) {
+  if(eaten_items == TOTAL_FISHES) {
     get_out_of_level4(WON_LEVEL);
   }
 }
