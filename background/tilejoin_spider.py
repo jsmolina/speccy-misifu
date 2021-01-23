@@ -1,16 +1,12 @@
 import sys
 from PIL import Image
 imgs = [
-    'udg_watertop',
-    'udg_watertop2',
-    'udg_fish',
-    'udg_fish2',
-    'udg_fishL',
-    'udg_fishL2',
-    'udg_serp_F1_01',
-    'udg_serp_F2_01',
-    'udg_serp_F1_02',
-    'udg_serp_F2_02',
+    'udg_spiderplant11',
+    'udg_spiderplant21',
+    'udg_spidershelfleft',
+    'udg_spidershelfright',
+    'udg_spiderempty',
+    'udg_spiderbook'
 ]
 
 imgs = [i + '.png' for i in imgs]
@@ -27,4 +23,4 @@ for im in images:
   new_im.paste(im, (x_offset,0))
   x_offset += im.size[0]
 
-new_im.save('fishtank.png')
+new_im.save('level5.png')

@@ -108,101 +108,101 @@ static void get_out_of_level4(uint8_t fall) {
 
 
 void level4_loop() {
-      x = (frame & 1);
+  x = (frame & 1);
 
-      for(idx = 0; idx != 32; ++idx) {
-        idx_j = UDG_WATERTOP + (x & 1);
-        sp1_PrintAtInv( 0, idx,  BLACK_CYAN_BRIGHT, idx_j);
-        ++x;
-      }
-        //si usamos la de color celeste y magenta, los otros dos colores son banco y negro
-      // move fishes
-      idx_j  = 3; // 3, 5, 7, 9, 11, 13, 15, 17
-      for(idx = 0; idx != TOTAL_FISHES; ++idx) {
-            if(floor_holes[1][idx] != EATEN_FISH) {
-                sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+  for(idx = 0; idx != 32; ++idx) {
+    idx_j = UDG_WATERTOP + (x & 1);
+    sp1_PrintAtInv( 0, idx,  BLACK_CYAN_BRIGHT, idx_j);
+    ++x;
+  }
+    //si usamos la de color celeste y magenta, los otros dos colores son banco y negro
+  // move fishes
+  idx_j  = 3; // 3, 5, 7, 9, 11, 13, 15, 17
+  for(idx = 0; idx != TOTAL_FISHES; ++idx) {
+        if(floor_holes[1][idx] != EATEN_FISH) {
+            sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
 
-                if (check_udg_collision(idx_j, floor_holes[0][idx])) {
-                    floor_holes[1][idx] = EATEN_FISH;
-                    bit_beepfx_di_fastcall(BEEPFX_SCORE);
-                    --eaten_items;
-                     sp1_PrintAtInv(23, 1 + eaten_items, INK_GREEN | PAPER_BLACK | BRIGHT, UDG_FISH);
-                } else {
+            if (check_udg_collision(idx_j, floor_holes[0][idx])) {
+                floor_holes[1][idx] = EATEN_FISH;
+                bit_beepfx_di_fastcall(BEEPFX_SCORE);
+                --eaten_items;
+                 sp1_PrintAtInv(23, 1 + eaten_items, INK_GREEN | PAPER_BLACK | BRIGHT, UDG_FISH);
+            } else {
 
-                    if(floor_holes[1][idx] == FISH_TO_RIGHT) {
-                        x = UDG_FISH + (frame == 2);
-                        ++floor_holes[0][idx];
-                        if(floor_holes[0][idx] == 31) {
-                            ++floor_holes[1][idx]; // FISH_TO_LEFT;
-                        }
-                    } else if(floor_holes[1][idx] == FISH_TO_LEFT) {
-                        x = UDG_FISHL + (frame == 2);
-                        --floor_holes[0][idx];
-                        if(floor_holes[0][idx] == 0) {
-                            --floor_holes[1][idx]; // FISH_TO_RIGHT
-                        }
+                if(floor_holes[1][idx] == FISH_TO_RIGHT) {
+                    x = UDG_FISH + (frame == 2);
+                    ++floor_holes[0][idx];
+                    if(floor_holes[0][idx] == 31) {
+                        ++floor_holes[1][idx]; // FISH_TO_LEFT;
                     }
-
-                    sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_MAGENTA | PAPER_CYAN | BRIGHT, x);
-                    //++floor_holes[0][idx] === coordenada x o no fish
-                    // floor_holes[1][idx] ===direccion
+                } else if(floor_holes[1][idx] == FISH_TO_LEFT) {
+                    x = UDG_FISHL + (frame == 2);
+                    --floor_holes[0][idx];
+                    if(floor_holes[0][idx] == 0) {
+                        --floor_holes[1][idx]; // FISH_TO_RIGHT
+                    }
                 }
-                intrinsic_halt();
+
+                sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_MAGENTA | PAPER_CYAN | BRIGHT, x);
+                //++floor_holes[0][idx] === coordenada x o no fish
+                // floor_holes[1][idx] ===direccion
             }
-            idx_j += 2;
-            // lower down this level speed
-      }
+            intrinsic_halt();
+        }
+        idx_j += 2;
+        // lower down this level speed
+  }
 
-      idx_j = 4;
-      for(idx = 0; idx != TOTAL_EELS; ++idx) {
-            if (check_udg_collision(idx_j, floor_holes[2][idx]) || check_udg_collision(idx_j, floor_holes[2][idx] + 1)) {
-                get_out_of_level4(ELECTRIFIED);
-                return;
-            }
-            // y  = 4, 8, 12, 16
-            if(frame > 1) {
-                sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
-                sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
-                ++floor_holes[2][idx];
-                if(floor_holes[2][idx] == 30) {
-                    floor_holes[2][idx] = 0;
-                }
-                if(frame == 2) {
-                    x = INK_WHITE | PAPER_CYAN | BRIGHT;
-                } else {
-                    x = INK_BLACK | PAPER_CYAN | BRIGHT;
-                }
-                first_keypress = (floor_holes[2][idx] & 1);
-                sp1_PrintAtInv( idx_j, floor_holes[2][idx],
-                                x,
-                                UDG_EEL_TAIL + (first_keypress));
-
-                sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,
-                                x,
-                                UDG_EEL_HEAD + (first_keypress));
-            }
-            idx_j += 4;
-      }
-
-      if(eaten_items == 0) {
-        get_out_of_level4(WON_LEVEL);
-      }
-
-    // cat checks
-    if(frame == 2 && misifu.y >= 1) {
-        --misifu.draw_additional;
-
-        if(misifu.draw_additional == 20) {
-            zx_border(INK_BLUE);
-        } else if(misifu.draw_additional == 10) {
-            zx_border(INK_RED);
-        } else if(misifu.draw_additional == 0) {
-            get_out_of_level4(OXYGEN);
+  idx_j = 4;
+  for(idx = 0; idx != TOTAL_EELS; ++idx) {
+        if (check_udg_collision(idx_j, floor_holes[2][idx]) || check_udg_collision(idx_j, floor_holes[2][idx] + 1)) {
+            get_out_of_level4(ELECTRIFIED);
             return;
         }
-    } else if(misifu.y == 0) {
-        // breathe
-        misifu.draw_additional = 30;
-        zx_border(INK_BLACK);
-    }
+        // y  = 4, 8, 12, 16
+        if(frame > 1) {
+            sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+            sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+            ++floor_holes[2][idx];
+            if(floor_holes[2][idx] == 30) {
+                floor_holes[2][idx] = 0;
+            }
+            if(frame == 2) {
+                x = INK_WHITE | PAPER_CYAN | BRIGHT;
+            } else {
+                x = INK_BLACK | PAPER_CYAN | BRIGHT;
+            }
+            first_keypress = (floor_holes[2][idx] & 1);
+            sp1_PrintAtInv( idx_j, floor_holes[2][idx],
+                            x,
+                            UDG_EEL_TAIL + (first_keypress));
+
+            sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,
+                            x,
+                            UDG_EEL_HEAD + (first_keypress));
+        }
+        idx_j += 4;
+  }
+
+  // cat checks
+  if(frame == 2 && misifu.y >= 1) {
+      --misifu.draw_additional;
+
+      if(misifu.draw_additional == 20) {
+        zx_border(INK_BLUE);
+      } else if(misifu.draw_additional == 10) {
+        zx_border(INK_RED);
+      } else if(misifu.draw_additional == 0) {
+        get_out_of_level4(OXYGEN);
+        return;
+      }
+  } else if(misifu.y == 0) {
+      // breathe
+      misifu.draw_additional = 30;
+      zx_border(INK_BLACK);
+  }
+
+  if(eaten_items == 0) {
+    get_out_of_level4(WON_LEVEL);
+  }
 }

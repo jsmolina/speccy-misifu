@@ -435,6 +435,10 @@ void check_keys()
         ++misifu.y;
     }
 
+    if (in_key_pressed(IN_KEY_SCANCODE_b)) {
+        zx_border(INK_BLACK);
+    }
+
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;

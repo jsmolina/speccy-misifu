@@ -34,4 +34,4 @@ for im in images:
   x_offset += im.size[0]
 
 
-new_im.save('test.png')
+new_im.save('last.png')
