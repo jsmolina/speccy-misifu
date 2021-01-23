@@ -122,7 +122,7 @@ void level5_loop() {
         }
     }
 
-    //move_broom();
+    move_broom();
     // SPIDER, row (5-12), col (17-28)
     //anim_spider();
     // spider should move right, then down, then up

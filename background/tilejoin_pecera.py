@@ -7,10 +7,15 @@ imgs = [
     'udg_fish2',
     'udg_fishL',
     'udg_fishL2',
-    'udg_serp_F1_01',
-    'udg_serp_F2_01',
     'udg_serp_F1_02',
     'udg_serp_F2_02',
+    'udg_serp_F1_01',
+    'udg_serp_F2_01',
+    'udg_serpL_F1_01',
+    'udg_serpL_F2_01',
+    'udg_serpL_F1_02',  # ordering this way we could reuse udg paint order!
+    'udg_serpL_F2_02',
+
 ]
 
 imgs = [i + '.png' for i in imgs]

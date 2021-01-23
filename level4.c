@@ -13,10 +13,16 @@
 #define UDG_FISH2 131
 #define UDG_FISHL 132
 #define UDG_FISHL2 133
-#define UDG_EEL_HEAD 134
-#define UDG_EEL_HEAD2 135
-#define UDG_EEL_TAIL 136
-#define UDG_EEL_TAIL2 137
+
+#define UDG_EEL_TAIL 134
+#define UDG_EEL_TAIL2 135
+#define UDG_EEL_HEAD 136
+#define UDG_EEL_HEAD2 137
+
+#define UDG_EEL_LEFT_HEAD 138
+#define UDG_EEL_LEFT_HEAD2 139
+#define UDG_EEL_LEFT_TAIL 140
+#define UDG_EEL_LEFT_TAIL2 141
 
 #define TOTAL_FISHES 8
 #define TOTAL_EELS 4
@@ -25,7 +31,10 @@
 #define FISH_TO_LEFT 1
 #define EATEN_FISH 2
 
-#define FISHTANK_TILES_LEN  10
+#define EEL_TO_RIGHT 0
+#define EEL_TO_LEFT 1
+
+#define FISHTANK_TILES_LEN  14
 #define FISHTANK_TILES_BASE  128
 uint8_t fishtank[] = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0x3c, 0x00, 0x00, // y:0, x:0 (128)
@@ -34,10 +43,14 @@ uint8_t fishtank[] = {
     0x30, 0x1c, 0x3e, 0x7d, 0x7f, 0x3e, 0x1c, 0x30, // y:0, x:3 (131)
     0x0c, 0x38, 0x7d, 0xbf, 0xff, 0x7d, 0x38, 0x0c, // y:0, x:4 (132)
     0x0c, 0x38, 0x7c, 0xbe, 0xfe, 0x7c, 0x38, 0x0c, // y:0, x:5 (133)
-    0x00, 0x00, 0x7e, 0xfd, 0xff, 0x8e, 0x00, 0x00, // y:0, x:6 (134)
-    0x00, 0xc0, 0xfe, 0xfd, 0x7f, 0x0c, 0x06, 0x00, // y:0, x:7 (135)
-    0x00, 0x00, 0x70, 0xfd, 0xcf, 0x07, 0x00, 0x00, // y:0, x:8 (136)
-    0x00, 0x07, 0xcf, 0xfd, 0x70, 0x00, 0x00, 0x00, // y:0, x:9 (137)
+    0x00, 0x00, 0x70, 0xfd, 0xcf, 0x07, 0x00, 0x00, // y:0, x:6 (134)
+    0x00, 0x07, 0xcf, 0xfd, 0x70, 0x00, 0x00, 0x00, // y:0, x:7 (135)
+    0x00, 0x00, 0x7e, 0xfd, 0xff, 0x8e, 0x00, 0x00, // y:0, x:8 (136)
+    0x00, 0xc0, 0xfe, 0xfd, 0x7f, 0x0c, 0x06, 0x00, // y:0, x:9 (137)
+    0x00, 0x00, 0x7e, 0xbf, 0xff, 0x71, 0x00, 0x00, // y:0, x:10 (138)
+    0x00, 0x03, 0x7f, 0xbf, 0xfe, 0x30, 0x60, 0x00, // y:0, x:11 (139)
+    0x00, 0x00, 0x0e, 0xbf, 0xf3, 0xe0, 0x00, 0x00, // y:0, x:12 (140)
+    0x00, 0xe0, 0xf3, 0xbf, 0x0e, 0x00, 0x00, 0x00, // y:0, x:13 (141)
 };
 
 
@@ -81,7 +94,8 @@ void  print_background_level4() {
 
   for(idx = 0; idx != TOTAL_EELS; ++idx) {
       // y  = 4, 8, 12, 16
-      floor_holes[2][idx] = rand() % 28;
+      floor_holes[2][idx] = rand() % 28 + 1;
+      floor_holes[3][idx] = (idx & 1); // 0 or 1 (EEL_TO_LEFT, EEL_TO_RIGHT)
   }
 
   level_x_max = 28;
@@ -144,8 +158,6 @@ void level4_loop() {
                 }
 
                 sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_MAGENTA | PAPER_CYAN | BRIGHT, x);
-                //++floor_holes[0][idx] === coordenada x o no fish
-                // floor_holes[1][idx] ===direccion
             }
             intrinsic_halt();
         }
@@ -155,34 +167,49 @@ void level4_loop() {
 
   idx_j = 4;
   for(idx = 0; idx != TOTAL_EELS; ++idx) {
+     // y  = 4, 8, 12, 16
+     sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+     sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+     idx_j += 4;
+  }
+
+  idx_j = 4;
+  for(idx = 0; idx != TOTAL_EELS; ++idx) {
         if (check_udg_collision(idx_j, floor_holes[2][idx]) || check_udg_collision(idx_j, floor_holes[2][idx] + 1)) {
             get_out_of_level4(ELECTRIFIED);
             return;
         }
-        // y  = 4, 8, 12, 16
-        if(frame > 1) {
-            sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
-            sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
-            ++floor_holes[2][idx];
-            if(floor_holes[2][idx] == 30) {
-                floor_holes[2][idx] = 0;
-            }
-            if(frame == 2) {
-                x = INK_WHITE | PAPER_CYAN | BRIGHT;
-            } else {
-                x = INK_BLACK | PAPER_CYAN | BRIGHT;
-            }
-            first_keypress = (floor_holes[2][idx] & 1);
-            sp1_PrintAtInv( idx_j, floor_holes[2][idx],
-                            x,
-                            UDG_EEL_TAIL + (first_keypress));
 
-            sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,
-                            x,
-                            UDG_EEL_HEAD + (first_keypress));
+        opened_window = (frame >= 2); // if frame should move +1 (HEAD, HEAD FRAME2)
+        if(floor_holes[3][idx] == EEL_TO_RIGHT) {
+            ++floor_holes[2][idx];
+            first_keypress = UDG_EEL_TAIL + opened_window;
+            bincat_appears = UDG_EEL_HEAD + opened_window;
+
+            if(floor_holes[2][idx] >= 30) {
+                floor_holes[3][idx] = EEL_TO_LEFT;
+            }
+        } else {  /// EEL_TO_LEFT
+            --floor_holes[2][idx];
+            first_keypress = UDG_EEL_LEFT_HEAD + opened_window; // LEFT_HEAD
+            bincat_appears = UDG_EEL_LEFT_TAIL + opened_window; // LEFT TAIL
+
+            if(floor_holes[2][idx] == 0) {
+                floor_holes[3][idx] = EEL_TO_RIGHT;
+            }
         }
-        idx_j += 4;
-  }
+
+        if(frame == 2) {
+            x = INK_WHITE | PAPER_CYAN | BRIGHT;
+        } else {
+            x = INK_BLACK | PAPER_CYAN | BRIGHT;
+        }
+
+        sp1_PrintAtInv( idx_j, floor_holes[2][idx], x, first_keypress);
+        sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1, x, bincat_appears);  // +1 if frame 2, +2 if frame 1
+
+    idx_j += 4;
+}
 
   // cat checks
   if(frame == 2 && misifu.y >= 1) {
