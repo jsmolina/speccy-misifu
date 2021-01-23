@@ -152,7 +152,7 @@ void level5_loop() {
         }
     }
 
-    //dog_checks();
+    dog_checks();
     detect_fall_in_chair(10);
     detect_vase_falling();
     detect_cat_in_window(12);
