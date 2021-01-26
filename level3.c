@@ -1,8 +1,8 @@
 #include "defines.h"
 #include "level4.h"
 
-const uint8_t udg_fishtank1[] = {0x3f, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0x1f, 0x7};
-const uint8_t udg_fishtank2[] = {0xfc, 0xce, 0xff, 0xff, 0x93, 0xfe, 0xf8, 0xe0};
+const uint8_t udg_fishtank1[] = {0x7f, 0x1f, 0x3f, 0x7a, 0x78, 0x7a, 0x3f, 0x0f};
+const uint8_t udg_fishtank2[] = {0xfe, 0xf8, 0x3c, 0x1e, 0x2e, 0x1e, 0x7c, 0xf0};
 
 void  print_background_level3() {
   level = 3;
@@ -17,13 +17,15 @@ void  print_background_level3() {
   print_room_walls(12, PAPER_MAGENTA, INK_CYAN);
 
   // paint the chair
-  paint_chair(17, 10, PAPER_MAGENTA, INK_CYAN);
+  paint_chair(10, PAPER_MAGENTA | INK_CYAN | BRIGHT);
 
   // 17,22
-  paint_table(17, 22, PAPER_MAGENTA, INK_CYAN);
+  paint_table(22, PAPER_MAGENTA | INK_CYAN | BRIGHT);
+
+  paint_lamp(26, PAPER_MAGENTA | INK_CYAN | BRIGHT);
   // fishtank
-  sp1_PrintAt( 17, 22,  INK_CYAN | PAPER_MAGENTA | BRIGHT, 'A');
-  sp1_PrintAt( 17, 23,  INK_CYAN | PAPER_MAGENTA | BRIGHT, 'B');
+  sp1_PrintAt( 17, 22,  INK_WHITE | PAPER_MAGENTA | BRIGHT, 'A');
+  sp1_PrintAt( 17, 23,  INK_WHITE | PAPER_MAGENTA | BRIGHT, 'B');
 
   reset_misifu_position();
 

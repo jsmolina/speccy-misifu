@@ -1,23 +1,13 @@
 import sys
 from PIL import Image
 imgs = [
-    'heart1',
-    'heart2',
-    'cupid11',
-    'cupid12',
-    'cupid13',
-    'cupid21',
-    'cupid22',
-    'cupid23',
-    'cupid31',
-    'cupid32',
-    'cupid33',
-    'catheaven1',
-    'catheaven2',
+    'udg_spiderplant11',
+    'udg_spiderplant21',
+    'udg_spidershelfleft',
+    'udg_spidershelfright',
+    'udg_spiderempty',
+    'udg_spiderbook'
 ]
-for idx, item in enumerate(imgs):
-    print('#define UDG_' + item.upper() + ' {}'.format(128+idx))
-
 
 imgs = [i + '.png' for i in imgs]
 images = [Image.open(x) for x in imgs]
@@ -33,5 +23,4 @@ for im in images:
   new_im.paste(im, (x_offset,0))
   x_offset += im.size[0]
 
-
-new_im.save('last.png')
+new_im.save('level5.png')

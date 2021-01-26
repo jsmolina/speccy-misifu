@@ -1,25 +1,58 @@
 #include <stdlib.h>
 #include <sound.h>
+#include <intrinsic.h>
 #include "defines.h"
 #include "level1.h"
 #include "int.h"
 
 #define BLACK_CYAN_BRIGHT 0x68
-const uint8_t udg_watertop[] = {0xff, 0xef, 0xc5, 0x80, 0x0, 0x0, 0x0, 0x0};
-const uint8_t udg_fish[] = {0x0, 0x9c, 0xbe, 0xfd, 0xff, 0xbf, 0x9e, 0x0};
-const uint8_t udg_fishL[] = {0x0, 0x39, 0x7d, 0xbf, 0xff, 0xfd, 0x79, 0x0};
-const uint8_t udg_eel[] = {0x0, 0x0, 0x0, 0x48, 0x36, 0x1, 0x0, 0x0};
 
-static void print_eel(uint8_t y, uint8_t x, uint8_t toprint) {
-    sp1_PrintAtInv(y, x,  BLACK_CYAN_BRIGHT, toprint);
-}
+#define UDG_WATERTOP 128
+#define UDG_WATERTOP2 129
+#define UDG_FISH 130
+#define UDG_FISH2 131
+#define UDG_FISHL 132
+#define UDG_FISHL2 133
 
-static void assign_eels_pos(uint8_t y, uint8_t x) {
-    floor_holes[idx][Y_POS] = y;
-    floor_holes[idx][X_POS] = x;
-    print_eel(y, x, 'E');
-    ++idx;
-}
+#define UDG_EEL_TAIL 134
+#define UDG_EEL_TAIL2 135
+#define UDG_EEL_HEAD 136
+#define UDG_EEL_HEAD2 137
+
+#define UDG_EEL_LEFT_HEAD 138
+#define UDG_EEL_LEFT_HEAD2 139
+#define UDG_EEL_LEFT_TAIL 140
+#define UDG_EEL_LEFT_TAIL2 141
+
+#define TOTAL_FISHES 8
+#define TOTAL_EELS 4
+
+#define FISH_TO_RIGHT 0
+#define FISH_TO_LEFT 1
+#define EATEN_FISH 2
+
+#define EEL_TO_RIGHT 0
+#define EEL_TO_LEFT 1
+
+#define FISHTANK_TILES_LEN  14
+#define FISHTANK_TILES_BASE  128
+uint8_t fishtank[] = {
+    0xff, 0xff, 0xff, 0xff, 0xff, 0x3c, 0x00, 0x00, // y:0, x:0 (128)
+    0xff, 0xff, 0xff, 0xc3, 0x00, 0x00, 0x00, 0x00, // y:0, x:1 (129)
+    0x30, 0x1c, 0xbe, 0xfd, 0xff, 0xbe, 0x1c, 0x30, // y:0, x:2 (130)
+    0x30, 0x1c, 0x3e, 0x7d, 0x7f, 0x3e, 0x1c, 0x30, // y:0, x:3 (131)
+    0x0c, 0x38, 0x7d, 0xbf, 0xff, 0x7d, 0x38, 0x0c, // y:0, x:4 (132)
+    0x0c, 0x38, 0x7c, 0xbe, 0xfe, 0x7c, 0x38, 0x0c, // y:0, x:5 (133)
+    0x00, 0x00, 0x70, 0xfd, 0xcf, 0x07, 0x00, 0x00, // y:0, x:6 (134)
+    0x00, 0x07, 0xcf, 0xfd, 0x70, 0x00, 0x00, 0x00, // y:0, x:7 (135)
+    0x00, 0x00, 0x7e, 0xfd, 0xff, 0x8e, 0x00, 0x00, // y:0, x:8 (136)
+    0x00, 0xc0, 0xfe, 0xfd, 0x7f, 0x0c, 0x06, 0x00, // y:0, x:9 (137)
+    0x00, 0x00, 0x7e, 0xbf, 0xff, 0x71, 0x00, 0x00, // y:0, x:10 (138)
+    0x00, 0x03, 0x7f, 0xbf, 0xfe, 0x30, 0x60, 0x00, // y:0, x:11 (139)
+    0x00, 0x00, 0x0e, 0xbf, 0xf3, 0xe0, 0x00, 0x00, // y:0, x:12 (140)
+    0x00, 0xe0, 0xf3, 0xbf, 0x0e, 0x00, 0x00, 0x00, // y:0, x:13 (141)
+};
+
 
 uint8_t check_udg_collision(uint8_t udgy, uint8_t udgx) {
     if ((misifu.x <= udgx) && (misifu.x >= (udgx - 2))) {
@@ -39,7 +72,8 @@ uint8_t check_udg_collision(uint8_t udgy, uint8_t udgx) {
 
 void  print_background_level4() {
   level = 4;
-  eaten_items = 8;
+  eaten_items = 0;
+  bincat_in_bin = 5; // number of halts
   misifu.offset = SWIM_RC1;
   // todo cat should not take too much or get out of breath... level timer
   // swimming state always here
@@ -48,36 +82,22 @@ void  print_background_level4() {
                   ' ' );
   sp1_Invalidate(&full_screen);
 
-
-  sp1_TileEntry('W', udg_watertop);
-  sp1_TileEntry('A', udg_fish);
-  sp1_TileEntry('B', udg_fishL);
-  sp1_TileEntry('E', udg_eel);
-
-  // paint watertop (once)
-  for(idx = 0; idx != 32; ++idx) {
-    sp1_PrintAt( 0, idx,  BLACK_CYAN_BRIGHT, 'W');
+  uint8_t *pt = fishtank;
+  for (idx = 0; idx < FISHTANK_TILES_LEN; idx++, pt += 8) {
+     sp1_TileEntry(FISHTANK_TILES_BASE + idx, pt);
   }
 
-  // udgxs, udgys are fishes. Mod is slow, but helps reduce code and paint might be slow.
-  idx_j = 3;
-  for(idx = 0; idx != 8; ++idx) {
-        windows[idx].x = rand() % 28;
-        windows[idx].y = idx_j;
-        windows[idx].has_item = FISH_RIGHT;
-
-         // row, col
-        sp1_PrintAt( windows[idx].y, windows[idx].x,  BLACK_CYAN_BRIGHT, 'A');
-        idx_j += 2; // fishes are 3, 5, 7, 9, 11, 13, 15, 17
+  // start fishes positions
+  for(idx = 0; idx != TOTAL_FISHES; ++idx) {
+        floor_holes[0][idx] = rand() % 28;
+        floor_holes[1][idx] = FISH_TO_RIGHT; // direction
   }
 
-  idx = 0;
-  assign_eels_pos(4, 3);
-  assign_eels_pos(8, 24);
-  assign_eels_pos(12, 12);
-  assign_eels_pos(16, 5);
-  assign_eels_pos(4, 12);
-
+  for(idx = 0; idx != TOTAL_EELS; ++idx) {
+      // y  = 4, 8, 12, 16
+      floor_holes[2][idx] = rand() % 28 + 1;
+      floor_holes[3][idx] = (idx & 1); // 0 or 1 (EEL_TO_LEFT, EEL_TO_RIGHT)
+  }
 
   level_x_max = 28;
   level_x_min = 1;
@@ -102,91 +122,119 @@ static void get_out_of_level4(uint8_t fall) {
 }
 
 
-static void print_fish(uint8_t idx, uint8_t to_print) {
-    if(to_print == 'Z') {
-        return;
-    }
-    sp1_PrintAtInv( windows[idx].y, windows[idx].x,  BLACK_CYAN_BRIGHT, to_print);
-}
-
 void level4_loop() {
+  x = (frame & 1);
 
-    // fish collision
-    for(idx = 0; idx != 8; ++idx) {
-        if(windows[idx].has_item != 'Z' && check_udg_collision(windows[idx].y, windows[idx].x) == 1) {
-            windows[idx].has_item = 'Z';  // eaten fish
-            repaint_lives = 1;
-            // delete collided fish
-            sp1_PrintAtInv(windows[idx].y, windows[idx].x, BLACK_CYAN_BRIGHT, ' ');
-            windows[idx].x = 1;
-            windows[idx].y = 23;
-            sp1_PrintAtInv(windows[idx].y, windows[idx].x + eaten_items, INK_GREEN | PAPER_BLACK, 'A');
-            bit_beepfx_di_fastcall(BEEPFX_SCORE);
-            --eaten_items;
+  for(idx = 0; idx != 32; ++idx) {
+    idx_j = UDG_WATERTOP + (x & 1);
+    sp1_PrintAtInv( 0, idx,  BLACK_CYAN_BRIGHT, idx_j);
+    ++x;
+  }
+    //si usamos la de color celeste y magenta, los otros dos colores son banco y negro
+  // move fishes
+  idx_j  = 3; // 3, 5, 7, 9, 11, 13, 15, 17
+  for(idx = 0; idx != TOTAL_FISHES; ++idx) {
+        if(floor_holes[1][idx] != EATEN_FISH) {
+            sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
 
-            if(eaten_items == 0) {
-                get_out_of_level4(WON_LEVEL);
+            if (check_udg_collision(idx_j, floor_holes[0][idx])) {
+                floor_holes[1][idx] = EATEN_FISH;
+                bit_beepfx_di_fastcall(BEEPFX_SCORE);
+                ++eaten_items;
+                if(eaten_items == 4) {
+                    --bincat_in_bin;
+                } else if(eaten_items == 6) {
+                    --bincat_in_bin;
+                } else if(eaten_items == 7) {
+                    --bincat_in_bin;
+                }
+                sp1_PrintAtInv(23, 1 + eaten_items, INK_WHITE | PAPER_CYAN | BRIGHT, UDG_FISH);
+            } else {
+
+                if(floor_holes[1][idx] == FISH_TO_RIGHT) {
+                    x = UDG_FISH + (frame == 2);
+                    ++floor_holes[0][idx];
+                    if(floor_holes[0][idx] == 31) {
+                        ++floor_holes[1][idx]; // FISH_TO_LEFT;
+                    }
+                } else if(floor_holes[1][idx] == FISH_TO_LEFT) {
+                    x = UDG_FISHL + (frame == 2);
+                    --floor_holes[0][idx];
+                    if(floor_holes[0][idx] == 0) {
+                        --floor_holes[1][idx]; // FISH_TO_RIGHT
+                    }
+                }
+
+                sp1_PrintAtInv( idx_j, floor_holes[0][idx],  INK_MAGENTA | PAPER_CYAN | BRIGHT, x);
             }
         }
-    }
-    // eel collision
-    for(idx = 0; idx != 5; ++idx) {
+        idx_j += 2;
+  }
 
-        if(check_udg_collision(floor_holes[idx][Y_POS], floor_holes[idx][X_POS]) == 1)
-        {
-            // loose a life and out of level
+  // lower down
+  for(idx = 0; idx <= bincat_in_bin; ++idx) {
+      intrinsic_halt();
+  }
+
+  idx_j = 4;
+  for(idx = 0; idx != TOTAL_EELS; ++idx) {
+       if (check_udg_collision(idx_j, floor_holes[2][idx]) || check_udg_collision(idx_j, floor_holes[2][idx] + 1)) {
             get_out_of_level4(ELECTRIFIED);
             return;
-        }
-    }
+       }
+       sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+       sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
 
-    //fishes_on_move();
-    if(frame == 2) { // 1/4 of times
-        for(idx = 0; idx != 8; ++idx) {
-            // move to the right until reached limits
-            print_fish(idx, ' ');
-            if( windows[idx].has_item == FISH_RIGHT) {
-                ++windows[idx].x;
-            } else if( windows[idx].has_item == FISH_LEFT) {
-                --windows[idx].x;
+        opened_window = (frame >= 2); // if frame should move +1 (HEAD, HEAD FRAME2)
+        if(floor_holes[3][idx] == EEL_TO_RIGHT) {
+            ++floor_holes[2][idx];
+            first_keypress = UDG_EEL_TAIL + opened_window;
+            bincat_appears = UDG_EEL_HEAD + opened_window;
+
+            if(floor_holes[2][idx] >= 30) {
+                floor_holes[3][idx] = EEL_TO_LEFT;
             }
-            print_fish(idx, windows[idx].has_item);
+        } else {  /// EEL_TO_LEFT
+            --floor_holes[2][idx];
+            first_keypress = UDG_EEL_LEFT_HEAD + opened_window; // LEFT_HEAD
+            bincat_appears = UDG_EEL_LEFT_TAIL + opened_window; // LEFT TAIL
 
-            if(windows[idx].x >= 30) {
-                windows[idx].has_item = FISH_LEFT;
-            } else if(windows[idx].x < 1) {
-                windows[idx].has_item = FISH_RIGHT;
+            if(floor_holes[2][idx] == 0) {
+                floor_holes[3][idx] = EEL_TO_RIGHT;
             }
-
         }
-    }
-    // eels on move
-    if(random_value < 40) {
-        for(idx = 0; idx != 5; ++idx) {
-            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], ' ');
-            if(floor_holes[idx][X_POS] > 30) {
-                floor_holes[idx][X_POS] = 0;
-            }
-            ++floor_holes[idx][X_POS];
-            print_eel(floor_holes[idx][Y_POS], floor_holes[idx][X_POS], 'E');
-        }
-    }
 
-    // cat checks
-    if(frame == 2 && misifu.y >= 1) {
-        --misifu.draw_additional;
-
-        if(misifu.draw_additional == 20) {
-            zx_border(INK_BLUE);
-        } else if(misifu.draw_additional == 10) {
-            zx_border(INK_RED);
-        } else if(misifu.draw_additional == 0) {
-            get_out_of_level4(OXYGEN);
-            return;
+        if(frame == 2) {
+            x = INK_WHITE | PAPER_CYAN | BRIGHT;
+        } else {
+            x = INK_BLACK | PAPER_CYAN | BRIGHT;
         }
-    } else if(misifu.y == 0) {
-        // breathe
-        misifu.draw_additional = 30;
-        zx_border(INK_BLACK);
-    }
+
+        sp1_PrintAtInv( idx_j, floor_holes[2][idx], x, first_keypress);
+        sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1, x, bincat_appears);  // +1 if frame 2, +2 if frame 1
+
+    idx_j += 4;
+  }
+
+  // cat checks
+  if(frame == 2 && misifu.y >= 1) {
+      --misifu.draw_additional;
+
+      if(misifu.draw_additional == 20) {
+        zx_border(INK_BLUE);
+      } else if(misifu.draw_additional == 10) {
+        zx_border(INK_RED);
+      } else if(misifu.draw_additional == 0) {
+        get_out_of_level4(OXYGEN);
+        return;
+      }
+  } else if(misifu.y == 0) {
+      // breathe
+      misifu.draw_additional = 30;
+      zx_border(INK_BLACK);
+  }
+
+  if(eaten_items == TOTAL_FISHES) {
+    get_out_of_level4(WON_LEVEL);
+  }
 }

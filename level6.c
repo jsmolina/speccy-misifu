@@ -21,8 +21,8 @@ void  print_background_level6() {
 
   print_room_walls(20, PAPER_RED, INK_GREEN);
   // paint the chair
-  paint_chair(17, 22, PAPER_RED, INK_GREEN);
-  paint_table(17, 26, PAPER_RED, INK_GREEN);
+  paint_chair( 22, PAPER_RED | INK_GREEN | BRIGHT);
+  paint_table( 26, PAPER_RED | INK_GREEN | BRIGHT);
   // 18, 27
   sp1_PrintAt(17, 26, GREEN_RED_BRIGHT, 'C');
   sp1_PrintAt(17, 27, GREEN_RED_BRIGHT, 'D');

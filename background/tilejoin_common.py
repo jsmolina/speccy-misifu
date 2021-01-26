@@ -14,7 +14,10 @@ imgs = [
     'mesatop',
     'mesapata',
     'mesaside',
-    'q_mesabase'
+    'q_mesabase',
+    'wall5',
+    'lamp1',
+    'lamp2'
 ]
 
 imgs = [i + '.png' for i in imgs]

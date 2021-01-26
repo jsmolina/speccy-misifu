@@ -21,4 +21,4 @@ for im in images:
   new_im.paste(im, (x_offset,0))
   x_offset += im.size[0]
 
-new_im.save('test.png')
+new_im.save('level2.png')
