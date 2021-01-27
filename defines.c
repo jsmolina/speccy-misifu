@@ -360,7 +360,7 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
   bright_black_paper = ink_color | paper_color | BRIGHT;
 
   for (idx = initial_window; idx != initial_window + 8; ++idx) {
-     sp1_PrintAt( 7, idx, bright_black_paper, UDG_Q_BARRA_CORTINA);
+     sp1_PrintAt( 7, idx, INK_WHITE | paper_color | BRIGHT, UDG_Q_BARRA_CORTINA);
   }
 
   for (idx = 8; idx != 11; ++idx) {
@@ -811,9 +811,9 @@ void detect_cat_in_window(uint8_t offset) {
     }
 }
 
-static void check_broom_collision() {
+inline void check_broom_collision() {
 
-    if (misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+    if (misifu.state != FALLING_FLOOR && misifu.state!= JUMPING_PUSHED && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
         misifu.state = JUMPING_PUSHED;
         misifu.initial_jump_y = misifu.y;
         // will jump right or left depending on where is hit

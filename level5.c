@@ -162,6 +162,8 @@ inline void detect_vase_falling() {
     for(idx = 19; idx != 31; idx += 4) {
         if(misifu.y == 4 && windows[idx_j].has_item != BROKEN_VASE && (misifu.x >= idx -1 && misifu.x <= idx)) {
             windows[idx_j].has_item = BROKEN_VASE;
+            misifu.state = FALLING_FLOOR;
+            misifu.draw_additional = NONE;
             bit_beepfx_di_fastcall(BEEPFX_HIT_2);
             paint_vase(idx, ' ');
             --eaten_items;
@@ -175,7 +177,7 @@ void level5_loop() {
     // misifu.state = CAT_IN_ROPE;
     if(misifu.state == FALLING) {
         // 5 to 19, impair
-        if(misifu.x > 16 && misifu.x < 28 && misifu.y >= 5 && misifu.y < 20 && (misifu.y & 1) == 0) {
+        if(misifu.x > 16 && misifu.x < 29 && misifu.y >= 5 && misifu.y < 20 && (misifu.y & 1) == 0) {
             misifu.state = CAT_IN_ROPE;
             misifu.draw_additional = CAT_IN_SHELVE;
         }
@@ -218,14 +220,15 @@ void level5_loop() {
     // bincat_appears, bincat_in_bin
     sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1 +SPIDER, windows[0].y, windows[0].x, 0, 0);
 
-    detect_cat_in_window(12);
+    detect_cat_in_window(11);
     dog_checks();
     if(eaten_items == 0) {
         get_out_of_level_generic(WON_LEVEL);
     }
 
     //detect_spider_bite();
-    if(abs(windows[0].y - misifu.y) < 1 && abs(windows[0].x - misifu.x) < 1) {
+    if(misifu.state != FALLING_FLOOR && abs(windows[0].y - misifu.y) < 2 &&
+        (windows[0].x == misifu.x || windows[0].x == (misifu.x + 1))) {
         // SPIDER BITE
         get_out_of_level_generic(BITE);
     }
