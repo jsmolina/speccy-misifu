@@ -211,14 +211,15 @@ void level5_loop() {
         }
     }
 
-    dog_checks();
     detect_fall_in_chair(10);
     detect_vase_falling();
-    detect_cat_in_window(12);
+
 
     // bincat_appears, bincat_in_bin
     sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1 +SPIDER, windows[0].y, windows[0].x, 0, 0);
 
+    detect_cat_in_window(12);
+    dog_checks();
     if(eaten_items == 0) {
         get_out_of_level_generic(WON_LEVEL);
     }
