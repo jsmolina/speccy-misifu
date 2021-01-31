@@ -23,7 +23,7 @@ imgs = [
     'udg_silla2_parte03',
     'udg_silla2_parte04',
 ]
-result = ["#define {} {}".format(i.upper(), idx + 65) for idx, i in enumerate(imgs)]
+result = ["#define {} {}".format(i.upper(), idx + 128) for idx, i in enumerate(imgs)]
 print('\n'.join(result))
 
 imgs = [i + '.png' for i in imgs]
