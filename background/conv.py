@@ -100,3 +100,43 @@ for i in holes:
     holes_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
 print("const uint8_t coords_holes [] = {" + ", ".join(holes_coords) + "};")
 print("#define TOTAL_COORDS_HOLES {}".format(len(holes_coords)))
+
+#((1,2,3), repeticiones) tipos de udg, al llegar a 10 saltar fila
+# 1 = udg_libros_01, udg_libros_02
+# 2 = udg_libro_inclinado_01, udg_libro_inclinado_02
+# 3 = udg_estanteria_top_vacio, vacio
+
+# por defecto pinto completo de udg_libros_01, udg_libros_02
+
+
+agujeros = (
+    (1, 7), (9, 15), # 1
+    (15,  # 2
+     0), (2, 3), (6, 7), (8, 15),  # 3
+    (3, 8),  # 4
+    (15, 2), (3, 4), (5, 9),  # 5
+    (15, 2), (5, 15),  # 6
+    (1, 3), (4, 5), (7, 8), # 7
+    (15, 3), (7, 8), # 8
+    (15, 0), (2, 6), (9, 15), # 9
+    (2, 6), (5, 6), # 10
+    (15, 2), (4, 5), (6, 8), # 11
+    (15, 4), (8, 15), # 12
+    (0, 2), (3, 6), (7, 9), # 13
+    (15, 2), (7, 15)  # 14
+)
+# solo pares, fila, col
+inclinados = ((0, 5), (4, 1), (4, 7), (8, 5), (10, 1), (12, 5))
+
+
+empty_coords = []
+for i in agujeros:
+    empty_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
+print("const uint8_t empty_holes [] = {" + ", ".join(empty_coords) + "};")
+print("#define TOTAL_EMPTY_HOLES {}".format(len(empty_coords)))
+
+italic_coords = []
+for i in inclinados:
+    italic_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
+print("const uint8_t italic [] = {" + ", ".join(italic_coords) + "};")
+print("#define TOTAL_ITALIC_HOLES {}".format(len(italic_coords)))
