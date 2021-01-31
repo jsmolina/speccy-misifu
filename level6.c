@@ -126,5 +126,5 @@ void level6_loop() {
     }
 
     detect_cat_in_window(0);
-    //dog_checks();
+    dog_checks();
 }
