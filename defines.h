@@ -245,6 +245,7 @@ extern void check_fsm();
 extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color);
 
 extern void paint_chair(uint8_t col, uint8_t color);
+extern void paint_chair2(uint8_t col, uint8_t color);
 
 extern void detect_fall_in_chair(uint8_t x_chair);
 

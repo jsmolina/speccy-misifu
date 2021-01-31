@@ -36,6 +36,10 @@
 #define UDG_MESAPATA 139
 #define UDG_MESASIDE 140
 #define UDG_Q_MESABASE 141
+#define UDG_SILLA2_PARTE01 82
+#define UDG_SILLA2_PARTE02 83
+#define UDG_SILLA2_PARTE03 84
+#define UDG_SILLA2_PARTE04 85
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
@@ -51,7 +55,7 @@ struct sp1_ss  *bincatsp = NULL;
 
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
-#define ROOMS_TILES_LEN 17
+#define ROOMS_TILES_LEN 21
 #define ROOMS_TILES_BASE 128
 #define UDG_WINDOWHOLE ROOMS_TILES_BASE + ROOMS_TILES_LEN
 
@@ -73,6 +77,10 @@ uint8_t rooms[] = {
     0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0xff, // y:0, x:14 (142)
     0xe7, 0x3c, 0xdb, 0x42, 0xdb, 0x3c, 0xe7, 0x18, // y:0, x:15 (143)
     0x00, 0x10, 0x10, 0x10, 0x10, 0x38, 0x38, 0x38, // y:0, x:16 (144)
+    0x0e, 0x0e, 0x0e, 0x0e, 0x0e, 0x0e, 0x0e, 0x0e, // y:0, x:17 (145)
+    0xee, 0xea, 0xee, 0x0e, 0x0e, 0x0e, 0x0e, 0x0e, // y:0, x:18 (146)
+    0x7f, 0xff, 0xff, 0x00, 0xe0, 0xe0, 0xe0, 0xe0, // y:0, x:19 (147)
+    0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, // y:0, x:20 (148)
 };
 
 uint8_t tiles_lvl1[] = {
@@ -691,12 +699,22 @@ void paint_table(uint8_t col, uint8_t color) {
 }
 
 void paint_chair(uint8_t col, uint8_t color) {
-    sp1_PrintAt( 17, col,  color, UDG_SILLAL); // L
-    sp1_PrintAt( 18, col,  color, UDG_SILLAL); // L
-    sp1_PrintAt( 19, col,  color, UDG_SILLALM); // LM
-    sp1_PrintAt( 19, col + 1,  color, UDG_SILLARM); // RM
-    sp1_PrintAt( 20, col,  color, UDG_SILLAL); // L
-    sp1_PrintAt( 20, col + 1,  color, UDG_SILLAR); // R
+    for(idx_j = 17; idx_j != 21; ++idx_j) {
+        sp1_PrintAt( idx_j, col,  color, UDG_SILLAL); // RESPALDO Y PATA IZQ
+    }
+    sp1_PrintAtInv( 19, col,  color, UDG_SILLALM); // ASIENTO
+    sp1_PrintAt( 19, col + 1,  color, UDG_SILLARM); // ASIENTO
+    sp1_PrintAt( 20, col + 1,  color, UDG_SILLAR); // PATA DERECHA
+}
+
+void paint_chair2(uint8_t col, uint8_t color) {
+    for(idx_j = 17; idx_j != 21; ++idx_j) {
+        sp1_PrintAt( idx_j, col + 1,  color, UDG_SILLA2_PARTE01); // RESPALDO Y PATA DER
+    }
+
+    sp1_PrintAtInv( 19, col + 1,  color, UDG_SILLA2_PARTE02); // ASIENTO
+    sp1_PrintAt( 19, col,  color, UDG_SILLA2_PARTE03); // ASIENTO
+    sp1_PrintAt( 20, col,  color, UDG_SILLA2_PARTE04); // PATA FRONTAL
 }
 
 void detect_fall_in_chair(uint8_t x_chair) {

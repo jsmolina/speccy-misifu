@@ -1,27 +1,13 @@
 import sys
 from PIL import Image
 imgs = [
-    'wall1',
-    'wall2',
-    'wall3',
-    'wall4',
-    'curtain',
-    'q_barra_cortina',
-    'udg_sillaL',
-    'udg_sillaLM',
-    'udg_sillaRM',
-    'udg_sillaR',
-    'mesatop',
-    'mesapata',
-    'mesaside',
-    'q_mesabase',
-    'wall5',
-    'lamp1',
-    'lamp2',
-    'udg_silla2_parte01',
-    'udg_silla2_parte02',
-    'udg_silla2_parte03',
-    'udg_silla2_parte04',
+    'udg_cuadro_superior_izquierda',
+    'udg_cuadro_superior_derecha',
+    'udg_cuadro_inferior_izquierda',
+    'udg_cuadro_inferior_derecha',
+    'udg_jaula_derecha_rota',
+    'udg_jaula_derecha',
+    'udg_jaula_izquierda',
 ]
 result = ["#define {} {}".format(i.upper(), idx + 65) for idx, i in enumerate(imgs)]
 print('\n'.join(result))
@@ -40,4 +26,4 @@ for im in images:
   new_im.paste(im, (x_offset,0))
   x_offset += im.size[0]
 
-new_im.save('rooms.png')
+new_im.save('level6.png')
