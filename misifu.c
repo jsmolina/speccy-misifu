@@ -114,7 +114,8 @@ int main()
             }
         }
     } else if(level == 2) {
-        check_chair_and_table();
+        detect_fall_in_table(0);
+        detect_fall_in_chair(22, 1);
     } else  if (level == 3) {
         detect_fishtank_fall_in_hole_or_curtain();
     } else if (level == 5) {

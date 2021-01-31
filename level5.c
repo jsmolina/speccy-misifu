@@ -213,7 +213,7 @@ void level5_loop() {
         }
     }
 
-    detect_fall_in_chair(10);
+    detect_fall_in_chair(10, 1);
     detect_vase_falling();
 
 

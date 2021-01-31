@@ -247,7 +247,7 @@ extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_
 extern void paint_chair(uint8_t col, uint8_t color);
 extern void paint_chair2(uint8_t col, uint8_t color);
 
-extern void detect_fall_in_chair(uint8_t x_chair);
+extern void detect_fall_in_chair(uint8_t x_chair, uint8_t bin);
 
 extern void paint_table(uint8_t col, uint8_t color);
 
@@ -263,7 +263,7 @@ extern struct sp1_ss * add_sprite_swim();
 
 extern struct sp1_ss * add_sprite_protar1();
 
-extern void check_chair_and_table();
+extern void detect_fall_in_table(uint8_t offset);
 
 extern void move_right_and_left();
 extern void assign_window_pos(uint8_t y, uint8_t x);

@@ -717,14 +717,14 @@ void paint_chair2(uint8_t col, uint8_t color) {
     sp1_PrintAt( 20, col,  color, UDG_SILLA2_PARTE04); // PATA FRONTAL
 }
 
-void detect_fall_in_chair(uint8_t x_chair) {
+void detect_fall_in_chair(uint8_t x_chair, uint8_t bin) {
     if(misifu.state == FALLING && misifu.x == x_chair && misifu.y == 17) {
         misifu.state = CAT_ON_HIGH;
-        misifu.in_bin = 1;
+        misifu.in_bin = bin;
         misifu.offset = (int)BORED;
     }
 
-    if(misifu.in_bin == 1 && misifu.x != x_chair) {
+    if(misifu.in_bin == bin && misifu.x != x_chair) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
@@ -899,22 +899,22 @@ void move_broom() {
 
 
 
-void check_chair_and_table() {
-
+void detect_fall_in_table(uint8_t offset) {
+    idx = 25 - offset;
+    idx_j = 27 - offset;
     if(misifu.state == FALLING) {
-        if(misifu.y == 16 && misifu.x >= 25 && misifu.x <= 27) {
+        if(misifu.y == 16 && misifu.x >= idx && misifu.x <= idx_j) {
             misifu.state = CAT_ON_HIGH;
             misifu.offset = (int)BORED;
             misifu.in_bin = 2;
         }
     }
 
-    if(misifu.in_bin == 2 && !(misifu.x >= 25 && misifu.x <= 27)) {
+    if(misifu.in_bin == 2 && !(misifu.x >= idx && misifu.x <= idx_j)) {
         misifu.state = FALLING;
         misifu.in_bin = NONE;
     }
 
-    detect_fall_in_chair(22);
 }
 
 void assign_window_pos(uint8_t y, uint8_t x) {
