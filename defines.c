@@ -153,6 +153,7 @@ uint8_t lives = 0;
 uint8_t last_success_level = 0;
 uint8_t repaint_lives = 0;
 uint8_t points = 0;
+uint8_t window_shown = 0;
 
 
 // hearts holes
@@ -733,10 +734,8 @@ void get_out_of_level_generic(uint8_t fall) {
                   INK_BLACK | PAPER_WHITE,
                   ' ' );
     // control wether if gets out of level by having eat all mouses
-    if(fall != FALLING) {
-        sp1_Invalidate(&full_screen);
-        sp1_TileEntry('H', heart2);
-    }
+    sp1_Invalidate(&full_screen);
+    sp1_TileEntry('H', heart2);
 
     if(fall == LEVELFINISHED) {
         last_success_level = 0;
@@ -788,7 +787,6 @@ void get_out_of_level_generic(uint8_t fall) {
         }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else if(fall == FALLING) {
-        sp1_UpdateNow();
         bit_beepfx_di_fastcall(BEEPFX_UH_HUH);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
@@ -831,7 +829,8 @@ void detect_cat_in_window(uint8_t offset) {
         if(misifu.x == (19 - offset) || misifu.x == (20 - offset) || misifu.x == (25 - offset) || misifu.x == (26 - offset)) {
             misifu.state = CAT_IN_ROPE;
         } else if(misifu.x >= (21 - offset) && misifu.x <= (24 - offset)) {
-            get_out_of_level_generic(FALLING);
+            //get_out_of_level_generic(FALLING);
+            window_shown = 10;
         }
     }
 }

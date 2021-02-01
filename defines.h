@@ -117,6 +117,7 @@ extern struct sp1_Rect full_screen;
 
 extern uint8_t level_x_max;
 extern uint8_t level_x_min;
+extern uint8_t window_shown;
 
 // shared vars
 extern uint8_t x;
