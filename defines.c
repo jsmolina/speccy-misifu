@@ -52,6 +52,7 @@ struct prota misifu;
 struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
+struct sp1_ss  *birdsp = NULL;
 
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
@@ -253,7 +254,7 @@ struct sp1_ss * add_sprite_protar1() {
   return sp;
 }
 
-struct sp1_ss * add_sprite_swim() {
+inline struct sp1_ss * add_sprite_swim() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 4, 0, 1);
   sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, 192, 1);  // 32*6
@@ -265,7 +266,7 @@ struct sp1_ss * add_sprite_swim() {
   return sp;
 }
 
-static struct sp1_ss * add_sprite_dogr1() {
+inline struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 192, 0); // 192 = 48 * 4
@@ -280,7 +281,7 @@ static struct sp1_ss * add_sprite_dogr1() {
 inline struct sp1_ss * add_sprite_bincat() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 192, 0); // 48 * 4
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 96, 0); // 48 * 2
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
   //sp1_IterateSprChar(sp, initialiseColour);
@@ -289,7 +290,8 @@ inline struct sp1_ss * add_sprite_bincat() {
 }
 
 
-static struct sp1_ss * add_sprite_auxiliar() {
+
+inline struct sp1_ss * add_sprite_auxiliar() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 288, 0);
@@ -810,6 +812,11 @@ void get_out_of_level_generic(uint8_t fall) {
             all_lives_lost();
         }
         repaint_lives = 1;
+    }
+
+    if(birdsp != NULL) {
+        sp1_DeleteSpr_fastcall(birdsp);
+        birdsp = NULL;
     }
 
     opened_window_frames = 2;

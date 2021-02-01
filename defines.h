@@ -46,8 +46,6 @@
 
 #define AUX_BINCAT 0
 #define SPIDER 48 // (16 * 2) + 16
-#define BIRD_OFFSET 96
-#define BIRD_OFFSET2 144
 
 #define RIGHTC1 0
 #define RIGHTC2 64
@@ -113,6 +111,7 @@ extern struct prota misifu;
 extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
+extern struct sp1_ss  *birdsp;
 
 extern struct sp1_Rect full_screen;
 
@@ -177,6 +176,8 @@ extern uint8_t sprite_dog3[];
 extern uint8_t sprite_bincat1[];
 extern uint8_t sprite_bincat2[];
 extern uint8_t sprite_bincat3[];
+
+extern uint8_t sprite_bird1[];
 
 extern uint8_t auxiliar1[];
 extern uint8_t auxiliar2[];
@@ -259,9 +260,11 @@ extern void detect_cat_in_window(uint8_t offset);
 
 extern void move_broom();
 
-extern struct sp1_ss * add_sprite_swim();
+extern inline struct sp1_ss * add_sprite_swim();
 
 extern struct sp1_ss * add_sprite_protar1();
+
+extern inline struct sp1_ss * add_sprite_bird();
 
 extern void detect_fall_in_table(uint8_t offset);
 

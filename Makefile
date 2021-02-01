@@ -41,6 +41,9 @@ dogsprites:
 bincat:
 	png2sp1sprite ./sprites/bincat_sprites.png -m ./sprites/bincat_sprites_mask.png -i sprite_bincat -f 16 > ./build/bincat.asm
 
+birdsprite:
+	png2sp1sprite ./sprites/bird1.png -m ./sprites/bird1_mask.png -i sprite_bird -f 8 > ./build/bird.asm
+
 clothes:
 	@png2udg ./background/udg_clothes11.png
 	@png2udg ./background/udg_clothes12.png

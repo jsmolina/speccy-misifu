@@ -21,6 +21,11 @@
 #define CAGE_THIRD_POS 19
 #define CAGE_FOURTH_POS 20
 
+#define BIRD_RIGHT 0
+#define BIRD_RIGHT2 32
+#define BIRD_LEFT 64
+#define BIRD_LEFT2 96
+
 const uint8_t level6[] = {
     0xff, 0x80, 0xbf, 0xbc, 0xb8, 0xb3, 0xb4, 0xb1, // y:0, x:0 (65)
     0xff, 0x01, 0xfd, 0x3d, 0x1d, 0xcd, 0x2d, 0x0d, // y:0, x:1 (66)
@@ -67,8 +72,13 @@ void  print_background_level6() {
   sp1_PrintAt(17, CAGE_FIRST_POS_RIGHT, PAPER_RED | INK_WHITE | BRIGHT, UDG_JAULA_DERECHA);
   paint_portrait();
   reset_misifu_position();
-  windows[0].x = 2;
-  windows[0].y = 0;
+  windows[0].x = CAGE_FOURTH_POS;
+  windows[0].y = 15;
+  bincat_appears = UP;
+  bincat_in_bin = LEFT;
+
+  birdsp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 2, 0, 0);
+  sp1_AddColSpr(birdsp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 }
 
 void level6_loop() {
@@ -101,30 +111,51 @@ void level6_loop() {
     } else {
         detect_fall_in_table(9);
 
-        ++windows[0].x;
-        if(windows[0].x > 28) {
+        if(bincat_appears == UP && random_value < 252) {
+            --windows[0].y;
+        } else {
             ++windows[0].y;
-            windows[0].x = 0;
         }
 
-        if(windows[0].y > 19) {
-            windows[0].y = 7;
+        if(bincat_in_bin == LEFT && random_value < 252) {
+            --windows[0].x;
+            x = BIRD_LEFT;
+        } else {
+            ++windows[0].x;
+            x = BIRD_RIGHT;
+        }
+
+        if(windows[0].x > 28) {
+            bincat_in_bin = LEFT;
+            windows[0].x = 28;
+        }
+        if(windows[0].x <= 1) {
+            bincat_in_bin = RIGHT;
+            windows[0].x = 1;
+        }
+
+        if(windows[0].y > 14) {
+            bincat_appears = UP;
+            windows[0].y = 14;
+        }
+
+        if(windows[0].y <= 1) {
+            windows[0].y = 1;
+            bincat_appears = DOWN;
         }
 
         if((windows[0].y >= misifu.y - 1 && windows[0].y <= misifu.y + 1)
-                && misifu.x >= (windows[0].x - 1) && misifu.x <= (windows[0].x + 1)) {
+                && misifu.x >= (windows[0].x - 1) && misifu.x <= (windows[0].x)) {
             get_out_of_level_generic(WON_LEVEL); // yayy
             return;
         }
         if (frame < FRAME_CHANGE) {
-            x = BIRD_OFFSET;
-        } else {
-            x = BIRD_OFFSET2;
+            x += 32; // space between frames
         }
 
-        sp1_MoveSprAbs(bincatsp, &full_screen, (int)sprite_bincat1 + x, windows[0].y, windows[0].x, 0, 0);
+        sp1_MoveSprAbs(birdsp, &full_screen, (int)sprite_bird1 + x, windows[0].y, windows[0].x, 0, 0);
     }
 
-    detect_cat_in_window(0);
     dog_checks();
+    detect_cat_in_window(0);
 }
