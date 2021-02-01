@@ -144,8 +144,7 @@ void level6_loop() {
             bincat_appears = DOWN;
         }
 
-        if((windows[0].y >= misifu.y - 1 && windows[0].y <= misifu.y + 1)
-                && misifu.x >= (windows[0].x - 1) && misifu.x <= (windows[0].x)) {
+        if((windows[0].y == (misifu.y + 1) || windows[0].y == misifu.y) && windows[0].x == misifu.x + 1) {
             get_out_of_level_generic(WON_LEVEL); // yayy
             return;
         }

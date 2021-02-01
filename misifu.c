@@ -89,22 +89,10 @@ int main()
 
     random_value = rand();
 
-    // todo move this to different loops
-    if (level == 1) {
-        level1_loop();
-    } else if (level == 2) {
-        level2_loop();
-    } else if (level == 3) {
-        level3_loop();
-    } else if(level == 4) {
-        level4_loop();
-    } else if(level == 10) {
-        throw_cupid_arrow();
-    }
-
     check_fsm();
 
     if (level == 1) {
+        level1_loop();
         // cat falls appart from bin
         if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
             if (is_in_bin(misifu.x) == NONE) {
@@ -116,8 +104,12 @@ int main()
     } else if(level == 2) {
         detect_fall_in_table(0);
         detect_fall_in_chair(22, 1);
+        level2_loop();
     } else  if (level == 3) {
         detect_fishtank_fall_in_hole_or_curtain();
+        level3_loop();
+    } else if(level == 4) {
+        level4_loop();
     } else if (level == 5) {
         level5_loop();
     } else if(level == 6) {
@@ -126,6 +118,7 @@ int main()
         level7_loop();
     } else if (level == 10) {
         detect_fall_in_hearts();
+        throw_cupid_arrow();
     }
 
 

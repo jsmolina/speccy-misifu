@@ -16,7 +16,6 @@
 #include "level_last.h"
 #include "ay/ay_music.h"
 #include <intrinsic.h> // for intrinsic_di()
-// remove!
 #include <string.h>
 
 #define UDG_WALL1 128
@@ -445,10 +444,6 @@ void check_keys()
         ++misifu.y;
     }
 
-    if (in_key_pressed(IN_KEY_SCANCODE_b)) {
-        zx_border(INK_BLACK);
-    }
-
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
@@ -827,11 +822,10 @@ void get_out_of_level_generic(uint8_t fall) {
 
 void detect_cat_in_window(uint8_t offset) {
     if( misifu.y >= 8 && misifu.y <= 10) {
-        if(misifu.x == (19 - offset) || misifu.x == (25 - offset)) {
+        if(misifu.x == (19 - offset) || misifu.x == (20 - offset) || misifu.x == (25 - offset) || misifu.x == (26 - offset)) {
             misifu.state = CAT_IN_ROPE;
-        } else if(misifu.x >= (20 - offset) && misifu.x <= (24 - offset)) {
+        } else if(misifu.x >= (21 - offset) && misifu.x <= (24 - offset)) {
             get_out_of_level_generic(FALLING);
-            return;
         }
     }
 }
