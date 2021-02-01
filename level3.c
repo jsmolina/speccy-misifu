@@ -41,17 +41,6 @@ void  print_background_level3() {
 inline static void check_chair_and_fishtank_level3() {
 
     if(misifu.state == FALLING) {
-        if(misifu.x == 10 && misifu.y == 17) {
-            // chair
-            misifu.state = CAT_ON_HIGH;
-            misifu.in_bin = 1;
-            misifu.offset = BORED;
-        } else if(misifu.y == 16 && (misifu.x == 21 || misifu.x == 22)) {
-            misifu.state = CAT_ON_HIGH;
-            misifu.offset = BORED;
-            misifu.in_bin = 2;
-        }
-
         if(misifu.y == 16 && (misifu.x == 21 || misifu.x == 22)) {
             // get inside fishtank and outside of this level
             level = 4;
@@ -65,14 +54,12 @@ inline static void check_chair_and_fishtank_level3() {
     }
 }
 
-void detect_fishtank_fall_in_hole_or_curtain() {
-    detect_cat_in_window(8);
-    check_chair_and_fishtank_level3();
-}
-
 
 
 void level3_loop() {
     move_broom();
     dog_checks();
+    detect_fall_in_chair(10, 1);
+    check_chair_and_fishtank_level3();
+    detect_cat_in_window(8);
 }

@@ -106,7 +106,6 @@ int main()
         detect_fall_in_chair(22, 1);
         level2_loop();
     } else  if (level == 3) {
-        detect_fishtank_fall_in_hole_or_curtain();
         level3_loop();
     } else if(level == 4) {
         level4_loop();

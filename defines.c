@@ -733,8 +733,10 @@ void get_out_of_level_generic(uint8_t fall) {
                   INK_BLACK | PAPER_WHITE,
                   ' ' );
     // control wether if gets out of level by having eat all mouses
-    sp1_Invalidate(&full_screen);
-    sp1_TileEntry('H', heart2);
+    if(fall != FALLING) {
+        sp1_Invalidate(&full_screen);
+        sp1_TileEntry('H', heart2);
+    }
 
     if(fall == LEVELFINISHED) {
         last_success_level = 0;
@@ -778,14 +780,15 @@ void get_out_of_level_generic(uint8_t fall) {
         }
 
         for (idx = 0; idx != idx_j; ++idx) {
-            sp1_PrintAtInv(22 - idx, 14, INK_RED | PAPER_WHITE, 'H');
-            sp1_PrintAtInv(22 - idx, 16, INK_RED | PAPER_WHITE, 'H');
-            sp1_PrintAtInv(22 - idx, 18, INK_RED | PAPER_WHITE, 'H');
+            for(x = 14; x != 20; x += 2) {
+                sp1_PrintAtInv(22 - idx, x, INK_RED | PAPER_WHITE, 'H');
+            }
             sp1_UpdateNow();
             wait();
         }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else if(fall == FALLING) {
+        sp1_UpdateNow();
         bit_beepfx_di_fastcall(BEEPFX_UH_HUH);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
