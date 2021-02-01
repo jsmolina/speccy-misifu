@@ -41,6 +41,7 @@
 #define UDG_SILLA2_PARTE04 148
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
+uint8_t final_msg[] = {'l', 'o', 'v', 'e'};
 
 // 28 and 3 for level = 3
 uint8_t level_x_max;
@@ -741,10 +742,12 @@ void get_out_of_level_generic(uint8_t fall) {
         dogr1sp = add_sprite_protar1();
 
         ay_vt_init(sweet_module);
-        sp1_PrintAt(10, 14, INK_BLACK | PAPER_WHITE, 'l');
-        sp1_PrintAt(10, 15, INK_BLACK | PAPER_WHITE, 'o');
-        sp1_PrintAt(10, 16, INK_BLACK | PAPER_WHITE, 'v');
-        sp1_PrintAt(10, 17, INK_BLACK | PAPER_WHITE, 'e');
+        x = 0;
+        for(idx = 14; idx != 18; ++idx) {
+            sp1_PrintAt(10, idx, INK_BLACK | PAPER_WHITE, final_msg[x]);
+            ++x;
+        }
+
         for (idx = 0; idx != 13; ++idx) {
 
             if((idx & 1) == 0) {
