@@ -46,8 +46,6 @@
 
 #define AUX_BINCAT 0
 #define SPIDER 48 // (16 * 2) + 16
-#define BIRD_OFFSET 96
-#define BIRD_OFFSET2 144
 
 #define RIGHTC1 0
 #define RIGHTC2 64
@@ -113,11 +111,13 @@ extern struct prota misifu;
 extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
+extern struct sp1_ss  *birdsp;
 
 extern struct sp1_Rect full_screen;
 
 extern uint8_t level_x_max;
 extern uint8_t level_x_min;
+extern uint8_t window_shown;
 
 // shared vars
 extern uint8_t x;
@@ -177,6 +177,8 @@ extern uint8_t sprite_dog3[];
 extern uint8_t sprite_bincat1[];
 extern uint8_t sprite_bincat2[];
 extern uint8_t sprite_bincat3[];
+
+extern uint8_t sprite_bird1[];
 
 extern uint8_t auxiliar1[];
 extern uint8_t auxiliar2[];
@@ -245,8 +247,9 @@ extern void check_fsm();
 extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color);
 
 extern void paint_chair(uint8_t col, uint8_t color);
+extern void paint_chair2(uint8_t col, uint8_t color);
 
-extern void detect_fall_in_chair(uint8_t x_chair);
+extern void detect_fall_in_chair(uint8_t x_chair, uint8_t bin);
 
 extern void paint_table(uint8_t col, uint8_t color);
 
@@ -258,11 +261,13 @@ extern void detect_cat_in_window(uint8_t offset);
 
 extern void move_broom();
 
-extern struct sp1_ss * add_sprite_swim();
+extern inline struct sp1_ss * add_sprite_swim();
 
 extern struct sp1_ss * add_sprite_protar1();
 
-extern void check_chair_and_table();
+extern inline struct sp1_ss * add_sprite_bird();
+
+extern void detect_fall_in_table(uint8_t offset);
 
 extern void move_right_and_left();
 extern void assign_window_pos(uint8_t y, uint8_t x);

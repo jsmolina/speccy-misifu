@@ -77,75 +77,74 @@ int main()
 
   while(1)
   {
-    in = (joy)(&joy_keys);
+    if(window_shown == 0) {
+        in = (joy)(&joy_keys);
+        if(misifu.state != SWIMMING && level != 7) {
+            check_keys();
+        } else if(level == 7) {
+            check_level7_keys();
+        } else {
+            check_swim();
+        }
 
-    if(misifu.state != SWIMMING && level != 7) {
-        check_keys();
-    } else if(level == 7) {
-        check_level7_keys();
-    } else {
-        check_swim();
-    }
+        random_value = rand();
 
-    random_value = rand();
+        check_fsm();
 
-    // todo move this to different loops
-    if (level == 1) {
-        level1_loop();
-    } else if (level == 2) {
-        level2_loop();
-    } else if (level == 3) {
-        level3_loop();
-    } else if(level == 4) {
-        level4_loop();
-    } else if(level == 10) {
-        throw_cupid_arrow();
-    }
+        if (level == 1) {
+            level1_loop();
+            // cat falls appart from bin
+            if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
+                if (is_in_bin(misifu.x) == NONE) {
+                    misifu.state = FALLING;
+                    misifu.draw_additional = NONE;
+                    misifu.in_bin = NONE;
+                }
+            }
+        } else if(level == 2) {
+            detect_fall_in_table(0);
+            detect_fall_in_chair(22, 1);
+            level2_loop();
+        } else  if (level == 3) {
+            level3_loop();
+        } else if(level == 4) {
+            level4_loop();
+        } else if (level == 5) {
+            level5_loop();
+        } else if(level == 6) {
+            level6_loop();
+        } else if(level == 7) {
+            level7_loop();
+        } else if (level == 10) {
+            detect_fall_in_hearts();
+            throw_cupid_arrow();
+        }
 
-    check_fsm();
 
-    if (level == 1) {
-        // cat falls appart from bin
-        if (misifu.draw_additional == CAT_IN_BIN && misifu.y < FLOOR_Y && misifu.in_bin != NONE) {
-            if (is_in_bin(misifu.x) == NONE) {
-                misifu.state = FALLING;
-                misifu.draw_additional = NONE;
-                misifu.in_bin = NONE;
+        ++frame;
+        if (frame >= 4) {
+            frame = 0;
+            if (points < 254) {
+                ++points;
             }
         }
-    } else if(level == 2) {
-        check_chair_and_table();
-    } else  if (level == 3) {
-        detect_fishtank_fall_in_hole_or_curtain();
-    } else if (level == 5) {
-        level5_loop();
-    } else if(level == 6) {
-        level6_loop();
-    } else if(level == 7) {
-        level7_loop();
-    } else if (level == 10) {
-        detect_fall_in_hearts();
-    }
 
-
-    ++frame;
-    if (frame >= 4) {
-        frame = 0;
-        if (points < 254) {
-            ++points;
+        if(paws == 1) {
+            in_wait_key();
+            paws = 0;
         }
-    }
 
-    if(paws == 1) {
-        in_wait_key();
-        paws = 0;
-    }
-
-    // paint 'prota here'
-    if (misifu.state == SWIMMING) {
-        misifu_sum_offset = (int) sprite_swim1 + misifu.offset;
+        // paint 'prota here'
+        if (misifu.state == SWIMMING) {
+            misifu_sum_offset = (int) sprite_swim1 + misifu.offset;
+        } else {
+            misifu_sum_offset = (int) sprite_protar1 + misifu.offset;
+        }
     } else {
-        misifu_sum_offset = (int) sprite_protar1 + misifu.offset;
+        --window_shown;
+        if(window_shown == 0) {
+            get_out_of_level_generic(FALLING);
+        }
     }
     sp1_MoveSprAbs(misifu.sp, &full_screen, (int) misifu_sum_offset, misifu.y - 1, misifu.x, 0, 0);
 

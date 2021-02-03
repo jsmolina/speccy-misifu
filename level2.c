@@ -73,7 +73,6 @@ void detect_fall_in_hole_or_curtain() {
 
     }
 
-    detect_cat_in_window(0);
 
     if (eaten_items == TOTAL_MOUSES) {
         get_out_of_level_generic(WON_LEVEL);
@@ -132,6 +131,7 @@ void level2_loop() {
 
     move_broom();
     dog_checks();
+    detect_cat_in_window(0);
 }
 
 void  print_background_level2() {

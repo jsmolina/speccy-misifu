@@ -17,8 +17,14 @@ imgs = [
     'q_mesabase',
     'wall5',
     'lamp1',
-    'lamp2'
+    'lamp2',
+    'udg_silla2_parte01',
+    'udg_silla2_parte02',
+    'udg_silla2_parte03',
+    'udg_silla2_parte04',
 ]
+result = ["#define {} {}".format(i.upper(), idx + 128) for idx, i in enumerate(imgs)]
+print('\n'.join(result))
 
 imgs = [i + '.png' for i in imgs]
 images = [Image.open(x) for x in imgs]
@@ -34,4 +40,4 @@ for im in images:
   new_im.paste(im, (x_offset,0))
   x_offset += im.size[0]
 
-new_im.save('test.png')
+new_im.save('rooms.png')
