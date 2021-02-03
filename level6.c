@@ -6,13 +6,9 @@
 
 #define CHAIR1 1
 #define CHAIR2 3
-#define UDG_CUADRO_SUPERIOR_IZQUIERDA 65
-#define UDG_CUADRO_SUPERIOR_DERECHA 66
-#define UDG_CUADRO_INFERIOR_IZQUIERDA 67
-#define UDG_CUADRO_INFERIOR_DERECHA 68
-#define UDG_JAULA_DERECHA_ROTA 69
-#define UDG_JAULA_DERECHA 70
-#define UDG_JAULA_IZQUIERDA 71
+#define UDG_JAULA_DERECHA_ROTA 65
+#define UDG_JAULA_DERECHA 66
+#define UDG_JAULA_IZQUIERDA 67
 #define LEVEL6_TILES_LEN  7
 #define LEVEL6_TILES_BASE  65
 #define CAGE_FIRST_POS 17
@@ -27,24 +23,11 @@
 #define BIRD_LEFT2 96
 
 const uint8_t level6[] = {
-    0xff, 0x80, 0xbf, 0xbc, 0xb8, 0xb3, 0xb4, 0xb1, // y:0, x:0 (65)
-    0xff, 0x01, 0xfd, 0x3d, 0x1d, 0xcd, 0x2d, 0x0d, // y:0, x:1 (66)
-    0xa5, 0xa7, 0xa6, 0x83, 0x84, 0x8f, 0x80, 0xff, // y:0, x:2 (67)
-    0xa5, 0xe5, 0x65, 0xc1, 0x21, 0xf1, 0x01, 0xff, // y:0, x:3 (68)
-    0x00, 0xf0, 0x2c, 0x22, 0x02, 0x82, 0x12, 0xfe, // y:0, x:4 (69)
-    0xf0, 0x4c, 0x22, 0x2e, 0xf2, 0x12, 0x12, 0xfe, // y:0, x:5 (70)
-    0x1f, 0x65, 0x89, 0xe9, 0x9f, 0x91, 0x91, 0xff, // y:0, x:6 (71)
+    0x00, 0xf0, 0x2c, 0x22, 0x02, 0x82, 0x12, 0xfe, // y:0, x:0 (65)
+    0xf0, 0x4c, 0x22, 0x2e, 0xf2, 0x12, 0x12, 0xfe, // y:0, x:1 (66)
+    0x1f, 0x65, 0x89, 0xe9, 0x9f, 0x91, 0x91, 0xff, // y:0, x:2 (67)
 };
 
-inline void paint_portrait() {
-    x = UDG_CUADRO_SUPERIOR_IZQUIERDA;
-    for(idx_j = 10; idx_j != 12; ++idx_j) {
-        for(idx = 10; idx != 12; ++idx) {
-            sp1_PrintAt(idx_j, idx, GREEN_RED_BRIGHT, x);
-            ++x;
-        }
-    }
-}
 
 void  print_background_level6() {
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
@@ -70,7 +53,7 @@ void  print_background_level6() {
   eaten_items = CAGE_FIRST_POS; // 3 hits are needed to throw cage
   sp1_PrintAt(17, CAGE_FIRST_POS, PAPER_RED | INK_WHITE | BRIGHT, UDG_JAULA_IZQUIERDA);
   sp1_PrintAt(17, CAGE_FIRST_POS_RIGHT, PAPER_RED | INK_WHITE | BRIGHT, UDG_JAULA_DERECHA);
-  paint_portrait();
+  paint_portrait(GREEN_RED_BRIGHT);
   reset_misifu_position();
   windows[0].x = CAGE_FOURTH_POS;
   windows[0].y = 15;

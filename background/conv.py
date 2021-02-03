@@ -140,3 +140,14 @@ for i in inclinados:
     italic_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
 print("const uint8_t italic [] = {" + ", ".join(italic_coords) + "};")
 print("#define TOTAL_ITALIC_HOLES {}".format(len(italic_coords)))
+
+perros = (
+    (4, 2), (1, 5), (5, 5), (3, 2), (0, 4), (4, 3), (4, 3), (2, 3)
+)
+
+perros_coords = []
+for i in perros:
+    perros_coords.append("0x{:01x}{:01x}".format(i[0], i[1]))
+
+print("const uint8_t perros_coords [] = {" + ", ".join(perros_coords) + "};")
+print("#define TOTAL_PERROS {}".format(len(perros_coords)))
