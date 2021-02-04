@@ -124,6 +124,25 @@ uint8_t tiles_lvl1[] = {
     0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
     0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, // y:0, x:29 (157)
 };
+char * chars = "0000000\0";
+
+void print_points(uint16_t points, uint8_t row) {
+    uint8_t col;
+    utoa(points, chars, 10);
+    col = 5 - strlen(chars);
+
+    if(col != 0) {
+        for(idx = 0; idx != 5; ++idx) {
+            sp1_PrintAtInv(row, 25 + idx, INK_CYAN | PAPER_BLACK, '0');
+        }
+    }
+    idx = 0;
+    while(chars[idx] != '\0') {
+        sp1_PrintAtInv(row, 25 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
+        ++idx;
+    }
+
+}
 
 
 // shared vars
@@ -401,20 +420,28 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 }
 
 void check_level7_keys() {
+    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+        in_wait_nokey();
+        paws = 1;
+    }
     if (misifu.state == JUMPING_PUSHED || misifu.state == FALLING) {
         return;
     }
 
+
     if ((in & IN_STICK_UP) && misifu.y > 17) {
         --misifu.y;
         misifu.state = misifu.draw_additional;
-    } else if ((in & IN_STICK_RIGHT) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
+    }
+    if ((in & IN_STICK_RIGHT) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
         ++misifu.x;
         misifu.state = misifu.draw_additional = WALKING_RIGHT;
-    } else if ((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
+    }
+    if ((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
         --misifu.x;
         misifu.state = misifu.draw_additional = WALKING_LEFT;
-    } else if((in & IN_STICK_DOWN) && misifu.y < 22) {
+    }
+    if((in & IN_STICK_DOWN) && misifu.y < 22) {
         ++misifu.y;
         misifu.state = misifu.draw_additional;
 

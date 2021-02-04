@@ -126,8 +126,8 @@ extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
 extern const uint8_t heart2[];
-extern char left;
-extern char right;
+/*extern char left;
+extern char right;*/
 extern uint8_t eaten_items;
 extern uint8_t frame;
 extern uint8_t x_malo;

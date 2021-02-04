@@ -9,7 +9,11 @@
 
 #define MILK_ON_RIGHT 1
 #define MILK_ON_LEFT 2
-#define DRANK_MILK 3
+#define NO_MILK 2
+#define HAS_MILK 1
+
+#define SLEEPING 1
+#define AWAKEN 2
 
 #define UDG_CUENCO_VACIO 65
 #define UDG_CUENCO_LLENO 66
@@ -91,6 +95,8 @@ void  print_background_level7() {
             horizontal_direction = idx + 3;
             eaten_items = 0;
         }
+        floor_holes[1][x] = HAS_MILK;
+        floor_holes[2][x] = SLEEPING;
         // dog
         for(bincat_appears = eaten_items; bincat_appears != eaten_items + 3; ++bincat_appears) {
             sp1_PrintAt(
@@ -110,10 +116,11 @@ void  print_background_level7() {
         );
      }
 
-     level_x_max = 26;
+     level_x_max = 27;
      level_x_min = 2;
-     eaten_items = 6;
-     horizontal_direction = 3; // you can touch up to three dogs before getting out of level
+
+     eaten_items = TOTAL_PERROS;
+     dog_offset = 3; // you can touch up to three dogs before getting out of level
 
      idx = 0;
      reset_misifu_position();
@@ -121,24 +128,86 @@ void  print_background_level7() {
 }
 
 
+inline void drink_milk() {
+    bit_beepfx_di_fastcall(BEEPFX_EAT);
+
+    if(floor_holes[1][x] == NO_MILK) {
+        // already eaten!
+        return;
+    }
+    --eaten_items;
+    // milk: row1_moving is the offset where milk is positioned if it is on right
+    sp1_PrintAt(
+        idx_j,
+        idx + row1_moving,
+        INK_GREEN | PAPER_MAGENTA | BRIGHT,
+        UDG_CUENCO_VACIO
+    );
+    floor_holes[1][x] = NO_MILK; // 1 + 2 = 3
+}
+
 
 void level7_loop() {
-    /*if(misifu.y < 17 && misifu.state != CAT_IN_ROPE && misifu.state != JUMPING_PUSHED) {
+    if(misifu.y < 17 && misifu.state != CAT_IN_ROPE && misifu.state != JUMPING_PUSHED) {
         misifu.state = FALLING;
-    }*/
-    idx = UNDEF;
-    //idx = get_index_from_misifu_position();
-
-    if(idx != UNDEF) {
-        /*
-        --eaten_items;
-        bit_beepfx_di_fastcall(BEEPFX_EAT);
-
-        --horizontal_direction;
-        bit_beepfx_di_fastcall(BEEPFX_GULP);
-        get_out_of_level_generic(DOG_AWAKEN);
-        */
     }
-    //move_broom();
+
+    move_broom();
+
+    idx = 0;
+    for(x = 0; x != TOTAL_PERROS; ++x) {
+        idx += perros_coords[x] & 0x0F;
+        idx_j = ((perros_coords[x] & 0xF0) >> 4) + 18;
+        horizontal_direction = misifu.x + 1;
+        // example, misifu is at 6, 6 +1 = 7
+        // dog starts on 7, so 7, 8, 9, 10 are right positions
+        // 7 >= 7 && 7 <= 10
+
+        // colision with dog
+        if((misifu.y + 1) == idx_j && horizontal_direction >= idx && horizontal_direction <= (idx + 3)) {
+            //if(in & IN_STICK_FIRE)
+            //(in & IN_STICK_FIRE)
+            row1_moving = 0;
+            if(floor_holes[0][x] == MILK_ON_RIGHT) {
+                row1_moving = 3; // milk is offset 3 to the right
+            }
+            if(horizontal_direction == (idx + row1_moving)) {
+                if(in & IN_STICK_FIRE) {
+                    drink_milk();
+
+                    if(eaten_items == 0) {
+                        get_out_of_level_generic(WON_LEVEL);
+                    }
+                    return;
+                }
+            } else if(floor_holes[2][x] == SLEEPING) {
+                --dog_offset;
+
+                // +1 si esta a la izquierda
+                // +2 si esta a la derecha
+                row1_moving = 1;
+                floor_holes[2][x] = UDG_CACHORRO_IZQUIERDA_CABEZA_OJOS;
+                if(floor_holes[0][x] == MILK_ON_RIGHT) {
+                    row1_moving = 2; // milk is offset 3 to the right
+                    floor_holes[2][x] = UDG_CACHORRO_DERECHA_CABEZA_OJOS;
+                }
+
+                sp1_PrintAt(
+                    idx_j,
+                    idx + row1_moving,
+                    INK_WHITE | PAPER_MAGENTA | BRIGHT,
+                    floor_holes[2][x]
+                );
+                floor_holes[2][x] = AWAKEN;
+
+                if(dog_offset == 0) {
+                    get_out_of_level_generic(DOG_AWAKEN);
+                    return;
+                }
+
+            }
+        }
+    }
+
     detect_cat_in_window(0);
 }
