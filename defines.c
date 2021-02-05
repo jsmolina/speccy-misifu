@@ -490,9 +490,9 @@ void check_keys()
         lives = 0;
         all_lives_lost();
     }
-
+    // see the final
     if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        print_background_level2();
+        get_out_of_level_generic(LEVELFINISHED);
     }
     if (in_key_pressed(IN_KEY_SCANCODE_2)) {
         print_background_level3();
@@ -810,9 +810,9 @@ void get_out_of_level_generic(uint8_t fall) {
                 misifu.offset = (int)RIGHTC2;
                 idx_j = LEFTC2;
             }
-            sp1_MoveSprAbs(misifu.sp, &full_screen,(void*) misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
+            sp1_MoveSprAbs(misifu.sp, &full_screen,(int) sprite_protar1 + misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
 
-            sp1_MoveSprAbs(dogr1sp, &full_screen,(void*) sprite_dog1, FLOOR_Y, 30 - idx, 0, 0);
+            sp1_MoveSprAbs(dogr1sp, &full_screen,(int) sprite_protar1 + idx_j, FLOOR_Y, 30 - idx, 0, 0);
             sp1_UpdateNow();
             for(idx_j = 0; idx_j != 15; ++idx_j) {
                 wait();

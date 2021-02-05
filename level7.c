@@ -151,6 +151,11 @@ void level7_loop() {
     if(misifu.y < 17 && misifu.state != CAT_IN_ROPE && misifu.state != JUMPING_PUSHED) {
         misifu.state = FALLING;
     }
+    if(misifu.y >= 17 && misifu.state == FALLING) {
+        misifu.state = NONE;
+        misifu.offset = (int)BORED;
+        misifu.y = 17;
+    }
 
     move_broom();
 
