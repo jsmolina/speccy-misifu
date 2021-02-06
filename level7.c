@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <sound.h>
 #include <input.h>
+#include <intrinsic.h>
 #include "defines.h"
 #include "level1.h"
 
@@ -31,6 +32,7 @@
 #define TOTAL_PERROS 8
 
 const uint8_t perros_coords [] = {0x42, 0x15, 0x55, 0x32, 0x04, 0x43, 0x53, 0x23};
+uint8_t last_awaken;
 
 uint8_t level7[] = {
     0x00, 0x7e, 0xc3, 0x81, 0xc3, 0xff, 0xff, 0x7e, // y:0, x:0 (65)
@@ -116,14 +118,14 @@ void  print_background_level7() {
         );
      }
 
-     level_x_max = 27;
+     level_x_max = 28;
      level_x_min = 2;
 
      eaten_items = TOTAL_PERROS;
-     dog_offset = 3; // you can touch up to three dogs before getting out of level
 
-     idx = 0;
+     last_awaken = UNDEF;
      reset_misifu_position();
+     enemy_apears = NONE;
      misifu.draw_additional = WALKING_RIGHT;
 }
 
@@ -140,7 +142,7 @@ inline void drink_milk() {
     sp1_PrintAt(
         idx_j,
         idx + row1_moving,
-        INK_GREEN | PAPER_MAGENTA | BRIGHT,
+        INK_BLUE | PAPER_MAGENTA | BRIGHT,
         UDG_CUENCO_VACIO
     );
     floor_holes[1][x] = NO_MILK; // 1 + 2 = 3
@@ -159,6 +161,10 @@ void level7_loop() {
 
     move_broom();
 
+    for(idx = 0; idx != 4; ++idx) {
+        intrinsic_halt();
+    }
+
     idx = 0;
     for(x = 0; x != TOTAL_PERROS; ++x) {
         idx += perros_coords[x] & 0x0F;
@@ -169,15 +175,32 @@ void level7_loop() {
         // 7 >= 7 && 7 <= 10
 
         // colision with dog
-        if((misifu.y + 1) == idx_j && horizontal_direction >= idx && horizontal_direction <= (idx + 3)) {
+        if(misifu.state != FIGHTING && (misifu.y + 1) == idx_j && horizontal_direction >= (idx - 1)
+           && horizontal_direction <= (idx + 4)) {
             //if(in & IN_STICK_FIRE)
             //(in & IN_STICK_FIRE)
             row1_moving = 0;
             if(floor_holes[0][x] == MILK_ON_RIGHT) {
-                row1_moving = 3; // milk is offset 3 to the right
+                row1_moving = idx + 4; // milk is offset 4 to the right
+            } else {
+                row1_moving = idx - 1; // milk is offset -1 to the left
             }
-            if(horizontal_direction == (idx + row1_moving)) {
+
+            if(horizontal_direction == row1_moving) {
                 if(in & IN_STICK_FIRE) {
+
+                    if(floor_holes[0][x] == MILK_ON_RIGHT) {
+                        row1_moving = 3;
+                        if(misifu.draw_additional != WALKING_LEFT) {
+                            return;
+                        }
+                    } else {
+                        if(misifu.draw_additional != WALKING_RIGHT) {
+                            return;
+                        }
+                        row1_moving = 0;
+                    }
+
                     drink_milk();
 
                     if(eaten_items == 0) {
@@ -186,8 +209,6 @@ void level7_loop() {
                     return;
                 }
             } else if(floor_holes[2][x] == SLEEPING) {
-                --dog_offset;
-
                 // +1 si esta a la izquierda
                 // +2 si esta a la derecha
                 row1_moving = 1;
@@ -203,16 +224,17 @@ void level7_loop() {
                     INK_WHITE | PAPER_MAGENTA | BRIGHT,
                     floor_holes[2][x]
                 );
+                last_awaken = x;
                 floor_holes[2][x] = AWAKEN;
-
-                if(dog_offset == 0) {
-                    get_out_of_level_generic(DOG_AWAKEN);
-                    return;
-                }
-
+            } else if(floor_holes[2][x] == AWAKEN && last_awaken != x) {
+                x_malo = misifu.x;
+                misifu.state = FIGHTING;
+                anim_frames = 20;
             }
+        } else if(last_awaken == x) {
+            last_awaken = UNDEF;
         }
     }
-
+    dog_checks();
     detect_cat_in_window(0);
 }

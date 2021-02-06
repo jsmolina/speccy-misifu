@@ -420,6 +420,9 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 }
 
 void check_level7_keys() {
+    if(misifu.state == FIGHTING) {
+        return;
+    }
     if (in_key_pressed(IN_KEY_SCANCODE_0)) {
         in_wait_nokey();
         paws = 1;
@@ -428,24 +431,44 @@ void check_level7_keys() {
         return;
     }
 
-
-    if ((in & IN_STICK_UP) && misifu.y > 17) {
-        --misifu.y;
-        misifu.state = misifu.draw_additional;
-    }
-    if ((in & IN_STICK_RIGHT) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
-        ++misifu.x;
-        misifu.state = misifu.draw_additional = WALKING_RIGHT;
-    }
-    if ((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
-        --misifu.x;
-        misifu.state = misifu.draw_additional = WALKING_LEFT;
-    }
     if((in & IN_STICK_DOWN) && misifu.y < 22) {
         ++misifu.y;
-        misifu.state = misifu.draw_additional;
-
+        misifu.state = WALKING_DOWN;
+    } else if ((in & IN_STICK_UP) && misifu.y > 17) {
+        --misifu.y;
+        misifu.state = WALKING_UP;
     }
+
+    if((in & IN_STICK_UP) || (in & IN_STICK_DOWN)) {
+        if(misifu.offset == LEFTC1 || misifu.offset == LEFTC2) {
+            if((misifu.y & 1) == 0) {
+                misifu.offset = LEFTC1;
+            } else {
+                misifu.offset = LEFTC2;
+            }
+        } else if (misifu.offset == RIGHTC1 || misifu.offset == RIGHTC2) {
+            if((misifu.y & 1) == 0) {
+                misifu.offset = RIGHTC1;
+            } else {
+                misifu.offset = RIGHTC2;
+            }
+        }
+    }
+
+    if ((in & IN_STICK_RIGHT) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
+        if(misifu.draw_additional == WALKING_RIGHT) {
+            ++misifu.x;
+        }
+
+        misifu.state = misifu.draw_additional = WALKING_RIGHT;
+
+    } else if ((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
+        if(misifu.draw_additional == WALKING_LEFT) {
+            --misifu.x;
+        }
+        misifu.state = misifu.draw_additional = WALKING_LEFT;
+    }
+
 }
 
 void check_keys()
@@ -559,6 +582,12 @@ void check_swim() {
 
 void dog_checks() {
 // time for doggy checks
+   if(level != 7) {
+      idx_j = FLOOR_Y;
+   } else {
+      idx_j = misifu.y;
+   }
+
     if (misifu.state != FIGHTING && enemy_apears == YES) {
         if((frame & 1) == 0) {
             --x_malo;
@@ -587,7 +616,7 @@ void dog_checks() {
             enemy_apears = NONE;
             x_malo = 33;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), idx_j, x_malo, 0, 0);
 
     }
     idx = 0;
@@ -603,15 +632,13 @@ void dog_checks() {
             enemy_apears = NONE;
             x_malo = 33;
             get_out_of_level_generic(FIGHTING);
-            idx = 1;
+            //idx = 1;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), idx_j, x_malo, 0, 0);
     }
     // check if dog should appear
-    if (enemy_apears != YES) {
-        if(random_value > 250) {
-            enemy_apears = YES;
-        }
+    if (level != 7 && enemy_apears != YES && random_value > 250) {
+        enemy_apears = YES;
     }
     return;
 }

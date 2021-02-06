@@ -23,6 +23,8 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define WALKING_UP 59
+#define WALKING_DOWN 60
 #define FALLING_FLOOR 69
 #define BITE 55
 #define OXYGEN 99
