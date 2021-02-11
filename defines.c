@@ -184,7 +184,7 @@ uint8_t window_shown = 0;
 
 
 // hearts holes
-uint8_t floor_holes[5][24];
+uint8_t floor_holes[5][12];
 
 
 // level 1

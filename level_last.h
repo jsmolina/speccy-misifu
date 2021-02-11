@@ -5,9 +5,7 @@
 
 extern void print_background_level_last();
 
-extern void detect_fall_in_hearts();
-
-extern void throw_cupid_arrow();
+extern void level10_loop();
 
 
 #endif

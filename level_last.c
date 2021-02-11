@@ -3,68 +3,77 @@
 #include "level1.h"
 #include "int.h"
 #include <stdlib.h>
+#include <string.h>
 #include <sound.h> // for bit_beepfx()
 
 #define RED_GREEN_BRIGHT INK_RED | PAPER_GREEN | BRIGHT
 
 
-#define UDG_HEART1 128
-#define UDG_HEART2 129
-#define UDG_CUPID11 130
-#define UDG_CUPID12 131
-#define UDG_CUPID13 132
-#define UDG_CUPID21 133
-#define UDG_CUPID22 134
-#define UDG_CUPID23 135
-#define UDG_CUPID31 136
-#define UDG_CUPID32 137
-#define UDG_CUPID33 138
-#define UDG_CATHEAVEN1 139
-#define UDG_CATHEAVEN2 140
+#define UDG_UDG_CORAZON_01 128
+#define UDG_UDG_CORAZON_02 129
+#define UDG_UDG_CORAZON_ROTO_01 130
+#define UDG_UDG_CORAZON_ROTO_02 131
+#define UDG_RATA_DERECHA_01 132
+#define UDG_RATA_DERECHA_02 133
+#define UDG_RATA_IZQUIERDA_01 134
+#define UDG_RATA_IZQUIERDA_02 135
+#define UDG_UDG_GATA_A_01 136
+#define UDG_UDG_GATA_A_02 137
+#define UDG_UDG_GATA_B_01 138
+#define UDG_UDG_GATA_B_02 139
 
-#define LAST_TILES_LEN  13
+#define LAST_TILES_LEN  12
 #define LAST_TILES_BASE  128
 
+extern uint8_t cartoon2[];
+
 const uint8_t last[] = {
-    0x00, 0x66, 0xef, 0xc7, 0xf3, 0x3a, 0x00, 0x00, // y:0, x:0 (128)
-    0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x00, // y:0, x:1 (129)
-    0x00, 0x00, 0x00, 0x0e, 0x0f, 0x1f, 0x3f, 0x7f, // y:0, x:2 (130)
-    0x00, 0x00, 0x00, 0x07, 0x1f, 0xdf, 0xff, 0xff, // y:0, x:3 (131)
-    0x00, 0x00, 0x00, 0x00, 0x80, 0xc0, 0x80, 0xd0, // y:0, x:4 (132)
-    0x7f, 0x7f, 0x7e, 0x38, 0x01, 0x01, 0x01, 0x33, // y:0, x:5 (133)
-    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfc, 0xfc, // y:0, x:6 (134)
-    0xd8, 0x9c, 0x8e, 0xee, 0xfe, 0xe6, 0x76, 0x1e, // y:0, x:7 (135)
-    0x3f, 0x6e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:8 (136)
-    0x78, 0x60, 0x60, 0xe0, 0xe0, 0x00, 0x00, 0x00, // y:0, x:9 (137)
-    0x7e, 0xf8, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, // y:0, x:10 (138)
-    0x60, 0xc3, 0xc7, 0xef, 0x7e, 0x1e, 0x18, 0x1c, // y:0, x:11 (139)
-    0x04, 0xcc, 0xea, 0xff, 0x7e, 0x1c, 0x0c, 0x0e, // y:0, x:12 (140)
+    0x3c, 0x66, 0x5f, 0x7f, 0x3f, 0x0f, 0x03, 0x01, // y:0, x:0 (128)
+    0x78, 0xfc, 0xfc, 0xfc, 0xf8, 0xe0, 0x80, 0x00, // y:0, x:1 (129)
+    0x00, 0x3c, 0x7e, 0x7e, 0x7f, 0x3f, 0x0f, 0x03, // y:0, x:2 (130)
+    0x78, 0xfc, 0xfc, 0xfc, 0x78, 0x60, 0x40, 0x00, // y:0, x:3 (131)
+    0x00, 0x00, 0x00, 0x10, 0x27, 0x2f, 0x1f, 0x0f, // y:0, x:4 (132)
+    0x00, 0x00, 0x30, 0x70, 0xf8, 0xf4, 0xfe, 0xfc, // y:0, x:5 (133)
+    0x00, 0x00, 0x0c, 0x0e, 0x1f, 0x2f, 0x7f, 0x3f, // y:0, x:6 (134)
+    0x00, 0x00, 0x00, 0x08, 0xe4, 0xf4, 0xf8, 0xf0, // y:0, x:7 (135)
+    0x00, 0x04, 0x07, 0x0f, 0x0d, 0x0f, 0x07, 0x07, // y:0, x:8 (136)
+    0x00, 0x40, 0xc0, 0xe0, 0x60, 0xe0, 0xc0, 0xc0, // y:0, x:9 (137)
+    0x0f, 0x0f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x0f, // y:0, x:10 (138)
+    0xe0, 0xe0, 0xe0, 0xe0, 0xc0, 0xc8, 0xd8, 0xf0, // y:0, x:11 (139)
 };
 
 
-static void paint_cupid(uint8_t row, uint8_t col) {
-    sp1_PrintAt( row, col, RED_GREEN_BRIGHT, UDG_CUPID11);
-    sp1_PrintAt( row, col + 1, RED_GREEN_BRIGHT, UDG_CUPID12);
-    sp1_PrintAt( row, col + 2, RED_GREEN_BRIGHT, UDG_CUPID13);
+void paint_cupids() {
+    __asm
+    extern enable_bank_n
+   di
+   ld a,0x80
+   ld i,a                      ; point I at uncontended bank
 
-    sp1_PrintAt( row + 1, col, RED_GREEN_BRIGHT, UDG_CUPID21);
-    sp1_PrintAt( row + 1, col + 1, RED_GREEN_BRIGHT, UDG_CUPID22);
-    sp1_PrintAt( row + 1, col + 2, RED_GREEN_BRIGHT, UDG_CUPID23);
+   ld a,4
+   call enable_bank_n          ; bank 4 in top 16k, stack moved
+    __endasm;
+    memcpy(16384, cartoon2, 6912);
+    __asm
+    extern restore_bank_0
+    call restore_bank_0
 
-    sp1_PrintAt( row + 2, col, RED_GREEN_BRIGHT, UDG_CUPID31);
-    sp1_PrintAt( row + 2, col + 1, RED_GREEN_BRIGHT, UDG_CUPID32);
-    sp1_PrintAt( row + 2, col + 2, RED_GREEN_BRIGHT, UDG_CUPID33);
+    ld a,0xd0
+    ld i,a                      ; restore I
+
+    ei
+    __endasm;
 }
 
 static void assign_holes() {
-    if(frame == 4 || (random_value & 1) == 0 ) {
+    /*if(frame == 4 || (random_value & 1) == 0 ) {
         // as it has 24 X positions
         floor_holes[frame][idx_j - 4] = 1;
         sp1_PrintAt( idx, idx_j, RED_GREEN_BRIGHT, UDG_HEART2);
     } else {
         floor_holes[frame][idx_j - 4] = 0;
         sp1_PrintAt( idx, idx_j, INK_BLUE | PAPER_GREEN | BRIGHT, UDG_HEART1);
-    }
+    }*/
 }
 
 void print_background_level_last() {
@@ -75,52 +84,64 @@ void print_background_level_last() {
   zx_border(INK_BLACK);
 
   sp1_Invalidate(&full_screen);
+  sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1, FLOOR_Y - 1, 4, 0, 0);
+  sp1_UpdateNow();
+  paint_cupids();
 
   uint8_t *pt = last;
 
   for (idx = 0; idx < LAST_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(LAST_TILES_BASE + idx, pt);
   }
-  
-  // vertical cupids
-  for(idx=0; idx < 23; idx=idx+3) {
-     paint_cupid(idx, 0);
-     paint_cupid(idx, 29);
-  }
 
-  for(idx_j=3; idx_j < 27; idx_j=idx_j+3) {
-    paint_cupid(0, idx_j);
-  }
-
-  frame = 6;
+  // this is rats positions
+  /*frame = 6;
   for(idx_j = 0; idx_j != 4; ++idx_j) {
       windows[idx_j].x = (rand() % 19) + 5;
       windows[idx_j].y = frame;
       frame += 4;
-  }
+      // TODO PAINT RAT LIKE EELS
+  }*/
 
-    sp1_PrintAt( 23, 6, RED_GREEN_BRIGHT, UDG_HEART2);
   // frame = floor
-  frame = 4;
+  //frame = 4;
+  // y = 0, floor on bottom
+  frame = 23;
+  for(idx_j = 0; idx_j != 5; ++idx_j) {
+      eaten_items = 0;
+      for(idx = 4; idx != 28; ++idx) {
+            random_value = rand();
 
-  for(idx=23; idx != 3; idx = idx - 4) {
+            if((idx & 1) == 0) {
+                x_malo = UDG_UDG_CORAZON_01;
+                bincat_in_bin = INK_RED | PAPER_GREEN | BRIGHT;
+                if(idx_j != 0 && (random_value & 1)) {
+                    x_malo = UDG_UDG_CORAZON_ROTO_01;
+                    bincat_in_bin = INK_BLUE | PAPER_GREEN | BRIGHT;
+                }
+            }
 
-     for (idx_j=4; idx_j != 28; ++idx_j) {
-        random_value = rand();
-        assign_holes();
-        ++idx_j;
-        assign_holes();
+            sp1_PrintAtInv(
+                    frame,
+                    idx,
+                    bincat_in_bin,
+                    x_malo + (idx & 1));
 
-     }
-     --frame;
+            if((idx & 1) == 0) {
+                floor_holes[idx_j][eaten_items] = x_malo;
+                ++eaten_items;
+            }
+
+      }
+      frame = frame - 4;
   }
+
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
   level_x_max = 25;
   level_x_min = 4;
   aux_object.offset = AUX_ARROWLEFT;
-  sp1_UpdateNow();
 }
 
 
@@ -215,26 +236,27 @@ void throw_cupid_arrow() {
         }
 
         // hearts y are 23, 19, 15, 11, 7
-        idx_j = lvl3_y_to_idj(aux_object.y - 2);
+        //idx_j = lvl3_y_to_idj(aux_object.y - 2);
 
         if(idx_j < 5 && aux_object.x > 3 && aux_object.x < 27) {
-            // broke the heart :(
+            /* broke the heart :(
             idx = aux_object.x;
             floor_holes[idx_j][idx - 4] = 0;
             sp1_PrintAtInv( aux_object.y, idx, INK_BLACK | PAPER_GREEN | BRIGHT, UDG_HEART1);
+            */
         }
     } else {
         // out of screen
         aux_object.x = 33;
     }
-    sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
-
-    if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
+    //sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+    // TODO improve collisions with arrow
+    /*if(abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
         misifu.state = FALLING;
-    }
+    }*/
 
     //heavencat_on_move()
-    idx_j = rand_cat_to_move();
+    /*idx_j = rand_cat_to_move();
     if(idx_j != UNDEF) {
         print_heavencat(' ', ' ');
         ++windows[idx_j].x;
@@ -243,12 +265,16 @@ void throw_cupid_arrow() {
             windows[idx_j].x = 5;
         }
         print_heavencat(UDG_CATHEAVEN1, UDG_CATHEAVEN2);
-    }
+    }*/
 
     // detect collision with misifu
-    idx_j = lvl3_y_to_idj(misifu.y);
+    /*idx_j = lvl3_y_to_idj(misifu.y);
     if(idx_j < 4 && abs(misifu.x - windows[idx_j].x) < 2) {
         misifu.state = FALLING;
         bit_beepfx_di_fastcall(BEEPFX_HIT_1);
-    }
+    }*/
+}
+
+void level10_loop() {
+
 }

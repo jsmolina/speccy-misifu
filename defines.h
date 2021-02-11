@@ -159,7 +159,7 @@ extern uint8_t repaint_lives;
 extern uint8_t points;
 
 extern uint8_t tiles_lvl1[];
-extern uint8_t floor_holes[][24];
+extern uint8_t floor_holes[][12];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];
