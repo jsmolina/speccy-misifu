@@ -23,6 +23,8 @@
 #define WALKING_RIGHT 2
 #define JUMPING 3
 #define FALLING 4
+#define WALKING_UP 59
+#define WALKING_DOWN 60
 #define FALLING_FLOOR 69
 #define BITE 55
 #define OXYGEN 99
@@ -126,8 +128,8 @@ extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
 extern const uint8_t heart2[];
-extern char left;
-extern char right;
+/*extern char left;
+extern char right;*/
 extern uint8_t eaten_items;
 extern uint8_t frame;
 extern uint8_t x_malo;
@@ -247,6 +249,7 @@ extern void check_fsm();
 extern void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color);
 
 extern void paint_chair(uint8_t col, uint8_t color);
+extern void paint_portrait(uint8_t color);
 extern void paint_chair2(uint8_t col, uint8_t color);
 
 extern void detect_fall_in_chair(uint8_t x_chair, uint8_t bin);
@@ -270,6 +273,5 @@ extern inline struct sp1_ss * add_sprite_bird();
 extern void detect_fall_in_table(uint8_t offset);
 
 extern void move_right_and_left();
-extern void assign_window_pos(uint8_t y, uint8_t x);
 
 #endif

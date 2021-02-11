@@ -39,6 +39,10 @@
 #define UDG_SILLA2_PARTE02 146
 #define UDG_SILLA2_PARTE03 147
 #define UDG_SILLA2_PARTE04 148
+#define UDG_CUADRO_SUPERIOR_IZQUIERDA 149
+#define UDG_CUADRO_SUPERIOR_DERECHA 150
+#define UDG_CUADRO_INFERIOR_IZQUIERDA 151
+#define UDG_CUADRO_INFERIOR_DERECHA 152
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 uint8_t final_msg[] = {'l', 'o', 'v', 'e'};
@@ -56,7 +60,7 @@ struct sp1_ss  *birdsp = NULL;
 
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
-#define ROOMS_TILES_LEN 21
+#define ROOMS_TILES_LEN 25
 #define ROOMS_TILES_BASE 128
 #define UDG_WINDOWHOLE ROOMS_TILES_BASE + ROOMS_TILES_LEN
 
@@ -82,6 +86,10 @@ uint8_t rooms[] = {
     0xee, 0xea, 0xee, 0x0e, 0x0e, 0x0e, 0x0e, 0x0e, // y:0, x:18 (146)
     0x7f, 0xff, 0xff, 0x00, 0xe0, 0xe0, 0xe0, 0xe0, // y:0, x:19 (147)
     0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, 0xe0, // y:0, x:20 (148)
+    0xff, 0x80, 0xbf, 0xbc, 0xb8, 0xb3, 0xb4, 0xb1, // y:0, x:21 (149)
+    0xff, 0x01, 0xfd, 0x3d, 0x1d, 0xcd, 0x2d, 0x0d, // y:0, x:22 (150)
+    0xa5, 0xa7, 0xa6, 0x83, 0x84, 0x8f, 0x80, 0xff, // y:0, x:23 (151)
+    0xa5, 0xe5, 0x65, 0xc1, 0x21, 0xf1, 0x01, 0xff, // y:0, x:24 (152)
 };
 
 uint8_t tiles_lvl1[] = {
@@ -116,6 +124,25 @@ uint8_t tiles_lvl1[] = {
     0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
     0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, // y:0, x:29 (157)
 };
+char * chars = "0000000\0";
+
+void print_points(uint16_t points, uint8_t row) {
+    uint8_t col;
+    utoa(points, chars, 10);
+    col = 5 - strlen(chars);
+
+    if(col != 0) {
+        for(idx = 0; idx != 5; ++idx) {
+            sp1_PrintAtInv(row, 25 + idx, INK_CYAN | PAPER_BLACK, '0');
+        }
+    }
+    idx = 0;
+    while(chars[idx] != '\0') {
+        sp1_PrintAtInv(row, 25 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
+        ++idx;
+    }
+
+}
 
 
 // shared vars
@@ -336,7 +363,7 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
   uint8_t *black_window = tiles_lvl1 + 168;
 
 
-  for (idx = 0; idx < ROOMS_TILES_LEN; idx++, pt += 8) {
+  for (idx = 0; idx < ROOMS_TILES_LEN; ++idx, pt += 8) {
       sp1_TileEntry(ROOMS_TILES_BASE + idx, pt);
   }
   sp1_TileEntry(UDG_WINDOWHOLE, black_window);
@@ -393,24 +420,55 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 }
 
 void check_level7_keys() {
+    if(misifu.state == FIGHTING) {
+        return;
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+        in_wait_nokey();
+        paws = 1;
+    }
     if (misifu.state == JUMPING_PUSHED || misifu.state == FALLING) {
         return;
     }
 
-    if ((in & IN_STICK_UP) && misifu.y > 17) {
-        --misifu.y;
-        misifu.state = misifu.draw_additional;
-    } else if ((in & IN_STICK_RIGHT) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
-        ++misifu.x;
-        misifu.state = misifu.draw_additional = WALKING_RIGHT;
-    } else if ((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
-        --misifu.x;
-        misifu.state = misifu.draw_additional = WALKING_LEFT;
-    } else if((in & IN_STICK_DOWN) && misifu.y < 22) {
+    if((in & IN_STICK_DOWN) && misifu.y < 22) {
         ++misifu.y;
-        misifu.state = misifu.draw_additional;
-
+        misifu.state = WALKING_DOWN;
+    } else if ((in & IN_STICK_UP) && misifu.y > 17) {
+        --misifu.y;
+        misifu.state = WALKING_UP;
     }
+
+    if((in & IN_STICK_UP) || (in & IN_STICK_DOWN)) {
+        if(misifu.offset == LEFTC1 || misifu.offset == LEFTC2) {
+            if((misifu.y & 1) == 0) {
+                misifu.offset = LEFTC1;
+            } else {
+                misifu.offset = LEFTC2;
+            }
+        } else if (misifu.offset == RIGHTC1 || misifu.offset == RIGHTC2) {
+            if((misifu.y & 1) == 0) {
+                misifu.offset = RIGHTC1;
+            } else {
+                misifu.offset = RIGHTC2;
+            }
+        }
+    }
+
+    if ((in & IN_STICK_RIGHT) && misifu.x < level_x_max  && misifu.state != CAT_ON_HIGH) {
+        if(misifu.draw_additional == WALKING_RIGHT) {
+            ++misifu.x;
+        }
+
+        misifu.state = misifu.draw_additional = WALKING_RIGHT;
+
+    } else if ((in & IN_STICK_LEFT) && misifu.x > level_x_min && misifu.state != CAT_ON_HIGH) {
+        if(misifu.draw_additional == WALKING_LEFT) {
+            --misifu.x;
+        }
+        misifu.state = misifu.draw_additional = WALKING_LEFT;
+    }
+
 }
 
 void check_keys()
@@ -455,9 +513,9 @@ void check_keys()
         lives = 0;
         all_lives_lost();
     }
-
+    // see the final
     if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        print_background_level2();
+        get_out_of_level_generic(LEVELFINISHED);
     }
     if (in_key_pressed(IN_KEY_SCANCODE_2)) {
         print_background_level3();
@@ -524,6 +582,12 @@ void check_swim() {
 
 void dog_checks() {
 // time for doggy checks
+   if(level != 7) {
+      idx_j = FLOOR_Y;
+   } else {
+      idx_j = misifu.y;
+   }
+
     if (misifu.state != FIGHTING && enemy_apears == YES) {
         if((frame & 1) == 0) {
             --x_malo;
@@ -552,7 +616,7 @@ void dog_checks() {
             enemy_apears = NONE;
             x_malo = 33;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), idx_j, x_malo, 0, 0);
 
     }
     idx = 0;
@@ -568,15 +632,13 @@ void dog_checks() {
             enemy_apears = NONE;
             x_malo = 33;
             get_out_of_level_generic(FIGHTING);
-            idx = 1;
+            //idx = 1;
         }
-        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), FLOOR_Y, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) (sprite_dog1 + dog_offset), idx_j, x_malo, 0, 0);
     }
     // check if dog should appear
-    if (enemy_apears != YES) {
-        if(random_value > 250) {
-            enemy_apears = YES;
-        }
+    if (level != 7 && enemy_apears != YES && random_value > 250) {
+        enemy_apears = YES;
     }
     return;
 }
@@ -675,17 +737,23 @@ void check_fsm() {
 }
 
 void paint_lamp(uint8_t col, uint8_t color) {
-    sp1_PrintAtInv(19, col, color, UDG_Q_MESABASE);
-    for(idx = 15; idx != 19; ++idx) {
+    if(level == 7) {
+        frame = 18;
+    } else {
+        frame = 19;
+    }
+
+    sp1_PrintAtInv(frame, col, color, UDG_Q_MESABASE);
+    for(idx = frame - 4; idx != frame; ++idx) {
        sp1_PrintAtInv(idx, col, color, UDG_MESAPATA);
     }
 
-    for(idx = 13; idx != 15; ++idx) {
+    for(idx = frame - 6; idx != frame - 4; ++idx) {
         for(idx_j = col - 1; idx_j != col + 2; ++idx_j) {
             sp1_PrintAtInv(idx, idx_j, color, UDG_LAMP1);
         }
     }
-    sp1_PrintAtInv(15, col + 1, color, UDG_LAMP2);
+    sp1_PrintAtInv(frame - 4, col + 1, color, UDG_LAMP2);
 }
 
 void paint_table(uint8_t col, uint8_t color) {
@@ -704,6 +772,17 @@ void paint_chair(uint8_t col, uint8_t color) {
     sp1_PrintAtInv( 19, col,  color, UDG_SILLALM); // ASIENTO
     sp1_PrintAt( 19, col + 1,  color, UDG_SILLARM); // ASIENTO
     sp1_PrintAt( 20, col + 1,  color, UDG_SILLAR); // PATA DERECHA
+}
+
+
+void paint_portrait(uint8_t color) {
+    x = UDG_CUADRO_SUPERIOR_IZQUIERDA;
+    for(idx_j = 10; idx_j != 12; ++idx_j) {
+        for(idx = 10; idx != 12; ++idx) {
+            sp1_PrintAt(idx_j, idx, color, x);
+            ++x;
+        }
+    }
 }
 
 void paint_chair2(uint8_t col, uint8_t color) {
@@ -758,9 +837,9 @@ void get_out_of_level_generic(uint8_t fall) {
                 misifu.offset = (int)RIGHTC2;
                 idx_j = LEFTC2;
             }
-            sp1_MoveSprAbs(misifu.sp, &full_screen,(void*) misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
+            sp1_MoveSprAbs(misifu.sp, &full_screen,(int) sprite_protar1 + misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
 
-            sp1_MoveSprAbs(dogr1sp, &full_screen,(void*) sprite_dog1, FLOOR_Y, 30 - idx, 0, 0);
+            sp1_MoveSprAbs(dogr1sp, &full_screen,(int) sprite_protar1 + idx_j, FLOOR_Y, 30 - idx, 0, 0);
             sp1_UpdateNow();
             for(idx_j = 0; idx_j != 15; ++idx_j) {
                 wait();
@@ -923,12 +1002,6 @@ void detect_fall_in_table(uint8_t offset) {
 
 }
 
-void assign_window_pos(uint8_t y, uint8_t x) {
-    windows[idx].has_item = NONE;
-    windows[idx].x = x;
-    windows[idx].y = y;
-    ++idx;
-}
 
 
 // reference: https://github.com/z88dk/z88dk/blob/master/include/_DEVELOPMENT/sdcc/arch/zx/sp1.h#L83
