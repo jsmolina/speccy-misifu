@@ -273,5 +273,5 @@ extern inline struct sp1_ss * add_sprite_bird();
 extern void detect_fall_in_table(uint8_t offset);
 
 extern void move_right_and_left();
-
+extern void print_points(uint16_t points, uint8_t row);
 #endif

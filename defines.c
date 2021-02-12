@@ -128,18 +128,19 @@ char * chars = "0000000\0";
 
 void print_points(uint16_t points, uint8_t row) {
     uint8_t col;
+    uint8_t indice;
     utoa(points, chars, 10);
     col = 5 - strlen(chars);
 
     if(col != 0) {
-        for(idx = 0; idx != 5; ++idx) {
-            sp1_PrintAtInv(row, 25 + idx, INK_CYAN | PAPER_BLACK, '0');
+        for(indice = 0; indice != 5; ++indice) {
+            sp1_PrintAtInv(row, 25 + indice, INK_CYAN | PAPER_BLACK, '0');
         }
     }
-    idx = 0;
-    while(chars[idx] != '\0') {
-        sp1_PrintAtInv(row, 25 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
-        ++idx;
+    indice = 0;
+    while(chars[indice] != '\0') {
+        sp1_PrintAtInv(row, 25 + indice + col, INK_CYAN | PAPER_BLACK, chars[indice]);
+        ++indice;
     }
 
 }
