@@ -687,6 +687,10 @@ void check_fsm() {
         stop_jump_if_needed(10);
     } else if (misifu.state == JUMPING) {
         --misifu.y;
+        if(level == 10 && misifu.y < 3) {
+            misifu.state = FALLING;
+            misifu.y = 3;
+        }
 
         if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
 

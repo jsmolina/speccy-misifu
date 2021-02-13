@@ -9,7 +9,8 @@
 
 #define RED_GREEN_BRIGHT INK_RED | PAPER_GREEN | BRIGHT
 
-
+#define RAT_TO_RIGHT 1
+#define RAT_TO_LEFT 2
 #define UDG_UDG_CORAZON_01 128
 #define UDG_UDG_CORAZON_02 129
 #define UDG_UDG_CORAZON_ROTO_01 130
@@ -84,14 +85,23 @@ void print_background_level_last() {
       sp1_TileEntry(LAST_TILES_BASE + idx, pt);
   }
 
+  x = UDG_UDG_GATA_A_01;
+  for(idx_j = 5; idx_j != 7; ++idx_j) {
+      for(idx = 15; idx != 17; ++idx) {
+          sp1_PrintAtInv(idx_j, idx, INK_BLACK | PAPER_GREEN | BRIGHT, x);
+          ++x;
+      }
+  }
+
   // this is rats positions
-  /*frame = 6;
-  for(idx_j = 0; idx_j != 4; ++idx_j) {
-      windows[idx_j].x = (rand() % 19) + 5;
+  frame = 10;
+  for(idx_j = 0; idx_j != 3; ++idx_j) {
+      x = (rand() % 19) + 5;
+      windows[idx_j].x = x;
       windows[idx_j].y = frame;
+      windows[idx_j].has_item = RAT_TO_RIGHT  + (x & 1);
       frame += 4;
-      // TODO PAINT RAT LIKE EELS
-  }*/
+  }
 
   // frame = floor
   //frame = 4;
@@ -132,6 +142,8 @@ void print_background_level_last() {
   level_x_max = 26;
   level_x_min = 4;
   aux_object.offset = AUX_ARROWLEFT;
+  aux_object.y = 3;
+  aux_object.x = 33;
 }
 
 
@@ -163,61 +175,91 @@ static inline uint8_t rand_cat_to_move() {
         return 1;
     } else if(random_value < 150) {
         return 2;
-    } else  {
-        return 3;
     }
-}
-
-static void print_heavencat(uint8_t to_print1, uint8_t to_print2) {
-    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x, PAPER_GREEN | BRIGHT, to_print1);
-    sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + 1, PAPER_GREEN | BRIGHT, to_print2);
+    return UNDEF;
 }
 
 void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
-    if (in_key_pressed(IN_KEY_SCANCODE_e)) {
-        aux_object.y = 3;
-        aux_object.offset = AUX_ARROWLEFT;
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_d)) {
-        ++aux_object.y;
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_f)) {
-        ++aux_object.x;
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_s)) {
-        --aux_object.x;
-    }
-    print_points(aux_object.x, 1);
-    print_points(aux_object.y, 2);
-    sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
-    idx_j = lvl3_y_to_idj(aux_object.y - 1);
-    print_points(idx_j, 3);
-    if(idx_j == UNDEF) {
-        return;
-    }
-    idx = aux_object.x - 3;
-    if((idx & 1) == 1) {
-        --idx;
-    }
-    x_malo = idx + 4;
-    idx = idx >> 1;
-    print_points(idx, 0);
+    if (aux_object.x == 33 && random_value >= level_x_min && random_value <= level_x_max && (tick & 1) == 0) {
+        aux_object.x = random_value;
+        aux_object.y = 0;
 
-    floor_holes[idx_j][idx] = UDG_UDG_CORAZON_ROTO_01;
-    for(x = 0; x != 2; ++x) {
-        sp1_PrintAtInv(
-            aux_object.y + 1,
-            x_malo + x,
-            INK_BLUE | PAPER_GREEN | BRIGHT,
-            floor_holes[idx_j][idx] + x);
+        if(aux_object.x > 16) {
+            aux_object.offset = AUX_ARROWLEFT;
+        } else {
+            aux_object.offset = AUX_ARROWRIGHT;
+        }
     }
-
+    if(aux_object.x != 33) {
+        if(aux_object.x <= FLOOR_Y) {
+            ++aux_object.y;
+            if((random_value & 1) == 0) {
+                if (aux_object.offset == AUX_ARROWRIGHT) {
+                    ++aux_object.x;
+                } else {
+                    --aux_object.x;
+                }
+            }
+            idx_j = lvl3_y_to_idj(aux_object.y - 1);
+            if(idx_j == UNDEF) {
+                return;
+            }
+            idx = aux_object.x - 3;
+            if((idx & 1) == 1) {
+                --idx;
+            }
+            x_malo = idx + 4;
+            idx = idx >> 1;
+            if(floor_holes[idx_j][idx] == UDG_UDG_CORAZON_01) {
+                floor_holes[idx_j][idx] = UDG_UDG_CORAZON_ROTO_01;
+                for(x = 0; x != 2; ++x) {
+                    sp1_PrintAtInv(
+                        aux_object.y + 1,
+                        x_malo + x,
+                        INK_BLUE | PAPER_GREEN | BRIGHT,
+                        floor_holes[idx_j][idx] + x);
+                }
+            }
+        } else {
+            // out of screen
+            aux_object.x = 33;
+        }
+        sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
+    }
     // si toca el gato lo tira?
 }
 
 void level10_loop() {
+    throw_cupid_arrow();
+    idx_j = rand_cat_to_move();
+    if(idx_j != UNDEF) {
+        for(x = 0; x != 2; ++x) {
+            sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + x, PAPER_GREEN | BRIGHT, ' ');
+        }
+        if(windows[idx_j].has_item == RAT_TO_RIGHT) {
+            idx = UDG_RATA_DERECHA_01;
+            ++windows[idx_j].x;
+        } else {
+            idx = UDG_RATA_IZQUIERDA_01;
+            --windows[idx_j].x;
+        }
+        if(windows[idx_j].x <= level_x_min) {
+            windows[idx_j].has_item = RAT_TO_RIGHT;
+        } else if(windows[idx_j].x >= level_x_max) {
+            windows[idx_j].has_item = RAT_TO_LEFT;
+        }
+        for(x = 0; x != 2; ++x) {
+            sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + x, PAPER_GREEN | BRIGHT, idx + x);
+        }
+        // colision
+        if(((misifu.y + 1) == windows[idx_j].y) && (misifu.x == windows[idx_j].x || misifu.x == (windows[idx_j].x - 1))) {
+            misifu.state = FALLING;
+            ++misifu.y;
+        }
+    }
+
     idx_j = lvl3_y_to_idj(misifu.y);
     if (idx_j != UNDEF) {
         idx = misifu.x - 3; // (3, 5, 7) => (0, 2, 4)
@@ -241,7 +283,10 @@ void level10_loop() {
             misifu.draw_additional = CAT_IN_ROPE;
             misifu.offset = BORED;
         }
+        if(idx_j == 4 && (misifu.x == 15 || misifu.x == 16)) {
+            get_out_of_level_generic(LEVELFINISHED);
+            return;
+        }
     }
-    throw_cupid_arrow();
 
 }
