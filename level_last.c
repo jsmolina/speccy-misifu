@@ -274,7 +274,7 @@ void level10_loop() {
     // move Fred! (reusing x_malo... but fred is a kidnapped good guy)
     // dog_offset
     // enemy_apears
-    if((frame & 1) == 0) {
+    if(frame == 2) {
         if(dog_offset == RIGHTC1 || dog_offset == RIGHTC2) {
             ++x_malo;
             if((x_malo & 1) == 0) {
