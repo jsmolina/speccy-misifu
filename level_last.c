@@ -162,7 +162,7 @@ void throw_cupid_arrow() {
     // if arrow object is hidden, decide to throw it or not
     if (aux_object.x == 33 && random_value >= level_x_min && random_value <= level_x_max && (tick & 1) == 0) {
         aux_object.x = random_value;
-        aux_object.y = 0;
+        aux_object.y = 3;
 
         if(aux_object.x > 16) {
             aux_object.offset = AUX_ARROWLEFT;
@@ -181,28 +181,28 @@ void throw_cupid_arrow() {
                 }
             }
             idx_j = lvl3_y_to_idj(aux_object.y - 1);
-            if(idx_j == UNDEF) {
-                return;
-            }
-            idx = aux_object.x - 3;
-            if((idx & 1) == 1) {
-                --idx;
-            }
-            bincat_in_bin = idx + 4;
-            idx = idx >> 1;
-            if(floor_holes[idx_j][idx] == UDG_UDG_CORAZON_01) {
-                floor_holes[idx_j][idx] = UDG_UDG_CORAZON_ROTO_01;
-                row1_moving = INK_BLUE | PAPER_GREEN | BRIGHT;
-            } else {
-                floor_holes[idx_j][idx] = UDG_UDG_CORAZON_01;
-                row1_moving = INK_RED | PAPER_GREEN | BRIGHT;
-            }
-            for(x = 0; x != 2; ++x) {
-                sp1_PrintAtInv(
-                    aux_object.y + 1,
-                    bincat_in_bin + x,
-                   row1_moving,
-                    floor_holes[idx_j][idx] + x);
+            if(idx_j != UNDEF) {
+
+                idx = aux_object.x - 3;
+                if((idx & 1) == 1) {
+                    --idx;
+                }
+                bincat_in_bin = idx + 4;
+                idx = idx >> 1;
+                if(floor_holes[idx_j][idx] == UDG_UDG_CORAZON_01) {
+                    floor_holes[idx_j][idx] = UDG_UDG_CORAZON_ROTO_01;
+                    row1_moving = INK_BLUE | PAPER_GREEN | BRIGHT;
+                } else {
+                    floor_holes[idx_j][idx] = UDG_UDG_CORAZON_01;
+                    row1_moving = INK_RED | PAPER_GREEN | BRIGHT;
+                }
+                for(x = 0; x != 2; ++x) {
+                    sp1_PrintAtInv(
+                        aux_object.y + 1,
+                        bincat_in_bin + x,
+                       row1_moving,
+                        floor_holes[idx_j][idx] + x);
+                }
             }
 
         } else {
