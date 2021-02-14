@@ -114,6 +114,7 @@ extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 extern struct sp1_ss  *birdsp;
+extern struct sp1_ss  *fredsp;
 
 extern struct sp1_Rect full_screen;
 
@@ -198,7 +199,7 @@ extern const uint8_t bin_places2[];
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t horizontal_direction;
 
-extern void add_sprites_for_all_levels();
+extern inline void add_sprites_for_all_levels();
 
 struct prota {
     struct sp1_ss* sp;

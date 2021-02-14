@@ -57,6 +57,7 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 struct sp1_ss  *birdsp = NULL;
+struct sp1_ss  *fredsp = NULL;
 
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
@@ -823,9 +824,7 @@ void get_out_of_level_generic(uint8_t fall) {
 
     if(fall == LEVELFINISHED) {
         last_success_level = 0;
-        sp1_DeleteSpr_fastcall(dogr1sp);
-        dogr1sp = add_sprite_protar1();
-
+        //sp1_DeleteSpr_fastcall(dogr1sp);
         ay_vt_init(sweet_module);
         x = 0;
         for(idx = 14; idx != 18; ++idx) {
@@ -844,14 +843,14 @@ void get_out_of_level_generic(uint8_t fall) {
             }
             sp1_MoveSprAbs(misifu.sp, &full_screen,(int) sprite_protar1 + misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
 
-            sp1_MoveSprAbs(dogr1sp, &full_screen,(int) sprite_protar1 + idx_j, FLOOR_Y, 30 - idx, 0, 0);
+            sp1_MoveSprAbs(fredsp, &full_screen,(int) sprite_protar1 + idx_j, FLOOR_Y, 30 - idx, 0, 0);
             sp1_UpdateNow();
             for(idx_j = 0; idx_j != 15; ++idx_j) {
                 wait();
             }
         }
-        //sp1_DeleteSpr_fastcall(dogr1sp);
-        //dogr1sp = add_sprite_dogr1();
+        sp1_DeleteSpr_fastcall(fredsp);
+        fredsp = NULL;
         ay_vt_init(music_module);
 
     } else if(fall == WON_LEVEL) {

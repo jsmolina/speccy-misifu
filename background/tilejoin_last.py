@@ -8,11 +8,7 @@ imgs = [
     'rata_derecha_01',
     'rata_derecha_02',
     'rata_izquierda_01',
-    'rata_izquierda_02',
-    'udg_gata_A_01',
-    'udg_gata_A_02',
-    'udg_gata_B_01',
-    'udg_gata_B_02'
+    'rata_izquierda_02'
 ]
 for idx, item in enumerate(imgs):
     print('#define UDG_' + item.upper() + ' {}'.format(128+idx))

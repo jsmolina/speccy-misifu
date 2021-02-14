@@ -19,10 +19,6 @@
 #define UDG_RATA_DERECHA_02 133
 #define UDG_RATA_IZQUIERDA_01 134
 #define UDG_RATA_IZQUIERDA_02 135
-#define UDG_UDG_GATA_A_01 136
-#define UDG_UDG_GATA_A_02 137
-#define UDG_UDG_GATA_B_01 138
-#define UDG_UDG_GATA_B_02 139
 
 #define LAST_TILES_LEN  12
 #define LAST_TILES_BASE  128
@@ -38,10 +34,6 @@ const uint8_t last[] = {
     0x00, 0x00, 0x30, 0x70, 0xf8, 0xf4, 0xfe, 0xfc, // y:0, x:5 (133)
     0x00, 0x00, 0x0c, 0x0e, 0x1f, 0x2f, 0x7f, 0x3f, // y:0, x:6 (134)
     0x00, 0x00, 0x00, 0x08, 0xe4, 0xf4, 0xf8, 0xf0, // y:0, x:7 (135)
-    0x00, 0x04, 0x07, 0x0f, 0x0d, 0x0f, 0x07, 0x07, // y:0, x:8 (136)
-    0x00, 0x40, 0xc0, 0xe0, 0x60, 0xe0, 0xc0, 0xc0, // y:0, x:9 (137)
-    0x0f, 0x0f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x0f, // y:0, x:10 (138)
-    0xe0, 0xe0, 0xe0, 0xe0, 0xc0, 0xc8, 0xd8, 0xf0, // y:0, x:11 (139)
 };
 
 
@@ -85,17 +77,9 @@ void print_background_level_last() {
       sp1_TileEntry(LAST_TILES_BASE + idx, pt);
   }
 
-  x = UDG_UDG_GATA_A_01;
-  for(idx_j = 5; idx_j != 7; ++idx_j) {
-      for(idx = 15; idx != 17; ++idx) {
-          sp1_PrintAtInv(idx_j, idx, INK_BLACK | PAPER_GREEN | BRIGHT, x);
-          ++x;
-      }
-  }
-
   // this is rats positions
-  frame = 10;
-  for(idx_j = 0; idx_j != 3; ++idx_j) {
+  frame = 6;
+  for(idx_j = 0; idx_j != 4; ++idx_j) {
       x = (rand() % 19) + 5;
       windows[idx_j].x = x;
       windows[idx_j].y = frame;
@@ -136,6 +120,10 @@ void print_background_level_last() {
       frame = frame - 4;
   }
 
+  // fred! (lover)
+  if(fredsp == NULL) {
+      fredsp = add_sprite_protar1();
+  }
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
@@ -144,6 +132,8 @@ void print_background_level_last() {
   aux_object.offset = AUX_ARROWLEFT;
   aux_object.y = 3;
   aux_object.x = 33;
+  x_malo = 4;
+  dog_offset = RIGHTC1;
 }
 
 
@@ -165,18 +155,6 @@ static uint8_t lvl3_y_to_idj(uint8_t y) {
     } else {
         return UNDEF;
     }
-}
-
-
-static inline uint8_t rand_cat_to_move() {
-    if(random_value < 50) {
-        return 0;
-    } else if(random_value < 100) {
-        return 1;
-    } else if(random_value < 150) {
-        return 2;
-    }
-    return UNDEF;
 }
 
 void throw_cupid_arrow() {
@@ -210,31 +188,40 @@ void throw_cupid_arrow() {
             if((idx & 1) == 1) {
                 --idx;
             }
-            x_malo = idx + 4;
+            bincat_in_bin = idx + 4;
             idx = idx >> 1;
             if(floor_holes[idx_j][idx] == UDG_UDG_CORAZON_01) {
                 floor_holes[idx_j][idx] = UDG_UDG_CORAZON_ROTO_01;
-                for(x = 0; x != 2; ++x) {
-                    sp1_PrintAtInv(
-                        aux_object.y + 1,
-                        x_malo + x,
-                        INK_BLUE | PAPER_GREEN | BRIGHT,
-                        floor_holes[idx_j][idx] + x);
-                }
+                row1_moving = INK_BLUE | PAPER_GREEN | BRIGHT;
+            } else {
+                floor_holes[idx_j][idx] = UDG_UDG_CORAZON_01;
+                row1_moving = INK_RED | PAPER_GREEN | BRIGHT;
             }
+            for(x = 0; x != 2; ++x) {
+                sp1_PrintAtInv(
+                    aux_object.y + 1,
+                    bincat_in_bin + x,
+                   row1_moving,
+                    floor_holes[idx_j][idx] + x);
+            }
+
         } else {
             // out of screen
             aux_object.x = 33;
         }
+
+        if(misifu.x == aux_object.x && misifu.y == aux_object.y) {
+            get_out_of_level_generic(FALLING);
+            return;
+        }
+
         sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
     }
     // si toca el gato lo tira?
 }
 
 void level10_loop() {
-    throw_cupid_arrow();
-    idx_j = rand_cat_to_move();
-    if(idx_j != UNDEF) {
+    for(idx_j= 0; idx_j != 4; ++idx_j) {
         for(x = 0; x != 2; ++x) {
             sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + x, PAPER_GREEN | BRIGHT, ' ');
         }
@@ -275,18 +262,43 @@ void level10_loop() {
                 return;
             }
         } else if (floor_holes[idx_j][idx] == UDG_UDG_CORAZON_01 && misifu.state == FALLING) {
-            if(idx_j == 0) {
-                get_out_of_level_generic(LEVELFINISHED); // yayyy
-                return;
-            }
             misifu.state = CAT_ON_HIGH;
             misifu.draw_additional = CAT_IN_ROPE;
             misifu.offset = BORED;
         }
-        if(idx_j == 4 && (misifu.x == 15 || misifu.x == 16)) {
+        if(idx_j == 4 && (misifu.x == x_malo || misifu.x == (x_malo + 1))) {
             get_out_of_level_generic(LEVELFINISHED);
             return;
         }
     }
+    // move Fred! (reusing x_malo... but fred is a kidnapped good guy)
+    // dog_offset
+    // enemy_apears
+    if((frame & 1) == 0) {
+        if(dog_offset == RIGHTC1 || dog_offset == RIGHTC2) {
+            ++x_malo;
+            if((x_malo & 1) == 0) {
+                dog_offset = RIGHTC1;
+            } else {
+                dog_offset = RIGHTC2;
+            }
+        } else {
+            --x_malo;
+            if((x_malo & 1) == 0) {
+                dog_offset = LEFTC1;
+            } else {
+                dog_offset = LEFTC2;
+            }
+        }
+        if(x_malo >= level_x_max) {
+            dog_offset = LEFTC1;
+        }
+        if(x_malo <= level_x_min) {
+            dog_offset = RIGHTC1;
+        }
+
+        sp1_MoveSprAbs(fredsp, &full_screen, (int) sprite_protar1 + dog_offset, 4, x_malo, 0, 0);
+    }
+    throw_cupid_arrow();
 
 }
