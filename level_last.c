@@ -211,7 +211,7 @@ void throw_cupid_arrow() {
         }
 
         if(misifu.x == aux_object.x && misifu.y == aux_object.y) {
-            get_out_of_level_generic(FALLING);
+            get_out_of_level_generic(FALLING_HEARTS);
             return;
         }
 
@@ -258,7 +258,7 @@ void level10_loop() {
         if (floor_holes[idx_j][idx] == UDG_UDG_CORAZON_ROTO_01) {
             misifu.state = FALLING;
             if (misifu.y >= FLOOR_Y) {
-                get_out_of_level_generic(FALLING);
+                get_out_of_level_generic(FALLING_HEARTS);
                 return;
             }
         } else if (floor_holes[idx_j][idx] == UDG_UDG_CORAZON_01 && misifu.state == FALLING) {

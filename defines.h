@@ -15,6 +15,7 @@
 #define WON_LEVEL 10
 #define DOG_AWAKEN 30
 #define ELECTRIFIED 40
+#define FALLING_HEARTS 50
 #define YES 1
 #define CLEAN 1
 #define BIN_Y1 15
