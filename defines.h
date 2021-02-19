@@ -105,6 +105,9 @@
 
 #define SONG_RESTART 250
 
+#define UDG_UDG_CORAZON_01 134
+#define UDG_UDG_CORAZON_02 135
+
 #define MAX_X 32
 
 extern struct sp1_Rect;
@@ -276,4 +279,6 @@ extern void detect_fall_in_table(uint8_t offset);
 
 extern void move_right_and_left();
 extern void print_points(uint16_t points, uint8_t row);
+extern void assign_hearts();
+
 #endif

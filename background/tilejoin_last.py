@@ -1,8 +1,6 @@
 import sys
 from PIL import Image
 imgs = [
-    'udg_corazon_01',
-    'udg_corazon_02',
     'udg_corazon_roto_01',
     'udg_corazon_roto_02',
     'rata_derecha_01',
