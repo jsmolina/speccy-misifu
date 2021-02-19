@@ -15,6 +15,7 @@
 #define WON_LEVEL 10
 #define DOG_AWAKEN 30
 #define ELECTRIFIED 40
+#define FALLING_HEARTS 50
 #define YES 1
 #define CLEAN 1
 #define BIN_Y1 15
@@ -104,6 +105,9 @@
 
 #define SONG_RESTART 250
 
+#define UDG_UDG_CORAZON_01 134
+#define UDG_UDG_CORAZON_02 135
+
 #define MAX_X 32
 
 extern struct sp1_Rect;
@@ -114,6 +118,7 @@ extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 extern struct sp1_ss  *birdsp;
+extern struct sp1_ss  *fredsp;
 
 extern struct sp1_Rect full_screen;
 
@@ -159,7 +164,7 @@ extern uint8_t repaint_lives;
 extern uint8_t points;
 
 extern uint8_t tiles_lvl1[];
-extern uint8_t floor_holes[][24];
+extern uint8_t floor_holes[][12];
 
 // level 2 cheese
 extern const uint8_t hole_empty[];
@@ -198,7 +203,7 @@ extern const uint8_t bin_places2[];
 // variable used for free objects (e.g. kitchen object thrown from window)
 extern uint8_t horizontal_direction;
 
-extern void add_sprites_for_all_levels();
+extern inline void add_sprites_for_all_levels();
 
 struct prota {
     struct sp1_ss* sp;
@@ -273,5 +278,7 @@ extern inline struct sp1_ss * add_sprite_bird();
 extern void detect_fall_in_table(uint8_t offset);
 
 extern void move_right_and_left();
+extern void print_points(uint16_t points, uint8_t row);
+extern void assign_hearts();
 
 #endif

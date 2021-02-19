@@ -116,8 +116,7 @@ int main()
         } else if(level == 7) {
             level7_loop();
         } else if (level == 10) {
-            detect_fall_in_hearts();
-            throw_cupid_arrow();
+            level10_loop();
         }
 
 

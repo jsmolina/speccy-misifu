@@ -45,7 +45,6 @@
 #define UDG_CUADRO_INFERIOR_DERECHA 152
 
 struct sp1_Rect full_screen = {0, 0, 32, 24};
-uint8_t final_msg[] = {'l', 'o', 'v', 'e'};
 
 // 28 and 3 for level = 3
 uint8_t level_x_max;
@@ -57,6 +56,7 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 struct sp1_ss  *birdsp = NULL;
+struct sp1_ss  *fredsp = NULL;
 
 const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
@@ -92,6 +92,9 @@ uint8_t rooms[] = {
     0xa5, 0xe5, 0x65, 0xc1, 0x21, 0xf1, 0x01, 0xff, // y:0, x:24 (152)
 };
 
+uint8_t hearts1[] = {0x3c, 0x66, 0x5f, 0x7f, 0x3f, 0x0f, 0x03, 0x01};
+uint8_t hearts2[] = {0x78, 0xfc, 0xfc, 0xfc, 0xf8, 0xe0, 0x80, 0x00};
+
 uint8_t tiles_lvl1[] = {
     0x00, 0x01, 0x01, 0x7e, 0x00, 0x10, 0x10, 0xe7, // y:0, x:0 (128)
     0x00, 0x80, 0x04, 0x00, 0x08, 0x40, 0x01, 0x00, // y:0, x:1 (129)
@@ -124,26 +127,11 @@ uint8_t tiles_lvl1[] = {
     0x05, 0x0b, 0x25, 0x33, 0x35, 0x33, 0x15, 0x0b, // y:0, x:28 (156)
     0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, 0x0b, 0x15, // y:0, x:29 (157)
 };
-char * chars = "0000000\0";
 
-void print_points(uint16_t points, uint8_t row) {
-    uint8_t col;
-    utoa(points, chars, 10);
-    col = 5 - strlen(chars);
-
-    if(col != 0) {
-        for(idx = 0; idx != 5; ++idx) {
-            sp1_PrintAtInv(row, 25 + idx, INK_CYAN | PAPER_BLACK, '0');
-        }
-    }
-    idx = 0;
-    while(chars[idx] != '\0') {
-        sp1_PrintAtInv(row, 25 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
-        ++idx;
-    }
-
+void assign_hearts() {
+    sp1_TileEntry(UDG_UDG_CORAZON_01, hearts1);
+    sp1_TileEntry(UDG_UDG_CORAZON_02, hearts2);
 }
-
 
 // shared vars
 uint8_t x, y;
@@ -184,7 +172,7 @@ uint8_t window_shown = 0;
 
 
 // hearts holes
-uint8_t floor_holes[5][24];
+uint8_t floor_holes[5][12];
 
 
 // level 1
@@ -202,6 +190,7 @@ uint16_t in;
 //unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v5";
 
 extern uint8_t cartoon1[];
+extern uint8_t cartoon3[];
 
 void show_menu() {
     __asm
@@ -517,21 +506,7 @@ void check_keys()
     if (in_key_pressed(IN_KEY_SCANCODE_1)) {
         get_out_of_level_generic(LEVELFINISHED);
     }
-    if (in_key_pressed(IN_KEY_SCANCODE_2)) {
-        print_background_level3();
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_3)) {
-        print_background_level4();
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_4)) {
-        print_background_level5();
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_5)) {
-        print_background_level6();
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_6)) {
-        print_background_level7();
-    }
+
     if (in_key_pressed(IN_KEY_SCANCODE_7)) {
         print_background_level_last();
     }
@@ -686,6 +661,10 @@ void check_fsm() {
         stop_jump_if_needed(10);
     } else if (misifu.state == JUMPING) {
         --misifu.y;
+        if(level == 10 && misifu.y < 3) {
+            misifu.state = FALLING;
+            misifu.y = 3;
+        }
 
         if(misifu.draw_additional == JUMP_RIGHT && misifu.x < level_x_max) {
 
@@ -808,6 +787,28 @@ void detect_fall_in_chair(uint8_t x_chair, uint8_t bin) {
     }
 }
 
+void paint_end() {
+    __asm
+    extern enable_bank_n
+   di
+   ld a,0x80
+   ld i,a                      ; point I at uncontended bank
+
+   ld a,3
+   call enable_bank_n          ; bank 3 in top 16k, stack moved
+    __endasm;
+    memcpy(16384, cartoon3, 6912);
+    __asm
+    extern restore_bank_0
+    call restore_bank_0
+
+    ld a,0xd0
+    ld i,a                      ; restore I
+
+    ei
+    __endasm;
+}
+
 void get_out_of_level_generic(uint8_t fall) {
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_WHITE,
@@ -817,18 +818,23 @@ void get_out_of_level_generic(uint8_t fall) {
     sp1_TileEntry('H', heart2);
 
     if(fall == LEVELFINISHED) {
-        last_success_level = 0;
-        sp1_DeleteSpr_fastcall(dogr1sp);
-        dogr1sp = add_sprite_protar1();
+        // TODO sacr fuera de pantalla aux_object y misifu
+        // TODO una fila mas arriba
+        uint8_t *black_window = tiles_lvl1 + 168;
+        sp1_TileEntry(UDG_WINDOWHOLE, black_window);
+        assign_hearts();
 
         ay_vt_init(sweet_module);
-        x = 0;
-        for(idx = 14; idx != 18; ++idx) {
-            sp1_PrintAt(10, idx, INK_BLACK | PAPER_WHITE, final_msg[x]);
-            ++x;
-        }
 
-        for (idx = 0; idx != 13; ++idx) {
+        for(idx_j = 14; idx_j != 18; ++idx_j) {
+            for(idx = 0; idx != 32; ++idx) {
+                sp1_PrintAtInv(idx_j, idx, INK_BLACK | PAPER_CYAN, UDG_WINDOWHOLE);
+            }
+        }
+        last_success_level = 0;
+        sp1_MoveSprAbs(misifu.sp, &full_screen,(int) sprite_protar1 + misifu.offset, 14, 0, 0, 0);
+
+        for (idx = 0; idx != 15; ++idx) {
 
             if((idx & 1) == 0) {
                 misifu.offset = (int)RIGHTC1;
@@ -837,16 +843,35 @@ void get_out_of_level_generic(uint8_t fall) {
                 misifu.offset = (int)RIGHTC2;
                 idx_j = LEFTC2;
             }
-            sp1_MoveSprAbs(misifu.sp, &full_screen,(int) sprite_protar1 + misifu.offset, FLOOR_Y, 2 + idx, 0, 0);
+            if(idx > 0) {
+                sp1_MoveSprAbs(misifu.sp, &full_screen,(int) sprite_protar1 + misifu.offset, 14, 0 + idx - 1, 0, 0);
+            }
 
-            sp1_MoveSprAbs(dogr1sp, &full_screen,(int) sprite_protar1 + idx_j, FLOOR_Y, 30 - idx, 0, 0);
+            sp1_MoveSprAbs(fredsp, &full_screen,(int) sprite_protar1 + idx_j, 14, 30 - idx, 0, 0);
+
             sp1_UpdateNow();
-            for(idx_j = 0; idx_j != 15; ++idx_j) {
+            if(idx == 0) {
+                // ensures previous screen cleanup
+                paint_end();
+                frame = 0;
+            }
+            if(idx == 1) {
+                frame = 15;
+            } else if(idx == 13) {
+                for(idx_j = 0; idx_j != 2; ++idx_j) {
+                    sp1_PrintAtInv(14, 15 + idx_j, INK_MAGENTA | PAPER_BLACK, UDG_UDG_CORAZON_01 + idx_j);
+                }
+            } else if(idx == 14) {
+                frame = 120;
+            }
+
+            for(idx_j = 0; idx_j != frame; ++idx_j) {
                 wait();
             }
         }
-        //sp1_DeleteSpr_fastcall(dogr1sp);
-        //dogr1sp = add_sprite_dogr1();
+        // TODO CORAZON AL FINAL
+        sp1_DeleteSpr_fastcall(fredsp);
+        fredsp = NULL;
         ay_vt_init(music_module);
 
     } else if(fall == WON_LEVEL) {

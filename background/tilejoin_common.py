@@ -26,6 +26,8 @@ imgs = [
     'udg_cuadro_superior_derecha',
     'udg_cuadro_inferior_izquierda',
     'udg_cuadro_inferior_derecha',
+    'udg_corazon_01',
+    'udg_corazon_02',
 ]
 result = ["#define {} {}".format(i.upper(), idx + 128) for idx, i in enumerate(imgs)]
 print('\n'.join(result))

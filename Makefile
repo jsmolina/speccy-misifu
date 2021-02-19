@@ -8,9 +8,10 @@ compile:
 	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
 	appmake +zx -b misifu_BANK_4.bin --org 49152 --noloader --blockname bank4 -o bank4.tap
+	appmake +zx -b misifu_BANK_3.bin --org 49152 --noloader --blockname bank3 -o bank3.tap
 	touch misifu.tap
 	rm misifu.tap
-	cat loader.tap screen.tap code.tap bank6.tap bank4.tap > misifu.tap
+	cat loader.tap screen.tap code.tap bank6.tap bank4.tap bank3.tap > misifu.tap
 	echo "Done!"
 
 develop:
@@ -22,9 +23,10 @@ develop:
 	appmake +zx -b misifu_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	appmake +zx -b misifu_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
 	appmake +zx -b misifu_BANK_4.bin --org 49152 --noloader --blockname bank4 -o bank4.tap
+	appmake +zx -b misifu_BANK_3.bin --org 49152 --noloader --blockname bank3 -o bank3.tap
 	touch misifu.tap
 	rm misifu.tap
-	cat loader.tap screen.tap code.tap bank6.tap bank4.tap > misifu.tap
+	cat loader.tap screen.tap code.tap bank6.tap bank4.tap bank3.tap > misifu.tap
 	echo "Done"
 
 sprites: prota dogsprites bincat clothes auxiliar protaswim
