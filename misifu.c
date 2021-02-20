@@ -123,8 +123,8 @@ int main()
         ++frame;
         if (frame >= 4) {
             frame = 0;
-            if (points < 254) {
-                ++points;
+            if (level_time < 254) {
+                ++level_time;
             }
         }
 

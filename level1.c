@@ -124,6 +124,7 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
 
 void print_lives() {
     sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + lives);
+    print_points();
     repaint_lives = 0;
 }
 
@@ -306,23 +307,23 @@ void paint_clothes(uint8_t clean) {
             }
         }
 
-        points = 0;
-        for (x = 6; x != 14; x += 4, ++points) {
+        level_time = 0;
+        for (x = 6; x != 14; x += 4, ++level_time) {
             if(clean == 0) {
                 udg_topaint = floor_holes[2][idx_j];
             }
-            sp1_PrintAtInv(x, floor_holes[points][idx], color, udg_topaint);
+            sp1_PrintAtInv(x, floor_holes[level_time][idx], color, udg_topaint);
 
             if(floor_holes[2][idx_j] == UDG_CLOTHES11) {
                 if(clean == 0) {
                     udg_topaint = UDG_CLOTHES21;
                 }
-                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+                sp1_PrintAtInv(x + 1, floor_holes[level_time][idx], color, udg_topaint);
             } else if(floor_holes[2][idx_j] == UDG_CLOTHES12) {
                 if(clean == 0) {
                     udg_topaint = UDG_CLOTHES22;
                 }
-                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+                sp1_PrintAtInv(x + 1, floor_holes[level_time][idx], color, udg_topaint);
             }
         }
 

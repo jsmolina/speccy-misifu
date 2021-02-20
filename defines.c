@@ -167,9 +167,12 @@ uint8_t level = 1;
 uint8_t lives = 0;
 uint8_t last_success_level = 0;
 uint8_t repaint_lives = 0;
-uint8_t points = 0;
+uint8_t level_time;
 uint8_t window_shown = 0;
 
+uint16_t total_points;
+
+char * chars = "0000000\0";
 
 // hearts holes
 uint8_t floor_holes[5][12];
@@ -186,11 +189,28 @@ uint8_t horizontal_direction;
 JOYFUNC joy;
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
+uint8_t col;
 
 //unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v5";
 
 extern uint8_t cartoon1[];
 extern uint8_t cartoon3[];
+
+void print_points() {
+    utoa(total_points, chars, 10);
+    col = 5 - strlen(chars);
+
+    for(idx = 0; idx != 5; ++idx) {
+        sp1_PrintAtInv(18, 27 + idx, INK_CYAN | PAPER_BLACK, '0');
+    }
+
+    idx = 0;
+    while(chars[idx] != '\0') {
+        sp1_PrintAtInv(18, 27 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
+        ++idx;
+    }
+
+}
 
 void show_menu() {
     __asm
@@ -240,10 +260,9 @@ void all_lives_lost() {
           break;
       }
   }
-  first_keypress = tick;
-  srand(first_keypress);
+  srand(tick);
   print_background_lvl1();
-
+  total_points = 0;
   intrinsic_di();
   ay_vt_init(music_module);
   intrinsic_ei();
@@ -343,7 +362,7 @@ void reset_misifu_position() {
   aux_object.offset = AUX_BROOM;
   aux_object.x = 33;
   x_malo = 33;
-  points = 0;
+  level_time = 0;
 }
 
 void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_color) {
@@ -502,13 +521,16 @@ void check_keys()
         lives = 0;
         all_lives_lost();
     }
-    // see the final
-    if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        get_out_of_level_generic(LEVELFINISHED);
-    }
 
     if (in_key_pressed(IN_KEY_SCANCODE_7)) {
-        print_background_level_last();
+        ++last_success_level;
+        zx_border(INK_RED);
+        total_points += 20;
+        repaint_lives = 1;
+    }
+    if (in_key_pressed(IN_KEY_SCANCODE_1)) {
+        last_success_level = 0;
+        zx_border(INK_BLACK);
     }
 }
 
@@ -876,11 +898,12 @@ void get_out_of_level_generic(uint8_t fall) {
 
     } else if(fall == WON_LEVEL) {
         last_success_level = level;
-        idx_j = 250 / points;  // number of VUs
+        idx_j = (250 / level_time) + 4;  // number of VUs
 
         if(idx_j > 20) {
             idx_j = 20;
         }
+        total_points += idx_j;
 
         for (idx = 0; idx != idx_j; ++idx) {
             for(x = 14; x != 20; x += 2) {

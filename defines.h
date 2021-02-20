@@ -161,7 +161,9 @@ extern uint8_t level;
 extern uint8_t lives;
 extern uint8_t last_success_level; // to see user progress
 extern uint8_t repaint_lives;
-extern uint8_t points;
+extern uint8_t level_time;
+extern uint16_t total_points;
+extern char * chars;
 
 extern uint8_t tiles_lvl1[];
 extern uint8_t floor_holes[][12];
@@ -236,6 +238,7 @@ extern uint16_t in;
 
 extern void all_lives_lost();
 
+extern void print_points();
 
 extern void reset_misifu_position();
 
@@ -278,7 +281,6 @@ extern inline struct sp1_ss * add_sprite_bird();
 extern void detect_fall_in_table(uint8_t offset);
 
 extern void move_right_and_left();
-extern void print_points(uint16_t points, uint8_t row);
 extern void assign_hearts();
 
 #endif
