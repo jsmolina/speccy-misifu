@@ -56,9 +56,7 @@ struct freesprite aux_object;
 struct sp1_ss  *dogr1sp;
 struct sp1_ss  *bincatsp = NULL;
 struct sp1_ss  *birdsp = NULL;
-struct sp1_ss  *fredsp = NULL;
 
-const uint8_t heart2[] = {0x66, 0xef, 0xff, 0xff, 0x7e, 0x3c, 0x18, 0x0};
 
 #define ROOMS_TILES_LEN 25
 #define ROOMS_TILES_BASE 128
@@ -195,13 +193,14 @@ uint8_t col;
 
 extern uint8_t cartoon1[];
 extern uint8_t cartoon3[];
+extern uint8_t cartoon4[];
 
 void print_points() {
     utoa(total_points, chars, 10);
     col = 5 - strlen(chars);
 
     for(idx = 0; idx != 5; ++idx) {
-        sp1_PrintAtInv(18, 27 + idx, INK_CYAN | PAPER_BLACK, '0');
+        sp1_PrintAtInv(y, x + idx, INK_CYAN | PAPER_BLACK, '0');
     }
 
     idx = 0;
@@ -209,7 +208,6 @@ void print_points() {
         sp1_PrintAtInv(18, 27 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
         ++idx;
     }
-
 }
 
 void show_menu() {
@@ -223,6 +221,29 @@ void show_menu() {
    call enable_bank_n          ; bank 4 in top 16k, stack moved
     __endasm;
     memcpy(16384, cartoon1, 6912);
+    __asm
+    extern restore_bank_0
+    call restore_bank_0
+
+    ld a,0xd0
+    ld i,a                      ; restore I
+
+    ei
+    __endasm;
+
+}
+
+void show_gameover() {
+    __asm
+    extern enable_bank_n
+   di
+   ld a,0x80
+   ld i,a                      ; point I at uncontended bank
+
+   ld a,3
+   call enable_bank_n          ; bank 3 in top 16k, stack moved
+    __endasm;
+    memcpy(18470, cartoon4, 4463);
     __asm
     extern restore_bank_0
     call restore_bank_0
@@ -523,14 +544,7 @@ void check_keys()
     }
 
     if (in_key_pressed(IN_KEY_SCANCODE_7)) {
-        ++last_success_level;
-        zx_border(INK_RED);
-        total_points += 20;
-        repaint_lives = 1;
-    }
-    if (in_key_pressed(IN_KEY_SCANCODE_1)) {
-        last_success_level = 0;
-        zx_border(INK_BLACK);
+        last_success_level = 5;
     }
 }
 
@@ -651,6 +665,7 @@ void check_fsm() {
 // decide new FSM draw status
     if (misifu.state == NONE && frame == 3 && level != 7) {
         misifu.offset = (int)BORED;
+        //misifu.initial_jump_x = 0;
     } else if (misifu.state == WALKING_RIGHT) {
         if ((misifu.x & 1) == 0) {
             misifu.offset = (int)RIGHTC1;
@@ -717,11 +732,24 @@ void check_fsm() {
     } else if (misifu.state == FALLING) {
         ++misifu.y;
         misifu.offset = FALL_OFFSET;
+        /*if(level == 2) {
+            if((in & IN_STICK_RIGHT) && misifu.x < level_x_max ) {
+                if(misifu.x <= misifu.initial_jump_x + 3) {
+                    ++misifu.x;
+                }
+            } else if((in & IN_STICK_LEFT) && misifu.x > level_x_min ) {
+
+                if(misifu.x >= misifu.initial_jump_x - 3) {
+                    --misifu.x;
+                }
+            }
+        }*/
 
         if(misifu.y >= FLOOR_Y) {
             misifu.y = FLOOR_Y;
             misifu.state = NONE;
             misifu.offset = (int)BORED;
+            //misifu.initial_jump_x = 0;
         }
     } else if (misifu.state == FALLING_FLOOR) {
         ++misifu.y;
@@ -833,18 +861,17 @@ void paint_end() {
 
 void get_out_of_level_generic(uint8_t fall) {
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_WHITE,
+                  INK_BLACK | PAPER_BLACK,
                   ' ' );
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);
-    sp1_TileEntry('H', heart2);
+    assign_hearts();
 
     if(fall == LEVELFINISHED) {
-        // TODO sacr fuera de pantalla aux_object y misifu
-        // TODO una fila mas arriba
         uint8_t *black_window = tiles_lvl1 + 168;
         sp1_TileEntry(UDG_WINDOWHOLE, black_window);
-        assign_hearts();
+
+        total_points += 100;
 
         ay_vt_init(sweet_module);
 
@@ -869,7 +896,7 @@ void get_out_of_level_generic(uint8_t fall) {
                 sp1_MoveSprAbs(misifu.sp, &full_screen,(int) sprite_protar1 + misifu.offset, 14, 0 + idx - 1, 0, 0);
             }
 
-            sp1_MoveSprAbs(fredsp, &full_screen,(int) sprite_protar1 + idx_j, 14, 30 - idx, 0, 0);
+            sp1_MoveSprAbs(dogr1sp, &full_screen,(int) sprite_protar1 + idx_j, 14, 30 - idx, 0, 0);
 
             sp1_UpdateNow();
             if(idx == 0) {
@@ -891,23 +918,24 @@ void get_out_of_level_generic(uint8_t fall) {
                 wait();
             }
         }
-        // TODO CORAZON AL FINAL
-        sp1_DeleteSpr_fastcall(fredsp);
-        fredsp = NULL;
         ay_vt_init(music_module);
 
     } else if(fall == WON_LEVEL) {
         last_success_level = level;
-        idx_j = (250 / level_time) + 4;  // number of VUs
-
-        if(idx_j > 20) {
+        if(level_time < 50){
             idx_j = 20;
+        } else if(level_time < 150) {
+            idx_j = 10;
+        } else {
+            idx_j = 5;
         }
         total_points += idx_j;
 
         for (idx = 0; idx != idx_j; ++idx) {
-            for(x = 14; x != 20; x += 2) {
-                sp1_PrintAtInv(22 - idx, x, INK_RED | PAPER_WHITE, 'H');
+            for(x = 12; x != 22; x += 2) {
+                for(frame = 0; frame != 2; ++frame) {
+                    sp1_PrintAtInv(22 - idx, x + frame, INK_RED | PAPER_BLACK | BRIGHT, UDG_UDG_CORAZON_01 + frame);
+                }
             }
             sp1_UpdateNow();
             wait();
@@ -934,6 +962,15 @@ void get_out_of_level_generic(uint8_t fall) {
             // reached zero on lives
             last_success_level = 0;
             bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
+            sp1_UpdateNow();
+            show_gameover();
+            x = 13;
+            y = 14;
+            print_points();
+            sp1_UpdateNow();
+            while(!in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
+              // do nothing
+            }
 
             all_lives_lost();
         }
@@ -946,6 +983,10 @@ void get_out_of_level_generic(uint8_t fall) {
     }
 
     opened_window_frames = 2;
+    if(level == 10) {
+        sp1_DeleteSpr_fastcall(dogr1sp);
+        dogr1sp = add_sprite_dogr1();
+    }
     print_background_lvl1();
 }
 

@@ -90,6 +90,7 @@ void level6_loop() {
             sp1_PrintAtInv(idx_j, eaten_items + 1, PAPER_RED | INK_WHITE | BRIGHT, x);
             misifu.state = FALLING;
             bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+            total_points += 5;
         }
     } else {
         detect_fall_in_table(9);

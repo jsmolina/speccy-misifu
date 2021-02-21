@@ -138,6 +138,7 @@ inline void drink_milk() {
         return;
     }
     --eaten_items;
+    total_points += 5;
     // milk: row1_moving is the offset where milk is positioned if it is on right
     sp1_PrintAt(
         idx_j,

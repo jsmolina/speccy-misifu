@@ -124,6 +124,8 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
 
 void print_lives() {
     sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + lives);
+    x = 27;
+    y = 18;
     print_points();
     repaint_lives = 0;
 }

@@ -118,7 +118,6 @@ extern struct freesprite aux_object;
 extern struct sp1_ss  *dogr1sp;
 extern struct sp1_ss  *bincatsp;
 extern struct sp1_ss  *birdsp;
-extern struct sp1_ss  *fredsp;
 
 extern struct sp1_Rect full_screen;
 
@@ -127,12 +126,11 @@ extern uint8_t level_x_min;
 extern uint8_t window_shown;
 
 // shared vars
-extern uint8_t x;
+extern uint8_t x, y;
 
 extern uint8_t paws;
 // game required vars
 // useful for  controlling amount of things to eat (mouses, fishes, ...)
-extern const uint8_t heart2[];
 /*extern char left;
 extern char right;*/
 extern uint8_t eaten_items;

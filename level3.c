@@ -43,6 +43,7 @@ inline static void check_chair_and_fishtank_level3() {
     if(misifu.state == FALLING) {
         if(misifu.y == 16 && (misifu.x == 21 || misifu.x == 22)) {
             // get inside fishtank and outside of this level
+            total_points += 5;
             level = 4;
             print_background_level4();
         }

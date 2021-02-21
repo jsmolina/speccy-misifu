@@ -33,9 +33,18 @@ const uint8_t last[] = {
 };
 
 
-void paint_cupids() {
-    __asm
-    extern enable_bank_n
+void print_background_level_last() {
+  level = 10;
+  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+                  PAPER_GREEN | BRIGHT,
+                  ' ' );
+  zx_border(INK_BLACK);
+
+  sp1_Invalidate(&full_screen);
+  sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1, FLOOR_Y - 1, 4, 0, 0);
+  sp1_UpdateNow();
+   __asm
+   extern enable_bank_n
    di
    ld a,0x80
    ld i,a                      ; point I at uncontended bank
@@ -53,19 +62,6 @@ void paint_cupids() {
 
     ei
     __endasm;
-}
-
-void print_background_level_last() {
-  level = 10;
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  PAPER_GREEN | BRIGHT,
-                  ' ' );
-  zx_border(INK_BLACK);
-
-  sp1_Invalidate(&full_screen);
-  sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1, FLOOR_Y - 1, 4, 0, 0);
-  sp1_UpdateNow();
-  paint_cupids();
 
   uint8_t *pt = last;
 
@@ -118,9 +114,8 @@ void print_background_level_last() {
   }
 
   // fred! (lover)
-  if(fredsp == NULL) {
-      fredsp = add_sprite_protar1();
-  }
+  sp1_DeleteSpr_fastcall(dogr1sp);
+  dogr1sp = add_sprite_protar1();
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
@@ -131,6 +126,7 @@ void print_background_level_last() {
   aux_object.x = 33;
   x_malo = 4;
   dog_offset = RIGHTC1;
+  misifu.state = FALLING;
 }
 
 
@@ -154,7 +150,7 @@ static uint8_t lvl3_y_to_idj(uint8_t y) {
     }
 }
 
-void throw_cupid_arrow() {
+inline void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
     if (aux_object.x == 33 && random_value >= level_x_min && random_value <= level_x_max && (tick & 1) == 0) {
@@ -294,7 +290,7 @@ void level10_loop() {
             dog_offset = RIGHTC1;
         }
 
-        sp1_MoveSprAbs(fredsp, &full_screen, (int) sprite_protar1 + dog_offset, 4, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) sprite_protar1 + dog_offset, 4, x_malo, 0, 0);
     }
     throw_cupid_arrow();
 
