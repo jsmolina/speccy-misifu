@@ -192,21 +192,45 @@ uint8_t col;
 //unsigned char show_menu[] = "-1.keyboard-2.kempston-3.sinclair-v5";
 
 extern uint8_t cartoon1[];
+extern uint8_t cartoon2[];
 extern uint8_t cartoon3[];
 extern uint8_t cartoon4[];
 
-void print_points() {
-    utoa(total_points, chars, 10);
-    col = 5 - strlen(chars);
+void show_cupids() {
+   __asm
+   extern enable_bank_n
+   di
+   ld a,0x80
+   ld i,a                      ; point I at uncontended bank
 
+   ld a,4
+   call enable_bank_n          ; bank 4 in top 16k, stack moved
+    __endasm;
+    memcpy(16384, cartoon2, 6912);
+    __asm
+    extern restore_bank_0
+    call restore_bank_0
+
+    ld a,0xd0
+    ld i,a                      ; restore I
+
+    ei
+    __endasm;
+}
+
+uint16_t partial_points;
+
+void print_points(uint8_t row, uint8_t col) {
+    partial_points = total_points;
     for(idx = 0; idx != 5; ++idx) {
-        sp1_PrintAtInv(y, x + idx, INK_CYAN | PAPER_BLACK, '0');
+        sp1_PrintAtInv(row, col + idx, INK_CYAN | PAPER_BLACK | BRIGHT, '0');
     }
 
-    idx = 0;
-    while(chars[idx] != '\0') {
-        sp1_PrintAtInv(18, 27 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
-        ++idx;
+    idx = col + 4;
+    while (partial_points > 0) {
+       sp1_PrintAtInv(row, idx, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + (partial_points % 10));
+       partial_points = partial_points / 10;
+       --idx;
     }
 }
 
@@ -257,13 +281,20 @@ void show_gameover() {
 }
 
 void all_lives_lost() {
-  show_menu();
-
-  // ay_vt_init(pcspeaker_module);
   if(lives != SONG_RESTART) {
-    ay_vt_init(pcspeaker_module);
-    intrinsic_ei();
+      ay_vt_init(pcspeaker_module);
+      intrinsic_ei();
+      sp1_UpdateNow();
+      // en blanco
+      show_gameover();
+      print_points(14, 13);
+      sp1_UpdateNow();
+      while(!in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
+          // do nothing
+      }
   }
+
+  show_menu();
 
   lives = 5;
 
@@ -277,7 +308,7 @@ void all_lives_lost() {
           joy = (JOYFUNC)in_stick_kempston;
           break;
       } else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
-          joy = (JOYFUNC)in_stick_sinclair2;
+          joy = (JOYFUNC)in_stick_sinclair1;
           break;
       }
   }
@@ -452,7 +483,7 @@ void check_level7_keys() {
     if(misifu.state == FIGHTING) {
         return;
     }
-    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+    if (in_key_pressed(IN_KEY_SCANCODE_b)) {
         in_wait_nokey();
         paws = 1;
     }
@@ -533,23 +564,19 @@ void check_keys()
         ++misifu.y;
     }
 
-    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+    if (in_key_pressed(IN_KEY_SCANCODE_b)) {
         in_wait_nokey();
         paws = 1;
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
-        lives = 0;
         all_lives_lost();
     }
 
-    if (in_key_pressed(IN_KEY_SCANCODE_7)) {
-        last_success_level = 5;
-    }
 }
 
 void check_swim() {
-    if (in_key_pressed(IN_KEY_SCANCODE_0)) {
+    if (in_key_pressed(IN_KEY_SCANCODE_b)) {
         in_wait_nokey();
         paws = 1;
     }
@@ -564,10 +591,10 @@ void check_swim() {
 
         if((in & IN_STICK_UP) && misifu.y > 1) {
             --misifu.y;
-        } else if((in & IN_STICK_DOWN)) {
+        } else if((in & IN_STICK_DOWN) && misifu.y < 22) {
             ++misifu.y;
         }
-    } else if((in & IN_STICK_RIGHT) && misifu.x < 31 ) {
+    } else if((in & IN_STICK_RIGHT) && misifu.x < 30 ) {
         ++misifu.x;
         if (frame == 2) {
             misifu.offset = SWIM_RC1;
@@ -576,11 +603,11 @@ void check_swim() {
         }
         if((in & IN_STICK_UP) && misifu.y > 1) {
             --misifu.y;
-        } else if((in & IN_STICK_DOWN)) {
+        } else if((in & IN_STICK_DOWN) && misifu.y < 22) {
             ++misifu.y;
         }
 
-    } else if((in & IN_STICK_DOWN) && misifu.y < 29 ) {
+    } else if((in & IN_STICK_DOWN) && misifu.y < 22 ) {
         ++misifu.y;
         misifu.offset = SWIM_DOWN1;
 
@@ -620,8 +647,7 @@ void dog_checks() {
             //misifu.x = 33;
             x_malo = misifu.x;
             // do sound
-            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
-            bit_beepfx_di_fastcall(BEEPFX_HIT_1);
+            bit_beepfx_di_fastcall(BEEPFX_GULP);
         }
         if (x_malo == 0 && misifu.state != FIGHTING) {
             enemy_apears = NONE;
@@ -932,7 +958,7 @@ void get_out_of_level_generic(uint8_t fall) {
         total_points += idx_j;
 
         for (idx = 0; idx != idx_j; ++idx) {
-            for(x = 12; x != 22; x += 2) {
+            for(x = 12; x != 20; x += 2) {
                 for(frame = 0; frame != 2; ++frame) {
                     sp1_PrintAtInv(22 - idx, x + frame, INK_RED | PAPER_BLACK | BRIGHT, UDG_UDG_CORAZON_01 + frame);
                 }
@@ -942,7 +968,7 @@ void get_out_of_level_generic(uint8_t fall) {
         }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else if(fall == FALLING) {
-        bit_beepfx_di_fastcall(BEEPFX_UH_HUH);
+        bit_beepfx_di_fastcall(BEEPFX_HIT_4);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
             bit_beepfx_di_fastcall(BEEPFX_HIT_4);
@@ -953,24 +979,13 @@ void get_out_of_level_generic(uint8_t fall) {
     } else if(fall == OXYGEN) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     } else {
-        if(fall != FIGHTING) {
-            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
-        }
+        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
         if(lives > 0) {
             --lives;
         } else {
             // reached zero on lives
             last_success_level = 0;
             bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
-            sp1_UpdateNow();
-            show_gameover();
-            x = 13;
-            y = 14;
-            print_points();
-            sp1_UpdateNow();
-            while(!in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
-              // do nothing
-            }
 
             all_lives_lost();
         }

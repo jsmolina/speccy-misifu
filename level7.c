@@ -138,7 +138,7 @@ inline void drink_milk() {
         return;
     }
     --eaten_items;
-    total_points += 5;
+    total_points += 10;
     // milk: row1_moving is the offset where milk is positioned if it is on right
     sp1_PrintAt(
         idx_j,
@@ -230,6 +230,7 @@ void level7_loop() {
             } else if(floor_holes[2][x] == AWAKEN && last_awaken != x) {
                 x_malo = misifu.x;
                 misifu.state = FIGHTING;
+                bit_beepfx_di_fastcall(BEEPFX_GULP);
                 anim_frames = 20;
             }
         } else if(last_awaken == x) {

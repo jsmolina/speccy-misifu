@@ -68,7 +68,7 @@ void detect_fall_in_hole_or_curtain() {
                 sp1_PrintAtInv(1, 3 + (eaten_items + eaten_items), INK_RED | PAPER_GREEN | BRIGHT, UDG_SCORE);
                 bit_beepfx_di_fastcall(BEEPFX_SCORE);
                 ++eaten_items;
-                total_points += 5;
+                total_points += 10;
             }
         }
 

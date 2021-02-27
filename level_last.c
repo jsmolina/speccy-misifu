@@ -21,9 +21,8 @@
 #define LAST_TILES_LEN  6
 #define LAST_TILES_BASE  128
 
-extern uint8_t cartoon2[];
 
-const uint8_t last[] = {
+uint8_t last[] = {
     0x00, 0x3c, 0x7e, 0x7e, 0x7f, 0x3f, 0x0f, 0x03, // y:0, x:0 (128)
     0x78, 0xfc, 0xfc, 0xfc, 0x78, 0x60, 0x40, 0x00, // y:0, x:1 (129)
     0x00, 0x00, 0x00, 0x10, 0x27, 0x2f, 0x1f, 0x0f, // y:0, x:2 (130)
@@ -43,25 +42,7 @@ void print_background_level_last() {
   sp1_Invalidate(&full_screen);
   sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1, FLOOR_Y - 1, 4, 0, 0);
   sp1_UpdateNow();
-   __asm
-   extern enable_bank_n
-   di
-   ld a,0x80
-   ld i,a                      ; point I at uncontended bank
-
-   ld a,4
-   call enable_bank_n          ; bank 4 in top 16k, stack moved
-    __endasm;
-    memcpy(16384, cartoon2, 6912);
-    __asm
-    extern restore_bank_0
-    call restore_bank_0
-
-    ld a,0xd0
-    ld i,a                      ; restore I
-
-    ei
-    __endasm;
+  show_cupids();
 
   uint8_t *pt = last;
 

@@ -236,7 +236,9 @@ extern uint16_t in;
 
 extern void all_lives_lost();
 
-extern void print_points();
+extern void show_cupids();
+
+extern void print_points(uint8_t row, uint8_t col);
 
 extern void reset_misifu_position();
 
