@@ -506,7 +506,7 @@ void check_level7_keys() {
             } else {
                 misifu.offset = LEFTC2;
             }
-        } else if (misifu.offset == RIGHTC1 || misifu.offset == RIGHTC2) {
+        } else {
             if((misifu.y & 1) == 0) {
                 misifu.offset = RIGHTC1;
             } else {
@@ -570,7 +570,9 @@ void check_keys()
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
-        all_lives_lost();
+        in_wait_nokey();
+        ++last_success_level;
+        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     }
 
 }
@@ -713,7 +715,7 @@ void check_fsm() {
             misifu.state = FALLING;
         }
         if (misifu.draw_additional == JUMP_LEFT) {
-            if(misifu.x > 1) {
+            if(misifu.x > (level_x_min + 1)) {
                 misifu.x = misifu.x - 2;
             }
         } else {
@@ -889,6 +891,11 @@ void get_out_of_level_generic(uint8_t fall) {
     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_BLACK,
                   ' ' );
+
+    if(level == 6) {
+        sp1_DeleteSpr_fastcall(birdsp);
+        birdsp = NULL;
+    }
     // control wether if gets out of level by having eat all mouses
     sp1_Invalidate(&full_screen);
     assign_hearts();
@@ -990,11 +997,6 @@ void get_out_of_level_generic(uint8_t fall) {
             all_lives_lost();
         }
         repaint_lives = 1;
-    }
-
-    if(birdsp != NULL) {
-        sp1_DeleteSpr_fastcall(birdsp);
-        birdsp = NULL;
     }
 
     opened_window_frames = 2;

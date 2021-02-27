@@ -129,6 +129,7 @@ void level6_loop() {
         }
 
         if((windows[0].y == (misifu.y + 1) || windows[0].y == misifu.y) && windows[0].x == misifu.x + 1) {
+            sp1_MoveSprAbs(birdsp, &full_screen, (int)sprite_bird1, 23, 32, 0, 0);
             get_out_of_level_generic(WON_LEVEL); // yayy
             return;
         }

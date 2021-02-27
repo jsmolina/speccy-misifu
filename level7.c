@@ -119,14 +119,19 @@ void  print_background_level7() {
      }
 
      level_x_max = 28;
-     level_x_min = 2;
+     level_x_min = 3;
+     //misifu.state = WALKING_RIGHT;
 
      eaten_items = TOTAL_PERROS;
 
      last_awaken = UNDEF;
      reset_misifu_position();
+     misifu.offset = RIGHTC1;
+     misifu.state = WALKING_RIGHT;
+     misifu.x = level_x_min;
+     misifu.y = 17;
+
      enemy_apears = NONE;
-     misifu.draw_additional = WALKING_RIGHT;
 }
 
 

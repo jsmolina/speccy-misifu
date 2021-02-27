@@ -520,9 +520,9 @@ void level1_loop() {
         // now move cat
         if(misifu.state == CAT_IN_ROPE) {
             if((misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3)
-                && misifu.x < level_x_max) {
+                && misifu.x < 28) {
                  ++misifu.x;
-            } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+            } else if(misifu.draw_additional == CAT_IN_ROPE2 && misifu.x > 1) {
                 --misifu.x;
                 if(misifu.x == 0) {
                     misifu.state = FALLING;
@@ -530,7 +530,7 @@ void level1_loop() {
                     ++misifu.y;
                 }
             }
-            if(misifu.x >= 27 || misifu.x == 0) {
+            if(misifu.x >= 27 || misifu.x <= 1) {
                 misifu.state = FALLING;
                 misifu.draw_additional = NONE;
                 ++misifu.y;
