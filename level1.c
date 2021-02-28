@@ -124,6 +124,7 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
 
 void print_lives() {
     sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + lives);
+    print_points(18, 27);
     repaint_lives = 0;
 }
 
@@ -306,23 +307,23 @@ void paint_clothes(uint8_t clean) {
             }
         }
 
-        points = 0;
-        for (x = 6; x != 14; x += 4, ++points) {
+        level_time = 0;
+        for (x = 6; x != 14; x += 4, ++level_time) {
             if(clean == 0) {
                 udg_topaint = floor_holes[2][idx_j];
             }
-            sp1_PrintAtInv(x, floor_holes[points][idx], color, udg_topaint);
+            sp1_PrintAtInv(x, floor_holes[level_time][idx], color, udg_topaint);
 
             if(floor_holes[2][idx_j] == UDG_CLOTHES11) {
                 if(clean == 0) {
                     udg_topaint = UDG_CLOTHES21;
                 }
-                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+                sp1_PrintAtInv(x + 1, floor_holes[level_time][idx], color, udg_topaint);
             } else if(floor_holes[2][idx_j] == UDG_CLOTHES12) {
                 if(clean == 0) {
                     udg_topaint = UDG_CLOTHES22;
                 }
-                sp1_PrintAtInv(x + 1, floor_holes[points][idx], color, udg_topaint);
+                sp1_PrintAtInv(x + 1, floor_holes[level_time][idx], color, udg_topaint);
             }
         }
 
@@ -441,7 +442,7 @@ inline void check_bincat() {
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING_FLOOR;
             misifu.in_bin = NONE;
-            bit_beepfx_di_fastcall(BEEPFX_HIT_1);
+            bit_beepfx_di_fastcall(BEEPFX_HIT_2);
         }
 
         if (bincat_appears <= 1) {
@@ -518,14 +519,10 @@ void level1_loop() {
         paint_clothes(0);
         // now move cat
         if(misifu.state == CAT_IN_ROPE) {
-            if(misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3) {
+            if((misifu.draw_additional == CAT_IN_ROPE1 || misifu.draw_additional == CAT_IN_ROPE3)
+                && misifu.x < 28) {
                  ++misifu.x;
-                 if(misifu.x >= 28) {
-                    misifu.state = FALLING;
-                    misifu.draw_additional = NONE;
-                    ++misifu.y;
-                }
-            } else if(misifu.draw_additional == CAT_IN_ROPE2) {
+            } else if(misifu.draw_additional == CAT_IN_ROPE2 && misifu.x > 1) {
                 --misifu.x;
                 if(misifu.x == 0) {
                     misifu.state = FALLING;
@@ -533,7 +530,7 @@ void level1_loop() {
                     ++misifu.y;
                 }
             }
-            if(misifu.x >= 28 || misifu.x == 0) {
+            if(misifu.x >= 27 || misifu.x <= 1) {
                 misifu.state = FALLING;
                 misifu.draw_additional = NONE;
                 ++misifu.y;

@@ -68,6 +68,7 @@ void detect_fall_in_hole_or_curtain() {
                 sp1_PrintAtInv(1, 3 + (eaten_items + eaten_items), INK_RED | PAPER_GREEN | BRIGHT, UDG_SCORE);
                 bit_beepfx_di_fastcall(BEEPFX_SCORE);
                 ++eaten_items;
+                total_points += 10;
             }
         }
 
@@ -115,19 +116,24 @@ void level2_loop() {
     if (misifu.state == FALLING) {
         detect_fall_in_hole_or_curtain();
     }
-    /*
-    if ((in & IN_STICK_FIRE) && first_keypress == 0) {
 
-        if(first_keypress != 0) {
-            //misifu.x = windows[first_keypress].x - 1;
-            //misifu.y = windows[first_keypress].y - 1;
-            //misifu.state = FALLING;
+    if ((in & IN_STICK_FIRE) && first_keypress == 0 && idx < 8) {
+        // cuidado con que idx no se utilice despues de esto
+        if((idx & 1) == 0) {
+            ++idx;
+        } else {
+            --idx;
         }
+
+        misifu.x =  2 + (coords_holes[idx] & 0x0F);
+        misifu.y = DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4) - 1;
+        misifu.state = FALLING;
+        first_keypress = 1;
     }
 
     if(!(in & IN_STICK_FIRE)) {
         first_keypress = 0;
-    }*/
+    }
 
     move_broom();
     dog_checks();

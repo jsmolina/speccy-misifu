@@ -141,6 +141,7 @@ void level4_loop() {
                 floor_holes[1][idx] = EATEN_FISH;
                 bit_beepfx_di_fastcall(BEEPFX_SCORE);
                 ++eaten_items;
+                total_points += 10;
                 if(eaten_items == 4) {
                     --bincat_in_bin;
                 } else if(eaten_items == 6) {

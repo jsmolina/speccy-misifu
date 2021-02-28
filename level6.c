@@ -22,7 +22,7 @@
 #define BIRD_LEFT 64
 #define BIRD_LEFT2 96
 
-const uint8_t level6[] = {
+uint8_t level6[] = {
     0x00, 0xf0, 0x2c, 0x22, 0x02, 0x82, 0x12, 0xfe, // y:0, x:0 (65)
     0xf0, 0x4c, 0x22, 0x2e, 0xf2, 0x12, 0x12, 0xfe, // y:0, x:1 (66)
     0x1f, 0x65, 0x89, 0xe9, 0x9f, 0x91, 0x91, 0xff, // y:0, x:2 (67)
@@ -90,6 +90,7 @@ void level6_loop() {
             sp1_PrintAtInv(idx_j, eaten_items + 1, PAPER_RED | INK_WHITE | BRIGHT, x);
             misifu.state = FALLING;
             bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+            total_points += 10;
         }
     } else {
         detect_fall_in_table(9);
@@ -128,6 +129,7 @@ void level6_loop() {
         }
 
         if((windows[0].y == (misifu.y + 1) || windows[0].y == misifu.y) && windows[0].x == misifu.x + 1) {
+            sp1_MoveSprAbs(birdsp, &full_screen, (int)sprite_bird1, 23, 32, 0, 0);
             get_out_of_level_generic(WON_LEVEL); // yayy
             return;
         }

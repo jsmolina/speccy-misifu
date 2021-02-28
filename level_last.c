@@ -21,9 +21,8 @@
 #define LAST_TILES_LEN  6
 #define LAST_TILES_BASE  128
 
-extern uint8_t cartoon2[];
 
-const uint8_t last[] = {
+uint8_t last[] = {
     0x00, 0x3c, 0x7e, 0x7e, 0x7f, 0x3f, 0x0f, 0x03, // y:0, x:0 (128)
     0x78, 0xfc, 0xfc, 0xfc, 0x78, 0x60, 0x40, 0x00, // y:0, x:1 (129)
     0x00, 0x00, 0x00, 0x10, 0x27, 0x2f, 0x1f, 0x0f, // y:0, x:2 (130)
@@ -32,28 +31,6 @@ const uint8_t last[] = {
     0x00, 0x00, 0x00, 0x08, 0xe4, 0xf4, 0xf8, 0xf0, // y:0, x:5 (133)
 };
 
-
-void paint_cupids() {
-    __asm
-    extern enable_bank_n
-   di
-   ld a,0x80
-   ld i,a                      ; point I at uncontended bank
-
-   ld a,4
-   call enable_bank_n          ; bank 4 in top 16k, stack moved
-    __endasm;
-    memcpy(16384, cartoon2, 6912);
-    __asm
-    extern restore_bank_0
-    call restore_bank_0
-
-    ld a,0xd0
-    ld i,a                      ; restore I
-
-    ei
-    __endasm;
-}
 
 void print_background_level_last() {
   level = 10;
@@ -65,7 +42,7 @@ void print_background_level_last() {
   sp1_Invalidate(&full_screen);
   sp1_MoveSprAbs(misifu.sp, &full_screen, (int) sprite_protar1, FLOOR_Y - 1, 4, 0, 0);
   sp1_UpdateNow();
-  paint_cupids();
+  show_cupids();
 
   uint8_t *pt = last;
 
@@ -118,9 +95,8 @@ void print_background_level_last() {
   }
 
   // fred! (lover)
-  if(fredsp == NULL) {
-      fredsp = add_sprite_protar1();
-  }
+  sp1_DeleteSpr_fastcall(dogr1sp);
+  dogr1sp = add_sprite_protar1();
 
   misifu.x = 4;
   misifu.y = FLOOR_Y;
@@ -131,6 +107,7 @@ void print_background_level_last() {
   aux_object.x = 33;
   x_malo = 4;
   dog_offset = RIGHTC1;
+  misifu.state = FALLING;
 }
 
 
@@ -154,7 +131,7 @@ static uint8_t lvl3_y_to_idj(uint8_t y) {
     }
 }
 
-void throw_cupid_arrow() {
+inline void throw_cupid_arrow() {
     // arrow should remove tiles (and redraw them)
     // if arrow object is hidden, decide to throw it or not
     if (aux_object.x == 33 && random_value >= level_x_min && random_value <= level_x_max && (tick & 1) == 0) {
@@ -294,7 +271,7 @@ void level10_loop() {
             dog_offset = RIGHTC1;
         }
 
-        sp1_MoveSprAbs(fredsp, &full_screen, (int) sprite_protar1 + dog_offset, 4, x_malo, 0, 0);
+        sp1_MoveSprAbs(dogr1sp, &full_screen, (int) sprite_protar1 + dog_offset, 4, x_malo, 0, 0);
     }
     throw_cupid_arrow();
 

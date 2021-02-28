@@ -119,14 +119,19 @@ void  print_background_level7() {
      }
 
      level_x_max = 28;
-     level_x_min = 2;
+     level_x_min = 3;
+     //misifu.state = WALKING_RIGHT;
 
      eaten_items = TOTAL_PERROS;
 
      last_awaken = UNDEF;
      reset_misifu_position();
+     misifu.offset = RIGHTC1;
+     misifu.state = WALKING_RIGHT;
+     misifu.x = level_x_min;
+     misifu.y = 17;
+
      enemy_apears = NONE;
-     misifu.draw_additional = WALKING_RIGHT;
 }
 
 
@@ -138,6 +143,7 @@ inline void drink_milk() {
         return;
     }
     --eaten_items;
+    total_points += 10;
     // milk: row1_moving is the offset where milk is positioned if it is on right
     sp1_PrintAt(
         idx_j,
@@ -229,6 +235,7 @@ void level7_loop() {
             } else if(floor_holes[2][x] == AWAKEN && last_awaken != x) {
                 x_malo = misifu.x;
                 misifu.state = FIGHTING;
+                bit_beepfx_di_fastcall(BEEPFX_GULP);
                 anim_frames = 20;
             }
         } else if(last_awaken == x) {

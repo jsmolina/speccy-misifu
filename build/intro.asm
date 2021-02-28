@@ -18,3 +18,7 @@ SECTION BANK_3
 PUBLIC _cartoon3
 _cartoon3:
 BINARY "LOVE.scr"
+
+PUBLIC _cartoon4
+_cartoon4:
+BINARY "gameover.scr"
