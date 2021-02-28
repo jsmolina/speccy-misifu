@@ -3,7 +3,7 @@
 #include "defines.h"
 // HEARTS LEVEL
 
-extern void print_background_level_last();
+extern inline void print_background_level_last();
 
 extern void level10_loop();
 

@@ -53,8 +53,7 @@
 
 #define MAX_COORDS_LADRILLOS 45
 #define TOTAL_COORDS_SUELO 15
-#define BACKGROUND_LVL1_DEFAULT 0x58   // INK BLACK, PAPER MAGENTA, BRIGHT
-#define BACKGROUND_LVL1_CYAN 0x68
+#define BACKGROUND_LVL1_DEFAULT PAPER_RED | INK_BLACK | BRIGHT   // INK BLACK, PAPER MAGENTA, BRIGHT
 
 
 const uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
@@ -180,11 +179,13 @@ void  print_background_lvl1() {
       } else {
         idx_j = UDG_VALLA3;
       }
-      sp1_PrintAt(15, x,  PAPER_CYAN | BRIGHT, idx_j);
+      sp1_PrintAt(15, x,  PAPER_WHITE | BRIGHT, idx_j);
 
       for (idx_j=16; idx_j!=21; ++idx_j)
       {
-          sp1_PrintAt( idx_j, x,  PAPER_CYAN | BRIGHT, UDG_VALLA2);
+          sp1_PrintAt( idx_j, x,  PAPER_WHITE | BRIGHT, UDG_VALLA2);
+
+          sp1_PrintAt( idx_j + 3, x,  PAPER_YELLOW | BRIGHT, ' ');
       }
 
       // this func uses x and modifies frame (ugly thing, saving memory...)
@@ -197,23 +198,23 @@ void  print_background_lvl1() {
              idx_j = 21;
           }
           //
-          sp1_PrintAtInv(idx_j, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBODOWN1 + frame);
-          sp1_PrintAtInv(idx_j - 1, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 2, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 3, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOTOP1 + frame);
+          sp1_PrintAtInv(idx_j, x, PAPER_CYAN | BRIGHT, UDG_CUBODOWN1 + frame);
+          sp1_PrintAtInv(idx_j - 1, x, PAPER_CYAN | BRIGHT, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 2, x, PAPER_CYAN | BRIGHT, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 3, x, PAPER_CYAN | BRIGHT, UDG_CUBOTOP1 + frame);
       }
 
   }
-  sp1_PrintAtInv(17, 3, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(18, 13, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(20, 18, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(16, 23, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(17, 3, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
+  sp1_PrintAtInv(18, 13, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
+  sp1_PrintAtInv(20, 18, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
+  sp1_PrintAtInv(16, 23, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
 
   print_lives();
 
-  sp1_PrintAt( 17, 29, BACKGROUND_LVL1_CYAN, UDG_C);
-  sp1_PrintAt( 17, 30,  BACKGROUND_LVL1_CYAN, UDG_A);
-  sp1_PrintAt( 17, 31,  BACKGROUND_LVL1_CYAN, UDG_T);
+  sp1_PrintAt( 17, 29, PAPER_WHITE | BRIGHT, UDG_C);
+  sp1_PrintAt( 17, 30,  PAPER_WHITE | BRIGHT, UDG_A);
+  sp1_PrintAt( 17, 31,  PAPER_WHITE | BRIGHT, UDG_T);
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
@@ -236,7 +237,7 @@ void  print_background_lvl1() {
       idx_j = ((coords_suelo[x] & 0xF0) >> 4);
 
       idx += (coords_suelo[x] & 0x0F);
-      sp1_PrintAt(idx_j + 21, idx,  BACKGROUND_LVL1_DEFAULT, UDG_QUESO + frame);
+      sp1_PrintAtInv(idx_j + 21, idx,  PAPER_YELLOW | BRIGHT, UDG_QUESO + frame);
   }
 
 
@@ -290,7 +291,7 @@ void paint_clothes(uint8_t clean) {
     if(clean == 1) {
         color = BACKGROUND_LVL1_DEFAULT;
     } else {
-        color = INK_WHITE | PAPER_MAGENTA | BRIGHT;
+        color = INK_WHITE | PAPER_RED | BRIGHT;
     }
     for(idx = 0; idx!= 10; ++idx) { // indexes go from 0 to 9
         if (clean == 0) {
