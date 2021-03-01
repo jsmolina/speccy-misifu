@@ -116,7 +116,7 @@ Contributions/suggestions are more than welcome!
 * Dario, who helped with feedback.
 
 # Dedicated to
-Clàudia :)
+Clàudia and Gemma :)
 
 # Why it is not Fred again?
 First, the original, GREAT AND ORIGINAL game Alley Cat is what it is, and I have to give it a respect. 
