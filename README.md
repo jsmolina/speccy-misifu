@@ -34,6 +34,8 @@ EN
 Game will restart from Alley after hearts.
 
 ES
+Controles: OPQA / Kempston (b = pausa)
+
 - Alley. intenta saltar en una ventana, pero cuidado con el perro ya que intentará morderte y quitarte una vida!
 - Queso. Intenta comerte todos los ratones. Algunos agujeros están conectados si pulsas espacio, tendrás que descubrir cuáles.
 - Pecera. Entra en la pecera saltando sobre ella desde más arriba. Dentro de la pecera: cómete todos los peces, pero cuidado con las anguilas electricas y el oxígeno.
@@ -44,7 +46,7 @@ ES
 El juego empezará de nuevo en el callejón.
 
 PT
-Controles: OPQA / Kempston (0 = pausa)
+Controles: OPQA / Kempston (b = pausa)
 
 - Ruela. Tenta pular por uma janela, mas cuidado com o cão que tentará tirar-te a vida!
 - Queijo. Tenta comer todos os ratos. Alguns buracos estão conectados entre si, terás que descobrir quais.
@@ -61,7 +63,7 @@ RU
 
 Догад похитил Фреда, и они освободят его, только если вы уничтожите комнаты здания. Это здание принадлежит банку, который выселит друзей Догада. Как ты сделаешь это? Просто будь кошкой, Мисифу !!
 
-Управление: OPQA SPACE / Kempston (0 = пауза)
+Управление: OPQA SPACE / Kempston (b = пауза)
 
 - Аллея. Попробуйте прыгнуть в окно, но будьте внимательны с собакой, она постарается вас укусить и съесть.
 - Сыр. Попробуйте съесть всех мышей. Некоторые отверстия связаны, если вы нажмете пробел, то откроете их.
