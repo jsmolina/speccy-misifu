@@ -465,7 +465,12 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
     for (idx_j = 0; idx_j != 8; ++idx_j) {
        if(idx_j < 2 || idx_j > 5) {
-        sp1_PrintAt( idx, initial_window + idx_j, bright_black_paper, UDG_CURTAIN);
+           if(idx < 10 && (idx_j == 1 || idx_j == 6)) {
+                x = ink_color | paper_color;
+           } else {
+                x = bright_black_paper;
+           }
+           sp1_PrintAt( idx, initial_window + idx_j, x, UDG_CURTAIN);
        }
     }
 

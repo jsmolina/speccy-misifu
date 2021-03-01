@@ -22,6 +22,7 @@
 
 #define LEVEL2_TILES_LEN 4
 #define LEVEL2_TILES_BASE 65
+#define BACKGROUND_CHEESE INK_BLACK | PAPER_YELLOW | BRIGHT
 
 const uint8_t coords_queso [] = {0x0f, 0x2f, 0xf2, 0xf0, 0x31, 0xff, 0x12, 0x31, 0xff, 0x31, 0x32, 0xff, 0x14, 0x15,
                                 0xf0, 0x25, 0x5f, 0x31, 0x25, 0xff, 0x25, 0x35, 0xf1, 0x35, 0x50};
@@ -62,11 +63,11 @@ void detect_fall_in_hole_or_curtain() {
                 sp1_PrintAtInv(
                     DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
                     3 + (coords_holes[idx] & 0x0F),
-                    BACKGROUND_GREEN, UDG_HOLE_EMPTY);
+                    BACKGROUND_CHEESE, UDG_HOLE_EMPTY);
                 repaint_lives = 1;
                 floor_holes[0][idx_j] = EATEN_MOUSE;
                 sp1_PrintAtInv(1, 3 + (eaten_items + eaten_items), INK_RED | PAPER_GREEN | BRIGHT, UDG_SCORE);
-                bit_beepfx_di_fastcall(BEEPFX_SCORE);
+                bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
                 ++eaten_items;
                 total_points += 10;
             }
@@ -95,7 +96,7 @@ void level2_loop() {
             sp1_PrintAtInv(
                 DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
                 3 + (coords_holes[idx] & 0x0F),
-                BACKGROUND_GREEN, UDG_HOLE_EMPTY);
+                BACKGROUND_CHEESE, UDG_HOLE_EMPTY);
 
             if((idx & 1) == 0) { // par: siguiente impar (0 -> 1, 2 -> 3, 4 -> 5, 6 -> 7)
                 ++floor_holes[0][idx_j];
@@ -107,7 +108,7 @@ void level2_loop() {
             sp1_PrintAtInv(
                 DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
                 3 + (coords_holes[idx] & 0x0F),
-                BACKGROUND_GREEN, UDG_HOLE_MOUSE);
+                BACKGROUND_CHEESE, UDG_HOLE_MOUSE);
         }
     }
 
@@ -160,14 +161,14 @@ void  print_background_level2() {
   // paint the main cheese
   for (idx = 3; idx != 20; ++idx) {
     for (idx_j = idx + 1; idx_j != 21; ++idx_j) {
-        sp1_PrintAt( idx_j - 1, idx, PAPER_GREEN | BRIGHT, ' ');
+        sp1_PrintAt( idx_j - 1, idx, PAPER_YELLOW | BRIGHT, ' ');
     }
   }
 
   // paint diagonal
   idx = 3;
   for (idx_j = 2; idx_j != 20; ++idx_j) {
-      sp1_PrintAt( idx_j, idx, PAPER_RED | INK_GREEN | BRIGHT, UDG_QUESO_DIAG);
+      sp1_PrintAt( idx_j, idx, PAPER_RED | INK_YELLOW | BRIGHT, UDG_QUESO_DIAG);
        ++idx;
   }
   // in this level it is used to define holes have a mouse
@@ -189,7 +190,7 @@ void  print_background_level2() {
         sp1_PrintAt(
             DESFASE_Y + ((coords_holes[idx] & 0xF0) >> 4),
             3 + (coords_holes[idx] & 0x0F),
-            BACKGROUND_GREEN, first_keypress);
+            BACKGROUND_CHEESE, first_keypress);
   }
 
   // paint textures
@@ -201,7 +202,7 @@ void  print_background_level2() {
 
     if(first_keypress != 15) {
         x += first_keypress;
-        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, UDG_QUESO_TEXT);
+        sp1_PrintAt(idx_j, x, BACKGROUND_CHEESE, UDG_QUESO_TEXT);
     } else {
         // line jump
         ++idx_j;
@@ -211,7 +212,7 @@ void  print_background_level2() {
 
     if(first_keypress != 15) {
         x += first_keypress;
-        sp1_PrintAt(idx_j, x, BACKGROUND_GREEN, UDG_QUESO_TEXT);
+        sp1_PrintAt(idx_j, x, BACKGROUND_CHEESE, UDG_QUESO_TEXT);
     } else {
         // line jump
         ++idx_j;
@@ -222,8 +223,8 @@ void  print_background_level2() {
 
 
   // paint the chair
-  paint_chair(22, PAPER_RED | INK_GREEN | BRIGHT);
-  paint_table(26, PAPER_RED | INK_GREEN | BRIGHT);
+  paint_chair(22, PAPER_RED | INK_CYAN | BRIGHT);
+  paint_table(26, PAPER_RED | INK_CYAN | BRIGHT);
 
   eaten_items = 0;
 
