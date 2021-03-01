@@ -1,4 +1,4 @@
-# speccy-misifu
+# speccy-misifu (remeowed!)
 Misifu la gatita (WIP) - zxspectrum
 
 Development in progress
