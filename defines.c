@@ -574,11 +574,10 @@ void check_keys()
         paws = 1;
     }
 
-    /*if(in_key_pressed(IN_KEY_SCANCODE_r)) {
+    if(in_key_pressed(IN_KEY_SCANCODE_r)) {
         in_wait_nokey();
         ++last_success_level;
-        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
-    }*/
+    }
 
 }
 
@@ -812,7 +811,14 @@ void paint_lamp(uint8_t col, uint8_t color) {
 
     for(idx = frame - 6; idx != frame - 4; ++idx) {
         for(idx_j = col - 1; idx_j != col + 2; ++idx_j) {
-            sp1_PrintAtInv(idx, idx_j, color, UDG_LAMP1);
+            if(idx_j == col - 1) {
+                x = INK_WHITE | PAPER_BLACK | BRIGHT;
+            } else if(idx_j == col) {
+                x = INK_CYAN | BRIGHT | PAPER_BLACK;
+            } else {
+                x = INK_CYAN | PAPER_BLACK;
+            }
+            sp1_PrintAtInv(idx, idx_j, x, UDG_LAMP1);
         }
     }
     sp1_PrintAtInv(frame - 4, col + 1, color, UDG_LAMP2);

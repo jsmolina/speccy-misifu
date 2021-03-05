@@ -64,21 +64,21 @@ void assign_dogs(uint8_t y, uint8_t x) {
 
 void  print_background_level7() {
      sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                      PAPER_MAGENTA | BRIGHT,
+                      PAPER_BLUE| BRIGHT,
                       ' ' );
      level = 7;
 
      sp1_Invalidate(&full_screen);
 
      uint8_t *pt = level7;
-      print_room_walls(20, PAPER_MAGENTA, INK_CYAN);
+      print_room_walls(20, PAPER_BLUE, INK_CYAN);
 
      // So now you can use:
      for (idx = 0; idx < LEVEL7_TILES_LEN; idx++, pt += 8) {
          sp1_TileEntry(LEVEL7_TILES_BASE + idx, pt);
      }
-     paint_lamp(5, INK_CYAN | PAPER_MAGENTA | BRIGHT);
-     paint_portrait(INK_CYAN | PAPER_MAGENTA | BRIGHT);
+     paint_lamp(5, INK_CYAN | PAPER_BLUE | BRIGHT);
+     paint_portrait(INK_CYAN | PAPER_BLUE| BRIGHT);
 
      idx = 0;
      for(x = 0; x != TOTAL_PERROS; ++x) {
@@ -104,7 +104,7 @@ void  print_background_level7() {
             sp1_PrintAt(
                 idx_j,
                 idx + bincat_appears,
-                INK_WHITE | PAPER_MAGENTA | BRIGHT,
+                INK_CYAN | PAPER_BLUE | BRIGHT,
                 frame
             );
             frame += 1;
@@ -113,7 +113,7 @@ void  print_background_level7() {
         sp1_PrintAt(
             idx_j,
             horizontal_direction,
-            INK_BLUE | PAPER_MAGENTA | BRIGHT,
+            INK_WHITE | PAPER_BLUE | BRIGHT,
             UDG_CUENCO_LLENO
         );
      }
@@ -148,7 +148,7 @@ inline void drink_milk() {
     sp1_PrintAt(
         idx_j,
         idx + row1_moving,
-        INK_BLUE | PAPER_MAGENTA | BRIGHT,
+        INK_WHITE | PAPER_BLUE| BRIGHT,
         UDG_CUENCO_VACIO
     );
     floor_holes[1][x] = NO_MILK; // 1 + 2 = 3
@@ -227,7 +227,7 @@ void level7_loop() {
                 sp1_PrintAt(
                     idx_j,
                     idx + row1_moving,
-                    INK_WHITE | PAPER_MAGENTA | BRIGHT,
+                    INK_CYAN | PAPER_BLUE| BRIGHT,
                     floor_holes[2][x]
                 );
                 last_awaken = x;
