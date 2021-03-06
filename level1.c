@@ -97,7 +97,6 @@ inline uint8_t  get_cubo_offset() {
 
 
 void paint_window(uint16_t colour, uint8_t udg_id) {
-  uint8_t second_udg;
 
   if(opened_window > 11) {
     return;
@@ -112,13 +111,15 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
 
   for (x = windows[opened_window].x + 1; x != windows[opened_window].x + 5; ++x) {
     // top is equal
-    sp1_PrintAtInv(windows[opened_window].y, x, colour, udg_id);
-    if(udg_id == ' ') {
-        second_udg = UDG_WIN1;
-    } else {
-        second_udg = udg_id;
+    if(opened_window_frames != 50) {
+        sp1_PrintAtInv(windows[opened_window].y, x, colour, udg_id);
     }
-    sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, second_udg);
+    if(udg_id == ' ') {
+        y = UDG_WIN1;
+    } else {
+        y = udg_id;
+    }
+    sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, y);
   }
 }
 
@@ -197,10 +198,16 @@ void  print_background_lvl1() {
              idx_j = 21;
           }
           //
-          sp1_PrintAtInv(idx_j, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBODOWN1 + frame);
+          for(level_time = idx_j; level_time != idx_j - 4; --level_time) {
+            sp1_PrintAtInv(level_time, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBODOWN1 + frame);
+            if(level_time != (idx_j - 1)) {
+                frame += 3;
+            }
+          }
+          /*sp1_PrintAtInv(idx_j, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBODOWN1 + frame);
           sp1_PrintAtInv(idx_j - 1, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
           sp1_PrintAtInv(idx_j - 2, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 3, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOTOP1 + frame);
+          sp1_PrintAtInv(idx_j - 3, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOTOP1 + frame);*/
       }
 
   }
@@ -211,15 +218,15 @@ void  print_background_lvl1() {
 
   print_lives();
 
-  sp1_PrintAt( 17, 29, BACKGROUND_LVL1_CYAN, UDG_C);
-  sp1_PrintAt( 17, 30,  BACKGROUND_LVL1_CYAN, UDG_A);
-  sp1_PrintAt( 17, 31,  BACKGROUND_LVL1_CYAN, UDG_T);
+  for(idx = 0; idx != 3; ++idx) {
+    sp1_PrintAt( 17, 29 + idx, BACKGROUND_LVL1_CYAN, UDG_C + idx);
+  }
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
-    sp1_PrintAt(9, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
-    sp1_PrintAt(5, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
-    sp1_PrintAt(1, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    for(idx_j = 1; idx_j!=13; idx_j += 4) {
+        sp1_PrintAt(idx_j, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    }
   }
 
   // paint bricks (decompressing!)
@@ -375,6 +382,11 @@ inline void anim_windows() {
     } else {
         --opened_window_frames;
 
+        if(opened_window_frames == 40) {
+            // finish opening window
+            paint_window(INK_BLACK | PAPER_WHITE, UDG_WIN2);
+        }
+
         if (horizontal_direction != NONE) {
             if(misifu.state != FALLING_FLOOR && misifu.y < 14 && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
                 bit_beepfx_di_fastcall(BEEPFX_HIT_2);
@@ -442,7 +454,7 @@ inline void check_bincat() {
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING_FLOOR;
             misifu.in_bin = NONE;
-            bit_beepfx_di_fastcall(BEEPFX_HIT_2);
+            //bit_beepfx_di_fastcall(BEEPFX_HIT_2);
         }
 
         if (bincat_appears <= 1) {

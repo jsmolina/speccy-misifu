@@ -11,6 +11,6 @@ extern void  print_background_lvl1();
 
 //extern void add_row_clothes();
 
-extern void level1_loop();
+extern inline void level1_loop();
 
 #endif

@@ -51,8 +51,10 @@ void  print_background_level6() {
   paint_lamp(5, PAPER_RED | INK_GREEN | BRIGHT);
   // 18, 27
   eaten_items = CAGE_FIRST_POS; // 3 hits are needed to throw cage
-  sp1_PrintAt(17, CAGE_FIRST_POS, PAPER_RED | INK_WHITE | BRIGHT, UDG_JAULA_IZQUIERDA);
-  sp1_PrintAt(17, CAGE_FIRST_POS_RIGHT, PAPER_RED | INK_WHITE | BRIGHT, UDG_JAULA_DERECHA);
+
+  for(x = 0; x != 2; ++x) {
+    sp1_PrintAt(17, CAGE_FIRST_POS + x, PAPER_RED | INK_WHITE | BRIGHT, UDG_JAULA_IZQUIERDA - x);
+  }
   paint_portrait(GREEN_RED_BRIGHT);
   reset_misifu_position();
   windows[0].x = CAGE_FOURTH_POS;

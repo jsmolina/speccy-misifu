@@ -51,8 +51,10 @@ const uint8_t empty_holes [] = {0x17, 0x9f, 0xf0, 0x23, 0x67, 0x8f, 0x38, 0xf2, 
 const uint8_t italic [] = {0x05, 0x41, 0x47, 0x85, 0xa1, 0xc5};
 
 void paint_vase(uint8_t col, uint8_t clean) {
-        sp1_PrintAtInv( 3, col, INK_CYAN | PAPER_MAGENTA | BRIGHT, clean);
-        sp1_PrintAtInv( 3, col + 1, INK_CYAN | PAPER_MAGENTA | BRIGHT, clean);
+
+        for(x = 0; x != 2; ++x) {
+            sp1_PrintAtInv( 3, col + x, INK_CYAN | PAPER_MAGENTA | BRIGHT, clean);
+        }
         if (clean != ' ') {
             ++clean;
         }
@@ -164,7 +166,7 @@ inline void detect_vase_falling() {
             windows[idx_j].has_item = BROKEN_VASE;
             misifu.state = FALLING_FLOOR;
             misifu.draw_additional = NONE;
-            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
             paint_vase(idx, ' ');
             total_points += 10;
             --eaten_items;

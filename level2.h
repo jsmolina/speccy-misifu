@@ -14,11 +14,11 @@ extern uint8_t thrown_from_window(uint8_t x, uint8_t y);
 extern void define_cheese_holes_pos();
 
 
-extern void  print_background_level2();
+extern inline void  print_background_level2();
 
 extern void detect_fall_in_hole_or_curtain();
 
-extern void level2_loop();
+extern inline void level2_loop();
 
 
 #endif

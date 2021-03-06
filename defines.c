@@ -170,8 +170,6 @@ uint8_t window_shown = 0;
 
 uint16_t total_points;
 
-char * chars = "0000000\0";
-
 // hearts holes
 uint8_t floor_holes[5][12];
 
@@ -572,7 +570,6 @@ void check_keys()
     if(in_key_pressed(IN_KEY_SCANCODE_r)) {
         in_wait_nokey();
         ++last_success_level;
-        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     }
 
 }
@@ -975,10 +972,10 @@ void get_out_of_level_generic(uint8_t fall) {
         }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else if(fall == FALLING) {
-        bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
-            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
             zx_border(INK_WHITE);
             wait();
             zx_border(INK_BLUE);
