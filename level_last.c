@@ -7,7 +7,6 @@
 #include <input.h>
 #include <sound.h> // for bit_beepfx()
 
-#define RED_GREEN_BRIGHT INK_RED | PAPER_GREEN | BRIGHT
 
 #define RAT_TO_RIGHT 1
 #define RAT_TO_LEFT 2
@@ -35,7 +34,7 @@ uint8_t last[] = {
 void print_background_level_last() {
   level = 10;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  PAPER_GREEN | BRIGHT,
+                  PAPER_CYAN | BRIGHT,
                   ' ' );
   zx_border(INK_BLACK);
 
@@ -72,10 +71,10 @@ void print_background_level_last() {
 
             if((idx & 1) == 0) {
                 x_malo = UDG_UDG_CORAZON_01;
-                bincat_in_bin = INK_RED | PAPER_GREEN | BRIGHT;
+                bincat_in_bin = INK_RED | PAPER_CYAN | BRIGHT;
                 if(idx_j != 0 && (random_value & 1)) {
                     x_malo = UDG_UDG_CORAZON_ROTO_01;
-                    bincat_in_bin = INK_BLUE | PAPER_GREEN | BRIGHT;
+                    bincat_in_bin = INK_BLACK | PAPER_CYAN | BRIGHT;
                 }
             }
 
@@ -165,10 +164,10 @@ inline void throw_cupid_arrow() {
                 idx = idx >> 1;
                 if(floor_holes[idx_j][idx] == UDG_UDG_CORAZON_01) {
                     floor_holes[idx_j][idx] = UDG_UDG_CORAZON_ROTO_01;
-                    row1_moving = INK_BLUE | PAPER_GREEN | BRIGHT;
+                    row1_moving = INK_BLACK | PAPER_CYAN | BRIGHT;
                 } else {
                     floor_holes[idx_j][idx] = UDG_UDG_CORAZON_01;
-                    row1_moving = INK_RED | PAPER_GREEN | BRIGHT;
+                    row1_moving = INK_RED | PAPER_CYAN | BRIGHT;
                 }
                 for(x = 0; x != 2; ++x) {
                     sp1_PrintAtInv(
@@ -197,7 +196,7 @@ inline void throw_cupid_arrow() {
 void level10_loop() {
     for(idx_j= 0; idx_j != 4; ++idx_j) {
         for(x = 0; x != 2; ++x) {
-            sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + x, PAPER_GREEN | BRIGHT, ' ');
+            sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + x, PAPER_CYAN | BRIGHT, ' ');
         }
         if(windows[idx_j].has_item == RAT_TO_RIGHT) {
             idx = UDG_RATA_DERECHA_01;
@@ -212,7 +211,7 @@ void level10_loop() {
             windows[idx_j].has_item = RAT_TO_LEFT;
         }
         for(x = 0; x != 2; ++x) {
-            sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + x, PAPER_GREEN | BRIGHT, idx + x);
+            sp1_PrintAtInv( windows[idx_j].y, windows[idx_j].x + x, PAPER_CYAN | BRIGHT, idx + x);
         }
         // colision
         if(((misifu.y + 1) == windows[idx_j].y) && (misifu.x == windows[idx_j].x || misifu.x == (windows[idx_j].x - 1))) {

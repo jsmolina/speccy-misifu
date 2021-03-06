@@ -169,7 +169,7 @@ inline void detect_vase_falling() {
             windows[idx_j].has_item = BROKEN_VASE;
             misifu.state = FALLING_FLOOR;
             misifu.draw_additional = NONE;
-            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
             paint_vase(idx, ' ');
             total_points += 10;
             --eaten_items;

@@ -122,7 +122,7 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
 }
 
 void print_lives() {
-    sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + lives);
+    sp1_PrintAtInv( 17, 27, INK_WHITE | PAPER_BLACK, 48 + lives);
     print_points(18, 27);
     repaint_lives = 0;
 }
@@ -197,11 +197,22 @@ void  print_background_lvl1() {
           if((x >= 5 && x<=7)  ||  (x >= 20 && x<=22)) {
              idx_j = 21;
           }
+          if(x <=7 || x > 22) {
+              idx = PAPER_GREEN | BRIGHT;
+          } else {
+              idx = PAPER_CYAN | BRIGHT;
+          }
           //
-          sp1_PrintAtInv(idx_j, x, PAPER_CYAN | BRIGHT, UDG_CUBODOWN1 + frame);
-          sp1_PrintAtInv(idx_j - 1, x, PAPER_CYAN | BRIGHT, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 2, x, PAPER_CYAN | BRIGHT, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 3, x, PAPER_CYAN | BRIGHT, UDG_CUBOTOP1 + frame);
+          for(level_time = idx_j; level_time != idx_j - 4; --level_time) {
+            sp1_PrintAtInv(level_time, x, idx, UDG_CUBODOWN1 + frame);
+            if(level_time != (idx_j - 1)) {
+                frame += 3;
+            }
+          }
+          /*sp1_PrintAtInv(idx_j, x, idx, UDG_CUBODOWN1 + frame);
+          sp1_PrintAtInv(idx_j - 1, x, idx, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 2, x, idx, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 3, x, idx, UDG_CUBOTOP1 + frame);*/
       }
 
   }
@@ -211,16 +222,18 @@ void  print_background_lvl1() {
   sp1_PrintAtInv(16, 23, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
 
   print_lives();
+  for(idx = 0; idx != 3; ++idx) {
+    sp1_PrintAt( 17, 29 + idx, PAPER_WHITE | BRIGHT, UDG_C + idx);
+  }
 
-  sp1_PrintAt( 17, 29, PAPER_WHITE | BRIGHT, UDG_C);
-  sp1_PrintAt( 17, 30,  PAPER_WHITE | BRIGHT, UDG_A);
-  sp1_PrintAt( 17, 31,  PAPER_WHITE | BRIGHT, UDG_T);
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
-    sp1_PrintAt(9, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
-    sp1_PrintAt(5, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
-    sp1_PrintAt(1, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    for(idx_j = 1; idx_j!=13; idx_j += 4) {
+        sp1_PrintAt(idx_j, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    }
+    /*sp1_PrintAt(5, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    sp1_PrintAt(1, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);*/
   }
 
   // paint bricks (decompressing!)
@@ -378,7 +391,7 @@ inline void anim_windows() {
 
         if (horizontal_direction != NONE) {
             if(misifu.state != FALLING_FLOOR && misifu.y < 14 && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-                bit_beepfx_di_fastcall(BEEPFX_HIT_2);
+                bit_beepfx_di_fastcall(BEEPFX_DROP_1);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING_FLOOR;
             } else {
@@ -443,7 +456,7 @@ inline void check_bincat() {
         if (bincat_in_bin == misifu.in_bin) {
             misifu.state = FALLING_FLOOR;
             misifu.in_bin = NONE;
-            bit_beepfx_di_fastcall(BEEPFX_HIT_2);
+            //bit_beepfx_di_fastcall(BEEPFX_HIT_2);
         }
 
         if (bincat_appears <= 1) {

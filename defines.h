@@ -161,7 +161,6 @@ extern uint8_t last_success_level; // to see user progress
 extern uint8_t repaint_lives;
 extern uint8_t level_time;
 extern uint16_t total_points;
-extern char * chars;
 
 extern uint8_t tiles_lvl1[];
 extern uint8_t floor_holes[][12];

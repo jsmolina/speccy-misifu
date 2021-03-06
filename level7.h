@@ -8,5 +8,5 @@ DOGS MILK LEVEL
 extern inline void  print_background_level7();
 
 
-extern void level7_loop();
+extern inline void level7_loop();
 #endif

@@ -8,5 +8,5 @@ BIRD CAGE LEVEL
 extern inline void  print_background_level6();
 
 
-extern void level6_loop();
+extern inline void level6_loop();
 #endif

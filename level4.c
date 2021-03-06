@@ -183,8 +183,10 @@ void level4_loop() {
             get_out_of_level4(ELECTRIFIED);
             return;
        }
-       sp1_PrintAtInv( idx_j, floor_holes[2][idx],  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
-       sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+       for(y = 0; y != 2; ++y) {
+          sp1_PrintAtInv( idx_j, floor_holes[2][idx] + y,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
+       }
+       //sp1_PrintAtInv( idx_j, floor_holes[2][idx] + 1,  INK_BLACK | PAPER_CYAN | BRIGHT, ' ');
 
         opened_window = (frame >= 2); // if frame should move +1 (HEAD, HEAD FRAME2)
         if(floor_holes[3][idx] == EEL_TO_RIGHT) {

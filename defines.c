@@ -170,8 +170,6 @@ uint8_t window_shown = 0;
 
 uint16_t total_points;
 
-char * chars = "0000000\0";
-
 // hearts holes
 uint8_t floor_holes[5][12];
 
@@ -223,12 +221,12 @@ uint16_t partial_points;
 void print_points(uint8_t row, uint8_t col) {
     partial_points = total_points;
     for(idx = 0; idx != 5; ++idx) {
-        sp1_PrintAtInv(row, col + idx, INK_CYAN | PAPER_BLACK | BRIGHT, '0');
+        sp1_PrintAtInv(row, col + idx, INK_WHITE | PAPER_BLACK , '0');
     }
 
     idx = col + 4;
     while (partial_points > 0) {
-       sp1_PrintAtInv(row, idx, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + (partial_points % 10));
+       sp1_PrintAtInv(row, idx, INK_WHITE | PAPER_BLACK , 48 + (partial_points % 10));
        partial_points = partial_points / 10;
        --idx;
     }
@@ -986,10 +984,10 @@ void get_out_of_level_generic(uint8_t fall) {
         }
         bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
     } else if(fall == FALLING) {
-        bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
-            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
+            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
             zx_border(INK_WHITE);
             wait();
             zx_border(INK_BLUE);

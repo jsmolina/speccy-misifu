@@ -8,5 +8,5 @@ BOOKSHELF LEVEL
 extern inline void  print_background_level5();
 
 
-extern void level5_loop();
+extern inline void level5_loop();
 #endif
