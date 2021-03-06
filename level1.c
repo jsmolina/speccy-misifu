@@ -119,7 +119,9 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
     } else {
         y = udg_id;
     }
-    sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, y);
+    if(opened_window_frames != 10) {
+        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, y);
+    }
   }
 }
 
@@ -409,6 +411,10 @@ inline void anim_windows() {
             sp1_MoveSprAbs(aux_object.sp, &full_screen, (int) auxiliar1 + aux_object.offset, aux_object.y, aux_object.x, 0, 0);
         }
 
+    }
+
+    if (opened_window_frames == 10) {
+        paint_window(PAPER_CYAN | BRIGHT, ' ');
     }
     // end of windows
     if (opened_window_frames == 1) {
