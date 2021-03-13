@@ -24,8 +24,8 @@ void  print_background_level3() {
 
   paint_lamp(26, PAPER_MAGENTA | INK_CYAN | BRIGHT);
   // fishtank
-  sp1_PrintAt( 17, 22,  INK_WHITE | PAPER_MAGENTA | BRIGHT, 'A');
-  sp1_PrintAt( 17, 23,  INK_WHITE | PAPER_MAGENTA | BRIGHT, 'B');
+  sp1_PrintAt( 17, 22,  INK_CYAN | PAPER_MAGENTA | BRIGHT, 'A');
+  sp1_PrintAt( 17, 23,  INK_CYAN | PAPER_MAGENTA | BRIGHT, 'B');
 
   reset_misifu_position();
 

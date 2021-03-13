@@ -402,7 +402,7 @@ inline void anim_windows() {
 
         if (horizontal_direction != NONE) {
             if(misifu.state != FALLING_FLOOR && misifu.y < 14 && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-                bit_beepfx_di_fastcall(BEEPFX_GULP);
+                bit_beepfx_di_fastcall(BEEPFX_HIT_4);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING_FLOOR;
             } else {

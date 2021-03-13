@@ -977,16 +977,16 @@ void get_out_of_level_generic(uint8_t fall) {
         }
         bit_beepfx_di_fastcall(BEEPFX_SCORE);
     } else if(fall == FALLING) {
-        bit_beepfx_di_fastcall(BEEPFX_GULP);
+        bit_beepfx_di_fastcall(BEEPFX_HIT_4);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
-            bit_beepfx_di_fastcall(BEEPFX_GULP);
+            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
             zx_border(INK_WHITE);
             wait();
             zx_border(INK_BLUE);
         }
     } else if(fall == OXYGEN) {
-        bit_beepfx_di_fastcall(BEEPFX_GULP);
+        bit_beepfx_di_fastcall(BEEPFX_HIT_4);
     } else {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
         if(lives > 0) {
