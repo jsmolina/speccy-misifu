@@ -567,10 +567,10 @@ void check_keys()
         paws = 1;
     }
 
-    if(in_key_pressed(IN_KEY_SCANCODE_r)) {
+    /*if(in_key_pressed(IN_KEY_SCANCODE_r)) {
         in_wait_nokey();
         ++last_success_level;
-    }
+    }*/
 
 }
 
@@ -975,7 +975,7 @@ void get_out_of_level_generic(uint8_t fall) {
         bit_beepfx_di_fastcall(BEEPFX_DROP_1);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
-            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+            bit_beepfx_di_fastcall(BEEPFX_HIT_4);
             zx_border(INK_WHITE);
             wait();
             zx_border(INK_BLUE);
