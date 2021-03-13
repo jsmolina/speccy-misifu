@@ -282,4 +282,5 @@ extern void detect_fall_in_table(uint8_t offset);
 extern void move_right_and_left();
 extern void assign_hearts();
 
+extern void initialiseColour(unsigned int count, struct sp1_cs *c);
 #endif

@@ -318,16 +318,6 @@ void all_lives_lost() {
   intrinsic_ei();
 }
 
-/*
-static void initialiseColourOther(unsigned int count, struct sp1_cs *c)
-{
-  (void)count;   // Suppress compiler warning about unused parameter
-  c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_BLACK;
-}*/
-
-
-
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, 0, 1);
@@ -419,6 +409,9 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
   uint8_t *pt = rooms;
   uint8_t bright_black_paper = 0x40 | paper_color;
   uint8_t *black_window = tiles_lvl1 + 168;
+  if(level == 7) {
+    bright_black_paper = PAPER_BLUE | INK_CYAN | BRIGHT;
+  }
 
 
   for (idx = 0; idx < ROOMS_TILES_LEN; ++idx, pt += 8) {
@@ -982,12 +975,12 @@ void get_out_of_level_generic(uint8_t fall) {
             sp1_UpdateNow();
             wait();
         }
-        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
+        bit_beepfx_di_fastcall(BEEPFX_SCORE);
     } else if(fall == FALLING) {
-        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
     } else if (fall == ELECTRIFIED) {
         for (idx = 0; idx != 5; ++idx) {
-            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+            bit_beepfx_di_fastcall(BEEPFX_GULP);
             zx_border(INK_WHITE);
             wait();
             zx_border(INK_BLUE);
@@ -995,7 +988,7 @@ void get_out_of_level_generic(uint8_t fall) {
     } else if(fall == OXYGEN) {
         bit_beepfx_di_fastcall(BEEPFX_GULP);
     } else {
-        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
         if(lives > 0) {
             --lives;
         } else {

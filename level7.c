@@ -64,7 +64,7 @@ void assign_dogs(uint8_t y, uint8_t x) {
 
 void  print_background_level7() {
      sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                      PAPER_BLUE| BRIGHT,
+                      PAPER_BLUE| BRIGHT | INK_CYAN,
                       ' ' );
      level = 7;
 
@@ -136,7 +136,7 @@ void  print_background_level7() {
 
 
 inline void drink_milk() {
-    bit_beepfx_di_fastcall(BEEPFX_EAT);
+    bit_beepfx_di_fastcall(BEEPFX_SCORE);
 
     if(floor_holes[1][x] == NO_MILK) {
         // already eaten!

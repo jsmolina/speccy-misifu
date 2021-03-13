@@ -105,7 +105,7 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
   for (x = 0; x != 2; ++x) {
       sp1_PrintAtInv(windows[opened_window].y + x,
                      windows[opened_window].x,
-                     BACKGROUND_LVL1_DEFAULT,
+                     PAPER_RED | INK_BLACK,
                      UDG_VOLUMEN);
   }
 
@@ -149,7 +149,12 @@ void paint_bricks(uint8_t clean) {
     if((coords_lad[x] & 0x0F) == 15) {
         continue;
     }
-    sp1_PrintAtInv(idx_j, idx, BACKGROUND_LVL1_DEFAULT, UDG_JLADRILLOS);
+    if(idx_j >= 13) {
+        y = PAPER_RED | INK_BLACK;
+    } else {
+        y = BACKGROUND_LVL1_DEFAULT;
+    }
+    sp1_PrintAtInv(idx_j, idx, y, UDG_JLADRILLOS);
   }
 }
 
@@ -236,6 +241,12 @@ void  print_background_lvl1() {
     sp1_PrintAt(1, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);*/
   }
 
+  // last two rows as dark red
+  for(idx_j = 13; idx_j < 15; ++idx_j) {
+    for(idx = 0; idx < 32; ++idx) {
+        sp1_PrintAtInv(idx_j, idx, PAPER_RED | INK_BLACK, ' ');
+    }
+  }
   // paint bricks (decompressing!)
   paint_bricks(0);
 
@@ -391,7 +402,7 @@ inline void anim_windows() {
 
         if (horizontal_direction != NONE) {
             if(misifu.state != FALLING_FLOOR && misifu.y < 14 && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-                bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+                bit_beepfx_di_fastcall(BEEPFX_GULP);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING_FLOOR;
             } else {

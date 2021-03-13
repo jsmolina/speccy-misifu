@@ -67,7 +67,7 @@ void detect_fall_in_hole_or_curtain() {
                 repaint_lives = 1;
                 floor_holes[0][idx_j] = EATEN_MOUSE;
                 sp1_PrintAtInv(1, 3 + (eaten_items + eaten_items), INK_RED | PAPER_GREEN | BRIGHT, UDG_SCORE);
-                bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
+                bit_beepfx_di_fastcall(BEEPFX_SCORE);
                 ++eaten_items;
                 total_points += 10;
             }
