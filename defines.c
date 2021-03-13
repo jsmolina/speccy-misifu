@@ -565,10 +565,10 @@ void check_keys()
         paws = 1;
     }
 
-    if(in_key_pressed(IN_KEY_SCANCODE_r)) {
+    /*if(in_key_pressed(IN_KEY_SCANCODE_r)) {
         in_wait_nokey();
         ++last_success_level;
-    }
+    }*/
 
 }
 
