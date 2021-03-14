@@ -29,7 +29,7 @@ EN
 - Fishtank. Enter inside fishtank jumping inside it. Inside fishtank: eat all fishes but be aware of eels and oxygen.
 - Bookself. Destroy the vases in the bookself, but be aware of the spider, and the dog!
 - Bird. Throw the birdcage, eat the bird!
-- Sleeping dogs. Press space when on drinkers, be aware of touching them three times, or you'll awake them... and that's not ending so well.
+- Sleeping dogs. Press space when on drinkers, be aware of touching them twice, or you'll awake them... and that's not ending so well.
 - Hearts. That's the last level and thus the most difficult. Reach the topmost without falling and you'll rescue Fred and see the ending. 
 Game will restart from Alley after hearts.
 
@@ -41,7 +41,7 @@ Controles: OPQA / Kempston (b = pausa)
 - Pecera. Entra en la pecera saltando sobre ella desde más arriba. Dentro de la pecera: cómete todos los peces, pero cuidado con las anguilas electricas y el oxígeno.
 - Estantería. Rompe los jarrones de la estanteria, pero cuidado con la araña... y como siempre, el perro!
 - Jaula/pajaro. Tira la jaula, cómete el pájaro y ojo con el perro.
-- Perros durmiendo. Presiona espacio en los bebederos, pero cuidado con tocar los perros tres veces, o los levantarás... y ya sabemos que eso no acaba bien.
+- Perros durmiendo. Presiona espacio en los bebederos, pero cuidado con tocar un mismo perro dos veces, o los levantarás... y ya sabemos que eso no acaba bien.
 - Corazones. Este es el último nivel, y el más dificil. Consigue llegar a lo más arriba y rescatarás a Fred, para ver el final.
 El juego empezará de nuevo en el callejón.
 
@@ -53,7 +53,7 @@ Controles: OPQA / Kempston (b = pausa)
 - Aquário. Entra no aquário, saltando de cima. Dentro do aquário: come todos os peixes, mas cuidado com as enguias elétricas e com o oxigénio.
 - Estante. Quebra os jarros da estante, mas cuidado com a aranha... E como sempre, com o cão!
 - Gaiola/Pássaro. Quebra a gaiola, come o pássaro e cuidado com o cão.
-- Cães a dormir. Pressiona a tecla de “espaço” nos bebedouros, mas cuidado para não tocares os cães três vezes ou irás acordá-los... E já sabemos que isso não termina bem.
+- Cães a dormir. Pressiona a tecla de “espaço” nos bebedouros, mas cuidado para não tocares os cães duas vezes ou irás acordá-los... E já sabemos que isso não termina bem.
 - Corações. Este é o último nível e o mais difícil. Tenta chegar o mais alto possível e salvar Fred para ver o final. O jogo começa então novamente na ruela.
 
 Apesar de se abrirem diferentes janelas... Só após terminares este nível, poderás passar ao próximo. 
