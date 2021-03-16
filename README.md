@@ -98,7 +98,6 @@ See the Makefile as it contains udg and sprites lines.
 
 Contributions/suggestions are more than welcome!
 
-![Image of Misifu](https://user-images.githubusercontent.com/447481/103533224-04a1cd00-4e8d-11eb-81fc-812f884ae8ab.jpg)
 
 
 # Collaborators
@@ -124,7 +123,7 @@ First, the original, GREAT AND ORIGINAL game Alley Cat is what it is, and I have
 Second, nowadays my daughter asks me for a female hero.
 Third, because `misifu` is a very affectionate way of calling a cat in Spain, my grandma did it so often.
 
-# Appearances on media
+# Appearances on media of old version
 Indieretronews:
 http://www.indieretronews.com/2019/01/alley-cat-ataridos-cat-classic-as-128k.html
 
