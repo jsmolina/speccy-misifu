@@ -1,5 +1,7 @@
 # speccy-misifu (remeowed!)
 Misifu Remeow! - zxspectrum
+2021 version download
+https://jbinary.itch.io/misifu-remeow
 
 Development in progress
 http://zx-dev-mia-remakes.proboards.com/thread/12/misifu-gatita-alley-cat-demake
