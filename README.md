@@ -1,5 +1,5 @@
 # speccy-misifu (remeowed!)
-Misifu la gatita (WIP) - zxspectrum
+Misifu Remeow! - zxspectrum
 
 Development in progress
 http://zx-dev-mia-remakes.proboards.com/thread/12/misifu-gatita-alley-cat-demake
