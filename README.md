@@ -142,3 +142,11 @@ https://youtu.be/iBZ9AfL0jOo?t=161
 Game running on a real +2A (mine)
 https://www.youtube.com/watch?v=v-mvxf3EnuI
 
+# Appearances on media of 2021 version
+
+Indie Retro News
+http://www.indieretronews.com/2021/03/misifu-remeow-if-you-loved-1980s.html
+
+PlanetaSinclair
+https://planetasinclair.blogspot.com/2021/03/saiu-misifu-remeow.html
+
