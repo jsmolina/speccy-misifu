@@ -155,3 +155,25 @@ PlanetaSinclair
 
 https://planetasinclair.blogspot.com/2021/03/saiu-misifu-remeow.html
 
+high-voltage.cz
+
+https://www.high-voltage.cz/sortky/misifu-remeow-alley-cat-pro-zx-spectrum/
+
+
+spectrum retro and new
+
+https://spectrumandretronew.blogspot.com/2021/03/misifu-remeow-zx-spectrum.html
+
+retroinvaders
+
+https://retroinvaders.com/es/121381/nuevo-misifu-remeow-de-jordi
+
+
+zx-pk.ru
+
+https://zx-pk.ru/archive/index.php/t-30180.html
+
+
+mechanism.fr
+
+https://mechanism.fr/getRecord.php?id=747
