@@ -4,6 +4,8 @@ Misifu Remeow! - zxspectrum
 ## 2021 version download
 https://jbinary.itch.io/misifu-remeow
 
+## Colored
+NOTE: Colored branch code is in https://github.com/jsmolina/speccy-misifu/tree/master-colored
 
 Development in progress
 http://zx-dev-mia-remakes.proboards.com/thread/12/misifu-gatita-alley-cat-demake
