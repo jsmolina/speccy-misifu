@@ -146,6 +146,9 @@ https://www.youtube.com/watch?v=v-mvxf3EnuI
 Indie Retro News
 http://www.indieretronews.com/2021/03/misifu-remeow-if-you-loved-1980s.html
 
+ElMundoDelSpectrum
+http://www.elmundodelspectrum.com/nuevo-misifu-remeow-de-jordi/
+
 PlanetaSinclair
 https://planetasinclair.blogspot.com/2021/03/saiu-misifu-remeow.html
 
