@@ -177,3 +177,8 @@ https://zx-pk.ru/archive/index.php/t-30180.html
 mechanism.fr
 
 https://mechanism.fr/getRecord.php?id=747
+
+
+idpixel.ru
+
+https://idpixel.ru/news/2383-vyshla-misifu-remeow-remejk-alley-cat-na-zx-spectrum-s-uluchshennoj-grafikoj/en/
