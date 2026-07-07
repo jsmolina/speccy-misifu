@@ -63,14 +63,14 @@ void assign_dogs(uint8_t y, uint8_t x) {
 }*/
 
 void  print_background_level7() {
-     sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+    uint8_t *pt = level7;
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                       PAPER_BLUE| BRIGHT | INK_CYAN,
                       ' ' );
      level = 7;
 
      sp1_Invalidate(&full_screen);
 
-     uint8_t *pt = level7;
       print_room_walls(20, PAPER_BLUE, INK_CYAN);
 
      // So now you can use:

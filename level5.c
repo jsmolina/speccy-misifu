@@ -81,13 +81,12 @@ void paintHole() {
 }
 
 void  print_background_level5() {
+  uint8_t *pt = level5;
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   BLACK_MAGENTA_BRIGHT,
                   ' ');
   sp1_Invalidate(&full_screen);
-
-  uint8_t *pt = level5;
 
   for (idx = 0; idx < LEVEL5_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(LEVEL5_TILES_BASE + idx, pt);

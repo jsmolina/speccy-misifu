@@ -142,16 +142,17 @@ void level2_loop() {
 }
 
 void  print_background_level2() {
+  uint8_t *pt = level2;
+  uint8_t *queso_text = tiles_lvl1 + 8; // cheese text is at second row of level 1 tiles
+
   level = 2;
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_RED | BRIGHT,
                   ' ' );
   sp1_Invalidate(&full_screen);
 
-  uint8_t *queso_text = tiles_lvl1 + 8; // cheese text is at second row of level 1 tiles
   sp1_TileEntry(UDG_QUESO_TEXT, queso_text);
 
-  uint8_t *pt = level2;
   for (idx = 0; idx < LEVEL2_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(LEVEL2_TILES_BASE + idx, pt);
   }

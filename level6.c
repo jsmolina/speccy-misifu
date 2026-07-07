@@ -30,12 +30,12 @@ uint8_t level6[] = {
 
 
 void  print_background_level6() {
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+    uint8_t *pt = level6;
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   PAPER_RED | BRIGHT,
                   ' ' );
   sp1_Invalidate(&full_screen);
   level = 6;
-  uint8_t *pt = level6;
   for (idx = 0; idx < LEVEL6_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(LEVEL6_TILES_BASE + idx, pt);
   }

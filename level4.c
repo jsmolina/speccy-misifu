@@ -71,6 +71,8 @@ uint8_t check_udg_collision(uint8_t udgy, uint8_t udgx) {
 }
 
 void  print_background_level4() {
+  uint8_t *pt = fishtank;
+
   level = 4;
   eaten_items = 0;
   bincat_in_bin = 5; // number of halts
@@ -82,7 +84,6 @@ void  print_background_level4() {
                   ' ' );
   sp1_Invalidate(&full_screen);
 
-  uint8_t *pt = fishtank;
   for (idx = 0; idx < FISHTANK_TILES_LEN; idx++, pt += 8) {
      sp1_TileEntry(FISHTANK_TILES_BASE + idx, pt);
   }
