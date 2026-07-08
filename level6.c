@@ -30,12 +30,12 @@ uint8_t level6[] = {
 
 
 void  print_background_level6() {
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
+    uint8_t *pt = level6;
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   PAPER_RED | BRIGHT,
                   ' ' );
   sp1_Invalidate(&full_screen);
   level = 6;
-  uint8_t *pt = level6;
   for (idx = 0; idx < LEVEL6_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(LEVEL6_TILES_BASE + idx, pt);
   }
@@ -51,7 +51,6 @@ void  print_background_level6() {
   paint_lamp(5, PAPER_RED | INK_GREEN | BRIGHT);
   // 18, 27
   eaten_items = CAGE_FIRST_POS; // 3 hits are needed to throw cage
-
   for(x = 0; x != 2; ++x) {
     sp1_PrintAt(17, CAGE_FIRST_POS + x, PAPER_RED | INK_WHITE | BRIGHT, UDG_JAULA_IZQUIERDA - x);
   }
@@ -76,7 +75,6 @@ void level6_loop() {
         if(misifu.y == 17 && (misifu.x >= (eaten_items - 1) && misifu.x <= eaten_items)) {
             // eaten_items = CAGE_FIRST_POS
             for(idx = 0; idx != 2; ++idx) {
-                sp1_PrintAtInv(17, eaten_items, PAPER_RED | INK_BLACK | BRIGHT, ' ');
                 sp1_PrintAtInv(17, eaten_items + idx, PAPER_RED | INK_BLACK | BRIGHT, ' ');
             }
             ++eaten_items;
@@ -91,7 +89,7 @@ void level6_loop() {
             }
             sp1_PrintAtInv(idx_j, eaten_items + 1, PAPER_RED | INK_WHITE | BRIGHT, x);
             misifu.state = FALLING;
-            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+            //bit_beepfx_di_fastcall(BEEPFX_DROP_1);
             total_points += 10;
         }
     } else {

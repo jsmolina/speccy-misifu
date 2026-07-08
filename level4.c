@@ -71,6 +71,8 @@ uint8_t check_udg_collision(uint8_t udgy, uint8_t udgx) {
 }
 
 void  print_background_level4() {
+  uint8_t *pt = fishtank;
+
   level = 4;
   eaten_items = 0;
   bincat_in_bin = 5; // number of halts
@@ -82,20 +84,23 @@ void  print_background_level4() {
                   ' ' );
   sp1_Invalidate(&full_screen);
 
-  uint8_t *pt = fishtank;
   for (idx = 0; idx < FISHTANK_TILES_LEN; idx++, pt += 8) {
      sp1_TileEntry(FISHTANK_TILES_BASE + idx, pt);
   }
 
   // start fishes positions
   for(idx = 0; idx != TOTAL_FISHES; ++idx) {
-        floor_holes[0][idx] = rand() % 28;
+        x = random_value + (idx << 2);
+        if (x > 27) x -= 28;
+        floor_holes[0][idx] = x;
         floor_holes[1][idx] = FISH_TO_RIGHT; // direction
   }
 
   for(idx = 0; idx != TOTAL_EELS; ++idx) {
       // y  = 4, 8, 12, 16
-      floor_holes[2][idx] = rand() % 28 + 1;
+      x = random_value + (idx << 3);
+      if (x > 27) x -= 28;
+      floor_holes[2][idx] = x + 1;
       floor_holes[3][idx] = (idx & 1); // 0 or 1 (EEL_TO_LEFT, EEL_TO_RIGHT)
   }
 

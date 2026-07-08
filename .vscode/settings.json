@@ -1,0 +1,8 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "/^cd /Users/jordism/repos/speccy-misifu && python3 - <<'EOF'\n# Truncate auxiliar\\.asm: remove auxiliar2 \nwith open\\('build/auxiliar\\.asm'\\) as f:\n    lines = f\\.readlines\\(\\)\n\ncut_line = None\nfor i, line in enumerate\\(lines\\):\n    if line\\.strip\\(\\) == 'PUBLIC _auxiliar2':\n        cut_line = i - 1 if lines\\[i-1\\]\\.strip\\(\\) == '' else i\n        break\n\nprint\\(f\"auxiliar\\.asm: cutting at line \\{cut_line\\+1\\} \\(was \\{len\\(lines\\)\\} lines\\)\"\\)\nwith open\\('build/auxiliar\\.asm', 'w'\\) as f:\n    f\\.writelines\\(lines\\[:cut_line\\]\\)\nprint\\(f\"  new size: \\{cut_line\\} lines\"\\)\nEOF$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
+}

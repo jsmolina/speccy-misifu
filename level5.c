@@ -51,20 +51,20 @@ const uint8_t empty_holes [] = {0x17, 0x9f, 0xf0, 0x23, 0x67, 0x8f, 0x38, 0xf2, 
 const uint8_t italic [] = {0x05, 0x41, 0x47, 0x85, 0xa1, 0xc5};
 
 void paint_vase(uint8_t col, uint8_t clean) {
-
+        // flowers
         for(x = 0; x != 2; ++x) {
-            sp1_PrintAtInv( 3, col + x, INK_CYAN | PAPER_MAGENTA | BRIGHT, clean);
+            sp1_PrintAtInv( 3, col + x, INK_GREEN | PAPER_MAGENTA | BRIGHT, clean);
         }
         if (clean != ' ') {
             ++clean;
         }
         // jarron derecho
-        sp1_PrintAtInv( 4, col + 1, INK_WHITE | PAPER_MAGENTA | BRIGHT, clean);
+        sp1_PrintAtInv( 4, col + 1, INK_BLUE | PAPER_MAGENTA | BRIGHT, clean);
         if (clean != ' ') {
             ++clean;
         }
         // jarron izquierdo
-        sp1_PrintAtInv( 4, col, INK_WHITE | PAPER_MAGENTA | BRIGHT, clean);
+        sp1_PrintAtInv( 4, col, INK_BLUE | PAPER_MAGENTA | BRIGHT, clean);
 }
 
 void paintHole() {
@@ -76,18 +76,17 @@ void paintHole() {
     if((idx_j & 1) == 0) {
         first_keypress = ' ';
     }
-    sp1_PrintAtInv(idx_j, 19 + idx, BLACK_MAGENTA_BRIGHT, first_keypress);
+    sp1_PrintAtInv(idx_j, 19 + idx, INK_BLACK | PAPER_RED | BRIGHT , first_keypress);
 
 }
 
 void  print_background_level5() {
+  uint8_t *pt = level5;
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   BLACK_MAGENTA_BRIGHT,
                   ' ');
   sp1_Invalidate(&full_screen);
-
-  uint8_t *pt = level5;
 
   for (idx = 0; idx < LEVEL5_TILES_LEN; idx++, pt += 8) {
       sp1_TileEntry(LEVEL5_TILES_BASE + idx, pt);
@@ -113,12 +112,15 @@ void  print_background_level5() {
      // parte baja estanteria
      if(idx_j == 19) {
         x = UDG_ESTANTERIA_TOP_VACIO;
+        frame = INK_BLACK | PAPER_MAGENTA | BRIGHT;
+     } else {
+        frame = INK_BLACK | PAPER_RED | BRIGHT;
      }
-     sp1_PrintAt(idx_j, 18,  BLACK_MAGENTA_BRIGHT, first_keypress + 2);
-     sp1_PrintAt(idx_j, 29,  BLACK_MAGENTA_BRIGHT, first_keypress);
+     sp1_PrintAt(idx_j, 18,  frame, first_keypress + 2);
+     sp1_PrintAt(idx_j, 29,  frame, first_keypress);
      // first paints all filled
      for(idx = 19; idx != 29; ++idx) {
-        sp1_PrintAt(idx_j, idx,  BLACK_MAGENTA_BRIGHT, x);
+        sp1_PrintAt(idx_j, idx, frame, x);
      }
   }
   idx_j = 5;
@@ -133,7 +135,7 @@ void  print_background_level5() {
      idx_j = (italic[x] & 0xF0) >> 4;
      idx = (italic[x] & 0x0F);
      for (first_keypress = 0; first_keypress != 2; ++first_keypress) {
-        sp1_PrintAtInv(5 + idx_j + first_keypress, 19 + idx, BLACK_MAGENTA_BRIGHT, UDG_LIBRO_INCLINADO_01 + first_keypress);
+        sp1_PrintAtInv(5 + idx_j + first_keypress, 19 + idx, INK_BLACK | PAPER_RED | BRIGHT, UDG_LIBRO_INCLINADO_01 + first_keypress);
      }
   }
 
@@ -166,7 +168,7 @@ inline void detect_vase_falling() {
             windows[idx_j].has_item = BROKEN_VASE;
             misifu.state = FALLING_FLOOR;
             misifu.draw_additional = NONE;
-            bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+            bit_beepfx_di_fastcall(BEEPFX_SCORE);
             paint_vase(idx, ' ');
             total_points += 10;
             --eaten_items;

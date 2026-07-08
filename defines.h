@@ -51,15 +51,15 @@
 #define SPIDER 48 // (16 * 2) + 16
 
 #define RIGHTC1 0
-#define RIGHTC2 64
-#define LEFTC1 128
-#define LEFTC2 192
-#define JLEFTC1 256
-#define JRIGHTC1 320
-#define JUMPINGC1 384
-#define BORED 448
-#define HANGING 512
-#define FALL_OFFSET 576
+#define RIGHTC2 48
+#define LEFTC1 96
+#define LEFTC2 144
+#define JLEFTC1 192
+#define JRIGHTC1 240
+#define JUMPINGC1 288
+#define BORED 336
+#define HANGING 384
+#define FALL_OFFSET 432
 
 #define AUX_PHONE 0
 #define AUX_ZAP 48  // + 16x2 + 8x2
@@ -99,9 +99,9 @@
 
 #define FRAME_CHANGE 2
 #define DOG1 0
-#define DOG2 48
-#define DOGFIGHTING1 96
-#define DOGFIGHTING2 144
+#define DOG2 32
+#define DOGFIGHTING1 64
+#define DOGFIGHTING2 96
 
 #define SONG_RESTART 250
 
@@ -166,10 +166,10 @@ extern uint8_t tiles_lvl1[];
 extern uint8_t floor_holes[][12];
 
 // level 2 cheese
-extern const uint8_t hole_empty[];
-extern const uint8_t hole_mouse[];
-extern const uint8_t cheese2[];
-extern const uint8_t curtain[];
+extern uint8_t hole_empty[];
+extern uint8_t hole_mouse[];
+extern uint8_t cheese2[];
+extern uint8_t curtain[];
 
 
 extern uint8_t sprite_protar1[];
@@ -196,7 +196,7 @@ extern uint8_t sprite_swim4[];
 
 // level 1
 extern struct udgstruct windows[14];
-extern const uint8_t bin_places2[];
+extern uint8_t bin_places2[];
 
 
 // variable used for free objects (e.g. kitchen object thrown from window)
@@ -282,4 +282,5 @@ extern void detect_fall_in_table(uint8_t offset);
 extern void move_right_and_left();
 extern void assign_hearts();
 
+extern void initialiseColour(unsigned int count, struct sp1_cs *c);
 #endif

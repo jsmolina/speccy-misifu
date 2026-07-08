@@ -56,10 +56,6 @@ int main()
   ay_vt_init(pcspeaker_module);
   intrinsic_ei();
 
-  while(!in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
-    // do nothing
-  }
-
   reset_misifu_position();
 
   x_malo = 22;

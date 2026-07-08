@@ -176,7 +176,7 @@ uint8_t floor_holes[5][12];
 
 // level 1
 struct udgstruct windows[14];
-const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
+uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;
@@ -221,13 +221,15 @@ uint16_t partial_points;
 void print_points(uint8_t row, uint8_t col) {
     partial_points = total_points;
     for(idx = 0; idx != 5; ++idx) {
-        sp1_PrintAtInv(row, col + idx, INK_CYAN | PAPER_BLACK | BRIGHT, '0');
+        sp1_PrintAtInv(row, col + idx, INK_WHITE | PAPER_BLACK , '0');
     }
 
     idx = col + 4;
     while (partial_points > 0) {
-       sp1_PrintAtInv(row, idx, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + (partial_points % 10));
-       partial_points = partial_points / 10;
+       x = 0;
+       while (partial_points >= 10) { partial_points -= 10; ++x; }
+       sp1_PrintAtInv(row, idx, INK_WHITE | PAPER_BLACK , 48 + partial_points);
+       partial_points = x;
        --idx;
     }
 }
@@ -318,22 +320,13 @@ void all_lives_lost() {
   intrinsic_ei();
 }
 
-/*
-static void initialiseColourOther(unsigned int count, struct sp1_cs *c)
-{
-  (void)count;   // Suppress compiler warning about unused parameter
-  c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_BLACK;
-}*/
-
-
-
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, 0, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 640, 1); // 64*10
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 1280, 1); // 128 * 10
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 480, 1); // 48*10
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 960, 1); // 96*10
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 1);
+  ((uint8_t*)sp)[18] = 0;  // ythreshold=0: always draw last row
 
   //sp1_IterateSprChar(sp, initialiseColour);
 
@@ -354,10 +347,11 @@ inline struct sp1_ss * add_sprite_swim() {
 
 inline struct sp1_ss * add_sprite_dogr1() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 0);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 192, 0); // 192 = 48 * 4
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 384, 0); // 96 * 4
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 2, 0, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 128, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 256, 0);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+  ((uint8_t*)sp)[18] = 0;  // ythreshold=0: always draw last row (no blank padding row)
 
   //sp1_IterateSprChar(sp, initialiseColour);
 
@@ -419,6 +413,9 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
   uint8_t *pt = rooms;
   uint8_t bright_black_paper = 0x40 | paper_color;
   uint8_t *black_window = tiles_lvl1 + 168;
+  if(level == 7) {
+    bright_black_paper = PAPER_BLUE | INK_CYAN | BRIGHT;
+  }
 
 
   for (idx = 0; idx < ROOMS_TILES_LEN; ++idx, pt += 8) {
@@ -463,7 +460,12 @@ void print_room_walls(uint8_t initial_window, uint8_t paper_color, uint8_t ink_c
 
     for (idx_j = 0; idx_j != 8; ++idx_j) {
        if(idx_j < 2 || idx_j > 5) {
-        sp1_PrintAt( idx, initial_window + idx_j, bright_black_paper, UDG_CURTAIN);
+           if(idx < 10 && (idx_j == 1 || idx_j == 6)) {
+                x = ink_color | paper_color;
+           } else {
+                x = bright_black_paper;
+           }
+           sp1_PrintAt( idx, initial_window + idx_j, x, UDG_CURTAIN);
        }
     }
 
@@ -804,7 +806,14 @@ void paint_lamp(uint8_t col, uint8_t color) {
 
     for(idx = frame - 6; idx != frame - 4; ++idx) {
         for(idx_j = col - 1; idx_j != col + 2; ++idx_j) {
-            sp1_PrintAtInv(idx, idx_j, color, UDG_LAMP1);
+            if(idx_j == col - 1) {
+                x = INK_WHITE | PAPER_BLACK | BRIGHT;
+            } else if(idx_j == col) {
+                x = INK_CYAN | BRIGHT | PAPER_BLACK;
+            } else {
+                x = INK_CYAN | PAPER_BLACK;
+            }
+            sp1_PrintAtInv(idx, idx_j, x, UDG_LAMP1);
         }
     }
     sp1_PrintAtInv(frame - 4, col + 1, color, UDG_LAMP2);
@@ -970,7 +979,7 @@ void get_out_of_level_generic(uint8_t fall) {
             sp1_UpdateNow();
             wait();
         }
-        bit_beepfx_di_fastcall(BEEPFX_SELECT_5);
+        bit_beepfx_di_fastcall(BEEPFX_SCORE);
     } else if(fall == FALLING) {
         bit_beepfx_di_fastcall(BEEPFX_DROP_1);
     } else if (fall == ELECTRIFIED) {
@@ -981,9 +990,9 @@ void get_out_of_level_generic(uint8_t fall) {
             zx_border(INK_BLUE);
         }
     } else if(fall == OXYGEN) {
-        bit_beepfx_di_fastcall(BEEPFX_GULP);
+        bit_beepfx_di_fastcall(BEEPFX_HIT_4);
     } else {
-        bit_beepfx_di_fastcall(BEEPFX_DROP_1);
+        bit_beepfx_di_fastcall(BEEPFX_GULP);
         if(lives > 0) {
             --lives;
         } else {

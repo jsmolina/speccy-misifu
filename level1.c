@@ -53,50 +53,41 @@
 
 #define MAX_COORDS_LADRILLOS 45
 #define TOTAL_COORDS_SUELO 15
-#define BACKGROUND_LVL1_DEFAULT 0x58   // INK BLACK, PAPER MAGENTA, BRIGHT
-#define BACKGROUND_LVL1_CYAN 0x68
+#define BACKGROUND_LVL1_DEFAULT PAPER_RED | INK_BLACK | BRIGHT   // INK BLACK, PAPER MAGENTA, BRIGHT
 
 
-const uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
+uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
     0x3c, 0x31, 0x3d, 0x31, 0x41, 0x4f, 0x41, 0x7f, 0x71, 0x79, 0x71, 0x88, 0x89, 0x87, 0x81, 0xb0, 0xbd, 0xb1,
     0xc0, 0xc1, 0xc7, 0xcf, 0xc2, 0xd1, 0xd6, 0xd2, 0xd7, 0xd1, 0xd6, 0xd1, 0xd7};
 
-const uint8_t coords_suelo [] = {0x0c, 0x05, 0x0b, 0x10, 0x15, 0x18, 0x16, 0x14, 0x17, 0x22, 0x25, 0x24, 0x24, 0x23, 0x29};
-const uint16_t suelo_flags = 0x69b2;
+uint8_t coords_suelo [] = {0x0c, 0x05, 0x0b, 0x10, 0x15, 0x18, 0x16, 0x14, 0x17, 0x22, 0x25, 0x24, 0x24, 0x23, 0x29};
+uint16_t suelo_flags = 0x69b2;
 
 uint8_t is_in_bin(uint8_t x_pos) {
-    if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
-        return 1;
-    } else if(x_pos == 4 || x_pos == 5 || x_pos == 6) {
-        return 2;
-    } else if(x_pos == 8 || x_pos == 9 || x_pos == 10) {
-        return 3;
-    } else if(x_pos == 19 || x_pos == 20 || x_pos == 21) {
-        return 4;
-    } else if(x_pos == 23 || x_pos == 24 || x_pos == 25) {
-        return 5;
-    }
-
-    return NONE;
+    static const uint8_t bin_map[26] = {
+        1,1,1,0, 2,2,2,0, 3,3,3,0, 0,0,0,0, 0,0,0,
+        4,4,4,0, 5,5,5
+    };
+    if (x_pos > 25) return NONE;
+    return bin_map[x_pos];
 }
 
 inline uint8_t  get_cubo_offset() {
-    if(x == 1 || x == 5 || x == 9 || x == 20 || x == 24) {
-        return 0;
+    uint8_t base;
+    if (x >= 1 && x <= 11) {
+        base = x - 1;
+    } else if (x >= 20 && x <= 26) {
+        base = x - 20;
+    } else {
+        return UNDEF;
     }
-    if(x == 2 || x == 6 || x == 10 || x == 21 || x == 25) {
-        return 1;
-    }
-
-    if(x == 3 || x == 7 || x == 11 || x == 22 || x == 26) {
-        return 2;
-    }
-
-    return UNDEF;
+    if ((base & 3) == 3) return UNDEF;
+    return base & 3;
 }
 
 
 void paint_window(uint16_t colour, uint8_t udg_id) {
+  uint8_t second_udg;
 
   if(opened_window > 11) {
     return;
@@ -105,28 +96,24 @@ void paint_window(uint16_t colour, uint8_t udg_id) {
   for (x = 0; x != 2; ++x) {
       sp1_PrintAtInv(windows[opened_window].y + x,
                      windows[opened_window].x,
-                     BACKGROUND_LVL1_DEFAULT,
+                     PAPER_RED | INK_BLACK,
                      UDG_VOLUMEN);
   }
 
   for (x = windows[opened_window].x + 1; x != windows[opened_window].x + 5; ++x) {
     // top is equal
-    if(opened_window_frames != 50) {
-        sp1_PrintAtInv(windows[opened_window].y, x, colour, udg_id);
-    }
+    sp1_PrintAtInv(windows[opened_window].y, x, colour, udg_id);
     if(udg_id == ' ') {
-        y = UDG_WIN1;
+        second_udg = UDG_WIN1;
     } else {
-        y = udg_id;
+        second_udg = udg_id;
     }
-    if(opened_window_frames != 10) {
-        sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, y);
-    }
+    sp1_PrintAtInv(windows[opened_window].y + 1, x, colour, second_udg);
   }
 }
 
 void print_lives() {
-    sp1_PrintAtInv( 17, 27, INK_CYAN | PAPER_BLACK | BRIGHT, 48 + lives);
+    sp1_PrintAtInv( 17, 27, INK_WHITE | PAPER_BLACK, 48 + lives);
     print_points(18, 27);
     repaint_lives = 0;
 }
@@ -153,7 +140,12 @@ void paint_bricks(uint8_t clean) {
     if((coords_lad[x] & 0x0F) == 15) {
         continue;
     }
-    sp1_PrintAtInv(idx_j, idx, BACKGROUND_LVL1_DEFAULT, UDG_JLADRILLOS);
+    if(idx_j >= 13) {
+        y = PAPER_RED | INK_BLACK;
+    } else {
+        y = BACKGROUND_LVL1_DEFAULT;
+    }
+    sp1_PrintAtInv(idx_j, idx, y, UDG_JLADRILLOS);
   }
 }
 
@@ -174,20 +166,24 @@ void  print_background_lvl1() {
   }
 
   // paint valla
+  y = 0; // valla pattern counter 0..5
   for (x = 0; x!=MAX_X; ++x) {
 
-      if (x % 2 == 0) {
-        idx_j = UDG_VALLA1;
-      } else if (x % 3 == 0) {
+      if (y == 3) {
         idx_j = UDG_VALLA4;
-      } else {
+      } else if (y & 1) {
         idx_j = UDG_VALLA3;
+      } else {
+        idx_j = UDG_VALLA1;
       }
-      sp1_PrintAt(15, x,  PAPER_CYAN | BRIGHT, idx_j);
+      if (++y == 6) y = 0;
+      sp1_PrintAt(15, x,  PAPER_WHITE | BRIGHT, idx_j);
 
       for (idx_j=16; idx_j!=21; ++idx_j)
       {
-          sp1_PrintAt( idx_j, x,  PAPER_CYAN | BRIGHT, UDG_VALLA2);
+          sp1_PrintAt( idx_j, x,  PAPER_WHITE | BRIGHT, UDG_VALLA2);
+
+          sp1_PrintAt( idx_j + 3, x,  PAPER_YELLOW | BRIGHT, ' ');
       }
 
       // this func uses x and modifies frame (ugly thing, saving memory...)
@@ -199,38 +195,51 @@ void  print_background_lvl1() {
           if((x >= 5 && x<=7)  ||  (x >= 20 && x<=22)) {
              idx_j = 21;
           }
+          if(x <=7 || x > 22) {
+              idx = PAPER_GREEN | BRIGHT;
+          } else {
+              idx = PAPER_CYAN | BRIGHT;
+          }
           //
           for(level_time = idx_j; level_time != idx_j - 4; --level_time) {
-            sp1_PrintAtInv(level_time, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBODOWN1 + frame);
+            sp1_PrintAtInv(level_time, x, idx, UDG_CUBODOWN1 + frame);
             if(level_time != (idx_j - 1)) {
                 frame += 3;
             }
           }
-          /*sp1_PrintAtInv(idx_j, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBODOWN1 + frame);
-          sp1_PrintAtInv(idx_j - 1, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 2, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOMIDDLE1 + frame);
-          sp1_PrintAtInv(idx_j - 3, x, BACKGROUND_LVL1_DEFAULT, UDG_CUBOTOP1 + frame);*/
+          /*sp1_PrintAtInv(idx_j, x, idx, UDG_CUBODOWN1 + frame);
+          sp1_PrintAtInv(idx_j - 1, x, idx, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 2, x, idx, UDG_CUBOMIDDLE1 + frame);
+          sp1_PrintAtInv(idx_j - 3, x, idx, UDG_CUBOTOP1 + frame);*/
       }
 
   }
-  sp1_PrintAtInv(17, 3, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(18, 13, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(20, 18, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
-  sp1_PrintAtInv(16, 23, BACKGROUND_LVL1_CYAN, UDG_VALLAROTA);
+  sp1_PrintAtInv(16, 23, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
+  sp1_PrintAtInv(17, 3, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
+  sp1_PrintAtInv(18, 13, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
+  sp1_PrintAtInv(20, 18, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
 
   print_lives();
-
   for(idx = 0; idx != 3; ++idx) {
-    sp1_PrintAt( 17, 29 + idx, BACKGROUND_LVL1_CYAN, UDG_C + idx);
+    sp1_PrintAt( 17, 29 + idx, PAPER_WHITE | BRIGHT, UDG_C + idx);
   }
+
 
   // paint the ropes
   for (idx=0; idx != MAX_X; ++idx) {
     for(idx_j = 1; idx_j!=13; idx_j += 4) {
         sp1_PrintAt(idx_j, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
     }
+    /*sp1_PrintAt(5, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);
+    sp1_PrintAt(1, idx, BACKGROUND_LVL1_DEFAULT, UDG_ROPE);*/
   }
 
+  // last two rows as dark red
+  for(idx_j = 13; idx_j < 15; ++idx_j) {
+    for(idx = 0; idx < 32; ++idx) {
+        sp1_PrintAtInv(idx_j, idx, PAPER_RED | INK_BLACK, ' ');
+    }
+  }
   // paint bricks (decompressing!)
   paint_bricks(0);
 
@@ -245,7 +254,7 @@ void  print_background_lvl1() {
       idx_j = ((coords_suelo[x] & 0xF0) >> 4);
 
       idx += (coords_suelo[x] & 0x0F);
-      sp1_PrintAt(idx_j + 21, idx,  BACKGROUND_LVL1_DEFAULT, UDG_QUESO + frame);
+      sp1_PrintAtInv(idx_j + 21, idx,  PAPER_YELLOW | BRIGHT, UDG_QUESO + frame);
   }
 
 
@@ -299,7 +308,7 @@ void paint_clothes(uint8_t clean) {
     if(clean == 1) {
         color = BACKGROUND_LVL1_DEFAULT;
     } else {
-        color = INK_WHITE | PAPER_MAGENTA | BRIGHT;
+        color = INK_WHITE | PAPER_RED | BRIGHT;
     }
     for(idx = 0; idx!= 10; ++idx) { // indexes go from 0 to 9
         if (clean == 0) {
@@ -384,14 +393,9 @@ inline void anim_windows() {
     } else {
         --opened_window_frames;
 
-        if(opened_window_frames == 40) {
-            // finish opening window
-            paint_window(INK_BLACK | PAPER_WHITE, UDG_WIN2);
-        }
-
         if (horizontal_direction != NONE) {
             if(misifu.state != FALLING_FLOOR && misifu.y < 14 && abs(misifu.x - aux_object.x) < 2 && abs(misifu.y - aux_object.y) < 2) {
-                bit_beepfx_di_fastcall(BEEPFX_HIT_2);
+                bit_beepfx_di_fastcall(BEEPFX_HIT_4);
                 aux_object.offset = AUX_ZAP;
                 misifu.state = FALLING_FLOOR;
             } else {
@@ -412,10 +416,6 @@ inline void anim_windows() {
         }
 
     }
-
-    if (opened_window_frames == 10) {
-        paint_window(PAPER_CYAN | BRIGHT, ' ');
-    }
     // end of windows
     if (opened_window_frames == 1) {
         paint_window(PAPER_CYAN | BRIGHT, ' ');
@@ -433,7 +433,8 @@ inline void anim_windows() {
 inline void check_bincat() {
     // checks if bincat should appear and where
     if (bincat_appears == NONE && misifu.in_bin != NONE) {
-        bincat_in_bin = random_value % 6;
+        bincat_in_bin = random_value & 7;
+        if (bincat_in_bin > 5) bincat_in_bin -= 6;
         // less probable
         if(bincat_in_bin != NONE) {
             //anim_frames_bincat = 20;
