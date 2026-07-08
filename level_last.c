@@ -93,7 +93,9 @@ void print_background_level_last() {
     // this is rats positions
     frame = 6;
     for (idx_j = 0; idx_j != 4; ++idx_j) {
-        x = (rand() % 19) + 5;
+        x = (random_value & 0x1f);
+        if (x > 18) x -= 19;
+        x += 5;
         windows[idx_j].x = x;
         windows[idx_j].y = frame;
         windows[idx_j].has_item = RAT_TO_RIGHT + (x & 1);
@@ -197,9 +199,7 @@ inline void throw_cupid_arrow() {
             if (idx_j != UNDEF) {
 
                 idx = aux_object.x - 3;
-                if ((idx & 1) == 1) {
-                    --idx;
-                }
+                idx &= 0xFE;
                 bincat_in_bin = idx + 4;
                 idx = idx >> 1;
                 if (idx < 12) {
@@ -265,9 +265,7 @@ void level10_loop() {
     idx_j = lvl3_y_to_idj(misifu.y);
     if (idx_j != UNDEF) {
         idx = misifu.x - 3; // (3, 5, 7) => (0, 2, 4)
-        if ((idx & 1) == 1) {
-            --idx;
-        }
+        idx &= 0xFE;
         idx = idx >> 1; //  (0, 2, 4) => (0, 1, 2) [real indexes]
 
         if (floor_holes[idx_j][idx] == UDG_UDG_CORAZON_ROTO_01) {

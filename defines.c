@@ -226,8 +226,10 @@ void print_points(uint8_t row, uint8_t col) {
 
     idx = col + 4;
     while (partial_points > 0) {
-       sp1_PrintAtInv(row, idx, INK_WHITE | PAPER_BLACK , 48 + (partial_points % 10));
-       partial_points = partial_points / 10;
+       x = 0;
+       while (partial_points >= 10) { partial_points -= 10; ++x; }
+       sp1_PrintAtInv(row, idx, INK_WHITE | PAPER_BLACK , 48 + partial_points);
+       partial_points = x;
        --idx;
     }
 }
