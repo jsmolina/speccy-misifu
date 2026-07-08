@@ -10,10 +10,30 @@ The CODE segment uses __CODE_END_head as the real end address.
 Exits with code 1 if any segment overflows its allowed range.
 """
 
+import hashlib
+import os
 import re
 import sys
 
 MAP_FILE = sys.argv[1] if len(sys.argv) > 1 else "misifu.map"
+
+
+def check_map_freshness(path):
+    """Warn if the map file matches the last-seen checksum and mtime (i.e. not rebuilt)."""
+    stamp_path = path + ".md5"
+    mtime = os.path.getmtime(path)
+    mtime_str = __import__("datetime").datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S")
+    with open(path, "rb") as f:
+        current_md5 = hashlib.md5(f.read()).hexdigest()
+    stamp = f"{current_md5} {mtime_str}"
+    if os.path.exists(stamp_path):
+        with open(stamp_path) as f:
+            previous_stamp = f.read().strip()
+        if stamp == previous_stamp:
+            print(f"WARNING: map file unchanged since last check (md5: {current_md5[:8]}…, modified: {mtime_str})")
+            print("         Results may not reflect recent code changes.\n")
+    with open(stamp_path, "w") as f:
+        f.write(stamp)
 
 # Segment limits: (org_start, max_end_exclusive)
 # CODE starts at 24500 (0x5FB4) and must not reach 49152 (0xC000).
@@ -87,5 +107,6 @@ def report(segments):
         print("PASS: all segments fit within memory limits.")
 
 if __name__ == "__main__":
+    check_map_freshness(MAP_FILE)
     segs = parse_map(MAP_FILE)
     report(segs)

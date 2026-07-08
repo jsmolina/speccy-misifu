@@ -176,7 +176,7 @@ uint8_t floor_holes[5][12];
 
 // level 1
 struct udgstruct windows[14];
-const uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
+uint8_t bin_places2[] = {NONE, 1, 5, 9, 20, 24};
 
 // variable used for free objects (e.g. kitchen object thrown from window)
 uint8_t vertical_direction;

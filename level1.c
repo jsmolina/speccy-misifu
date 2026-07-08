@@ -56,42 +56,33 @@
 #define BACKGROUND_LVL1_DEFAULT PAPER_RED | INK_BLACK | BRIGHT   // INK BLACK, PAPER MAGENTA, BRIGHT
 
 
-const uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
+uint8_t coords_lad [] = {0x00, 0x01, 0x0a, 0x05, 0x01, 0x0d, 0x01, 0x23, 0x21, 0x2f, 0x29, 0x31, 0x31, 0x31,
     0x3c, 0x31, 0x3d, 0x31, 0x41, 0x4f, 0x41, 0x7f, 0x71, 0x79, 0x71, 0x88, 0x89, 0x87, 0x81, 0xb0, 0xbd, 0xb1,
     0xc0, 0xc1, 0xc7, 0xcf, 0xc2, 0xd1, 0xd6, 0xd2, 0xd7, 0xd1, 0xd6, 0xd1, 0xd7};
 
-const uint8_t coords_suelo [] = {0x0c, 0x05, 0x0b, 0x10, 0x15, 0x18, 0x16, 0x14, 0x17, 0x22, 0x25, 0x24, 0x24, 0x23, 0x29};
-const uint16_t suelo_flags = 0x69b2;
+uint8_t coords_suelo [] = {0x0c, 0x05, 0x0b, 0x10, 0x15, 0x18, 0x16, 0x14, 0x17, 0x22, 0x25, 0x24, 0x24, 0x23, 0x29};
+uint16_t suelo_flags = 0x69b2;
 
 uint8_t is_in_bin(uint8_t x_pos) {
-    if (x_pos == 0 || x_pos == 1 || x_pos == 2) {
-        return 1;
-    } else if(x_pos == 4 || x_pos == 5 || x_pos == 6) {
-        return 2;
-    } else if(x_pos == 8 || x_pos == 9 || x_pos == 10) {
-        return 3;
-    } else if(x_pos == 19 || x_pos == 20 || x_pos == 21) {
-        return 4;
-    } else if(x_pos == 23 || x_pos == 24 || x_pos == 25) {
-        return 5;
-    }
-
-    return NONE;
+    static const uint8_t bin_map[26] = {
+        1,1,1,0, 2,2,2,0, 3,3,3,0, 0,0,0,0, 0,0,0,
+        4,4,4,0, 5,5,5
+    };
+    if (x_pos > 25) return NONE;
+    return bin_map[x_pos];
 }
 
 inline uint8_t  get_cubo_offset() {
-    if(x == 1 || x == 5 || x == 9 || x == 20 || x == 24) {
-        return 0;
+    uint8_t base;
+    if (x >= 1 && x <= 11) {
+        base = x - 1;
+    } else if (x >= 20 && x <= 26) {
+        base = x - 20;
+    } else {
+        return UNDEF;
     }
-    if(x == 2 || x == 6 || x == 10 || x == 21 || x == 25) {
-        return 1;
-    }
-
-    if(x == 3 || x == 7 || x == 11 || x == 22 || x == 26) {
-        return 2;
-    }
-
-    return UNDEF;
+    if ((base & 3) == 3) return UNDEF;
+    return base & 3;
 }
 
 
@@ -175,15 +166,17 @@ void  print_background_lvl1() {
   }
 
   // paint valla
+  y = 0; // valla pattern counter 0..5
   for (x = 0; x!=MAX_X; ++x) {
 
-      if (x % 2 == 0) {
-        idx_j = UDG_VALLA1;
-      } else if (x % 3 == 0) {
+      if (y == 3) {
         idx_j = UDG_VALLA4;
-      } else {
+      } else if (y & 1) {
         idx_j = UDG_VALLA3;
+      } else {
+        idx_j = UDG_VALLA1;
       }
+      if (++y == 6) y = 0;
       sp1_PrintAt(15, x,  PAPER_WHITE | BRIGHT, idx_j);
 
       for (idx_j=16; idx_j!=21; ++idx_j)
@@ -221,10 +214,10 @@ void  print_background_lvl1() {
       }
 
   }
+  sp1_PrintAtInv(16, 23, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
   sp1_PrintAtInv(17, 3, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
   sp1_PrintAtInv(18, 13, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
   sp1_PrintAtInv(20, 18, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
-  sp1_PrintAtInv(16, 23, PAPER_WHITE | BRIGHT, UDG_VALLAROTA);
 
   print_lives();
   for(idx = 0; idx != 3; ++idx) {
@@ -440,7 +433,8 @@ inline void anim_windows() {
 inline void check_bincat() {
     // checks if bincat should appear and where
     if (bincat_appears == NONE && misifu.in_bin != NONE) {
-        bincat_in_bin = random_value % 6;
+        bincat_in_bin = random_value & 7;
+        if (bincat_in_bin > 5) bincat_in_bin -= 6;
         // less probable
         if(bincat_in_bin != NONE) {
             //anim_frames_bincat = 20;

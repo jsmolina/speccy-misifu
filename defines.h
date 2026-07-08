@@ -166,10 +166,10 @@ extern uint8_t tiles_lvl1[];
 extern uint8_t floor_holes[][12];
 
 // level 2 cheese
-extern const uint8_t hole_empty[];
-extern const uint8_t hole_mouse[];
-extern const uint8_t cheese2[];
-extern const uint8_t curtain[];
+extern uint8_t hole_empty[];
+extern uint8_t hole_mouse[];
+extern uint8_t cheese2[];
+extern uint8_t curtain[];
 
 
 extern uint8_t sprite_protar1[];
@@ -196,7 +196,7 @@ extern uint8_t sprite_swim4[];
 
 // level 1
 extern struct udgstruct windows[14];
-extern const uint8_t bin_places2[];
+extern uint8_t bin_places2[];
 
 
 // variable used for free objects (e.g. kitchen object thrown from window)
