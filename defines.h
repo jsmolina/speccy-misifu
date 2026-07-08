@@ -51,15 +51,15 @@
 #define SPIDER 48 // (16 * 2) + 16
 
 #define RIGHTC1 0
-#define RIGHTC2 64
-#define LEFTC1 128
-#define LEFTC2 192
-#define JLEFTC1 256
-#define JRIGHTC1 320
-#define JUMPINGC1 384
-#define BORED 448
-#define HANGING 512
-#define FALL_OFFSET 576
+#define RIGHTC2 48
+#define LEFTC1 96
+#define LEFTC2 144
+#define JLEFTC1 192
+#define JRIGHTC1 240
+#define JUMPINGC1 288
+#define BORED 336
+#define HANGING 384
+#define FALL_OFFSET 432
 
 #define AUX_PHONE 0
 #define AUX_ZAP 48  // + 16x2 + 8x2

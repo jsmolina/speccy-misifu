@@ -322,10 +322,11 @@ void all_lives_lost() {
 
 struct sp1_ss * add_sprite_protar1() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, 0, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 640, 1); // 64*10
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 1280, 1); // 128 * 10
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, 0, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 480, 1); // 48*10
+  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, 960, 1); // 96*10
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 1);
+  ((uint8_t*)sp)[18] = 0;  // ythreshold=0: always draw last row
 
   //sp1_IterateSprChar(sp, initialiseColour);
 
