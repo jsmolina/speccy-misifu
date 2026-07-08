@@ -99,9 +99,9 @@
 
 #define FRAME_CHANGE 2
 #define DOG1 0
-#define DOG2 48
-#define DOGFIGHTING1 96
-#define DOGFIGHTING2 144
+#define DOG2 32
+#define DOGFIGHTING1 64
+#define DOGFIGHTING2 96
 
 #define SONG_RESTART 250
 
